@@ -4,6 +4,7 @@ import { useState } from "react";
 import { characters } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { DoomsdayGuide } from "@/components/DoomsdayGuide";
+import { MCUCatalog } from "@/components/MCUCatalog";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ export default function Home() {
       <a className="brand" href="#inicio" aria-label="Nexus inicio"><span>N</span>NEXUS</a>
       <nav className={menuOpen ? "nav open" : "nav"}>
         <a href="#doom" onClick={() => setMenuOpen(false)}>ENTENDER A DOOM</a>
-        <a href="#cronologia" onClick={() => setMenuOpen(false)}>CRONOLOGÍA</a>
+        <a href="#cronologia" onClick={() => setMenuOpen(false)}>TODO EL MCU</a>
         <a href="#personajes" onClick={() => setMenuOpen(false)}>PERSONAJES</a>
       </nav>
       <button className="menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menú">{menuOpen ? "×" : "☰"}</button>
@@ -27,13 +28,14 @@ export default function Home() {
         <p className="eyebrow"><span /> MARVEL STUDIOS · GUÍA SIN CÓMICS</p>
         <h1>ANTES DE<br/><em>DOOMSDAY</em></h1>
         <p className="doom-deck">Todo lo que el MCU ya te ha contado para entender a Victor von Doom, el multiverso y la colisión que viene.</p>
-        <div className="hero-actions"><a className="primary" href="#doom">EMPEZAR DESDE CERO <b>↓</b></a><a className="ghost-action" href="#cronologia">VER ORDEN DE VISIONADO</a></div>
+      <div className="hero-actions"><a className="primary" href="#doom">EMPEZAR DESDE CERO <b>↓</b></a><a className="ghost-action" href="#cronologia">VER TODO EL MCU</a></div>
       </div>
       <div className="doom-hero-fact"><span>OBJETIVO</span><b>06 TÍTULOS</b><p>Una ruta directa. Sin relleno. Solo películas y series del MCU.</p></div>
       <div className="ticker"><span>MULTIVERSO</span><b>✦</b><span>INCURSIONES</span><b>✦</b><span>VARIANTES</span><b>✦</b><span>VICTOR VON DOOM</span></div>
     </section>
 
     <DoomsdayGuide />
+    <MCUCatalog />
 
     <section className="mcu-characters section" id="personajes">
       <div className="section-backdrop" aria-hidden="true">MCU</div>

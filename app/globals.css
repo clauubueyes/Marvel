@@ -532,6 +532,19 @@ footer > a:last-child { color: #fff; }
 .event-dossier ol { margin: 20px 0 0; padding-left: 18px; }.event-dossier li,.event-dossier p { margin-bottom: 12px; color: #555b4e; font-size: 10px; line-height: 1.6; }.event-dossier strong { color: #4f6721; font-size: 8px; }.event-dossier article { padding: 12px 0; border-bottom: 1px solid #adb5a0; }.event-dossier article b,.event-dossier article small { display: block; }.event-dossier article b { font: 17px var(--font-display); }.event-dossier article small { margin: 4px 0 8px; color: #6d7367; font-size: 7px; }.event-dossier article a { color: #4f6721; font-size: 7px; }
 .spoiler-note { margin-top: 22px; color: #828a78; font-size: 8px; }
 
+.mcu-catalog { color: #11130f; background: #eeece4; }
+.catalog-heading { display: grid; grid-template-columns: 1fr .7fr; align-items: end; gap: 8vw; }
+.catalog-heading h2 { font-size: clamp(70px,8vw,130px); }.catalog-heading h2 em { color: #668522; -webkit-text-stroke: 0; }
+.catalog-heading > div:last-child { display: grid; grid-template-columns: auto 1fr; gap: 25px; align-items: end; padding-bottom: 12px; }
+.catalog-heading strong { font: clamp(65px,7vw,110px)/.8 var(--font-display); color: #668522; }.catalog-heading > div:last-child p { max-width: 390px; color: #686b62; font-size: 9px; line-height: 1.7; }
+.catalog-tools { margin-top: 65px; padding: 25px; color: #e9ecdf; background: #151a11; }
+.catalog-tools label { display: grid; grid-template-columns: 170px 1fr; align-items: center; border-bottom: 1px solid #4b5642; }.catalog-tools label span { font-size: 8px; letter-spacing: 1.4px; }.catalog-tools input { width: 100%; padding: 15px 0; border: 0; outline: 0; color: white; background: transparent; font: 18px var(--font-mono); }.catalog-tools input::placeholder { color: #697063; }
+.catalog-filters { display: flex; flex-wrap: wrap; gap: 7px; padding-top: 20px; }.catalog-filters button { padding: 10px 13px; border: 1px solid #4b5642; color: #aeb5a5; background: transparent; font: 7px var(--font-mono); cursor: pointer; }.catalog-filters button.active { color: #11150c; border-color: #b9d737; background: #b9d737; }
+.catalog-result { display: flex; justify-content: space-between; padding: 18px 0; color: #676c61; font-size: 8px; border-bottom: 2px solid #171b13; }
+.catalog-entry { border-bottom: 1px solid #b9bcb2; }.catalog-entry summary { min-height: 112px; display: grid; grid-template-columns: 58px 1fr 160px 125px 28px; align-items: center; gap: 25px; list-style: none; cursor: pointer; transition: padding .25s,background .25s; }.catalog-entry summary::-webkit-details-marker { display: none; }.catalog-entry summary:hover { padding: 0 16px; background: #e0e4d5; }
+.catalog-entry summary > b { color: #777c70; font: 25px var(--font-display); }.catalog-entry summary small { color: #708346; font-size: 7px; letter-spacing: 1.2px; }.catalog-entry h3 { margin: 7px 0 0; font: clamp(20px,2vw,30px) var(--font-display); text-transform: uppercase; }.catalog-entry summary > span { color: #64695f; font-size: 9px; }.catalog-entry summary > i { color: #526730; font: normal 7px var(--font-mono); }.catalog-entry summary > em { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid #91978a; border-radius: 50%; font: normal 17px var(--font-mono); transition: .3s; }.catalog-entry[open] summary > em { transform: rotate(45deg); color: #668522; }
+.catalog-event { display: grid; grid-template-columns: 180px 1fr; padding: 25px 30px 25px 83px; color: #e8ecde; background: #1b2117; }.catalog-event span { color: #a5bc74; font-size: 7px; letter-spacing: 1.4px; }.catalog-event p { max-width: 760px; font-size: 11px; line-height: 1.65; }.catalog-empty { padding: 80px 20px; text-align: center; }.catalog-empty b { font: 35px var(--font-display); }.catalog-empty p,.catalog-source { color: #73776e; font-size: 8px; }.catalog-source { margin-top: 22px; line-height: 1.65; }
+
 .mcu-characters { position: relative; background: #e8e5da; color: #11130f; }.mcu-characters .section-backdrop { color: rgba(10,20,5,.035); }.mcu-characters .heading-aside b { color: #668522; }
 .mcu-character-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 55px; }.mcu-character { min-height: 440px; position: relative; overflow: hidden; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; color: white; background: #111; isolation: isolate; }.mcu-character::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg,#070907 5%,transparent 75%); }.mcu-character img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.5); transition: .45s; }.mcu-character:hover img { transform: scale(1.05); filter: none; }.mcu-character span { color: var(--card-accent); font-size: 7px; }.mcu-character h3 { margin: 10px 0 2px; font: 28px var(--font-display); }.mcu-character p { color: #bbb; font-size: 8px; }.mcu-character > b { margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.25); font-size: 7px; }
 
@@ -540,6 +553,7 @@ footer > a:last-child { color: #fff; }
   .doom-primer { grid-template-columns: 1fr; }.truth-card { grid-template-columns: 1fr 1fr; }.truth-card p { grid-column: 1 / -1; }
   .watch-entry summary { grid-template-columns: 45px 180px 1fr; }.expand-label { grid-column: 3; }.event-dossier { margin-left: 0; grid-template-columns: 1fr 1fr; }.event-dossier > div:last-child { grid-column: 1 / -1; }
   .mcu-character-grid { grid-template-columns: repeat(2,1fr); }.mcu-character { min-height: 390px; }
+  .catalog-heading { grid-template-columns: 1fr; }.catalog-heading > div:last-child { width: min(500px,100%); }.catalog-entry summary { grid-template-columns: 45px 1fr 120px 25px; }.catalog-entry summary > i { display: none; }
 }
 @media (max-width: 560px) {
   .doom-hero { min-height: 800px; align-items: flex-start; }.doom-hero-copy { width: 100%; padding: 145px 6vw 100px; }.doom-hero h1 { font-size: 20vw; }.doom-deck { font-size: 15px; }.doom-hero .hero-actions { width: 100%; }.ghost-action { min-height: 48px; }
@@ -547,4 +561,45 @@ footer > a:last-child { color: #fff; }
   .route-controls { align-items: flex-start; flex-direction: column; gap: 18px; }.route-controls > div { width: 100%; }.route-controls button { flex: 1; }
   .watch-entry summary { grid-template-columns: 35px 1fr; gap: 13px; }.watch-entry summary img { grid-column: 2; height: 170px; }.watch-main { grid-column: 2; }.expand-label { grid-column: 2; text-align: left; }.event-dossier { display: block; padding: 22px; }.event-dossier > div + div { margin-top: 30px; }
   .mcu-character-grid { display: block; }.mcu-character { min-height: 390px; margin-bottom: 10px; }
+  .catalog-heading > div:last-child { grid-template-columns: 80px 1fr; }.catalog-heading strong { font-size: 65px; }.catalog-tools { padding: 18px; }.catalog-tools label { display: block; }.catalog-tools label span { display: block; margin-bottom: 8px; }.catalog-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; }.catalog-filters button { flex: 0 0 auto; }.catalog-entry summary { grid-template-columns: 32px 1fr 25px; gap: 10px; padding: 18px 0; }.catalog-entry summary > span { grid-column: 2; }.catalog-entry summary > em { grid-column: 3; grid-row: 1 / 3; }.catalog-event { display: block; padding: 22px; }.catalog-event p { margin-top: 12px; }.catalog-result span:last-child { display: none; }
+}
+
+/* Full MCU archive shares the visual system of the Doom route */
+.mcu-catalog { color: #f0f3e8; background: radial-gradient(circle at 85% 5%,rgba(137,166,62,.18),transparent 27%),linear-gradient(145deg,#11160d,#080b07 70%); }
+.mcu-catalog .catalog-heading { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 5vw; }
+.mcu-catalog .catalog-heading h2 { font-size: clamp(65px,7.4vw,120px); }
+.mcu-catalog .catalog-heading h2 em { color: #b9d737; -webkit-text-stroke: 0; }
+.mcu-catalog .catalog-count { display: block; min-width: 250px; }
+.mcu-catalog .catalog-count strong { font: 35px var(--font-display); color: #dfe8bf; }
+.catalog-intro { margin-top: 45px; }
+.mcu-catalog .catalog-tools { margin-top: 35px; border: 1px solid #465139; background: rgba(9,13,7,.72); backdrop-filter: blur(12px); }
+.mcu-catalog .catalog-result { color: #939c89; border-bottom-color: #58634c; }
+.mcu-catalog .catalog-list { border-top-color: #58634c; }
+.mcu-catalog .catalog-entry { border-bottom-color: #3e4935; }
+.mcu-catalog .catalog-entry summary { min-height: 190px; display: grid; grid-template-columns: 65px 245px 1fr 130px; gap: 28px; align-items: center; padding: 22px 0; color: #f0f3e8; background: transparent; }
+.mcu-catalog .catalog-entry summary:hover { padding: 22px 12px; background: rgba(185,215,55,.035); }
+.catalog-art { width: 100%; height: 145px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; isolation: isolate; color: #eaf0dc; background: #11170d; border: 1px solid #64734f; }
+.catalog-art::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg,rgba(4,7,3,.92),transparent 65%),linear-gradient(90deg,rgba(5,8,4,.35),transparent),repeating-linear-gradient(135deg,transparent 0 19px,rgba(185,215,55,.08) 20px); }
+.catalog-art::after { content: ""; position: absolute; z-index: -1; inset: 0; box-shadow: inset 0 0 45px rgba(0,0,0,.55); }
+.catalog-art img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) contrast(1.12); transition: transform .4s,filter .4s; }.catalog-entry summary:hover .catalog-art img { transform: scale(1.045); filter: saturate(1) contrast(1.08); }
+.catalog-art-marvel-television { background: radial-gradient(circle at 75% 20%,rgba(122,145,99,.5),transparent 25%),linear-gradient(135deg,#313a2b,#11140f); }
+.catalog-art-multiverso { background: radial-gradient(circle at 75% 20%,rgba(136,86,181,.65),transparent 25%),linear-gradient(135deg,#3b2850,#121019); border-color: #705883; }
+.catalog-art small,.catalog-art span { position: relative; z-index: 1; width: max-content; padding: 5px 7px; color: #f2f4ec; background: rgba(5,8,4,.78); font-size: 7px; letter-spacing: 1.2px; }
+.catalog-art > b { position: absolute; right: 12px; top: 15px; color: #b9d737; font: 65px/.8 var(--font-display); opacity: .35; }.catalog-art-multiverso > b { color: #c392ed; }.catalog-art.has-image > b { display: none; }
+.mcu-catalog .watch-main h3 { color: #f2f4ec; }.mcu-catalog .watch-main p { color: #9da395; }.mcu-catalog .watch-main > b { color: #b9d737; }
+.mcu-catalog .catalog-entry summary > .expand-label { color: #bdc2b5; font-size: 8px; }.mcu-catalog .catalog-entry summary > .expand-label i { display: inline-grid; }
+.mcu-catalog .catalog-event { margin: 0 0 25px 93px; padding: 35px; color: #15180f; background: #dfe3d2; }
+.mcu-catalog .catalog-event p { color: #555b4e; }.mcu-catalog .catalog-event article { padding: 12px 0; }
+.mcu-catalog .catalog-empty { color: #e5e9db; }.mcu-catalog .catalog-source { color: #828a78; }
+.catalog-more { display: flex; justify-content: space-between; align-items: center; padding: 35px 0; border-bottom: 1px solid #3e4935; }.catalog-more p { color: #899181; font-size: 8px; letter-spacing: 1px; }.catalog-more p b { color: #b9d737; }.catalog-more button { min-width: 220px; padding: 16px 18px; display: flex; justify-content: space-between; border: 1px solid #71815e; color: #e5eadb; background: transparent; font: 8px var(--font-mono); cursor: pointer; transition: .25s; }.catalog-more button:hover { color: #11150c; border-color: #b9d737; background: #b9d737; }
+
+@media (max-width: 900px) {
+  .mcu-catalog .catalog-heading { grid-template-columns: 1fr; }.mcu-catalog .catalog-count { width: 100%; }
+  .mcu-catalog .catalog-entry summary { grid-template-columns: 45px 180px 1fr; }.mcu-catalog .catalog-entry .expand-label { grid-column: 3; }.mcu-catalog .catalog-event { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .mcu-catalog .catalog-entry summary { grid-template-columns: 35px 1fr; gap: 13px; padding: 18px 0; }.mcu-catalog .catalog-entry summary:hover { padding: 18px 0; }
+  .mcu-catalog .catalog-entry .catalog-art { grid-column: 2; height: 170px; }.mcu-catalog .catalog-entry .watch-main { grid-column: 2; }.mcu-catalog .catalog-entry .expand-label { grid-column: 2; grid-row: auto; text-align: left; }
+  .mcu-catalog .catalog-event { display: block; padding: 22px; }.catalog-intro { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .catalog-more { align-items: stretch; flex-direction: column; gap: 18px; }.catalog-more button { width: 100%; }
 }
