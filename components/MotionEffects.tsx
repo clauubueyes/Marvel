@@ -6,13 +6,24 @@ export function MotionEffects() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
+    document.documentElement.classList.add("motion-ready");
 
-    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
       { threshold: 0.12 },
     );
-    elements.forEach((element) => observer.observe(element));
+    const observeReveals = (root: ParentNode) => {
+      if (root instanceof HTMLElement && root.matches("[data-reveal]")) observer.observe(root);
+      root.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)").forEach((element) => observer.observe(element));
+    };
+    observeReveals(document);
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
+        if (node instanceof HTMLElement) observeReveals(node);
+      }));
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     const cards = document.querySelectorAll<HTMLElement>("[data-tilt]");
     const cleanups = Array.from(cards).map((card) => {
@@ -31,7 +42,17 @@ export function MotionEffects() {
       return () => { card.removeEventListener("pointermove", move); card.removeEventListener("pointerleave", leave); };
     });
 
-    return () => { observer.disconnect(); cleanups.forEach((cleanup) => cleanup()); };
+    const visibilityFallback = window.setTimeout(() => {
+      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.classList.add("is-visible"));
+    }, 1800);
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+      window.clearTimeout(visibilityFallback);
+      document.documentElement.classList.remove("motion-ready");
+      cleanups.forEach((cleanup) => cleanup());
+    };
   }, []);
 
   return null;
