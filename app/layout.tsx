@@ -6,8 +6,8 @@ const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-dis
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "NEXUS — El universo vive aquí",
-  description: "Explora, descubre y vota a los iconos del universo Marvel.",
+  title: "NEXUS — El camino hacia Doomsday",
+  description: "La guía esencial de personajes y acontecimientos que conducen a Avengers: Doomsday.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

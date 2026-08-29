@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { characters } from "@/lib/characters";
 import { NewsFeed } from "@/components/NewsFeed";
 import { MotionEffects } from "@/components/MotionEffects";
+import { DoomsdayGuide } from "@/components/DoomsdayGuide";
 
 export default function Home() {
   const [activeId, setActiveId] = useState(characters[0].id);
@@ -37,6 +38,7 @@ export default function Home() {
         <a className="brand" href="#top" aria-label="Nexus inicio"><span>N</span>NEXUS</a>
         <nav className={menuOpen ? "nav open" : "nav"}>
           <a href="#characters" onClick={() => setMenuOpen(false)}>PERSONAJES</a>
+          <a href="#doom" onClick={() => setMenuOpen(false)}>CAMINO A DOOM</a>
           <a href="#ranking" onClick={() => setMenuOpen(false)}>RANKING</a>
           <a href="#stories" onClick={() => setMenuOpen(false)}>HISTORIAS</a>
         </nav>
@@ -77,6 +79,8 @@ export default function Home() {
         </div>
         <div className="ticker"><span>NUEVAS HISTORIAS CADA SEMANA</span><b>✦</b><span>EL MULTIVERSO TE ESPERA</span><b>✦</b><span>TU VOTO CAMBIA EL RANKING</span></div>
       </section>
+
+      <DoomsdayGuide />
 
       <section className="characters section" id="characters">
         <div className="section-backdrop" aria-hidden="true">HÉROES</div>
