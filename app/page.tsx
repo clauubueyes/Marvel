@@ -61,7 +61,7 @@ export default function Home() {
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
           <div className="symbol">{active.symbol}</div>
-          <div className="silhouette"><span>{active.name.charAt(0)}</span></div>
+          <div className="silhouette"><img src={active.image} alt="" /></div>
           <div className="power-tag"><small>HABILIDAD CLAVE</small><strong>{active.power}</strong></div>
         </div>
 
@@ -83,10 +83,9 @@ export default function Home() {
         </div>
         <div className="character-grid">
           {characters.map((character, index) => (
-            <article key={character.id} className={`character-card card-${character.id}`}>
+            <article key={character.id} className={`character-card card-${character.id}`} style={{ backgroundImage: `linear-gradient(0deg, rgba(0,0,0,.88), transparent 75%), url(${character.image})` }}>
               <div className="card-number">{character.number}</div>
               <div className="card-symbol">{character.symbol}</div>
-              <div className="card-initial">{character.name.charAt(0)}</div>
               <div className="card-content"><small>{character.alias}</small><h3>{character.name}</h3><p>{character.power}</p></div>
               <a className="card-link" href={`/personajes/${character.id}`} aria-label={`Abrir ficha de ${character.name}`}>↗</a>
               {index === 0 && <span className="featured">DESTACADO</span>}

@@ -16,6 +16,7 @@ Abre `http://localhost:3000` en el navegador.
 - Portada dinámica con cinco identidades visuales.
 - Catálogo de personajes adaptable a móvil.
 - Fichas individuales con estadísticas, habilidades y cronología.
+- Imágenes editoriales remotas procedentes de las fichas oficiales de Marvel, con atribución.
 - Votación persistente en el navegador.
 - Ranking comunitario de demostración.
 - Feed editorial conectado a Google News RSS, con caché y contenido de respaldo.

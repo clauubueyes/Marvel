@@ -10,6 +10,8 @@ export type Character = {
   power: string;
   symbol: string;
   votes: number;
+  image: string;
+  sourceUrl: string;
   role: string;
   origin: string;
   description: string;
@@ -23,6 +25,7 @@ export const characters: Character[] = [
     id: "spider", name: "SPIDER-MAN", alias: "Peter Parker", number: "01",
     quote: "Un gran poder conlleva una gran responsabilidad.", universe: "Tierra-616",
     color: "#ed1b24", color2: "#1261ff", power: "Sentido arácnido", symbol: "🕸", votes: 4821,
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b.jpg", sourceUrl: "https://www.marvel.com/characters/spider-man-peter-parker/",
     role: "El héroe cercano", origin: "Queens · Nueva York",
     description: "Ciencia, vértigo y un sentido de la responsabilidad demasiado grande para un solo adolescente. Peter convierte cada caída en una razón para volver a levantarse.",
     stats: [{ label: "Agilidad", value: 96 }, { label: "Ingenio", value: 89 }, { label: "Fuerza", value: 78 }, { label: "Voluntad", value: 94 }],
@@ -33,6 +36,7 @@ export const characters: Character[] = [
     id: "iron", name: "IRON MAN", alias: "Tony Stark", number: "02",
     quote: "La armadura es solo el principio.", universe: "Tierra-616",
     color: "#ff3b19", color2: "#ffc400", power: "Ingenio sin límites", symbol: "◉", votes: 3954,
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/9/c0/527bb7b37ff55.jpg", sourceUrl: "https://www.marvel.com/characters/iron-man-tony-stark/",
     role: "El futurista", origin: "Manhattan · Nueva York",
     description: "Inventor, provocador y arquitecto del mañana. Tony Stark construye soluciones imposibles y aprende que el metal más resistente sigue necesitando un corazón.",
     stats: [{ label: "Ingenio", value: 100 }, { label: "Tecnología", value: 99 }, { label: "Estrategia", value: 88 }, { label: "Voluntad", value: 84 }],
@@ -43,6 +47,7 @@ export const characters: Character[] = [
     id: "strange", name: "DOCTOR STRANGE", alias: "Stephen Strange", number: "03",
     quote: "La realidad es una de muchas posibilidades.", universe: "Tierra-616",
     color: "#f257ff", color2: "#00d9ff", power: "Artes místicas", symbol: "◎", votes: 3267,
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/5/f0/5261a85a501fe.jpg", sourceUrl: "https://www.marvel.com/characters/doctor-strange-stephen-strange/",
     role: "El guardián místico", origin: "Sanctum Sanctorum · Nueva York",
     description: "Cuando la ciencia dejó de darle respuestas, Stephen Strange aprendió a formular preguntas nuevas. Ahora protege las fronteras que la realidad no puede ver.",
     stats: [{ label: "Magia", value: 100 }, { label: "Conocimiento", value: 97 }, { label: "Estrategia", value: 91 }, { label: "Fuerza", value: 48 }],
@@ -53,6 +58,7 @@ export const characters: Character[] = [
     id: "panther", name: "BLACK PANTHER", alias: "T'Challa", number: "04",
     quote: "Wakanda no observa la historia. La escribe.", universe: "Tierra-616",
     color: "#9d5cff", color2: "#27e6bb", power: "Corazón de Wakanda", symbol: "◇", votes: 3710,
+    image: "https://cdn.marvel.com/content/1x/blackpanther_lob_crd_01_4.jpg", sourceUrl: "https://www.marvel.com/characters/black-panther-t-challa/",
     role: "El rey", origin: "Birnin Zana · Wakanda",
     description: "Científico, guerrero y soberano. T'Challa camina entre la tradición y el futuro, llevando consigo el peso de una nación que nunca dejó de avanzar.",
     stats: [{ label: "Estrategia", value: 98 }, { label: "Agilidad", value: 92 }, { label: "Tecnología", value: 96 }, { label: "Liderazgo", value: 100 }],
@@ -63,6 +69,7 @@ export const characters: Character[] = [
     id: "wanda", name: "SCARLET WITCH", alias: "Wanda Maximoff", number: "05",
     quote: "El caos también sabe crear.", universe: "Tierra-616",
     color: "#ff174f", color2: "#9b004e", power: "Magia del caos", symbol: "✦", votes: 4420,
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/9/b0/537bc2375dfb9.jpg", sourceUrl: "https://www.marvel.com/characters/scarlet-witch-wanda-maximoff/",
     role: "La anomalía", origin: "Sokovia · Europa Oriental",
     description: "La probabilidad se curva a su alrededor. Wanda no solo altera el mundo: lucha constantemente por decidir qué parte de él debería permanecer intacta.",
     stats: [{ label: "Magia", value: 100 }, { label: "Realidad", value: 100 }, { label: "Voluntad", value: 91 }, { label: "Control", value: 62 }],

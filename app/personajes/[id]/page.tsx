@@ -41,7 +41,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <div className="profile-figure" aria-hidden="true">
           <div className="profile-rings"><i /><i /><i /></div>
-          <div className="profile-body"><span>{character.name.charAt(0)}</span></div>
+          <div className="profile-body"><img src={character.image} alt={character.name} /></div>
           <b>{character.symbol}</b>
         </div>
         <blockquote>“{character.quote}”</blockquote>
@@ -50,7 +50,7 @@ export default async function CharacterPage({ params }: PageProps) {
 
       <section className="profile-intro profile-section">
         <div><p className="section-label">01 / IDENTIDAD</p><h2>DETRÁS<br />DEL <em>SÍMBOLO</em></h2></div>
-        <div className="intro-copy"><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div></dl></div>
+        <div className="intro-copy"><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
       </section>
 
       <section className="profile-power profile-section">
