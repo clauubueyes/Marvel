@@ -15,6 +15,7 @@ Abre `http://localhost:3000` en el navegador.
 
 - Portada dinámica con cinco identidades visuales.
 - Catálogo de personajes adaptable a móvil.
+- Fichas individuales con estadísticas, habilidades y cronología.
 - Votación persistente en el navegador.
 - Ranking comunitario de demostración.
 - Módulo editorial preparado para conectar fuentes RSS.

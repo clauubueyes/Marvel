@@ -1,28 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
-type Character = {
-  id: string;
-  name: string;
-  alias: string;
-  number: string;
-  quote: string;
-  universe: string;
-  color: string;
-  color2: string;
-  power: string;
-  symbol: string;
-  votes: number;
-};
-
-const characters: Character[] = [
-  { id: "spider", name: "SPIDER-MAN", alias: "Peter Parker", number: "01", quote: "Un gran poder siempre deja una gran responsabilidad.", universe: "Tierra-616", color: "#ed1b24", color2: "#1261ff", power: "Sentido arácnido", symbol: "🕸", votes: 4821 },
-  { id: "iron", name: "IRON MAN", alias: "Tony Stark", number: "02", quote: "La armadura es solo el principio.", universe: "Tierra-616", color: "#ff3b19", color2: "#ffc400", power: "Ingenio sin límites", symbol: "◉", votes: 3954 },
-  { id: "strange", name: "DOCTOR STRANGE", alias: "Stephen Strange", number: "03", quote: "La realidad es una de muchas posibilidades.", universe: "Tierra-616", color: "#f257ff", color2: "#00d9ff", power: "Artes místicas", symbol: "◎", votes: 3267 },
-  { id: "panther", name: "BLACK PANTHER", alias: "T'Challa", number: "04", quote: "Wakanda no observa la historia. La escribe.", universe: "Tierra-616", color: "#9d5cff", color2: "#27e6bb", power: "Corazón de Wakanda", symbol: "◇", votes: 3710 },
-  { id: "wanda", name: "SCARLET WITCH", alias: "Wanda Maximoff", number: "05", quote: "El caos también sabe crear.", universe: "Tierra-616", color: "#ff174f", color2: "#9b004e", power: "Magia del caos", symbol: "✦", votes: 4420 },
-];
+import { characters } from "@/lib/characters";
 
 const stories = [
   { tag: "ARCHIVO", date: "HOY · 08:42", title: "Las cinco versiones de Spider-Man que alteraron el multiverso", className: "story-red" },
@@ -109,12 +88,12 @@ export default function Home() {
         </div>
         <div className="character-grid">
           {characters.map((character, index) => (
-            <article key={character.id} className={`character-card card-${character.id}`} onClick={() => { setActiveId(character.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+            <article key={character.id} className={`character-card card-${character.id}`}>
               <div className="card-number">{character.number}</div>
               <div className="card-symbol">{character.symbol}</div>
               <div className="card-initial">{character.name.charAt(0)}</div>
               <div className="card-content"><small>{character.alias}</small><h3>{character.name}</h3><p>{character.power}</p></div>
-              <button aria-label={`Abrir ficha de ${character.name}`}>↗</button>
+              <a className="card-link" href={`/personajes/${character.id}`} aria-label={`Abrir ficha de ${character.name}`}>↗</a>
               {index === 0 && <span className="featured">DESTACADO</span>}
             </article>
           ))}
