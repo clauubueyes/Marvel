@@ -17,6 +17,7 @@ Abre `http://localhost:3000` en el navegador.
 - Catálogo de personajes adaptable a móvil.
 - Fichas individuales con estadísticas, habilidades y cronología.
 - Imágenes editoriales remotas procedentes de las fichas oficiales de Marvel, con atribución.
+- Recorrido audiovisual por personaje con tráilers oficiales, filmografía y curiosidades.
 - Votación persistente en el navegador.
 - Ranking comunitario de demostración.
 - Feed editorial conectado a Google News RSS, con caché y contenido de respaldo.
