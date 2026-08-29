@@ -104,7 +104,8 @@ h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 2px current
 
 .stories { color: #101010; background: #e8e3d8; }
 .stories-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 55px; }
-.stories-head button { border: 0; border-bottom: 1px solid #111; background: none; padding: 8px 0; font-size: 9px; }
+.stories-head > a { border-bottom: 1px solid #111; padding: 8px 0; font-size: 9px; }
+.live-dot { margin-left: 10px; color: #e0182d; font-style: normal; font-size: 7px; animation: pulse 1.5s ease-in-out infinite; }
 .story-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .story { background: #f5f1e8; }
 .story-art { height: 265px; position: relative; display: grid; place-items: center; overflow: hidden; color: white; }
@@ -188,6 +189,7 @@ footer > a:last-child { color: #fff; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes breathe { 50% { transform: translateY(-10px) scale(1.02); } }
 @keyframes float { 50% { transform: translateY(10px) rotate(5deg); } }
+@keyframes pulse { 50% { opacity: .35; } }
 
 @media (max-width: 900px) {
   .topbar { position: absolute; height: 68px; }

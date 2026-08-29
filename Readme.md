@@ -18,6 +18,6 @@ Abre `http://localhost:3000` en el navegador.
 - Fichas individuales con estadísticas, habilidades y cronología.
 - Votación persistente en el navegador.
 - Ranking comunitario de demostración.
-- Módulo editorial preparado para conectar fuentes RSS.
+- Feed editorial conectado a Google News RSS, con caché y contenido de respaldo.
 
 Este es un proyecto fan no oficial y no está afiliado a Marvel Entertainment.

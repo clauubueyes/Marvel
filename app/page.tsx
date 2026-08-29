@@ -2,12 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { characters } from "@/lib/characters";
-
-const stories = [
-  { tag: "ARCHIVO", date: "HOY · 08:42", title: "Las cinco versiones de Spider-Man que alteraron el multiverso", className: "story-red" },
-  { tag: "DEBATE", date: "AYER · 21:10", title: "¿Tecnología o magia? La batalla que divide al Nexus", className: "story-blue" },
-  { tag: "HISTORIA", date: "28 AGO · 17:30", title: "Wakanda: una nación escondida a plena vista", className: "story-purple" },
-];
+import { NewsFeed } from "@/components/NewsFeed";
 
 export default function Home() {
   const [activeId, setActiveId] = useState(characters[0].id);
@@ -116,13 +111,7 @@ export default function Home() {
       </section>
 
       <section className="stories section" id="stories">
-        <div className="stories-head"><div><p className="eyebrow"><span /> ÚLTIMA TRANSMISIÓN</p><h2>DESDE EL<br/><em>MULTIVERSO</em></h2></div><button>VER TODAS ↗</button></div>
-        <div className="story-grid">
-          {stories.map((story, index) => <article className={`story ${story.className}`} key={story.title}>
-            <div className="story-art"><span>{index === 0 ? "🕸" : index === 1 ? "⚡" : "◇"}</span><b>0{index + 1}</b></div>
-            <div className="story-copy"><p><span>{story.tag}</span>{story.date}</p><h3>{story.title}</h3><a href="#top">LEER HISTORIA <b>→</b></a></div>
-          </article>)}
-        </div>
+        <NewsFeed />
       </section>
 
       <footer><a className="brand" href="#top"><span>N</span>NEXUS</a><p>HECHO POR FANS, PARA FANS · PROTOTIPO NO OFICIAL</p><a href="#top">VOLVER ARRIBA ↑</a></footer>
