@@ -112,7 +112,7 @@ h1 .outline { color: transparent; -webkit-text-stroke: 2px #fff; }
 .section-backdrop { position: absolute; top: 20px; right: -1vw; z-index: -1; color: rgba(8,9,11,.035); font: 25vw/.8 var(--font-display); letter-spacing: -10px; pointer-events: none; }
 .section-heading { display: grid; grid-template-columns: 1.1fr .9fr; align-items: end; gap: 8vw; margin-bottom: 55px; }
 h2 { font: clamp(60px, 7.5vw, 112px)/.88 var(--font-display); letter-spacing: -2px; margin: 0; }
-h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 2px currentColor; }
+h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 2px var(--accent,currentColor); }
 .heading-aside { max-width: 480px; position: relative; padding: 28px 30px 25px 80px; border-top: 1px solid #b9b3a7; border-bottom: 1px solid #b9b3a7; }
 .heading-aside > b { position: absolute; left: 0; top: 18px; font: 58px var(--font-display); color: var(--accent); }
 .heading-aside p { margin: 0 0 18px; font-size: 11px; line-height: 1.75; color: #666; }
@@ -236,7 +236,7 @@ footer > a:last-child { color: #fff; }
 .profile-intro { min-height: 850px; display: grid; grid-template-columns: .78fr .72fr 1fr; gap: 4vw; align-items: center; color: #111; background: radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 24%),var(--profile-paper); overflow: hidden; }
 .profile-intro::before { content: "IDENTITY"; position: absolute; left: -2vw; bottom: -4vw; color: rgba(0,0,0,.025); font: 18vw var(--font-display); pointer-events: none; }
 .identity-title { align-self: start; padding-top: 30px; position: relative; z-index: 2; }
-.identity-title h2 { font-size: clamp(70px,7.5vw,115px); }
+.identity-title h2 { max-width: 620px; font-size: clamp(62px,6.2vw,98px); line-height: .84; letter-spacing: -1px; }.identity-title h2 em { display: block; -webkit-text-stroke-color: var(--accent); }
 .identity-status { display: flex; align-items: center; gap: 8px; width: max-content; margin-top: 45px; padding: 11px 13px; border: 1px solid #bbb5aa; font-size: 7px; letter-spacing: 1px; }
 .identity-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent); animation: pulse 1.5s infinite; }
 .identity-status b { margin-left: 18px; color: #777168; }
