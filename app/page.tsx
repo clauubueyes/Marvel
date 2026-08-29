@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { characters } from "@/lib/characters";
 import { NewsFeed } from "@/components/NewsFeed";
+import { MotionEffects } from "@/components/MotionEffects";
 
 export default function Home() {
   const [activeId, setActiveId] = useState(characters[0].id);
@@ -31,6 +32,7 @@ export default function Home() {
 
   return (
     <main style={{ "--accent": active.color, "--accent-2": active.color2 } as React.CSSProperties}>
+      <MotionEffects />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Nexus inicio"><span>N</span>NEXUS</a>
         <nav className={menuOpen ? "nav open" : "nav"}>
@@ -77,13 +79,14 @@ export default function Home() {
       </section>
 
       <section className="characters section" id="characters">
-        <div className="section-heading">
+        <div className="section-backdrop" aria-hidden="true">HÉROES</div>
+        <div className="section-heading" data-reveal>
           <div><p className="eyebrow"><span /> ARCHIVO NEXUS</p><h2>ELIGE TU<br/><em>ICONO</em></h2></div>
-          <p>No todos llevan capa. Todos dejaron una marca. Explora sus poderes, contradicciones y momentos definitivos.</p>
+          <div className="heading-aside"><b>05</b><p>No todos llevan capa. Todos dejaron una marca. Explora sus poderes, contradicciones y momentos definitivos.</p><span>EXPEDIENTES ABIERTOS</span></div>
         </div>
         <div className="character-grid">
           {characters.map((character, index) => (
-            <article key={character.id} className={`character-card card-${character.id}`} style={{ backgroundImage: `linear-gradient(0deg, rgba(0,0,0,.88), transparent 75%), url(${character.image})` }}>
+            <article key={character.id} data-reveal data-tilt className={`character-card card-${character.id}`} style={{ backgroundImage: `linear-gradient(0deg, rgba(0,0,0,.9), transparent 72%), url(${character.image})`, "--delay": `${index * 70}ms` } as React.CSSProperties}>
               <div className="card-number">{character.number}</div>
               <div className="card-symbol">{character.symbol}</div>
               <div className="card-content"><small>{character.alias}</small><h3>{character.name}</h3><p>{character.power}</p></div>
@@ -95,8 +98,8 @@ export default function Home() {
       </section>
 
       <section className="ranking section" id="ranking">
-        <div className="rank-title"><p className="eyebrow"><span /> PULSO DE LA COMUNIDAD</p><h2>¿QUIÉN MANDA<br/>ESTA SEMANA?</h2></div>
-        <div className="rank-list">
+        <div className="rank-title" data-reveal><p className="eyebrow"><span /> PULSO DE LA COMUNIDAD</p><h2>¿QUIÉN MANDA<br/>ESTA SEMANA?</h2><p className="rank-note">Un voto por visitante. El podio cambia en tiempo real.</p></div>
+        <div className="rank-list" data-reveal>
           {ranking.slice(0, 4).map((character, index) => {
             const total = character.votes + (votes[character.id] ?? 0);
             return <div className="rank-row" key={character.id}>
@@ -110,6 +113,7 @@ export default function Home() {
       </section>
 
       <section className="stories section" id="stories">
+        <div className="section-backdrop" aria-hidden="true">AHORA</div>
         <NewsFeed />
       </section>
 
