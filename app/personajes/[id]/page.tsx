@@ -78,7 +78,8 @@ export default async function CharacterPage({ params }: PageProps) {
       </section>
 
       <section className="profile-facts profile-section">
-        <div className="facts-heading" data-reveal><p className="section-label">03 / DATOS CURIOSOS</p><h2>LO QUE NO<br/><em>SE VE</em></h2></div>
+        <div className="facts-aura" aria-hidden="true"><span>{character.symbol}</span><i /><i /><i /></div>
+        <div className="facts-heading" data-reveal><p className="section-label">03 / DATOS CURIOSOS</p><h2>LO QUE NO<br/><em>SE VE</em></h2><span>TRES FRAGMENTOS DEL EXPEDIENTE QUE CAMBIAN LA FORMA DE ENTENDER AL PERSONAJE.</span></div>
         <div className="facts-grid">
           {character.facts.map((fact, index) => <article data-reveal style={{ "--delay": `${index * 100}ms` } as React.CSSProperties} key={fact.label}><span>0{index + 1}</span><strong>{fact.value}</strong><h3>{fact.label}</h3><p>{fact.text}</p></article>)}
         </div>
@@ -92,8 +93,13 @@ export default async function CharacterPage({ params }: PageProps) {
       </section>
 
       <section className="profile-power profile-section">
-        <div className="power-heading"><p className="section-label">05 / CAPACIDADES</p><h2>MEDIR LO<br/><em>IMPOSIBLE</em></h2></div>
-        <div className="stat-list">
+        <div className="power-heading" data-reveal><p className="section-label">05 / CAPACIDADES</p><h2>MEDIR LO<br/><em>IMPOSIBLE</em></h2><span>LECTURA DE ENERGÍA / NEXUS</span></div>
+        <div className="power-core" data-reveal aria-hidden="true">
+          <div className="core-rings"><i /><i /><i /></div>
+          <img src={character.image} alt="" />
+          <strong>{character.symbol}</strong><span>NIVEL<br/>OMEGA</span>
+        </div>
+        <div className="stat-list" data-reveal>
           {character.stats.map((stat) => <div className="stat" key={stat.label}>
             <div><span>{stat.label}</span><b>{stat.value}</b></div><div className="stat-track"><i style={{ width: `${stat.value}%` }} /></div>
           </div>)}
