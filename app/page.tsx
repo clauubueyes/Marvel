@@ -1,0 +1,152 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+
+type Character = {
+  id: string;
+  name: string;
+  alias: string;
+  number: string;
+  quote: string;
+  universe: string;
+  color: string;
+  color2: string;
+  power: string;
+  symbol: string;
+  votes: number;
+};
+
+const characters: Character[] = [
+  { id: "spider", name: "SPIDER-MAN", alias: "Peter Parker", number: "01", quote: "Un gran poder siempre deja una gran responsabilidad.", universe: "Tierra-616", color: "#ed1b24", color2: "#1261ff", power: "Sentido arácnido", symbol: "🕸", votes: 4821 },
+  { id: "iron", name: "IRON MAN", alias: "Tony Stark", number: "02", quote: "La armadura es solo el principio.", universe: "Tierra-616", color: "#ff3b19", color2: "#ffc400", power: "Ingenio sin límites", symbol: "◉", votes: 3954 },
+  { id: "strange", name: "DOCTOR STRANGE", alias: "Stephen Strange", number: "03", quote: "La realidad es una de muchas posibilidades.", universe: "Tierra-616", color: "#f257ff", color2: "#00d9ff", power: "Artes místicas", symbol: "◎", votes: 3267 },
+  { id: "panther", name: "BLACK PANTHER", alias: "T'Challa", number: "04", quote: "Wakanda no observa la historia. La escribe.", universe: "Tierra-616", color: "#9d5cff", color2: "#27e6bb", power: "Corazón de Wakanda", symbol: "◇", votes: 3710 },
+  { id: "wanda", name: "SCARLET WITCH", alias: "Wanda Maximoff", number: "05", quote: "El caos también sabe crear.", universe: "Tierra-616", color: "#ff174f", color2: "#9b004e", power: "Magia del caos", symbol: "✦", votes: 4420 },
+];
+
+const stories = [
+  { tag: "ARCHIVO", date: "HOY · 08:42", title: "Las cinco versiones de Spider-Man que alteraron el multiverso", className: "story-red" },
+  { tag: "DEBATE", date: "AYER · 21:10", title: "¿Tecnología o magia? La batalla que divide al Nexus", className: "story-blue" },
+  { tag: "HISTORIA", date: "28 AGO · 17:30", title: "Wakanda: una nación escondida a plena vista", className: "story-purple" },
+];
+
+export default function Home() {
+  const [activeId, setActiveId] = useState(characters[0].id);
+  const [votes, setVotes] = useState<Record<string, number>>({});
+  const [voted, setVoted] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const active = characters.find((character) => character.id === activeId) ?? characters[0];
+
+  useEffect(() => {
+    const savedVotes = localStorage.getItem("nexus-votes");
+    const savedChoice = localStorage.getItem("nexus-choice");
+    if (savedVotes) setVotes(JSON.parse(savedVotes));
+    if (savedChoice) setVoted(savedChoice);
+  }, []);
+
+  const ranking = useMemo(() => [...characters].sort((a, b) => (b.votes + (votes[b.id] ?? 0)) - (a.votes + (votes[a.id] ?? 0))), [votes]);
+
+  function vote() {
+    if (voted) return;
+    const nextVotes = { ...votes, [active.id]: (votes[active.id] ?? 0) + 1 };
+    setVotes(nextVotes);
+    setVoted(active.id);
+    localStorage.setItem("nexus-votes", JSON.stringify(nextVotes));
+    localStorage.setItem("nexus-choice", active.id);
+  }
+
+  return (
+    <main style={{ "--accent": active.color, "--accent-2": active.color2 } as React.CSSProperties}>
+      <header className="topbar">
+        <a className="brand" href="#top" aria-label="Nexus inicio"><span>N</span>NEXUS</a>
+        <nav className={menuOpen ? "nav open" : "nav"}>
+          <a href="#characters" onClick={() => setMenuOpen(false)}>PERSONAJES</a>
+          <a href="#ranking" onClick={() => setMenuOpen(false)}>RANKING</a>
+          <a href="#stories" onClick={() => setMenuOpen(false)}>HISTORIAS</a>
+        </nav>
+        <button className="menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menú">{menuOpen ? "×" : "☰"}</button>
+        <div className="issue">EDICIÓN <b>001</b></div>
+      </header>
+
+      <section className={`hero theme-${active.id}`} id="top">
+        <div className="grain" />
+        <div className="hero-copy">
+          <p className="eyebrow"><span /> EL ARCHIVO DEL HÉROE</p>
+          <h1>{active.name.split("-").map((part, i) => <span key={part} className={i ? "outline" : ""}>{part}{i === 0 && active.name.includes("-") ? "-" : ""}</span>)}</h1>
+          <p className="alias">{active.alias} · {active.universe}</p>
+          <p className="quote">“{active.quote}”</p>
+          <div className="hero-actions">
+            <a href="#characters" className="primary">DESCUBRIR <b>↘</b></a>
+            <button className={voted ? "vote voted" : "vote"} onClick={vote}>
+              <span>{voted === active.id ? "♥" : "♡"}</span> {voted ? (voted === active.id ? "TU FAVORITO" : "VOTO REGISTRADO") : "VOTAR FAVORITO"}
+            </button>
+          </div>
+        </div>
+
+        <div className="hero-art" aria-hidden="true">
+          <div className="orbit orbit-one" />
+          <div className="orbit orbit-two" />
+          <div className="symbol">{active.symbol}</div>
+          <div className="silhouette"><span>{active.name.charAt(0)}</span></div>
+          <div className="power-tag"><small>HABILIDAD CLAVE</small><strong>{active.power}</strong></div>
+        </div>
+
+        <div className="hero-index"><b>{active.number}</b><span>/ 05</span></div>
+        <div className="selector" aria-label="Seleccionar personaje">
+          {characters.map((character) => (
+            <button key={character.id} className={character.id === active.id ? "active" : ""} onClick={() => setActiveId(character.id)} aria-label={`Ver ${character.name}`}>
+              <span>{character.number}</span><i style={{ background: character.color }} />
+            </button>
+          ))}
+        </div>
+        <div className="ticker"><span>NUEVAS HISTORIAS CADA SEMANA</span><b>✦</b><span>EL MULTIVERSO TE ESPERA</span><b>✦</b><span>TU VOTO CAMBIA EL RANKING</span></div>
+      </section>
+
+      <section className="characters section" id="characters">
+        <div className="section-heading">
+          <div><p className="eyebrow"><span /> ARCHIVO NEXUS</p><h2>ELIGE TU<br/><em>ICONO</em></h2></div>
+          <p>No todos llevan capa. Todos dejaron una marca. Explora sus poderes, contradicciones y momentos definitivos.</p>
+        </div>
+        <div className="character-grid">
+          {characters.map((character, index) => (
+            <article key={character.id} className={`character-card card-${character.id}`} onClick={() => { setActiveId(character.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+              <div className="card-number">{character.number}</div>
+              <div className="card-symbol">{character.symbol}</div>
+              <div className="card-initial">{character.name.charAt(0)}</div>
+              <div className="card-content"><small>{character.alias}</small><h3>{character.name}</h3><p>{character.power}</p></div>
+              <button aria-label={`Abrir ficha de ${character.name}`}>↗</button>
+              {index === 0 && <span className="featured">DESTACADO</span>}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="ranking section" id="ranking">
+        <div className="rank-title"><p className="eyebrow"><span /> PULSO DE LA COMUNIDAD</p><h2>¿QUIÉN MANDA<br/>ESTA SEMANA?</h2></div>
+        <div className="rank-list">
+          {ranking.slice(0, 4).map((character, index) => {
+            const total = character.votes + (votes[character.id] ?? 0);
+            return <div className="rank-row" key={character.id}>
+              <b>0{index + 1}</b><span className="rank-dot" style={{ background: character.color }}>{character.symbol}</span>
+              <div><strong>{character.name}</strong><small>{character.alias}</small></div>
+              <div className="bar"><i style={{ width: `${100 - index * 13}%`, background: character.color }} /></div>
+              <span className="vote-count">{total.toLocaleString("es-ES")} <small>VOTOS</small></span>
+            </div>;
+          })}
+        </div>
+      </section>
+
+      <section className="stories section" id="stories">
+        <div className="stories-head"><div><p className="eyebrow"><span /> ÚLTIMA TRANSMISIÓN</p><h2>DESDE EL<br/><em>MULTIVERSO</em></h2></div><button>VER TODAS ↗</button></div>
+        <div className="story-grid">
+          {stories.map((story, index) => <article className={`story ${story.className}`} key={story.title}>
+            <div className="story-art"><span>{index === 0 ? "🕸" : index === 1 ? "⚡" : "◇"}</span><b>0{index + 1}</b></div>
+            <div className="story-copy"><p><span>{story.tag}</span>{story.date}</p><h3>{story.title}</h3><a href="#top">LEER HISTORIA <b>→</b></a></div>
+          </article>)}
+        </div>
+      </section>
+
+      <footer><a className="brand" href="#top"><span>N</span>NEXUS</a><p>HECHO POR FANS, PARA FANS · PROTOTIPO NO OFICIAL</p><a href="#top">VOLVER ARRIBA ↑</a></footer>
+    </main>
+  );
+}
