@@ -109,11 +109,19 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="profile-timeline profile-section">
-        <div className="timeline-heading"><p className="section-label">06 / CRONOLOGÍA</p><h2>MOMENTOS<br/>QUE <em>DEFINEN</em></h2></div>
-        <div className="timeline-line">
-          {character.timeline.map((event) => <article key={event.title}><b>{event.year}</b><i /><h3>{event.title}</h3><p>{event.text}</p></article>)}
+      <section className="profile-timeline profile-section character-story">
+        <div className="timeline-heading character-story-heading">
+          <div><p className="section-label">06 / CRONOLOGÍA</p><h2>MOMENTOS<br/>QUE <em>DEFINEN</em></h2></div>
+          <aside><b>{String(character.appearances.length).padStart(2, "0")}</b><p>Películas y series. Cada capítulo revela qué sucede y cómo transforma a {character.name}.</p></aside>
         </div>
+        <div className="character-story-rail">
+          {character.appearances.map((appearance, index) => <article className="character-story-event" key={appearance.title}>
+            <div className="story-event-art"><img src={`/api/title-image?title=${encodeURIComponent(appearance.title)}&type=${encodeURIComponent(appearance.type)}`} alt={`Imagen de ${appearance.title}`} loading="lazy"/><span>{String(index + 1).padStart(2, "0")}</span></div>
+            <div className="story-event-point"><i /></div>
+            <div className="story-event-copy"><div><b>{appearance.year}</b><small>{appearance.type}</small></div><h3>{appearance.title}</h3><p>{appearance.event}</p></div>
+          </article>)}
+        </div>
+        <p className="story-scroll-cue">DESLIZA PARA RECORRER SU HISTORIA <span>→</span></p>
       </section>
 
       <nav className="character-pagination">
