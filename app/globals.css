@@ -186,9 +186,28 @@ footer > a:last-child { color: #fff; }
 .scroll-cue span { color: var(--accent); margin-top: 10px; }
 .profile-section { padding: 130px 8vw; }
 .section-label { color: var(--accent); font-size: 9px; letter-spacing: 2px; margin-bottom: 30px; }
-.profile-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 9vw; color: #111; background: var(--profile-paper); }
-.intro-copy { padding-top: 70px; }
-.intro-copy > p { font: 26px/1.5 var(--font-display); text-transform: uppercase; }
+.profile-intro { min-height: 850px; display: grid; grid-template-columns: .78fr .72fr 1fr; gap: 4vw; align-items: center; color: #111; background: radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 24%),var(--profile-paper); overflow: hidden; }
+.profile-intro::before { content: "IDENTITY"; position: absolute; left: -2vw; bottom: -4vw; color: rgba(0,0,0,.025); font: 18vw var(--font-display); pointer-events: none; }
+.identity-title { align-self: start; padding-top: 30px; position: relative; z-index: 2; }
+.identity-title h2 { font-size: clamp(70px,7.5vw,115px); }
+.identity-status { display: flex; align-items: center; gap: 8px; width: max-content; margin-top: 45px; padding: 11px 13px; border: 1px solid #bbb5aa; font-size: 7px; letter-spacing: 1px; }
+.identity-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent); animation: pulse 1.5s infinite; }
+.identity-status b { margin-left: 18px; color: #777168; }
+.identity-portrait { height: 610px; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+.identity-portrait::before { content: ""; position: absolute; z-index: -2; width: 100%; height: 72%; bottom: 5%; background: linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent-2) 45%,#111)); clip-path: polygon(50% 0,100% 22%,88% 100%,7% 92%,0 18%); box-shadow: 20px 20px 0 rgba(0,0,0,.08); }
+.identity-portrait::after { content: ""; position: absolute; inset: 15% -12% 4%; z-index: 2; background: repeating-linear-gradient(0deg,transparent 0 16px,rgba(255,255,255,.08) 17px 18px); clip-path: polygon(50% 0,100% 22%,88% 100%,7% 92%,0 18%); pointer-events: none; }
+.identity-portrait img { width: 88%; height: 88%; position: relative; z-index: 1; object-fit: cover; object-position: center top; clip-path: polygon(8% 0,93% 3%,100% 93%,13% 100%,0 20%); filter: contrast(1.12) saturate(.75); transition: transform .5s,filter .5s; }
+.identity-portrait:hover img { transform: translateY(-10px) scale(1.025); filter: contrast(1.08) saturate(1.05); }
+.portrait-orbit { position: absolute; z-index: -1; width: 135%; aspect-ratio: 1; top: 10%; border: 1px solid color-mix(in srgb,var(--accent) 42%,transparent); border-radius: 50%; animation: spin 24s linear infinite; }
+.portrait-orbit i { position: absolute; border-radius: 50%; }
+.portrait-orbit i:first-child { inset: 11%; border: 1px dashed color-mix(in srgb,var(--accent-2) 52%,transparent); }
+.portrait-orbit i:last-child { width: 12px; height: 12px; top: 10%; left: 26%; background: var(--accent); box-shadow: 0 0 18px var(--accent); }
+.portrait-symbol { position: absolute; z-index: 3; top: 23%; right: -8%; font-size: 80px; color: white; filter: drop-shadow(8px 8px 0 rgba(0,0,0,.25)); animation: float 5s ease-in-out infinite; }
+.portrait-index { position: absolute; z-index: 3; left: -5%; bottom: 4%; font: 105px/.8 var(--font-display); color: transparent; -webkit-text-stroke: 1px white; }
+.identity-portrait small { position: absolute; z-index: 4; right: -15px; bottom: -27px; padding: 10px 13px; color: white; background: #0b0c0f; font-size: 7px; text-transform: uppercase; letter-spacing: 1px; }
+.intro-copy { padding-top: 30px; position: relative; z-index: 3; }
+.intro-copy::before { content: "“"; position: absolute; top: -50px; left: -25px; color: var(--accent); font: 110px var(--font-display); opacity: .22; }
+.intro-copy > p { font: clamp(21px,1.6vw,29px)/1.45 var(--font-display); text-transform: uppercase; }
 .intro-copy dl { margin-top: 60px; border-top: 1px solid #bbb6ac; }
 .intro-copy dl div { padding: 19px 0; display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid #cbc5b9; }
 .intro-copy dt { color: #888279; font-size: 8px; }
@@ -310,6 +329,8 @@ footer > a:last-child { color: #fff; }
   .profile-body { width: 290px; }
   .profile-hero blockquote { font-size: 17px; bottom: 55px; max-width: 300px; }
   .profile-intro { grid-template-columns: 1fr; gap: 0; }
+  .identity-title { padding-top: 0; }
+  .identity-portrait { width: min(520px,75vw); height: 620px; justify-self: center; margin: 45px 0 20px; }
   .intro-copy { padding-top: 45px; }
   .stat-list { width: 100%; }
   .ability-list { grid-template-columns: 1fr 1fr; }
@@ -342,6 +363,11 @@ footer > a:last-child { color: #fff; }
   .profile-hero blockquote { left: 6vw; right: auto; bottom: 50px; max-width: 270px; text-align: left; }
   .profile-section { padding: 80px 6vw; }
   .intro-copy > p { font-size: 21px; }
+  .identity-title h2 { font-size: 20vw; }
+  .identity-portrait { width: 86vw; height: 500px; margin: 35px 0 5px; }
+  .portrait-index { left: 0; font-size: 75px; }
+  .portrait-symbol { right: 0; font-size: 58px; }
+  .identity-portrait small { right: 0; }
   .intro-copy dl div { grid-template-columns: 95px 1fr; }
   .ability-list { grid-template-columns: 1fr; }
   .ability-list > div { min-height: 105px; border-bottom: 1px solid rgba(255,255,255,.18); }
