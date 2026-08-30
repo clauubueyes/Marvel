@@ -18,6 +18,9 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
   const counts = {
     PERSONAJE: searchIndex.filter(({ type }) => type === "PERSONAJE").length,
     TÍTULO: searchIndex.filter(({ type }) => type === "TÍTULO").length,
+    EVENTO: searchIndex.filter(({ type }) => type === "EVENTO").length,
+    UNIVERSO: searchIndex.filter(({ type }) => type === "UNIVERSO").length,
+    EQUIPO: searchIndex.filter(({ type }) => type === "EQUIPO").length,
   };
 
   function updateQuery(value: string) {
@@ -45,7 +48,7 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
       <section className="search-results" aria-live="polite">
         <div className="search-result-tools">
           <div role="group" aria-label="Filtrar resultados">
-            {(["TODO", "PERSONAJE", "TÍTULO"] as SearchFilter[]).map((item) => (
+            {(["TODO", "PERSONAJE", "TÍTULO", "EVENTO", "UNIVERSO", "EQUIPO"] as SearchFilter[]).map((item) => (
               <button className={filter === item ? "active" : ""} type="button" key={item} onClick={() => setFilter(item)}>
                 {item} {item !== "TODO" && <span>{counts[item]}</span>}
               </button>

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MotionEffects } from "@/components/MotionEffects";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { getTitleDossier } from "@/lib/contentRepository";
+import { getEntitiesForTitle, getTitleDossier } from "@/lib/contentRepository";
 import { mcuCatalog } from "@/lib/mcuCatalog";
+import { getEntityHref } from "@/lib/mcuEntities";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -25,6 +26,7 @@ export default async function TitlePage({ params }: PageProps) {
   if (!title) notFound();
 
   const imageUrl = `/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`;
+  const connectedEntities = getEntitiesForTitle(title.slug);
 
   return (
     <main className="title-profile" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
@@ -78,6 +80,8 @@ export default async function TitlePage({ params }: PageProps) {
           </div>
         ) : <p className="title-cast-empty">Todavía no hay personajes enlazados a este expediente.</p>}
       </section>
+
+      {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header><p className="section-label">03 / CONEXIONES</p><h2>MÁS ALLÁ<br /><em>DEL TÍTULO</em></h2></header><div>{connectedEntities.map((entity) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} style={{ "--node-accent": entity.color } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
 
       <nav className="character-pagination title-pagination">
         <Link href={`/titulos/${title.previous.slug}`}><small>← ANTERIOR</small><strong>{title.previous.title}</strong></Link>

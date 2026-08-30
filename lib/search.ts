@@ -1,9 +1,10 @@
 import { characters } from "@/lib/characters";
 import { mcuCatalog } from "@/lib/mcuCatalog";
+import { getEntityHref, mcuEntities } from "@/lib/mcuEntities";
 
 export type SearchResult = {
   id: string;
-  type: "PERSONAJE" | "TÍTULO";
+  type: "PERSONAJE" | "TÍTULO" | "EVENTO" | "UNIVERSO" | "EQUIPO";
   title: string;
   subtitle: string;
   description: string;
@@ -37,6 +38,19 @@ export const searchIndex: SearchResult[] = [
     image: `/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`,
     searchText: normalize(`${title.title} ${title.type} ${title.period} ${title.phase} ${title.continuity} ${title.event}`),
   })),
+  ...mcuEntities.map((entity): SearchResult => {
+    const imageTitle = mcuCatalog.find(({ slug }) => entity.titleIds.includes(slug));
+    return {
+      id: entity.slug,
+      type: entity.kind,
+      title: entity.name,
+      subtitle: entity.kicker,
+      description: entity.summary,
+      href: getEntityHref(entity),
+      image: imageTitle ? `/api/title-image?title=${encodeURIComponent(imageTitle.title)}&type=${encodeURIComponent(imageTitle.type)}` : "/api/title-image?title=Marvel&type=PELÍCULA",
+      searchText: normalize(`${entity.name} ${entity.kicker} ${entity.summary} ${entity.description} ${entity.status}`),
+    };
+  }),
 ];
 
 function editDistance(left: string, right: string) {

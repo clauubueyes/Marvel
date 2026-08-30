@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { characters, getCharacter } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { getEntitiesForCharacter } from "@/lib/contentRepository";
+import { getEntityHref } from "@/lib/mcuEntities";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -25,6 +27,7 @@ export default async function CharacterPage({ params }: PageProps) {
   const currentIndex = characters.findIndex(({ id }) => id === character.id);
   const previous = characters[(currentIndex - 1 + characters.length) % characters.length];
   const next = characters[(currentIndex + 1) % characters.length];
+  const connectedEntities = getEntitiesForCharacter(character.id);
 
   return (
     <main className={`profile profile-${character.id}`} style={{ "--accent": character.color, "--accent-2": character.color2 } as React.CSSProperties}>
@@ -120,6 +123,8 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <p className="story-scroll-cue">DESLIZA PARA RECORRER SU HISTORIA <span>→</span></p>
       </section>
+
+      {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} style={{ "--node-accent": entity.color } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
 
       <nav className="character-pagination">
         <Link href={`/personajes/${previous.id}`}><small>← ANTERIOR</small><strong>{previous.name}</strong></Link>

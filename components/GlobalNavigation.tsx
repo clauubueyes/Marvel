@@ -18,6 +18,7 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
       <nav className={menuOpen ? "nav global-links open" : "nav global-links"} aria-label="Navegación principal">
         <Link href="/#doom" onClick={closeMenu}>RUTA DOOMSDAY</Link>
         <Link href="/rutas" onClick={closeMenu}>RUTAS</Link>
+        <Link href="/eventos" onClick={closeMenu}>CONEXIONES</Link>
         <Link href="/titulos" onClick={closeMenu}>TÍTULOS</Link>
         <Link href="/personajes" onClick={closeMenu}>PERSONAJES</Link>
         <Link className="global-search-link" href="/buscar" onClick={closeMenu}>BUSCAR <span>⌕</span></Link>

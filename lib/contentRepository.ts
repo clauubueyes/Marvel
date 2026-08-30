@@ -1,6 +1,7 @@
 import { characters, type Character } from "@/lib/characters";
 import { mcuCatalog, type MCUEntry } from "@/lib/mcuCatalog";
 import { viewingRoutes } from "@/lib/viewingRoutes";
+import { mcuEntities } from "@/lib/mcuEntities";
 
 export type TitleDossier = MCUEntry & {
   characters: Character[];
@@ -33,6 +34,14 @@ export function getTitleDossier(slug: string): TitleDossier | undefined {
   };
 }
 
+export function getEntitiesForTitle(slug: string) {
+  return mcuEntities.filter((entity) => entity.titleIds.includes(slug));
+}
+
+export function getEntitiesForCharacter(characterId: string) {
+  return mcuEntities.filter((entity) => entity.characterIds.includes(characterId));
+}
+
 export function validateContent() {
   const errors: string[] = [];
   const titleSlugs = new Set<string>();
@@ -61,6 +70,24 @@ export function validateContent() {
     for (const step of route.steps) {
       if (!titleSlugs.has(step.titleId)) errors.push(`${route.name}: el título ${step.titleId} no existe`);
     }
+  }
+
+  const entityKeys = new Set<string>();
+  for (const entity of mcuEntities) {
+    const key = `${entity.kind}:${entity.slug}`;
+    if (entityKeys.has(key)) errors.push(`Entidad duplicada: ${key}`);
+    entityKeys.add(key);
+    entity.titleIds.forEach((titleId) => {
+      if (!titleSlugs.has(titleId)) errors.push(`${entity.name}: el título ${titleId} no existe`);
+    });
+    entity.characterIds.forEach((characterId) => {
+      if (!characterIds.has(characterId)) errors.push(`${entity.name}: el personaje ${characterId} no existe`);
+    });
+  }
+  for (const entity of mcuEntities) {
+    entity.connections.forEach((connection) => {
+      if (!entityKeys.has(`${connection.kind}:${connection.slug}`)) errors.push(`${entity.name}: la conexión ${connection.kind}:${connection.slug} no existe`);
+    });
   }
 
   return errors;
