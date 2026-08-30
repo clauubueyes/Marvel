@@ -23,6 +23,7 @@ export type Character = {
   symbol: string;
   votes: number;
   image: string;
+  imagePosition?: string;
   sourceUrl: string;
   role: string;
   origin: string;

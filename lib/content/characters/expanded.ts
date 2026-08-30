@@ -8,14 +8,19 @@ type Seed = Pick<Character, "id" | "name" | "alias" | "quote" | "universe" | "co
 const reviewedAt = "2026-08-30";
 
 const characterPortraits: Record<string, string> = {
-  "yelena-belova": "https://upload.wikimedia.org/wikipedia/en/1/15/Florence_Pugh_as_Yelena_Belova.jpg",
-  "winter-soldier": "https://upload.wikimedia.org/wikipedia/en/4/4b/Sebastian_Stan_as_Bucky_Barnes.jpg",
-  vision: "https://upload.wikimedia.org/wikipedia/en/f/fc/Paul_Bettany_as_Vision.jpg",
-  "agatha-harkness": "https://upload.wikimedia.org/wikipedia/en/3/30/Kathryn_Hahn_as_Agatha_Harkness.png",
-  daredevil: "https://upload.wikimedia.org/wikipedia/en/1/1b/Charlie_Cox_Daredevil.jpg",
-  kingpin: "https://upload.wikimedia.org/wikipedia/en/c/cf/Vincent_D%27Onofrio_as_Wilson_Fisk_in_Daredevil_%28TV_series%29.jpg",
-  thanos: "https://upload.wikimedia.org/wikipedia/en/7/7b/Josh_Brolin_as_Thanos.jpeg",
-  shuri: "https://upload.wikimedia.org/wikipedia/en/5/5b/Letitia_Wright_as_Shuri_in_Black_Panther_Wakanda_Forever_poster.jpg",
+  "yelena-belova": "https://cdn.marvel.com/u/prod/marvel/i/mg/3/70/68128d1f9a161.webp",
+  "winter-soldier": "https://upload.wikimedia.org/wikipedia/en/9/9c/Bucky_%28James_Buchanan_Barnes%29.png",
+  vision: "https://upload.wikimedia.org/wikipedia/en/3/3d/Vision_%28Marvel_Comics%29.png",
+  "agatha-harkness": "https://upload.wikimedia.org/wikipedia/en/2/26/Agatha_Harkness_%282022_Design%29.webp",
+  daredevil: "https://upload.wikimedia.org/wikipedia/en/1/14/Daredevil_65.jpg",
+  kingpin: "https://upload.wikimedia.org/wikipedia/en/5/54/Kingpin_%28Wilson_Grant_Fisk%29.png",
+  thanos: "https://upload.wikimedia.org/wikipedia/en/b/b7/Thanos_%28Infobox_image%29.png",
+  shuri: "https://upload.wikimedia.org/wikipedia/en/2/2d/Shuri_as_Griot%2C_Black_Panther_%282018%29_Variant_Cover.jpg",
+};
+
+const characterImagePositions: Partial<Record<string, string>> = {
+  vision: "center 12%",
+  kingpin: "center 8%",
 };
 
 function buildCharacter(seed: Seed, index: number): Character {
@@ -23,6 +28,7 @@ function buildCharacter(seed: Seed, index: number): Character {
   return {
     ...seed,
     image: characterPortraits[seed.id],
+    imagePosition: characterImagePositions[seed.id],
     number: String(index + 14).padStart(2, "0"),
     votes: 0,
     appearances,

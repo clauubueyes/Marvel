@@ -49,7 +49,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <div className="profile-figure" aria-hidden="true">
           <div className="profile-rings"><i /><i /><i /></div>
-          <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" /></div>
+          <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" style={{ objectPosition: character.imagePosition ?? "center top" }} /></div>
           <b>{character.symbol}</b>
         </div>
         <blockquote>“{character.quote}”</blockquote>
@@ -61,7 +61,7 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="identity-portrait" data-reveal aria-hidden="true">
           <div className="portrait-orbit"><i /><i /></div>
           <span className="portrait-symbol">{character.symbol}</span>
-          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" />
+          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" style={{ objectPosition: character.imagePosition ?? "center top" }} />
           <b className="portrait-index">{character.number}</b>
           <small>{character.alias} / {character.role}</small>
         </div>
