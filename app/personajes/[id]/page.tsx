@@ -47,7 +47,8 @@ export default async function CharacterPage({ params }: PageProps) {
           <h1>{character.name}</h1>
           <div className="profile-meta"><span>{character.alias}</span><span>{character.universe}</span><span>{character.origin}</span></div>
         </div>
-        <div className="profile-figure" aria-hidden="true">
+        <div className={`profile-figure profile-arrival profile-arrival-${character.id}`} aria-hidden="true">
+          <div className="arrival-trail"><i /><i /><i /><i /><i /></div>
           <div className="profile-rings"><i /><i /><i /></div>
           <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" style={{ objectPosition: character.imagePosition ?? "center top" }} /></div>
           <b>{character.symbol}</b>
