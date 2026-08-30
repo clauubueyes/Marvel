@@ -27,7 +27,7 @@ export const searchIndex: SearchResult[] = [
     description: character.description,
     href: `/personajes/${character.id}`,
     image: character.image,
-    searchText: normalize(`${character.name} ${character.alias} ${character.role} ${character.origin} ${character.universe} ${character.abilities.join(" ")} ${character.appearances.map(({ title }) => title).join(" ")}`),
+    searchText: normalize(`${character.name} ${character.alias} ${character.role} ${character.category} ${character.status} ${character.origin} ${character.universe} ${character.abilities.join(" ")} ${character.affiliations.join(" ")} ${character.variants.map(({ name, universe }) => `${name} ${universe}`).join(" ")} ${character.appearances.map(({ title }) => title).join(" ")}`),
   })),
   ...mcuCatalog.map((title): SearchResult => ({
     id: title.slug,

@@ -1,4 +1,6 @@
 import { createContentSlug } from "@/lib/contentSlug";
+import { getCharacterEditorialData } from "@/lib/content/characters/editorial";
+import { expandedCharacters } from "@/lib/content/characters/expanded";
 
 export type CharacterAppearance = {
   titleId: string;
@@ -31,9 +33,15 @@ export type Character = {
   facts: { value: string; label: string; text: string }[];
   appearances: CharacterAppearance[];
   screenMoment: { videoId: string; title: string; kicker: string; text: string };
+  category: "HÉROE" | "VILLANO" | "SECUNDARIO" | "ANTI-HÉROE";
+  status: "ACTIVO" | "INACTIVO" | "DESCONOCIDO";
+  affiliations: string[];
+  variants: { name: string; universe: string; description: string }[];
+  sources: { label: string; url: string }[];
+  reviewedAt: string;
 };
 
-type CharacterEntry = Omit<Character, "appearances"> & {
+type CharacterEntry = Omit<Character, "appearances" | "category" | "status" | "affiliations" | "variants" | "sources" | "reviewedAt"> & {
   appearances: Omit<CharacterAppearance, "titleId">[];
 };
 
@@ -213,13 +221,14 @@ const appearanceCatalogTitles: Record<string, string> = {
   "WandaVision": "WandaVision",
 };
 
-export const characters: Character[] = characterEntries.map((character) => ({
+export const characters: Character[] = [...characterEntries.map((character) => ({
   ...character,
+  ...getCharacterEditorialData(character.id, character.sourceUrl),
   appearances: character.appearances.map((appearance) => ({
     ...appearance,
     titleId: createContentSlug(appearanceCatalogTitles[appearance.title] ?? appearance.title),
   })),
-}));
+})), ...expandedCharacters];
 
 export function getCharacter(id: string) {
   return characters.find((character) => character.id === id);

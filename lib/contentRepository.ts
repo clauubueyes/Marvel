@@ -1,4 +1,4 @@
-import { characters, type Character } from "@/lib/characters";
+import { characters, getCharacter, type Character } from "@/lib/characters";
 import { mcuCatalog, type MCUEntry } from "@/lib/mcuCatalog";
 import { viewingRoutes } from "@/lib/viewingRoutes";
 import { mcuEntities } from "@/lib/mcuEntities";
@@ -43,6 +43,11 @@ export function getEntitiesForCharacter(characterId: string) {
   return mcuEntities.filter((entity) => entity.characterIds.includes(characterId));
 }
 
+export function getViewingRoutesForCharacter(characterId: string) {
+  const titleIds = new Set(getCharacter(characterId)?.appearances.map(({ titleId }) => titleId) ?? []);
+  return viewingRoutes.filter((route) => route.steps.some(({ titleId }) => titleIds.has(titleId)));
+}
+
 export function validateContent() {
   const errors: string[] = [];
   const titleSlugs = new Set<string>();
@@ -56,6 +61,13 @@ export function validateContent() {
   for (const character of characters) {
     if (characterIds.has(character.id)) errors.push(`ID de personaje duplicado: ${character.id}`);
     characterIds.add(character.id);
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(character.reviewedAt)) errors.push(`${character.name}: fecha de revisión no válida`);
+    if (!character.sources.length) errors.push(`${character.name}: faltan fuentes editoriales`);
+    character.sources.forEach(({ url }) => {
+      if (!url.startsWith("https://")) errors.push(`${character.name}: fuente no segura ${url}`);
+    });
+    if (!character.affiliations.length) errors.push(`${character.name}: falta al menos una afiliación`);
 
     for (const appearance of character.appearances) {
       if (!titleSlugs.has(appearance.titleId)) {
