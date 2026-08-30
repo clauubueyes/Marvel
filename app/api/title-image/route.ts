@@ -49,7 +49,7 @@ function cleanTitle(title: string) {
 }
 
 async function findThumbnail(title: string, media: string, language: "es" | "en") {
-  const kind = media === "PELÍCULA" ? "film" : media === "SERIE" ? "television series" : "television special";
+  const kind = media === "PELÍCULA" ? "film" : media === "SERIE" ? "television series" : media === "PERSONAJE" ? "Marvel Cinematic Universe character" : "television special";
   const query = encodeURIComponent(`${cleanTitle(title)} ${kind} Marvel`);
   const url = `https://${language}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=3&prop=pageimages&piprop=thumbnail&pilicense=any&pithumbsize=720&format=json`;
   const response = await fetch(url, { cache: "force-cache", headers: { "User-Agent": "Marvel-Nexus/1.0 (image resolver)" } });
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
   const media = request.nextUrl.searchParams.get("type")?.trim() ?? "";
   if (!title) return new NextResponse(null, { status: 400 });
 
-  const image = await findImdbImage(title, media) ?? await findThumbnail(title, media, "en") ?? await findThumbnail(title, media, "es");
+  const image = (media === "PERSONAJE" ? null : await findImdbImage(title, media)) ?? await findThumbnail(title, media, "en") ?? await findThumbnail(title, media, "es");
   if (!image) return new NextResponse(null, { status: 404 });
   const imageUrl = new URL(image);
   if (!imageUrl.hostname.endsWith("wikimedia.org") && !imageUrl.hostname.endsWith("media-amazon.com")) return new NextResponse(null, { status: 404 });
