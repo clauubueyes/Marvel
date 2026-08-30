@@ -8,6 +8,7 @@ import { characters } from "@/lib/characters";
 export const metadata: Metadata = {
   title: "Personajes del MCU — NEXUS",
   description: "Expedientes de héroes, villanos y figuras esenciales del universo cinematográfico de Marvel.",
+  alternates: { canonical: "/personajes" },
 };
 
 export default function CharactersPage() {
@@ -21,7 +22,7 @@ export default function CharactersPage() {
     <section className="characters-directory" aria-label="Catálogo de personajes">
       {characters.map((character, index) => (
         <Link href={`/personajes/${character.id}`} className="character-directory-card" key={character.id} data-reveal style={{ "--card-accent": character.color, "--delay": `${index * 55}ms` } as React.CSSProperties}>
-          <Image src={character.image} alt="" fill sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 33vw" unoptimized />
+          <Image src={character.image} alt="" fill sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 33vw" />
           <span>{character.number} · {character.role}</span><h2>{character.name}</h2><p>{character.alias}</p><b>ABRIR EXPEDIENTE ↗</b>
         </Link>
       ))}

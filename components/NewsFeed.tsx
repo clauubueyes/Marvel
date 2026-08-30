@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { fallbackNews, type NewsItem } from "@/lib/news";
 
 const artClasses = ["story-red", "story-blue", "story-purple"];
@@ -39,7 +40,7 @@ export function NewsFeed() {
       </div>
       <div className="story-grid">
         {items.slice(0, 3).map((story, index) => <article data-reveal data-tilt style={{ "--delay": `${index * 90}ms` } as React.CSSProperties} className={`story ${artClasses[index]}`} key={story.id}>
-          <div className="story-art"><img src={artwork[index]} alt="" /><span>{symbols[index]}</span><b>0{index + 1}</b><i>SEÑAL / NEXUS</i></div>
+          <div className="story-art"><Image src={artwork[index]} alt="" fill sizes="(max-width: 900px) 50vw, 33vw" /><span>{symbols[index]}</span><b>0{index + 1}</b><i>SEÑAL / NEXUS</i></div>
           <div className="story-copy"><p><span>{story.source}</span>{formatDate(story.publishedAt)}</p><h3>{story.title}</h3><a href={story.url} target="_blank" rel="noreferrer">LEER HISTORIA <b>→</b></a></div>
         </article>)}
       </div>

@@ -67,7 +67,7 @@ export function ViewingRouteExperience({ route, compact = false }: { route: View
           const isComplete = completed.has(step.titleId);
           return <li className={`${isComplete ? "complete" : ""} ${isDestination ? "destination" : ""}`} key={step.titleId} data-reveal>
             <button type="button" className="route-check" disabled={isDestination} onClick={() => toggleStep(step.titleId)} aria-label={isComplete ? `Marcar ${title.title} como pendiente` : `Marcar ${title.title} como visto`} aria-pressed={isComplete}>{isDestination ? "✦" : isComplete ? "✓" : ""}</button>
-            <Link className="route-step-art" href={`/titulos/${title.slug}`}><Image src={`/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`} alt="" fill sizes="(max-width: 700px) 80vw, 240px" unoptimized /></Link>
+            <Link className="route-step-art" href={`/titulos/${title.slug}`}><Image src={`/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`} alt="" fill sizes="(max-width: 700px) 80vw, 240px" /></Link>
             <article><div><span>{step.priority}</span><small>{title.period} · {title.type}</small></div><h3><Link href={`/titulos/${title.slug}`}>{title.title}</Link></h3><p>{step.contribution}</p>{showSpoilers && <p className="route-spoiler"><b>SPOILER</b>{step.spoiler}</p>}<Link href={`/titulos/${title.slug}`}>ABRIR EXPEDIENTE ↗</Link></article>
           </li>;
         })}

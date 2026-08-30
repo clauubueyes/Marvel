@@ -7,6 +7,7 @@ import { formatRouteDuration, viewingRoutes } from "@/lib/viewingRoutes";
 export const metadata: Metadata = {
   title: "Rutas de visionado del MCU — NEXUS",
   description: "Recorridos temáticos para entender Doomsday, el multiverso, la TVA, las incursiones y sus personajes esenciales.",
+  alternates: { canonical: "/rutas" },
 };
 
 export default function RoutesPage() {

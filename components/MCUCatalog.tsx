@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { mcuCatalog, type MCUContinuity, type MCUType } from "@/lib/mcuCatalog";
 
 type Filter = "TODO" | MCUType | MCUContinuity;
@@ -43,7 +44,7 @@ export function MCUCatalog() {
       {displayed.map(entry => <details className="catalog-entry watch-entry" key={`${entry.order}-${entry.title}`} data-reveal>
         <summary>
           <span className="watch-order">{String(entry.order).padStart(2, "0")}</span>
-          <div className={`catalog-art catalog-art-${entry.continuity.toLowerCase().replaceAll(" ", "-")} has-image`} aria-hidden="true"><img src={archiveImages[entry.title] ?? `/api/title-image?title=${encodeURIComponent(entry.title)}&type=${encodeURIComponent(entry.type)}`} alt="" loading="lazy" onError={event => { event.currentTarget.hidden = true; event.currentTarget.parentElement?.classList.remove("has-image"); }}/><b>{entry.title.split(" ").slice(0, 2).map(word => word[0]).join("")}</b><small>{entry.phase}</small><span>MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}</span></div>
+          <div className={`catalog-art catalog-art-${entry.continuity.toLowerCase().replaceAll(" ", "-")} has-image`} aria-hidden="true"><Image src={archiveImages[entry.title] ?? `/api/title-image?title=${encodeURIComponent(entry.title)}&type=${encodeURIComponent(entry.type)}`} alt="" fill sizes="(max-width: 560px) 80vw, 245px" onError={event => { event.currentTarget.hidden = true; event.currentTarget.parentElement?.classList.remove("has-image"); }}/><b>{entry.title.split(" ").slice(0, 2).map(word => word[0]).join("")}</b><small>{entry.phase}</small><span>MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}</span></div>
           <div className="watch-main"><small>{entry.period} · {entry.type}</small><h3>{entry.title}</h3><p>{entry.event}</p><b>{entry.continuity}</b></div>
           <span className="expand-label"><i>+</i> VER SUCESO</span>
         </summary>

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MotionEffects } from "@/components/MotionEffects";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { SpoilerDisclosure } from "@/components/SpoilerDisclosure";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getEntitiesForTitle, getTitle, getTitleDossier } from "@/lib/contentRepository";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 import { getEntityHref } from "@/lib/mcuEntities";
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = getTitleDossier((await params).slug);
   const details = title ? getTitleDetails(title.slug) : undefined;
   return title
-    ? { title: `${title.title} — Archivo NEXUS`, description: details?.spoilerFreeSynopsis ?? title.event }
+    ? { title: `${title.title} — Archivo NEXUS`, description: details?.spoilerFreeSynopsis ?? title.event, alternates: { canonical: `/titulos/${title.slug}` }, openGraph: { title: title.title, description: details?.spoilerFreeSynopsis ?? title.event, url: `/titulos/${title.slug}` } }
     : { title: "Título no encontrado — NEXUS" };
 }
 
@@ -49,11 +50,12 @@ export default async function TitlePage({ params }: PageProps) {
     <main className="title-profile" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
       <MotionEffects />
       <GlobalNavigation context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`} />
+      <Breadcrumbs items={[{ label: "TÍTULOS", href: "/titulos" }, { label: title.title }]} />
       {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replaceAll("<", "\\u003c") }} />}
 
       <section className="title-profile-hero">
         <div className="title-profile-art" aria-hidden="true">
-          <Image src={imageUrl} alt="" fill priority sizes="(max-width: 800px) 100vw, 50vw" unoptimized />
+          <Image src={imageUrl} alt="" fill priority sizes="(max-width: 800px) 100vw, 50vw" />
         </div>
         <div className="title-profile-copy">
           <p className="eyebrow"><span /> {title.type} · {title.phase}</p>
@@ -82,7 +84,7 @@ export default async function TitlePage({ params }: PageProps) {
         <section className="title-credits profile-section">
           <header data-reveal><p className="section-label">02 / FICHA TÉCNICA</p><h2>QUIÉN LE DIO<br /><em>FORMA</em></h2></header>
           <div className="title-credit-columns" data-reveal><article><span>DIRECCIÓN</span>{details.directors.map((name) => <b key={name}>{name}</b>)}</article><article><span>GUION</span>{details.writers.map((name) => <b key={name}>{name}</b>)}</article><article><span>REPARTO PRINCIPAL</span>{details.cast.map((name) => <b key={name}>{name}</b>)}</article></div>
-          <a className="title-trailer" href={`https://www.youtube.com/watch?v=${details.trailerId}`} target="_blank" rel="noreferrer" data-reveal><Image src={`https://img.youtube.com/vi/${details.trailerId}/maxresdefault.jpg`} alt={`Tráiler oficial de ${title.title}`} fill sizes="(max-width: 800px) 100vw, 55vw" unoptimized /><span>TRÁILER OFICIAL</span><strong>▶</strong><b>VER EN YOUTUBE ↗</b></a>
+          <a className="title-trailer" href={`https://www.youtube.com/watch?v=${details.trailerId}`} target="_blank" rel="noreferrer" data-reveal><Image src={`https://img.youtube.com/vi/${details.trailerId}/maxresdefault.jpg`} alt={`Tráiler oficial de ${title.title}`} fill sizes="(max-width: 800px) 100vw, 55vw" /><span>TRÁILER OFICIAL</span><strong>▶</strong><b>VER EN YOUTUBE ↗</b></a>
         </section>
 
         <section className="title-watch profile-section"><header><p className="section-label">03 / ORDEN DE VISIONADO</p><h2>ANTES Y<br /><em>DESPUÉS</em></h2></header><div className="title-watch-columns"><article><span>VER ANTES</span>{beforeTitles.length ? beforeTitles.map((related) => <Link href={`/titulos/${related.slug}`} key={related.slug}><small>{related.type} · {related.period}</small><strong>{related.title}</strong><i>↗</i></Link>) : <p>Esta historia funciona como punto de entrada.</p>}</article><article><span>CONTINUAR CON</span>{afterTitles.map((related) => <Link href={`/titulos/${related.slug}`} key={related.slug}><small>{related.type} · {related.period}</small><strong>{related.title}</strong><i>↗</i></Link>)}</article></div></section>
@@ -100,7 +102,7 @@ export default async function TitlePage({ params }: PageProps) {
           <div className="title-cast-grid">
             {title.characters.map((character) => (
               <Link href={`/personajes/${character.id}`} key={character.id} data-reveal>
-                <Image src={character.image} alt="" fill sizes="(max-width: 700px) 50vw, 25vw" unoptimized />
+                <Image src={character.image} alt="" fill sizes="(max-width: 700px) 50vw, 25vw" />
                 <span>{character.role}</span><h3>{character.name}</h3><b>ABRIR EXPEDIENTE ↗</b>
               </Link>
             ))}

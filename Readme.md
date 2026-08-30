@@ -11,6 +11,12 @@ npm run dev
 
 Abre `http://localhost:3000` en el navegador.
 
+Para generar URLs canónicas, el sitemap y las tarjetas sociales con el dominio de producción, configura:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://tu-dominio.example
+```
+
 ## Estado actual
 
 - Portada dinámica con cinco identidades visuales.

@@ -7,6 +7,7 @@ import { mcuCatalog } from "@/lib/mcuCatalog";
 export const metadata: Metadata = {
   title: "Películas y series del MCU — NEXUS",
   description: "Archivo cronológico de películas, series, especiales y one-shots del universo audiovisual de Marvel.",
+  alternates: { canonical: "/titulos" },
 };
 
 export default function TitlesPage() {

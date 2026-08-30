@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { MotionEffects } from "@/components/MotionEffects";
 import { ViewingRouteExperience } from "@/components/ViewingRouteExperience";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/lib/viewingRoutes";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -14,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const route = getViewingRoute((await params).slug);
-  return route ? { title: `${route.name} — Ruta NEXUS`, description: route.description } : { title: "Ruta no encontrada — NEXUS" };
+  return route ? { title: `${route.name} — Ruta NEXUS`, description: route.description, alternates: { canonical: `/rutas/${route.slug}` }, openGraph: { title: route.name, description: route.description, url: `/rutas/${route.slug}` } } : { title: "Ruta no encontrada — NEXUS" };
 }
 
 export default async function RoutePage({ params }: PageProps) {
@@ -23,6 +24,8 @@ export default async function RoutePage({ params }: PageProps) {
   return <main className="route-profile" style={{ "--accent": route.accent, "--accent-2": "#4f6b28" } as React.CSSProperties}>
     <MotionEffects />
     <GlobalNavigation context="RUTA DE VISIONADO" />
+    <Breadcrumbs items={[{ label: "RUTAS", href: "/rutas" }, { label: route.name }]} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: route.name, description: route.description, numberOfItems: route.steps.length, itemListElement: route.steps.map((step, index) => ({ "@type": "ListItem", position: index + 1, url: `/titulos/${step.titleId}` })) }).replaceAll("<", "\\u003c") }} />
     <section className="route-profile-hero" style={{ "--route-accent": route.accent } as React.CSSProperties}>
       <p className="eyebrow"><span /> {route.kicker}</p><h1>{route.name}</h1><p>{route.description}</p><div><span>{String(route.steps.length).padStart(2, "0")} CAPÍTULOS</span><span>{formatRouteDuration(route.estimatedMinutes)}</span><span>PROGRESO LOCAL</span></div>
     </section>

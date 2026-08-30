@@ -61,7 +61,7 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
           <div className="search-result-grid">
             {results.map((result) => (
               <Link href={result.href} className={`search-result-card search-result-${result.type.toLocaleLowerCase("es")}`} key={`${result.type}-${result.id}`}>
-                <div><Image src={result.image} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" unoptimized /></div>
+                <div><Image src={result.image} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" /></div>
                 <article><span>{result.type}</span><small>{result.subtitle}</small><h2>{result.title}</h2><p>{result.description}</p><b>ABRIR EXPEDIENTE ↗</b></article>
               </Link>
             ))}

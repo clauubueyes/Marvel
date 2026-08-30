@@ -6,6 +6,7 @@ import { SearchExperience } from "@/components/SearchExperience";
 export const metadata: Metadata = {
   title: "Buscar en el MCU — NEXUS",
   description: "Busca personajes, películas, series, poderes y acontecimientos conectados del universo audiovisual Marvel.",
+  alternates: { canonical: "/buscar" },
 };
 
 type PageProps = { searchParams: Promise<{ q?: string }> };

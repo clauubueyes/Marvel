@@ -1,9 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
 import { characters } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { DoomsdayGuide } from "@/components/DoomsdayGuide";
 import { MCUCatalog } from "@/components/MCUCatalog";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function Home() {
   return <main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
@@ -34,7 +38,7 @@ export default function Home() {
       </div>
       <div className="mcu-character-grid">
         {characters.map((character, index) => <a href={`/personajes/${character.id}`} className="mcu-character" key={character.id} data-reveal style={{ "--delay": `${index * 60}ms`, "--card-accent": character.color } as React.CSSProperties}>
-          <img src={character.image} alt=""/><span>0{index + 1} · {character.role}</span><h3>{character.name}</h3><p>{character.alias}</p><b>ABRIR EXPEDIENTE ↗</b>
+          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 20vw"/><span>0{index + 1} · {character.role}</span><h3>{character.name}</h3><p>{character.alias}</p><b>ABRIR EXPEDIENTE ↗</b>
         </a>)}
       </div>
     </section>

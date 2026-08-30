@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { characters, getCharacter } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getEntitiesForCharacter } from "@/lib/contentRepository";
 import { getEntityHref } from "@/lib/mcuEntities";
 
@@ -16,7 +18,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const character = getCharacter((await params).id);
   return character
-    ? { title: `${character.name} — Archivo NEXUS`, description: character.description }
+    ? { title: `${character.name} — Archivo NEXUS`, description: character.description, alternates: { canonical: `/personajes/${character.id}` }, openGraph: { title: character.name, description: character.description, url: `/personajes/${character.id}` } }
     : { title: "Personaje no encontrado — NEXUS" };
 }
 
@@ -34,6 +36,8 @@ export default async function CharacterPage({ params }: PageProps) {
       <MotionEffects />
       <div className="character-atmosphere" aria-hidden="true"><i /><i /><i /><i /></div>
       <GlobalNavigation context={`ARCHIVO / ${character.number}`} />
+      <Breadcrumbs items={[{ label: "PERSONAJES", href: "/personajes" }, { label: character.name }]} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Person", name: character.name, alternateName: character.alias, description: character.description, image: character.image, sameAs: character.sourceUrl }).replaceAll("<", "\\u003c") }} />
 
       <section className="profile-hero">
         <div className="profile-grid" aria-hidden="true" />
@@ -44,7 +48,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <div className="profile-figure" aria-hidden="true">
           <div className="profile-rings"><i /><i /><i /></div>
-          <div className="profile-body"><img src={character.image} alt={character.name} /></div>
+          <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" /></div>
           <b>{character.symbol}</b>
         </div>
         <blockquote>“{character.quote}”</blockquote>
@@ -56,7 +60,7 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="identity-portrait" data-reveal aria-hidden="true">
           <div className="portrait-orbit"><i /><i /></div>
           <span className="portrait-symbol">{character.symbol}</span>
-          <img src={character.image} alt="" />
+          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" />
           <b className="portrait-index">{character.number}</b>
           <small>{character.alias} / {character.role}</small>
         </div>
@@ -72,7 +76,7 @@ export default async function CharacterPage({ params }: PageProps) {
           <a href={`https://www.youtube.com/watch?v=${character.screenMoment.videoId}`} target="_blank" rel="noreferrer">VER VÍDEO OFICIAL <b>↗</b></a>
         </div>
         <a className="moment-video" data-reveal data-tilt href={`https://www.youtube.com/watch?v=${character.screenMoment.videoId}`} target="_blank" rel="noreferrer" aria-label={`Ver ${character.screenMoment.title}`}>
-          <img src={`https://img.youtube.com/vi/${character.screenMoment.videoId}/maxresdefault.jpg`} alt={`Fotograma del tráiler: ${character.screenMoment.title}`} />
+          <Image src={`https://img.youtube.com/vi/${character.screenMoment.videoId}/maxresdefault.jpg`} alt={`Fotograma del tráiler: ${character.screenMoment.title}`} fill sizes="(max-width: 900px) 88vw, 50vw" />
           <span className="play"><i>▶</i></span><small>FUENTE OFICIAL · YOUTUBE</small>
         </a>
       </section>
@@ -96,7 +100,7 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="power-heading" data-reveal><p className="section-label">05 / CAPACIDADES</p><h2>MEDIR LO<br/><em>IMPOSIBLE</em></h2><span>LECTURA DE ENERGÍA / NEXUS</span></div>
         <div className="power-core" data-reveal aria-hidden="true">
           <div className="core-rings"><i /><i /><i /></div>
-          <img src={character.image} alt="" />
+          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 88vw, 45vw" />
           <strong>{character.symbol}</strong><span>NIVEL<br/>OMEGA</span>
         </div>
         <div className="stat-list" data-reveal>
@@ -116,7 +120,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <div className="character-story-rail">
           {character.appearances.map((appearance, index) => <article className="character-story-event" key={appearance.title}>
-            <div className="story-event-art"><img src={`/api/title-image?title=${encodeURIComponent(appearance.title)}&type=${encodeURIComponent(appearance.type)}`} alt={`Imagen de ${appearance.title}`} loading="lazy"/><span>{String(index + 1).padStart(2, "0")}</span></div>
+            <div className="story-event-art"><Image src={`/api/title-image?title=${encodeURIComponent(appearance.title)}&type=${encodeURIComponent(appearance.type)}`} alt={`Imagen de ${appearance.title}`} fill sizes="(max-width: 560px) 84vw, 30vw" /><span>{String(index + 1).padStart(2, "0")}</span></div>
             <div className="story-event-point"><i /></div>
             <div className="story-event-copy"><div><b>{appearance.year}</b><small>{appearance.type}</small></div><h3><Link href={`/titulos/${appearance.titleId}`}>{appearance.title} ↗</Link></h3><p>{appearance.event}</p></div>
           </article>)}
