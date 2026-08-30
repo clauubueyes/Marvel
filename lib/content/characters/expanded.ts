@@ -16,6 +16,7 @@ const characterPortraits: Record<string, string> = {
   kingpin: "https://upload.wikimedia.org/wikipedia/en/5/54/Kingpin_%28Wilson_Grant_Fisk%29.png",
   thanos: "https://upload.wikimedia.org/wikipedia/en/b/b7/Thanos_%28Infobox_image%29.png",
   shuri: "https://upload.wikimedia.org/wikipedia/en/2/2d/Shuri_as_Griot%2C_Black_Panther_%282018%29_Variant_Cover.jpg",
+  "monica-rambeau": "https://upload.wikimedia.org/wikipedia/en/6/6e/Monica_Rambeau_as_Photon_%282022%29.webp",
 };
 
 const characterImagePositions: Partial<Record<string, string>> = {
