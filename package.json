@@ -12,10 +12,13 @@
     "audit:links": "tsx scripts/check-content-links.ts"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
     "fast-xml-parser": "^5.11.1",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/node": "latest",
