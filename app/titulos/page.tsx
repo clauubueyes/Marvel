@@ -3,6 +3,7 @@ import Link from "next/link";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { MotionEffects } from "@/components/MotionEffects";
 import { mcuCatalog } from "@/lib/mcuCatalog";
+import { getDetailedTitleIds, getEditorialCoverage } from "@/lib/content/titles/details";
 
 export const metadata: Metadata = {
   title: "Películas y series del MCU — NEXUS",
@@ -20,7 +21,7 @@ export default function TitlesPage() {
         <p className="eyebrow"><span /> UNIVERSO AUDIOVISUAL MARVEL</p>
         <h1>PELÍCULAS<br />Y <em>SERIES</em></h1>
         <p>Explora el archivo completo y descubre qué sucede en cada título, dónde encaja y qué personajes conecta.</p>
-        <div><strong>{String(mcuCatalog.length).padStart(2, "0")}</strong><span>TÍTULOS DOCUMENTADOS</span></div>
+        <div><strong>{String(mcuCatalog.length).padStart(2, "0")}</strong><span>TÍTULOS DOCUMENTADOS · {getDetailedTitleIds().length} EXPEDIENTES COMPLETOS O ANUNCIADOS</span></div>
       </section>
 
       <section className="titles-directory" aria-label="Archivo de títulos">
@@ -28,7 +29,7 @@ export default function TitlesPage() {
           <Link className="title-directory-card" href={`/titulos/${title.slug}`} key={title.slug} data-reveal>
             <span>{String(title.order).padStart(2, "0")}</span>
             <div>
-              <small>{title.period} · {title.type}</small>
+              <small>{title.period} · {title.type} · {getEditorialCoverage(title.slug)}</small>
               <h2>{title.title}</h2>
               <p>{title.event}</p>
             </div>

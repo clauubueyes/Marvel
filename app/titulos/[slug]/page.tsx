@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getEntitiesForTitle, getTitle, getTitleDossier } from "@/lib/contentRepository";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 import { getEntityHref } from "@/lib/mcuEntities";
-import { getTitleDetails } from "@/lib/content/titles/details";
+import { getEditorialCoverage, getTitleDetails } from "@/lib/content/titles/details";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -61,7 +61,7 @@ export default async function TitlePage({ params }: PageProps) {
           <p className="eyebrow"><span /> {title.type} · {title.phase}</p>
           <h1>{title.title}</h1>
           <p>{details?.spoilerFreeSynopsis ?? title.event}</p>
-          <div className="title-profile-tags"><span>{details?.status ?? title.period}</span><span>{title.continuity}</span><span>ORDEN {String(title.order).padStart(2, "0")}</span></div>
+          <div className="title-profile-tags"><span>{details?.status ?? title.period}</span><span>{getEditorialCoverage(title.slug)}</span><span>{title.continuity}</span><span>ORDEN {String(title.order).padStart(2, "0")}</span></div>
         </div>
         <span className="title-profile-number">{String(title.order).padStart(2, "0")}</span>
       </section>
@@ -83,8 +83,8 @@ export default async function TitlePage({ params }: PageProps) {
       {details && <>
         <section className="title-credits profile-section">
           <header data-reveal><p className="section-label">02 / FICHA TÉCNICA</p><h2>QUIÉN LE DIO<br /><em>FORMA</em></h2></header>
-          <div className="title-credit-columns" data-reveal><article><span>DIRECCIÓN</span>{details.directors.map((name) => <b key={name}>{name}</b>)}</article><article><span>GUION</span>{details.writers.map((name) => <b key={name}>{name}</b>)}</article><article><span>REPARTO PRINCIPAL</span>{details.cast.map((name) => <b key={name}>{name}</b>)}</article></div>
-          <a className="title-trailer" href={`https://www.youtube.com/watch?v=${details.trailerId}`} target="_blank" rel="noreferrer" data-reveal><Image src={`https://img.youtube.com/vi/${details.trailerId}/maxresdefault.jpg`} alt={`Tráiler oficial de ${title.title}`} fill sizes="(max-width: 800px) 100vw, 55vw" /><span>TRÁILER OFICIAL</span><strong>▶</strong><b>VER EN YOUTUBE ↗</b></a>
+          <div className="title-credit-columns" data-reveal><article><span>DIRECCIÓN</span>{details.directors.length ? details.directors.map((name) => <b key={name}>{name}</b>) : <b>POR CONFIRMAR</b>}</article><article><span>GUION</span>{details.writers.length ? details.writers.map((name) => <b key={name}>{name}</b>) : <b>POR CONFIRMAR</b>}</article><article><span>REPARTO PRINCIPAL</span>{details.cast.map((name) => <b key={name}>{name}</b>)}</article></div>
+          {details.trailerId && <a className="title-trailer" href={`https://www.youtube.com/watch?v=${details.trailerId}`} target="_blank" rel="noreferrer" data-reveal><Image src={`https://img.youtube.com/vi/${details.trailerId}/maxresdefault.jpg`} alt={`Tráiler oficial de ${title.title}`} fill sizes="(max-width: 800px) 100vw, 55vw" /><span>TRÁILER OFICIAL</span><strong>▶</strong><b>VER EN YOUTUBE ↗</b></a>}
         </section>
 
         <section className="title-watch profile-section"><header><p className="section-label">03 / ORDEN DE VISIONADO</p><h2>ANTES Y<br /><em>DESPUÉS</em></h2></header><div className="title-watch-columns"><article><span>VER ANTES</span>{beforeTitles.length ? beforeTitles.map((related) => <Link href={`/titulos/${related.slug}`} key={related.slug}><small>{related.type} · {related.period}</small><strong>{related.title}</strong><i>↗</i></Link>) : <p>Esta historia funciona como punto de entrada.</p>}</article><article><span>CONTINUAR CON</span>{afterTitles.map((related) => <Link href={`/titulos/${related.slug}`} key={related.slug}><small>{related.type} · {related.period}</small><strong>{related.title}</strong><i>↗</i></Link>)}</article></div></section>

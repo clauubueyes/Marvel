@@ -1,6 +1,7 @@
 import { characters } from "@/lib/characters";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 import { getEntityHref, mcuEntities } from "@/lib/mcuEntities";
+import { getEditorialCoverage, getTitleDetails } from "@/lib/content/titles/details";
 
 export type SearchResult = {
   id: string;
@@ -32,11 +33,11 @@ export const searchIndex: SearchResult[] = [
     id: title.slug,
     type: "TÍTULO",
     title: title.title,
-    subtitle: `${title.type} · ${title.period}`,
-    description: title.event,
+    subtitle: `${title.type} · ${title.period} · ${getEditorialCoverage(title.slug)}`,
+    description: getTitleDetails(title.slug)?.spoilerFreeSynopsis ?? title.event,
     href: `/titulos/${title.slug}`,
     image: `/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`,
-    searchText: normalize(`${title.title} ${title.type} ${title.period} ${title.phase} ${title.continuity} ${title.event}`),
+    searchText: normalize(`${title.title} ${title.type} ${title.period} ${title.phase} ${title.continuity} ${getEditorialCoverage(title.slug)} ${getTitleDetails(title.slug)?.spoilerFreeSynopsis ?? title.event}`),
   })),
   ...mcuEntities.map((entity): SearchResult => {
     const imageTitle = mcuCatalog.find(({ slug }) => entity.titleIds.includes(slug));
