@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run validate:content && next build",
+    "build": "npm run validate:content && npm run audit:content && next build",
     "start": "next start",
     "lint": "eslint .",
-    "validate:content": "tsx scripts/validate-content.ts"
+    "validate:content": "tsx scripts/validate-content.ts",
+    "audit:content": "tsx scripts/audit-content.ts"
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.1",
