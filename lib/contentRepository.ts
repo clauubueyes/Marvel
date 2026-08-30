@@ -1,5 +1,6 @@
 import { characters, type Character } from "@/lib/characters";
 import { mcuCatalog, type MCUEntry } from "@/lib/mcuCatalog";
+import { viewingRoutes } from "@/lib/viewingRoutes";
 
 export type TitleDossier = MCUEntry & {
   characters: Character[];
@@ -50,6 +51,15 @@ export function validateContent() {
       if (!titleSlugs.has(appearance.titleId)) {
         errors.push(`${character.name}: la aparición "${appearance.title}" no enlaza con ningún título (${appearance.titleId})`);
       }
+    }
+  }
+
+  const routeSlugs = new Set<string>();
+  for (const route of viewingRoutes) {
+    if (routeSlugs.has(route.slug)) errors.push(`Slug de ruta duplicado: ${route.slug}`);
+    routeSlugs.add(route.slug);
+    for (const step of route.steps) {
+      if (!titleSlugs.has(step.titleId)) errors.push(`${route.name}: el título ${step.titleId} no existe`);
     }
   }
 

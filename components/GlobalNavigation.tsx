@@ -17,6 +17,7 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
       <Link className="brand" href={home ? "#inicio" : "/"} aria-label="Nexus inicio" onClick={closeMenu}><span>N</span>NEXUS</Link>
       <nav className={menuOpen ? "nav global-links open" : "nav global-links"} aria-label="Navegación principal">
         <Link href="/#doom" onClick={closeMenu}>RUTA DOOMSDAY</Link>
+        <Link href="/rutas" onClick={closeMenu}>RUTAS</Link>
         <Link href="/titulos" onClick={closeMenu}>TÍTULOS</Link>
         <Link href="/personajes" onClick={closeMenu}>PERSONAJES</Link>
         <Link className="global-search-link" href="/buscar" onClick={closeMenu}>BUSCAR <span>⌕</span></Link>

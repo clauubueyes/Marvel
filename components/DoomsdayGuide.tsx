@@ -1,5 +1,9 @@
+import { ViewingRouteExperience } from "@/components/ViewingRouteExperience";
+import { getViewingRoute } from "@/lib/viewingRoutes";
+
 export function DoomsdayGuide() {
-  return <section className="doom-primer section" id="doom">
+  const route = getViewingRoute("camino-a-doomsday");
+  return <><section className="doom-primer section" id="doom">
     <div className="section-backdrop" aria-hidden="true">DOOM</div>
     <div className="primer-heading" data-reveal><p className="eyebrow"><span /> ARCHIVO CERO · SIN CÓMICS</p><h2>ENTENDER A<br/><em>DOOM</em></h2></div>
     <div className="primer-copy" data-reveal>
@@ -11,5 +15,5 @@ export function DoomsdayGuide() {
       </div>
     </div>
     <aside className="truth-card" data-reveal><span>LO CONFIRMADO</span><strong>ROBERT DOWNEY JR.</strong><p>interpreta a Victor von Doom. Compartir actor con Tony Stark no confirma que ambos personajes sean la misma persona.</p></aside>
-  </section>;
+  </section>{route && <ViewingRouteExperience route={route} compact />}</>;
 }
