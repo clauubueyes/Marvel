@@ -103,6 +103,9 @@ export function validateContent() {
       if (!url.startsWith("https://")) errors.push(`${titleId}: fuente no segura ${url}`);
     });
   }
+  for (const title of mcuCatalog) {
+    if (!detailedIds.has(title.slug)) errors.push(`${title.title}: falta el expediente editorial (${title.slug})`);
+  }
 
   return errors;
 }

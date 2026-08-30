@@ -7,5 +7,5 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exitCode = 1;
 } else {
-  console.log("Contenido válido: slugs únicos y apariciones enlazadas.");
+  console.log("Contenido válido: catálogo editorial completo, slugs únicos y relaciones enlazadas.");
 }
