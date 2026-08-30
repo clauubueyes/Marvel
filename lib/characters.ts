@@ -97,7 +97,7 @@ export const characters: Character[] = [
   {
     id: "captain-america", name: "CAPTAIN AMERICA", alias: "Steve Rogers", number: "06",
     quote: "Puedo hacer esto todo el día.", universe: "Tierra-616", color: "#1775d1", color2: "#e52b32", power: "Voluntad inquebrantable", symbol: "★", votes: 4688,
-    image: "/api/title-image?title=Steve%20Rogers&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/captain-america-steve-rogers/", role: "El primer Vengador", origin: "Brooklyn · Nueva York",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg", sourceUrl: "https://www.marvel.com/characters/captain-america-steve-rogers/", role: "El primer Vengador", origin: "Brooklyn · Nueva York",
     description: "Antes que supersoldado, Steve Rogers fue un hombre incapaz de mirar hacia otro lado. Su escudo representa una idea: hacer lo correcto incluso cuando nadie más está dispuesto.",
     stats: [{ label: "Liderazgo", value: 100 }, { label: "Voluntad", value: 100 }, { label: "Combate", value: 96 }, { label: "Fuerza", value: 88 }],
     abilities: ["Suero supersoldado", "Maestro del escudo", "Táctica militar", "Liderazgo"],
@@ -108,7 +108,7 @@ export const characters: Character[] = [
   },
   {
     id: "thor", name: "THOR", alias: "Thor Odinson", number: "07", quote: "Sigo siendo digno.", universe: "Tierra-616", color: "#4fa8ff", color2: "#f1b82d", power: "Dios del Trueno", symbol: "ϟ", votes: 4312,
-    image: "/api/title-image?title=Thor%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/thor-thor-odinson/", role: "El dios errante", origin: "Asgard",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/5/a0/537bc7036ab02.jpg", sourceUrl: "https://www.marvel.com/characters/thor-thor-odinson/", role: "El dios errante", origin: "Asgard",
     description: "Príncipe, guerrero y superviviente. Thor pierde un reino, una familia y casi la fe en sí mismo, pero aprende que la dignidad no reside en un arma ni en una corona.",
     stats: [{ label: "Fuerza", value: 100 }, { label: "Resistencia", value: 100 }, { label: "Rayo", value: 98 }, { label: "Voluntad", value: 91 }], abilities: ["Control del rayo", "Fuerza asgardiana", "Vuelo con Mjolnir", "Longevidad"],
     timeline: [{ year: "2011", title: "Desterrado", text: "Pierde sus poderes y aprende en Midgard qué significa ser digno." }, { year: "2017", title: "Ragnarok", text: "Acepta la destrucción de Asgard para salvar a su pueblo de Hela." }, { year: "2023", title: "Todavía digno", text: "Mjolnir responde a su llamada y Thor vuelve a levantarse contra Thanos." }],
@@ -118,7 +118,7 @@ export const characters: Character[] = [
   },
   {
     id: "hulk", name: "HULK", alias: "Bruce Banner", number: "08", quote: "Siempre estoy enfadado.", universe: "Tierra-616", color: "#72bd44", color2: "#7446a8", power: "Fuerza gamma", symbol: "✹", votes: 3899,
-    image: "/api/title-image?title=Bruce%20Banner%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/hulk-bruce-banner/", role: "La fuerza interior", origin: "Dayton · Ohio",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0.jpg", sourceUrl: "https://www.marvel.com/characters/hulk-bruce-banner/", role: "La fuerza interior", origin: "Dayton · Ohio",
     description: "La mente de Bruce Banner y la fuerza de Hulk parecían condenadas a luchar. Con el tiempo dejan de ser dos mitades enfrentadas y se convierten en una sola respuesta.",
     stats: [{ label: "Fuerza", value: 100 }, { label: "Intelecto", value: 100 }, { label: "Resistencia", value: 99 }, { label: "Control", value: 83 }], abilities: ["Fuerza gamma", "Regeneración", "Resistencia extrema", "Genio científico"],
     timeline: [{ year: "2008", title: "El fugitivo", text: "Banner busca una cura mientras Ross intenta convertir su condición en un arma." }, { year: "2017", title: "El campeón", text: "Hulk reina en la arena de Sakaar hasta que Bruce recupera el control." }, { year: "2023", title: "La unión", text: "Banner integra ambas identidades y revierte el Blip con las Gemas." }],
@@ -128,7 +128,7 @@ export const characters: Character[] = [
   },
   {
     id: "black-widow", name: "BLACK WIDOW", alias: "Natasha Romanoff", number: "09", quote: "Tengo mucho rojo en mi cuenta.", universe: "Tierra-616", color: "#e62e2e", color2: "#181a1f", power: "Espionaje total", symbol: "⌛", votes: 4227,
-    image: "/api/title-image?title=Natasha%20Romanoff%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/black-widow-natasha-romanoff/", role: "La espía", origin: "Rusia",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/f/30/50fecad1f395b.jpg", sourceUrl: "https://www.marvel.com/characters/black-widow-natasha-romanoff/", role: "La espía", origin: "Rusia",
     description: "La Habitación Roja la convirtió en arma. Natasha convirtió esa deuda en una vida dedicada a reunir personas, derribar imperios ocultos y dar a otros la familia que encontró.",
     stats: [{ label: "Espionaje", value: 100 }, { label: "Combate", value: 97 }, { label: "Estrategia", value: 94 }, { label: "Voluntad", value: 98 }], abilities: ["Infiltración", "Artes marciales", "Interrogatorio", "Tiro experto"],
     timeline: [{ year: "2010", title: "Infiltrada", text: "Vigila a Tony Stark y revela su identidad como agente de S.H.I.E.L.D." }, { year: "2016", title: "Sin bandos", text: "Ayuda a Steve y Bucky a escapar aunque eso la convierta en fugitiva." }, { year: "2023", title: "Vormir", text: "Entrega su vida para que los Vengadores obtengan la Gema del Alma." }],
@@ -138,7 +138,7 @@ export const characters: Character[] = [
   },
   {
     id: "hawkeye", name: "HAWKEYE", alias: "Clint Barton", number: "10", quote: "La ciudad vuela y yo tengo un arco.", universe: "Tierra-616", color: "#8b4bb5", color2: "#20212a", power: "Precisión absoluta", symbol: "➶", votes: 3128,
-    image: "/api/title-image?title=Clint%20Barton%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/hawkeye-clint-barton/", role: "El tirador", origin: "Iowa · Estados Unidos", description: "Sin armadura ni poderes, Clint sostiene al equipo con experiencia, puntería y una humanidad obstinada. Su mayor batalla siempre consiste en volver a casa.",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/e/90/50fecaf4f101b.jpg", sourceUrl: "https://www.marvel.com/characters/hawkeye-clint-barton/", role: "El tirador", origin: "Iowa · Estados Unidos", description: "Sin armadura ni poderes, Clint sostiene al equipo con experiencia, puntería y una humanidad obstinada. Su mayor batalla siempre consiste en volver a casa.",
     stats: [{ label: "Precisión", value: 100 }, { label: "Estrategia", value: 94 }, { label: "Combate", value: 91 }, { label: "Resistencia", value: 82 }], abilities: ["Tiro con arco", "Combate táctico", "Infiltración", "Liderazgo de campo"],
     timeline: [{ year: "2012", title: "Nueva York", text: "Supera el control de Loki y defiende la ciudad junto a los Vengadores." }, { year: "2023", title: "Ronin", text: "El Blip lo empuja a una cruzada que Natasha logra detener." }, { year: "2024", title: "El relevo", text: "Reconoce el talento de Kate Bishop y la acepta como compañera." }],
     facts: [{ value: "0", label: "PODERES", text: "Su lugar entre dioses depende de disciplina, experiencia y precisión." }, { value: "3", label: "HIJOS", text: "La familia Barton es el centro emocional de todas sus decisiones." }, { value: "1", label: "RONIN", text: "Una identidad nacida del dolor que otros intentan heredar." }],
@@ -147,7 +147,7 @@ export const characters: Character[] = [
   },
   {
     id: "loki", name: "LOKI", alias: "Loki Laufeyson", number: "11", quote: "Estoy cargado con un glorioso propósito.", universe: "Tierra-616 / TVA", color: "#3e9b55", color2: "#d5ae45", power: "Dios de las historias", symbol: "♜", votes: 4510,
-    image: "/api/title-image?title=Loki%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/loki/", role: "El embaucador", origin: "Jotunheim · Asgard", description: "Villano, hermano y variante. Loki pasa de querer un trono a sostener infinitas historias, descubriendo que el propósito más glorioso puede consistir en renunciar a ser visto.",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/d/90/526547f509313.jpg", sourceUrl: "https://www.marvel.com/characters/loki/", role: "El embaucador", origin: "Jotunheim · Asgard", description: "Villano, hermano y variante. Loki pasa de querer un trono a sostener infinitas historias, descubriendo que el propósito más glorioso puede consistir en renunciar a ser visto.",
     stats: [{ label: "Magia", value: 96 }, { label: "Ingenio", value: 98 }, { label: "Engaño", value: 100 }, { label: "Voluntad", value: 97 }], abilities: ["Ilusiones", "Metamorfosis", "Telequinesis", "Control temporal"],
     timeline: [{ year: "2012", title: "La invasión", text: "Ataca Nueva York con los Chitauri y termina prisionero de los Vengadores." }, { year: "2018", title: "El sacrificio", text: "Intenta matar a Thanos para proteger a Thor y muere en el intento." }, { year: "Fuera del tiempo", title: "Yggdrasil", text: "Reúne las líneas temporales y ocupa el centro de sus historias." }],
     facts: [{ value: "L1130", label: "VARIANTE", text: "La TVA asigna este expediente al Loki que escapa en 2012." }, { value: "∞", label: "LÍNEAS", text: "Aprende a desplazarse entre ramificaciones temporales." }, { value: "1", label: "TRONO", text: "Obtiene el trono que deseaba cuando ya comprende su verdadero coste." }],
@@ -156,7 +156,7 @@ export const characters: Character[] = [
   },
   {
     id: "captain-marvel", name: "CAPTAIN MARVEL", alias: "Carol Danvers", number: "12", quote: "No tengo nada que demostrarte.", universe: "Tierra-616", color: "#1768b0", color2: "#ef3340", power: "Energía cósmica", symbol: "✦", votes: 3374,
-    image: "/api/title-image?title=Carol%20Danvers%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/captain-marvel-carol-danvers/", role: "La centinela cósmica", origin: "Tierra · Hala", description: "Piloto convertida en arma Kree, Carol recupera su memoria y su nombre. Desde entonces protege mundos enteros mientras aprende que incluso el poder cósmico necesita vínculos.",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/c/10/537ba5ff07aa4.jpg", sourceUrl: "https://www.marvel.com/characters/captain-marvel-carol-danvers/", role: "La centinela cósmica", origin: "Tierra · Hala", description: "Piloto convertida en arma Kree, Carol recupera su memoria y su nombre. Desde entonces protege mundos enteros mientras aprende que incluso el poder cósmico necesita vínculos.",
     stats: [{ label: "Energía", value: 100 }, { label: "Vuelo", value: 100 }, { label: "Fuerza", value: 98 }, { label: "Voluntad", value: 96 }], abilities: ["Absorción de energía", "Vuelo interestelar", "Fuerza cósmica", "Forma binaria"],
     timeline: [{ year: "1995", title: "Recuperar el nombre", text: "Descubre la mentira Kree y ayuda a los Skrull a encontrar refugio." }, { year: "2019", title: "La llamada", text: "Responde al busca de Fury y encuentra a los Vengadores tras el Blip." }, { year: "2026", title: "Entrelazadas", text: "Sus poderes se conectan con los de Kamala y Monica." }],
     facts: [{ value: "1995", label: "REGRESO", text: "El año en que vuelve a la Tierra sin recordar que fue Carol Danvers." }, { value: "3", label: "MARVELS", text: "Carol, Monica y Kamala intercambian lugar al usar sus poderes." }, { value: "∞", label: "ALCANCE", text: "Puede atravesar el espacio sin nave y responder a crisis planetarias." }],
@@ -165,7 +165,7 @@ export const characters: Character[] = [
   },
   {
     id: "sam-wilson", name: "CAPTAIN AMERICA", alias: "Sam Wilson", number: "13", quote: "El único poder que tengo es creer que podemos hacerlo mejor.", universe: "Tierra-616", color: "#225ca8", color2: "#d72d35", power: "El nuevo símbolo", symbol: "★", votes: 3520,
-    image: "/api/title-image?title=Sam%20Wilson%20MCU&type=PERSONAJE", sourceUrl: "https://www.marvel.com/characters/falcon-sam-wilson/", role: "El heredero", origin: "Delacroix · Luisiana", description: "Veterano, consejero y Vengador. Sam acepta el escudo sabiendo que representa una historia imperfecta y decide usarlo para exigir un futuro mejor.",
+    image: "https://i.annihil.us/u/prod/marvel/i/mg/d/c0/569e646046152.jpg", sourceUrl: "https://www.marvel.com/characters/falcon-sam-wilson/", role: "El heredero", origin: "Delacroix · Luisiana", description: "Veterano, consejero y Vengador. Sam acepta el escudo sabiendo que representa una historia imperfecta y decide usarlo para exigir un futuro mejor.",
     stats: [{ label: "Liderazgo", value: 98 }, { label: "Vuelo", value: 96 }, { label: "Combate", value: 91 }, { label: "Empatía", value: 100 }], abilities: ["Vuelo táctico", "Escudo de vibranium", "Drones Redwing", "Rescate militar"],
     timeline: [{ year: "2014", title: "A tu izquierda", text: "Ayuda a Steve a derribar los Helicarriers infiltrados por HYDRA." }, { year: "2024", title: "El escudo", text: "Acepta públicamente el manto de Capitán América." }, { year: "2027", title: "Un mundo nuevo", text: "Defiende su legitimidad frente a una crisis internacional." }],
     facts: [{ value: "EXO-7", label: "FALCON", text: "El sistema de alas que domina desde su etapa de rescate militar." }, { value: "1", label: "ESCUDO", text: "Steve lo elige personalmente para continuar su legado." }, { value: "0", label: "SUERO", text: "Sam demuestra que el símbolo depende del carácter y no del suero." }],
