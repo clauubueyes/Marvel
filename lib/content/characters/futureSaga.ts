@@ -1,6 +1,8 @@
 import { buildCharacter, type CharacterSeed } from "@/lib/content/characters/expanded";
 
-const comicImage = (filename: string) => `https://en.wikipedia.org/wiki/Special:Redirect/file/${encodeURIComponent(filename)}`;
+const comicImage = (filename: string) => filename === "Doctor Doom (Marvel Comics character).png"
+  ? "https://upload.wikimedia.org/wikipedia/en/6/66/Doctor_Doom_%28Marvel_Comics_character%29.png"
+  : `https://en.wikipedia.org/wiki/Special:Redirect/file/${encodeURIComponent(filename)}`;
 const firstSteps = { catalogTitle: "Los Cuatro Fantásticos: Primeros pasos", title: "Los Cuatro Fantásticos: Primeros pasos", year: "2025", type: "PELÍCULA" as const };
 
 const seeds: CharacterSeed[] = [
