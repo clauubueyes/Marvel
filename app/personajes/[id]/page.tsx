@@ -6,7 +6,7 @@ import { characters, getCharacter } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { getEntitiesForCharacter } from "@/lib/contentRepository";
+import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/lib/contentRepository";
 import { getEntityHref } from "@/lib/mcuEntities";
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -30,6 +30,7 @@ export default async function CharacterPage({ params }: PageProps) {
   const previous = characters[(currentIndex - 1 + characters.length) % characters.length];
   const next = characters[(currentIndex + 1) % characters.length];
   const connectedEntities = getEntitiesForCharacter(character.id);
+  const relatedRoutes = getViewingRoutesForCharacter(character.id);
 
   return (
     <main className={`profile profile-${character.id}`} style={{ "--accent": character.color, "--accent-2": character.color2 } as React.CSSProperties}>
@@ -48,7 +49,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
         <div className="profile-figure" aria-hidden="true">
           <div className="profile-rings"><i /><i /><i /></div>
-          <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" /></div>
+          <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" style={{ objectPosition: character.imagePosition ?? "center top" }} /></div>
           <b>{character.symbol}</b>
         </div>
         <blockquote>“{character.quote}”</blockquote>
@@ -60,11 +61,11 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="identity-portrait" data-reveal aria-hidden="true">
           <div className="portrait-orbit"><i /><i /></div>
           <span className="portrait-symbol">{character.symbol}</span>
-          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" />
+          <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" style={{ objectPosition: character.imagePosition ?? "center top" }} />
           <b className="portrait-index">{character.number}</b>
           <small>{character.alias} / {character.role}</small>
         </div>
-        <div className="intro-copy"><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
+        <div className="intro-copy"><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd>{character.status}</dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
       </section>
 
       <section className="screen-moment profile-section">
@@ -129,6 +130,15 @@ export default async function CharacterPage({ params }: PageProps) {
       </section>
 
       {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} style={{ "--node-accent": entity.color } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
+
+      <section className="character-reference profile-section">
+        <header><p className="section-label">08 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
+        <div className="character-reference-grid">
+          <article><span>VARIANTES</span>{character.variants.length ? character.variants.map((variant) => <div key={`${variant.name}-${variant.universe}`}><h3>{variant.name}</h3><b>{variant.universe}</b><p>{variant.description}</p></div>) : <p>No hay variantes audiovisuales relevantes documentadas.</p>}</article>
+          <article><span>QUÉ VER PARA CONOCERLE</span>{relatedRoutes.map((route) => <Link href={`/rutas/${route.slug}`} key={route.slug}><h3>{route.name}</h3><p>{route.description}</p><b>ABRIR RECORRIDO ↗</b></Link>)}</article>
+          <article><span>FUENTES Y REVISIÓN</span>{character.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.label} ↗</a>)}<p>Última revisión: <time dateTime={character.reviewedAt}>{character.reviewedAt}</time></p></article>
+        </div>
+      </section>
 
       <nav className="character-pagination">
         <Link href={`/personajes/${previous.id}`}><small>← ANTERIOR</small><strong>{previous.name}</strong></Link>

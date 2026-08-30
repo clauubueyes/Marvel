@@ -76,7 +76,7 @@ export default async function TitlePage({ params }: PageProps) {
           <div><dt>{details ? "ESTRENO" : "POSICIÓN"}</dt><dd>{details?.releaseDate ?? title.period}</dd></div>
           <div><dt>{details ? "DURACIÓN" : "FORMATO"}</dt><dd>{details?.runtime ?? title.type}</dd></div>
           <div><dt>{details ? "CLASIFICACIÓN" : "ETAPA"}</dt><dd>{details?.certification ?? title.phase}</dd></div>
-          <div><dt>{details ? "DISPONIBILIDAD" : "CONTINUIDAD"}</dt><dd>{details?.availability ?? title.continuity}</dd></div>
+          <div><dt>{details ? "DISPONIBILIDAD" : "CONTINUIDAD"}</dt><dd>{details ? `${details.availability} · CONSULTAR SEGÚN REGIÓN` : title.continuity}</dd></div>
         </dl>
       </section>
 
