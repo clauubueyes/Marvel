@@ -46,12 +46,37 @@ export function MotionEffects() {
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.classList.add("is-visible"));
     }, 1800);
 
+    const ironProfile = document.querySelector<HTMLElement>(".profile-iron");
+    let scrollFrame = 0;
+    const updateIronScroll = () => {
+      scrollFrame = 0;
+      if (!ironProfile) return;
+      const hero = ironProfile.querySelector<HTMLElement>(".profile-hero");
+      if (!hero) return;
+      const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(hero.offsetHeight, 1)));
+      ironProfile.style.setProperty("--iron-scroll", progress.toFixed(3));
+      ironProfile.style.setProperty("--iron-figure-shift", `${(-progress * 26).toFixed(1)}px`);
+      ironProfile.style.setProperty("--iron-hud-shift", `${(-progress * 18).toFixed(1)}px`);
+      ironProfile.style.setProperty("--iron-hud-scale", (1 + progress * .08).toFixed(3));
+      ironProfile.style.setProperty("--iron-readout-shift", `${(progress * 18).toFixed(1)}px`);
+    };
+    const onScroll = () => { if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateIronScroll); };
+    updateIronScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
       observer.disconnect();
       mutationObserver.disconnect();
       window.clearTimeout(visibilityFallback);
       document.documentElement.classList.remove("motion-ready");
       cleanups.forEach((cleanup) => cleanup());
+      window.removeEventListener("scroll", onScroll);
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+      ironProfile?.style.removeProperty("--iron-scroll");
+      ironProfile?.style.removeProperty("--iron-figure-shift");
+      ironProfile?.style.removeProperty("--iron-hud-shift");
+      ironProfile?.style.removeProperty("--iron-hud-scale");
+      ironProfile?.style.removeProperty("--iron-readout-shift");
     };
   }, []);
 
