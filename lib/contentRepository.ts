@@ -2,6 +2,7 @@ import { characters, type Character } from "@/lib/characters";
 import { mcuCatalog, type MCUEntry } from "@/lib/mcuCatalog";
 import { viewingRoutes } from "@/lib/viewingRoutes";
 import { mcuEntities } from "@/lib/mcuEntities";
+import { getDetailedTitleIds, getTitleDetails } from "@/lib/content/titles/details";
 
 export type TitleDossier = MCUEntry & {
   characters: Character[];
@@ -87,6 +88,19 @@ export function validateContent() {
   for (const entity of mcuEntities) {
     entity.connections.forEach((connection) => {
       if (!entityKeys.has(`${connection.kind}:${connection.slug}`)) errors.push(`${entity.name}: la conexión ${connection.kind}:${connection.slug} no existe`);
+    });
+  }
+  const detailedIds = new Set<string>();
+  for (const titleId of getDetailedTitleIds()) {
+    if (detailedIds.has(titleId)) errors.push(`Metadatos de título duplicados: ${titleId}`);
+    detailedIds.add(titleId);
+    if (!titleSlugs.has(titleId)) errors.push(`Los metadatos apuntan a un título inexistente: ${titleId}`);
+    const details = getTitleDetails(titleId);
+    [...(details?.watchBefore ?? []), ...(details?.watchAfter ?? [])].forEach((relatedId) => {
+      if (!titleSlugs.has(relatedId)) errors.push(`${titleId}: la recomendación ${relatedId} no existe`);
+    });
+    details?.sources.forEach(({ url }) => {
+      if (!url.startsWith("https://")) errors.push(`${titleId}: fuente no segura ${url}`);
     });
   }
 
