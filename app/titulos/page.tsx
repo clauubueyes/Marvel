@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { MotionEffects } from "@/components/MotionEffects";
+import { TitleDirectory, type TitleDirectoryEntry } from "@/components/TitleDirectory";
 import { mcuCatalog } from "@/lib/mcuCatalog";
-import { getDetailedTitleIds, getEditorialCoverage } from "@/lib/content/titles/details";
+import { getDetailedTitleIds, getEditorialCoverage, getTitleDetails } from "@/lib/content/titles/details";
+import { viewingRoutes } from "@/lib/viewingRoutes";
 
 export const metadata: Metadata = {
   title: "Películas y series del MCU — NEXUS",
@@ -12,6 +13,13 @@ export const metadata: Metadata = {
 };
 
 export default function TitlesPage() {
+  const titles: TitleDirectoryEntry[] = mcuCatalog.map((title) => ({
+    ...title,
+    releaseDateISO: getTitleDetails(title.slug)?.releaseDateISO ?? "9999-12-31",
+    coverage: getEditorialCoverage(title.slug),
+    routes: viewingRoutes.filter(({ steps }) => steps.some(({ titleId }) => titleId === title.slug)).map(({ slug, name }) => ({ slug, name })),
+  }));
+
   return (
     <main className="titles-index" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
       <MotionEffects />
@@ -24,20 +32,7 @@ export default function TitlesPage() {
         <div><strong>{String(mcuCatalog.length).padStart(2, "0")}</strong><span>TÍTULOS DOCUMENTADOS · {getDetailedTitleIds().length} EXPEDIENTES COMPLETOS O ANUNCIADOS</span></div>
       </section>
 
-      <section className="titles-directory" aria-label="Archivo de títulos">
-        {mcuCatalog.map((title) => (
-          <Link className="title-directory-card" href={`/titulos/${title.slug}`} key={title.slug} data-reveal>
-            <span>{String(title.order).padStart(2, "0")}</span>
-            <div>
-              <small>{title.period} · {title.type} · {getEditorialCoverage(title.slug)}</small>
-              <h2>{title.title}</h2>
-              <p>{title.event}</p>
-            </div>
-            <aside><b>{title.phase}</b><small>{title.continuity}</small></aside>
-            <i>↗</i>
-          </Link>
-        ))}
-      </section>
+      <TitleDirectory titles={titles} />
     </main>
   );
 }
