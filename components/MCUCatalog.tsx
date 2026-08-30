@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import { mcuCatalog, type MCUContinuity, type MCUType } from "@/lib/mcuCatalog";
 
 type Filter = "TODO" | MCUType | MCUContinuity;
@@ -23,7 +24,6 @@ export function MCUCatalog() {
     const normalized = query.trim().toLocaleLowerCase("es");
     return mcuCatalog.filter(entry => (filter === "TODO" || entry.type === filter || entry.continuity === filter) && (!normalized || `${entry.title} ${entry.period} ${entry.event}`.toLocaleLowerCase("es").includes(normalized)));
   }, [filter, query]);
-  useEffect(() => setVisibleCount(PAGE_SIZE), [filter, query]);
   const displayed = visible.slice(0, visibleCount);
 
   return <section className="doom-guide mcu-catalog" id="cronologia">
@@ -33,9 +33,9 @@ export function MCUCatalog() {
     </header>
     <div className="doom-intro catalog-intro" data-reveal><p>De los orígenes de Wakanda al choque de universos: toda la historia audiovisual en un único recorrido.</p><span>ORDEN CRONOLÓGICO <i /> CONTINUIDAD IDENTIFICADA</span></div>
     <div className="catalog-tools" data-reveal>
-      <label><span>BUSCAR UN TÍTULO</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Ej. Daredevil, Wanda, Thor…" /></label>
+      <label><span>BUSCAR UN TÍTULO</span><input value={query} onChange={event => { setQuery(event.target.value); setVisibleCount(PAGE_SIZE); }} placeholder="Ej. Daredevil, Wanda, Thor…" /></label>
       <div className="catalog-filters" aria-label="Filtrar cronología">
-        {(["TODO", "PELÍCULA", "SERIE", "ESPECIAL", "SAGA PRINCIPAL", "MARVEL TELEVISION", "MULTIVERSO"] as Filter[]).map(item => <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item}</button>)}
+        {(["TODO", "PELÍCULA", "SERIE", "ESPECIAL", "SAGA PRINCIPAL", "MARVEL TELEVISION", "MULTIVERSO"] as Filter[]).map(item => <button key={item} className={filter === item ? "active" : ""} onClick={() => { setFilter(item); setVisibleCount(PAGE_SIZE); }}>{item}</button>)}
       </div>
     </div>
     <div className="catalog-result"><span>{visible.length} TÍTULOS</span><span>ORDEN CRONOLÓGICO APROXIMADO</span></div>
@@ -47,7 +47,7 @@ export function MCUCatalog() {
           <div className="watch-main"><small>{entry.period} · {entry.type}</small><h3>{entry.title}</h3><p>{entry.event}</p><b>{entry.continuity}</b></div>
           <span className="expand-label"><i>+</i> VER SUCESO</span>
         </summary>
-        <div className="event-dossier catalog-event"><div><span>EL SUCESO CLAVE</span><p>{entry.event}</p></div><div><span>POSICIÓN EN LA HISTORIA</span><p>{entry.period}</p><strong>{entry.phase} · {entry.continuity}</strong></div><div><span>FORMATO</span><article><b>{entry.type}</b><small>PRODUCCIÓN AUDIOVISUAL</small></article></div></div>
+        <div className="event-dossier catalog-event"><div><span>EL SUCESO CLAVE</span><p>{entry.event}</p><Link className="dossier-link" href={`/titulos/${entry.slug}`}>ABRIR EXPEDIENTE COMPLETO ↗</Link></div><div><span>POSICIÓN EN LA HISTORIA</span><p>{entry.period}</p><strong>{entry.phase} · {entry.continuity}</strong></div><div><span>FORMATO</span><article><b>{entry.type}</b><small>PRODUCCIÓN AUDIOVISUAL</small></article></div></div>
       </details>)}
       {!visible.length && <div className="catalog-empty"><b>NO HAY RESULTADOS</b><p>Prueba con otro título o elimina los filtros.</p></div>}
     </div>

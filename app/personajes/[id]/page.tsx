@@ -32,7 +32,7 @@ export default async function CharacterPage({ params }: PageProps) {
       <header className="profile-nav">
         <Link className="brand" href="/"><span>N</span>NEXUS</Link>
         <p>ARCHIVO / {character.number}</p>
-        <Link href="/#characters">CERRAR <b>×</b></Link>
+        <Link href="/#personajes">CERRAR <b>×</b></Link>
       </header>
 
       <section className="profile-hero">
@@ -88,7 +88,7 @@ export default async function CharacterPage({ params }: PageProps) {
       <section className="filmography profile-section">
         <div className="film-heading" data-reveal><p className="section-label">04 / EN PANTALLA</p><h2>SU HISTORIA<br/><em>EN CINE</em></h2><p>Una selección de los capítulos que definieron su recorrido audiovisual.</p></div>
         <div className="film-reel" data-reveal>
-          {character.appearances.map((appearance, index) => <article key={appearance.title}><b>{String(index + 1).padStart(2, "0")}</b><div><span>{appearance.type}</span><h3>{appearance.title}</h3></div><strong>{appearance.year}</strong><i>↗</i></article>)}
+          {character.appearances.map((appearance, index) => <Link href={`/titulos/${appearance.titleId}`} key={appearance.title}><b>{String(index + 1).padStart(2, "0")}</b><div><span>{appearance.type}</span><h3>{appearance.title}</h3></div><strong>{appearance.year}</strong><i>↗</i></Link>)}
         </div>
       </section>
 
@@ -118,7 +118,7 @@ export default async function CharacterPage({ params }: PageProps) {
           {character.appearances.map((appearance, index) => <article className="character-story-event" key={appearance.title}>
             <div className="story-event-art"><img src={`/api/title-image?title=${encodeURIComponent(appearance.title)}&type=${encodeURIComponent(appearance.type)}`} alt={`Imagen de ${appearance.title}`} loading="lazy"/><span>{String(index + 1).padStart(2, "0")}</span></div>
             <div className="story-event-point"><i /></div>
-            <div className="story-event-copy"><div><b>{appearance.year}</b><small>{appearance.type}</small></div><h3>{appearance.title}</h3><p>{appearance.event}</p></div>
+            <div className="story-event-copy"><div><b>{appearance.year}</b><small>{appearance.type}</small></div><h3><Link href={`/titulos/${appearance.titleId}`}>{appearance.title} ↗</Link></h3><p>{appearance.event}</p></div>
           </article>)}
         </div>
         <p className="story-scroll-cue">DESLIZA PARA RECORRER SU HISTORIA <span>→</span></p>

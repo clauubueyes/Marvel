@@ -1,3 +1,13 @@
+import { createContentSlug } from "@/lib/contentSlug";
+
+export type CharacterAppearance = {
+  titleId: string;
+  title: string;
+  year: string;
+  type: "PELÍCULA" | "SERIE";
+  event: string;
+};
+
 export type Character = {
   id: string;
   name: string;
@@ -19,11 +29,15 @@ export type Character = {
   abilities: string[];
   timeline: { year: string; title: string; text: string }[];
   facts: { value: string; label: string; text: string }[];
-  appearances: { title: string; year: string; type: "PELÍCULA" | "SERIE"; event: string }[];
+  appearances: CharacterAppearance[];
   screenMoment: { videoId: string; title: string; kicker: string; text: string };
 };
 
-export const characters: Character[] = [
+type CharacterEntry = Omit<Character, "appearances"> & {
+  appearances: Omit<CharacterAppearance, "titleId">[];
+};
+
+const characterEntries: CharacterEntry[] = [
   {
     id: "spider", name: "SPIDER-MAN", alias: "Peter Parker", number: "01",
     quote: "Un gran poder conlleva una gran responsabilidad.", universe: "Tierra-616",
@@ -173,6 +187,39 @@ export const characters: Character[] = [
     screenMoment: { videoId: "IWBsDaFWyTE", title: "El peso de un legado", kicker: "THE FALCON AND THE WINTER SOLDIER · TRÁILER", text: "Sam y Bucky afrontan un mundo sin Steve mientras deciden quién puede portar el símbolo que dejó atrás." },
   },
 ];
+
+const appearanceCatalogTitles: Record<string, string> = {
+  "Age of Ultron": "Vengadores: La Era de Ultrón",
+  "Brave New World": "Capitán América: Brave New World",
+  "Captain Marvel": "Capitana Marvel",
+  "Civil War": "Capitán América: Civil War",
+  "Endgame": "Vengadores: Endgame",
+  "Far From Home": "Spider-Man: Lejos de casa",
+  "Hawkeye": "Ojo de Halcón",
+  "Homecoming": "Spider-Man: Homecoming",
+  "Infinity War": "Vengadores: Infinity War",
+  "Loki": "Loki · Temporadas 1 y 2",
+  "Love and Thunder": "Thor: Love and Thunder",
+  "Ms. Marvel": "Ms. Marvel",
+  "Multiverse of Madness": "Doctor Strange en el Multiverso de la Locura",
+  "No Way Home": "Spider-Man: No Way Home",
+  "Ragnarok": "Thor: Ragnarok",
+  "The Avengers": "Los Vengadores",
+  "The Falcon and the Winter Soldier": "Falcon y el Soldado de Invierno",
+  "The First Avenger": "Capitán América: El Primer Vengador",
+  "The Incredible Hulk": "El Increíble Hulk",
+  "The Marvels": "The Marvels",
+  "The Winter Soldier": "Capitán América: El Soldado de Invierno",
+  "WandaVision": "WandaVision",
+};
+
+export const characters: Character[] = characterEntries.map((character) => ({
+  ...character,
+  appearances: character.appearances.map((appearance) => ({
+    ...appearance,
+    titleId: createContentSlug(appearanceCatalogTitles[appearance.title] ?? appearance.title),
+  })),
+}));
 
 export function getCharacter(id: string) {
   return characters.find((character) => character.id === id);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { characters } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { DoomsdayGuide } from "@/components/DoomsdayGuide";
@@ -50,6 +51,6 @@ export default function Home() {
       </div>
     </section>
 
-    <footer><a className="brand" href="#inicio"><span>N</span>NEXUS</a><p>GUÍA EDITORIAL DEL MCU · PROYECTO NO OFICIAL</p><a href="#inicio">VOLVER ARRIBA ↑</a></footer>
+    <footer><a className="brand" href="#inicio"><span>N</span>NEXUS</a><p>GUÍA EDITORIAL DEL MCU · PROYECTO NO OFICIAL</p><Link href="/titulos">ARCHIVO DE TÍTULOS ↗</Link><a href="#inicio">VOLVER ARRIBA ↑</a></footer>
   </main>;
 }

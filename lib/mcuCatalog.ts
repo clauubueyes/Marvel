@@ -1,8 +1,10 @@
 export type MCUType = "PELÍCULA" | "SERIE" | "ESPECIAL" | "ONE-SHOT";
 export type MCUContinuity = "SAGA PRINCIPAL" | "MARVEL TELEVISION" | "MULTIVERSO";
-export type MCUEntry = { order: number; title: string; period: string; type: MCUType; continuity: MCUContinuity; phase: string; event: string };
+import { createContentSlug } from "@/lib/contentSlug";
 
-const entries: Omit<MCUEntry, "order">[] = [
+export type MCUEntry = { slug: string; order: number; title: string; period: string; type: MCUType; continuity: MCUContinuity; phase: string; event: string };
+
+const entries: Omit<MCUEntry, "order" | "slug">[] = [
   { title: "Eyes of Wakanda", period: "1260 a. C.–1896", type: "SERIE", continuity: "SAGA PRINCIPAL", phase: "EL PASADO", event: "Los Hatut Zeraze recuperan artefactos de vibranium a lo largo de la historia." },
   { title: "Capitán América: El Primer Vengador", period: "1943–1945", type: "PELÍCULA", continuity: "SAGA PRINCIPAL", phase: "EL PASADO", event: "Steve Rogers se convierte en el primer Vengador y combate a HYDRA." },
   { title: "Agent Carter · Temporada 1", period: "1946", type: "SERIE", continuity: "MARVEL TELEVISION", phase: "EL PASADO", event: "Peggy Carter afronta una conspiración mientras ayuda a Howard Stark." },
@@ -96,4 +98,8 @@ const entries: Omit<MCUEntry, "order">[] = [
   { title: "Avengers: Doomsday", period: "Próximo destino", type: "PELÍCULA", continuity: "MULTIVERSO", phase: "FASE 6", event: "Victor von Doom reúne en una misma crisis a Vengadores, X-Men y Fantastic Four." }
 ];
 
-export const mcuCatalog: MCUEntry[] = entries.map((entry, index) => ({ ...entry, order: index + 1 }));
+export const mcuCatalog: MCUEntry[] = entries.map((entry, index) => ({
+  ...entry,
+  slug: createContentSlug(entry.title),
+  order: index + 1,
+}));
