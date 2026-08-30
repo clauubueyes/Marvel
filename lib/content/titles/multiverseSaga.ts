@@ -2,7 +2,7 @@ import type { TitleDetails } from "./types";
 
 export const multiverseSagaTitleDetails: TitleDetails[] = [
   {
-      titleId: "spider-man-brand-new-day", spoilerFreeSynopsis: "Peter Parker continúa su vida como un Spider-Man anónimo después de que el mundo olvidara su identidad y sus vínculos personales.", releaseDate: "31 JUL 2026", releaseDateISO: "2026-07-31", runtime: "POR CONFIRMAR", certification: "POR CONFIRMAR", status: "ESTRENADO", availability: "CINES", directors: ["Destin Daniel Cretton"], writers: ["Chris McKenna", "Erik Sommers"], cast: ["Tom Holland", "Zendaya", "Jacob Batalon", "Sadie Sink", "Jon Bernthal", "Mark Ruffalo"], trailerId: "", watchBefore: ["spider-man-no-way-home", "daredevil-born-again-temporada-2"], watchAfter: ["avengers-doomsday"], postCredits: [], sources: [{ label: "CALENDARIO OFICIAL MARVEL", url: "https://www.marvel.com/movies" }], reviewedAt: "30 AGO 2026",
+      titleId: "spider-man-brand-new-day", spoilerFreeSynopsis: "Peter Parker continúa su vida como un Spider-Man anónimo después de que el mundo olvidara su identidad y sus vínculos personales.", releaseDate: "31 JUL 2026", releaseDateISO: "2026-07-31", runtime: "POR CONFIRMAR", certification: "POR CONFIRMAR", status: "ESTRENADO", availability: "CINES", directors: ["Destin Daniel Cretton"], writers: ["Chris McKenna", "Erik Sommers"], cast: ["Tom Holland", "Zendaya", "Jacob Batalon", "Sadie Sink", "Jon Bernthal", "Mark Ruffalo"], trailerId: "tLeBDumanoc", watchBefore: ["spider-man-no-way-home", "daredevil-born-again-temporada-2"], watchAfter: ["avengers-doomsday"], postCredits: [], sources: [{ label: "CALENDARIO OFICIAL MARVEL", url: "https://www.marvel.com/movies" }, { label: "TRÁILER OFICIAL MARVEL", url: "https://www.youtube.com/watch?v=tLeBDumanoc" }], reviewedAt: "30 AGO 2026",
     },
   {
       titleId: "echo", spoilerFreeSynopsis: "Perseguida por las consecuencias de sus actos en Nueva York, Maya López regresa a Oklahoma y debe reconciliarse con su familia, sus raíces choctaw y la influencia de Wilson Fisk.",
@@ -84,7 +84,7 @@ export const multiverseSagaTitleDetails: TitleDetails[] = [
   {
       titleId: "guardianes-de-la-galaxia-especial-felices-fiestas", spoilerFreeSynopsis: "Mantis y Drax viajan a la Tierra para encontrar el regalo perfecto que devuelva a Peter Quill el espíritu de la Navidad.",
       releaseDate: "25 NOV 2022", releaseDateISO: "2022-11-25", runtime: "44 MIN", certification: "TV-14", status: "ESTRENADO", availability: "DISNEY+",
-      directors: ["James Gunn"], writers: ["James Gunn"], cast: ["Chris Pratt", "Dave Bautista", "Karen Gillan", "Pom Klementieff", "Vin Diesel", "Kevin Bacon"], trailerId: "OyRCn0cX9lI",
+      directors: ["James Gunn"], writers: ["James Gunn"], cast: ["Chris Pratt", "Dave Bautista", "Karen Gillan", "Pom Klementieff", "Vin Diesel", "Kevin Bacon"], trailerId: "OYhFFQl4fLs",
       watchBefore: ["guardianes-de-la-galaxia-vol-2", "vengadores-endgame", "thor-love-and-thunder"], watchAfter: ["guardianes-de-la-galaxia-vol-3"], postCredits: [{ label: "ESCENA FINAL", description: "Rocket y Cosmo intentan decorar a Groot; Rocket concluye que necesitarán preparar otro especial." }],
       sources: [{ label: "FICHA OFICIAL MARVEL", url: "https://www.marvel.com/tv-shows/the-guardians-of-the-galaxy-holiday-special/1" }], reviewedAt: "30 AGO 2026",
     },

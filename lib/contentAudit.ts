@@ -1,5 +1,6 @@
 import { mcuCatalog } from "@/lib/mcuCatalog";
 import { getDetailedTitleIds, getTitleDetails } from "@/lib/content/titles/details";
+import { hasReviewedChronology } from "@/lib/content/titles/editorialReview";
 
 export type AuditSeverity = "ERROR" | "AVISO" | "INFO";
 export type AuditIssue = { severity: AuditSeverity; titleId: string; field: string; message: string };
@@ -37,6 +38,10 @@ export function auditEditorialContent(referenceDate = new Date("2026-08-30T00:00
     if (!allowedCertifications.has(details.certification)) push("AVISO", titleId, "certification", `Clasificación no reconocida: ${details.certification}`);
     if (!details.availability.trim()) push("ERROR", titleId, "availability", "No se ha documentado disponibilidad.");
     if (!details.sources.length) push("ERROR", titleId, "sources", "El expediente no contiene fuentes.");
+    details.sources.forEach(({ url }) => {
+      if (!URL.canParse(url) || new URL(url).protocol !== "https:") push("ERROR", titleId, "sources", `Fuente no segura o no válida: ${url}`);
+    });
+    if (details.trailerId && !/^[\w-]{11}$/.test(details.trailerId)) push("ERROR", titleId, "trailerId", `Identificador de YouTube no válido: ${details.trailerId}`);
     if (details.status === "ESTRENADO" && !details.directors.length) push("AVISO", titleId, "directors", "Faltan responsables de dirección.");
     if (details.status === "ESTRENADO" && !details.cast.length) push("AVISO", titleId, "cast", "Falta reparto principal.");
     if (!details.spoilerFreeSynopsis.trim()) push("ERROR", titleId, "spoilerFreeSynopsis", "Falta la sinopsis sin spoilers.");
@@ -50,7 +55,7 @@ export function auditEditorialContent(referenceDate = new Date("2026-08-30T00:00
     }
 
     const narrativeYear = title?.period.match(/\b(19|20)\d{2}\b/)?.[0];
-    if (narrativeYear && Number(narrativeYear) !== releaseDate.getUTCFullYear()) {
+    if (narrativeYear && Number(narrativeYear) !== releaseDate.getUTCFullYear() && !hasReviewedChronology(titleId)) {
       push("INFO", titleId, "period", `Cronología narrativa ${narrativeYear}; estreno ${releaseDate.getUTCFullYear()}. Verificar que la diferencia sea intencionada.`);
     }
   }

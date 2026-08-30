@@ -87,7 +87,7 @@ export const marvelTelevisionTitleDetails: TitleDetails[] = [
     },
   {
       titleId: "daredevil-born-again-temporada-2", spoilerFreeSynopsis: "Con Nueva York sometida al régimen de Fisk, Matt Murdock actúa desde las sombras para reconstruir una resistencia y recuperar la ciudad.",
-      releaseDate: "MAR 2026", releaseDateISO: "2026-03-24", runtime: "8 EPISODIOS", certification: "TV-MA", status: "ESTRENADO", availability: "DISNEY+",
+      releaseDate: "24 MAR 2026", releaseDateISO: "2026-03-24", runtime: "8 EPISODIOS", certification: "TV-MA", status: "ESTRENADO", availability: "DISNEY+",
       directors: ["Justin Benson", "Aaron Moorhead"], writers: ["Dario Scardapane"], cast: ["Charlie Cox", "Vincent D'Onofrio", "Deborah Ann Woll", "Krysten Ritter", "Matthew Lillard", "Wilson Bethel"], trailerId: "",
       watchBefore: ["daredevil-born-again-temporada-1"], watchAfter: ["the-punisher-one-last-kill"], postCredits: [],
       sources: [{ label: "MARVEL TELEVISION", url: "https://www.marvel.com/tv-shows" }], reviewedAt: "30 AGO 2026",
