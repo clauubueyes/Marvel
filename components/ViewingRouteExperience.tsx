@@ -2,24 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 import type { ViewingRoute } from "@/lib/viewingRoutes";
 
 const titleMap = new Map(mcuCatalog.map((title) => [title.slug, title]));
 const progressEvent = "nexus-route-progress";
 
-function subscribeProgress(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener(progressEvent, callback);
+function subscribeProgress(storageKey: string, callback: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === storageKey) callback();
+  };
+  const handleProgress = (event: Event) => {
+    if (event instanceof CustomEvent && event.detail === storageKey) callback();
+  };
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(progressEvent, handleProgress);
   return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener(progressEvent, callback);
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(progressEvent, handleProgress);
   };
 }
 
-function progressSnapshot(routeSlug: string) {
-  return window.localStorage.getItem(`nexus:route:${routeSlug}`) ?? "[]";
+function progressSnapshot(storageKey: string) {
+  return window.localStorage.getItem(storageKey) ?? "[]";
 }
 
 function parseProgress(value: string, validIds: Set<string>) {
@@ -34,19 +40,24 @@ function parseProgress(value: string, validIds: Set<string>) {
 export function ViewingRouteExperience({ route, compact = false }: { route: ViewingRoute; compact?: boolean }) {
   const [showSpoilers, setShowSpoilers] = useState(false);
   const [onlyEssential, setOnlyEssential] = useState(false);
-  const storedProgress = useSyncExternalStore(subscribeProgress, () => progressSnapshot(route.slug), () => "[]");
-  const availableSteps = route.steps.filter(({ priority }) => priority !== "DESTINO");
-  const availableIds = new Set(availableSteps.map(({ titleId }) => titleId));
+  const storageKey = `nexus:route:${route.slug}`;
+  const subscribe = useCallback((callback: () => void) => subscribeProgress(storageKey, callback), [storageKey]);
+  const getSnapshot = useCallback(() => progressSnapshot(storageKey), [storageKey]);
+  const storedProgress = useSyncExternalStore(subscribe, getSnapshot, () => "[]");
+  const availableSteps = useMemo(() => route.steps.filter(({ priority }) => priority !== "DESTINO"), [route.steps]);
+  const availableIds = useMemo(() => new Set(availableSteps.map(({ titleId }) => titleId)), [availableSteps]);
   const completed = parseProgress(storedProgress, availableIds);
   const completion = availableSteps.length ? Math.round((completed.size / availableSteps.length) * 100) : 0;
   const displayedSteps = onlyEssential ? route.steps.filter(({ priority }) => priority === "ESENCIAL" || priority === "DESTINO") : route.steps;
 
   function toggleStep(titleId: string) {
-    const next = new Set(completed);
+    // Read the persisted value at click time so a fast second interaction or a
+    // change from another mounted route view cannot restore stale progress.
+    const next = parseProgress(progressSnapshot(storageKey), availableIds);
     if (next.has(titleId)) next.delete(titleId);
     else next.add(titleId);
-    window.localStorage.setItem(`nexus:route:${route.slug}`, JSON.stringify([...next]));
-    window.dispatchEvent(new Event(progressEvent));
+    window.localStorage.setItem(storageKey, JSON.stringify([...next]));
+    window.dispatchEvent(new CustomEvent(progressEvent, { detail: storageKey }));
   }
 
   return (

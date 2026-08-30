@@ -9,12 +9,12 @@ export function MotionEffects() {
     document.documentElement.classList.add("motion-ready");
 
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
+      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.setAttribute("data-revealed", "true")),
       { threshold: 0.12 },
     );
     const observeReveals = (root: ParentNode) => {
       if (root instanceof HTMLElement && root.matches("[data-reveal]")) observer.observe(root);
-      root.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)").forEach((element) => observer.observe(element));
+      root.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])").forEach((element) => observer.observe(element));
     };
     observeReveals(document);
 
@@ -43,7 +43,7 @@ export function MotionEffects() {
     });
 
     const visibilityFallback = window.setTimeout(() => {
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.classList.add("is-visible"));
+      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.setAttribute("data-revealed", "true"));
     }, 1800);
 
     return () => {

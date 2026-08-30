@@ -374,8 +374,8 @@ footer > a:last-child { color: #fff; }
 
 [data-reveal] { opacity: 1; transform: none; }
 .motion-ready [data-reveal] { opacity: 0; transform: translateY(35px); transition: opacity .75s ease var(--delay,0ms), transform .75s cubic-bezier(.2,.8,.2,1) var(--delay,0ms); }
-[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
-[data-reveal][data-tilt].is-visible { transform: rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); }
+[data-reveal][data-revealed] { opacity: 1; transform: translateY(0); }
+[data-reveal][data-tilt][data-revealed] { transform: rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); }
 
 @media (max-width: 900px) {
   .topbar { position: absolute; height: 68px; }
