@@ -4,6 +4,7 @@ import { expandedCharacters } from "@/lib/content/characters/expanded";
 import { additionalCharacters } from "@/lib/content/characters/additional";
 import { essentialCharacters } from "@/lib/content/characters/essential";
 import { heroCharacters } from "@/lib/content/characters/heroes";
+import { futureSagaCharacters } from "@/lib/content/characters/futureSaga";
 
 export type CharacterAppearance = {
   titleId: string;
@@ -232,7 +233,7 @@ export const characters: Character[] = [...characterEntries.map((character) => (
     ...appearance,
     titleId: createContentSlug(appearanceCatalogTitles[appearance.title] ?? appearance.title),
   })),
-})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters];
+})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters];
 
 export function getCharacter(id: string) {
   return characters.find((character) => character.id === id);
