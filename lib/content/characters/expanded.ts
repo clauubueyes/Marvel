@@ -1,7 +1,7 @@
 import type { Character, CharacterAppearance } from "@/lib/characters";
 import { createContentSlug } from "@/lib/contentSlug";
 
-type Seed = Pick<Character, "id" | "name" | "alias" | "quote" | "universe" | "color" | "color2" | "power" | "symbol" | "image" | "sourceUrl" | "role" | "origin" | "description" | "abilities" | "category" | "status" | "affiliations" | "variants" | "screenMoment"> & {
+export type CharacterSeed = Pick<Character, "id" | "name" | "alias" | "quote" | "universe" | "color" | "color2" | "power" | "symbol" | "image" | "sourceUrl" | "role" | "origin" | "description" | "abilities" | "category" | "status" | "affiliations" | "variants" | "screenMoment"> & {
   appearances: Array<Omit<CharacterAppearance, "titleId"> & { catalogTitle: string }>;
 };
 
@@ -23,13 +23,13 @@ const characterImagePositions: Partial<Record<string, string>> = {
   kingpin: "center 8%",
 };
 
-function buildCharacter(seed: Seed, index: number): Character {
+export function buildCharacter(seed: CharacterSeed, number: number): Character {
   const appearances = seed.appearances.map(({ catalogTitle, ...appearance }) => ({ ...appearance, titleId: createContentSlug(catalogTitle) }));
   return {
     ...seed,
-    image: characterPortraits[seed.id],
+    image: characterPortraits[seed.id] ?? seed.image,
     imagePosition: characterImagePositions[seed.id],
-    number: String(index + 14).padStart(2, "0"),
+    number: String(number).padStart(2, "0"),
     votes: 0,
     appearances,
     stats: seed.abilities.map((label, abilityIndex) => ({ label, value: 88 - abilityIndex * 5 })),
@@ -44,7 +44,7 @@ function buildCharacter(seed: Seed, index: number): Character {
   };
 }
 
-const seeds: Seed[] = [
+const seeds: CharacterSeed[] = [
   {
     id: "yelena-belova", name: "YELENA BELOVA", alias: "Black Widow", quote: "La familia también puede elegirse.", universe: "Tierra-616", color: "#d8d3c7", color2: "#6f7b73", power: "Espionaje de élite", symbol: "⌛", image: "/api/title-image?title=Black%20Widow&type=PELÍCULA", sourceUrl: "https://www.marvel.com/characters/black-widow-yelena-belova", role: "La nueva viuda", origin: "Rusia · Habitación Roja", description: "Yelena fue entrenada para obedecer, pero convirtió su libertad en una misión: proteger a otras viudas y construir una identidad que no pertenezca a nadie más.", abilities: ["Espionaje", "Combate cuerpo a cuerpo", "Infiltración", "Tiro experto"], category: "ANTI-HÉROE", status: "ACTIVO", affiliations: ["Thunderbolts", "Viudas"], variants: [],
     appearances: [{ catalogTitle: "Black Widow", title: "Black Widow", year: "2021", type: "PELÍCULA", event: "Se reencuentra con Natasha y participa en la liberación de las agentes sometidas por la Habitación Roja." }, { catalogTitle: "Ojo de Halcón", title: "Ojo de Halcón", year: "2021", type: "SERIE", event: "Viaja a Nueva York siguiendo una pista sobre Natasha y termina cuestionando la misión que recibió." }, { catalogTitle: "Thunderbolts*", title: "Thunderbolts*", year: "2025", type: "PELÍCULA", event: "Una operación reúne a Yelena con otros agentes que buscan un propósito fuera de quienes los utilizaron." }], screenMoment: { videoId: "m9EX0f6V11Y", title: "Romper el control", kicker: "BLACK WIDOW · TRÁILER OFICIAL", text: "Yelena vuelve con Natasha al origen del programa que les arrebató la libertad." },
@@ -79,4 +79,4 @@ const seeds: Seed[] = [
   },
 ];
 
-export const expandedCharacters = seeds.map(buildCharacter);
+export const expandedCharacters = seeds.map((seed, index) => buildCharacter(seed, index + 14));
