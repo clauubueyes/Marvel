@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MotionEffects } from "@/components/MotionEffects";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { getTitleDossier } from "@/lib/contentRepository";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 
@@ -28,11 +29,7 @@ export default async function TitlePage({ params }: PageProps) {
   return (
     <main className="title-profile" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
       <MotionEffects />
-      <header className="profile-nav">
-        <Link className="brand" href="/"><span>N</span>NEXUS</Link>
-        <p>ARCHIVO / {String(title.order).padStart(2, "0")}</p>
-        <Link href="/titulos">TÍTULOS <b>×</b></Link>
-      </header>
+      <GlobalNavigation context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`} />
 
       <section className="title-profile-hero">
         <div className="title-profile-art" aria-hidden="true">

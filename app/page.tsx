@@ -1,26 +1,14 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { characters } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
 import { DoomsdayGuide } from "@/components/DoomsdayGuide";
 import { MCUCatalog } from "@/components/MCUCatalog";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   return <main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
     <MotionEffects />
-    <header className="topbar">
-      <a className="brand" href="#inicio" aria-label="Nexus inicio"><span>N</span>NEXUS</a>
-      <nav className={menuOpen ? "nav open" : "nav"}>
-        <a href="#doom" onClick={() => setMenuOpen(false)}>ENTENDER A DOOM</a>
-        <a href="#cronologia" onClick={() => setMenuOpen(false)}>TODO EL MCU</a>
-        <a href="#personajes" onClick={() => setMenuOpen(false)}>PERSONAJES</a>
-      </nav>
-      <button className="menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menú">{menuOpen ? "×" : "☰"}</button>
-      <div className="issue">RUTA MCU <b>2026</b></div>
-    </header>
+    <GlobalNavigation home context="RUTA MCU · 2026" />
 
     <section className="doom-hero" id="inicio">
       <div className="doom-hero-image" aria-hidden="true" />

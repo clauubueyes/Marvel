@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { characters, getCharacter } from "@/lib/characters";
 import { MotionEffects } from "@/components/MotionEffects";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -29,11 +30,7 @@ export default async function CharacterPage({ params }: PageProps) {
     <main className={`profile profile-${character.id}`} style={{ "--accent": character.color, "--accent-2": character.color2 } as React.CSSProperties}>
       <MotionEffects />
       <div className="character-atmosphere" aria-hidden="true"><i /><i /><i /><i /></div>
-      <header className="profile-nav">
-        <Link className="brand" href="/"><span>N</span>NEXUS</Link>
-        <p>ARCHIVO / {character.number}</p>
-        <Link href="/#personajes">CERRAR <b>×</b></Link>
-      </header>
+      <GlobalNavigation context={`ARCHIVO / ${character.number}`} />
 
       <section className="profile-hero">
         <div className="profile-grid" aria-hidden="true" />

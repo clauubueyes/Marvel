@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { MotionEffects } from "@/components/MotionEffects";
 import { mcuCatalog } from "@/lib/mcuCatalog";
 
@@ -12,11 +13,7 @@ export default function TitlesPage() {
   return (
     <main className="titles-index" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
       <MotionEffects />
-      <header className="profile-nav">
-        <Link className="brand" href="/"><span>N</span>NEXUS</Link>
-        <p>ARCHIVO / TÍTULOS</p>
-        <Link href="/">VOLVER <b>×</b></Link>
-      </header>
+      <GlobalNavigation context="ARCHIVO / TÍTULOS" />
 
       <section className="titles-index-hero">
         <p className="eyebrow"><span /> UNIVERSO AUDIOVISUAL MARVEL</p>
