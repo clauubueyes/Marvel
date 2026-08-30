@@ -7,10 +7,22 @@ type Seed = Pick<Character, "id" | "name" | "alias" | "quote" | "universe" | "co
 
 const reviewedAt = "2026-08-30";
 
+const characterPortraits: Record<string, string> = {
+  "yelena-belova": "https://upload.wikimedia.org/wikipedia/en/1/15/Florence_Pugh_as_Yelena_Belova.jpg",
+  "winter-soldier": "https://upload.wikimedia.org/wikipedia/en/4/4b/Sebastian_Stan_as_Bucky_Barnes.jpg",
+  vision: "https://upload.wikimedia.org/wikipedia/en/f/fc/Paul_Bettany_as_Vision.jpg",
+  "agatha-harkness": "https://upload.wikimedia.org/wikipedia/en/3/30/Kathryn_Hahn_as_Agatha_Harkness.png",
+  daredevil: "https://upload.wikimedia.org/wikipedia/en/1/1b/Charlie_Cox_Daredevil.jpg",
+  kingpin: "https://upload.wikimedia.org/wikipedia/en/c/cf/Vincent_D%27Onofrio_as_Wilson_Fisk_in_Daredevil_%28TV_series%29.jpg",
+  thanos: "https://upload.wikimedia.org/wikipedia/en/7/7b/Josh_Brolin_as_Thanos.jpeg",
+  shuri: "https://upload.wikimedia.org/wikipedia/en/5/5b/Letitia_Wright_as_Shuri_in_Black_Panther_Wakanda_Forever_poster.jpg",
+};
+
 function buildCharacter(seed: Seed, index: number): Character {
   const appearances = seed.appearances.map(({ catalogTitle, ...appearance }) => ({ ...appearance, titleId: createContentSlug(catalogTitle) }));
   return {
     ...seed,
+    image: characterPortraits[seed.id],
     number: String(index + 14).padStart(2, "0"),
     votes: 0,
     appearances,
