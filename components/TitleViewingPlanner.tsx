@@ -1,7 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Script from "next/script";
+import { addPlanToGoogleCalendar } from "@/lib/googleCalendar";
 import { createIcsCalendar, createViewingPlan, type PlannerTitle, WEEK_DAYS } from "@/lib/viewingPlanner";
+
+type GoogleTokenResponse = { access_token?: string; error?: string };
+type GoogleTokenClient = { requestAccessToken: (options?: { prompt?: string }) => void };
+
+declare global {
+  interface Window {
+    google?: { accounts: { oauth2: { initTokenClient: (config: { client_id: string; scope: string; callback: (response: GoogleTokenResponse) => void; error_callback?: () => void }) => GoogleTokenClient } } };
+  }
+}
 
 function localDateValue(date = new Date()) {
   const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
@@ -22,6 +33,10 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
   const [titlesPerWeek, setTitlesPerWeek] = useState(2);
   const [startTime, setStartTime] = useState("21:00");
   const [endTime, setEndTime] = useState("00:00");
+  const [googleReady, setGoogleReady] = useState(false);
+  const [googleStatus, setGoogleStatus] = useState<"idle" | "authorizing" | "syncing" | "done" | "error">("idle");
+  const [googleProgress, setGoogleProgress] = useState(0);
+  const [googleMessage, setGoogleMessage] = useState("");
   const plan = useMemo(() => createViewingPlan(titles, { startDate, weekDays, titlesPerWeek, startTime, endTime }), [endTime, startDate, startTime, titles, titlesPerWeek, weekDays]);
 
   function toggleWeekDay(day: number) {
@@ -39,7 +54,46 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
     URL.revokeObjectURL(url);
   }
 
+  function connectGoogleCalendar() {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId || !window.google) {
+      setGoogleStatus("error");
+      setGoogleMessage(clientId ? "Google todavía no ha terminado de cargar." : "Falta NEXT_PUBLIC_GOOGLE_CLIENT_ID en .env.local.");
+      return;
+    }
+    setGoogleStatus("authorizing");
+    setGoogleMessage("Abriendo autorización de Google…");
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: "https://www.googleapis.com/auth/calendar.app.created",
+      callback: async (response) => {
+        if (!response.access_token) {
+          setGoogleStatus("error");
+          setGoogleMessage("Google no concedió acceso al calendario.");
+          return;
+        }
+        setGoogleStatus("syncing");
+        setGoogleMessage("Creando sesiones…");
+        setGoogleProgress(0);
+        try {
+          const result = await addPlanToGoogleCalendar(response.access_token, plan, setGoogleProgress);
+          setGoogleStatus("done");
+          setGoogleMessage(`${result.created} sesiones añadidas a Google Calendar.`);
+        } catch (error) {
+          setGoogleStatus("error");
+          setGoogleMessage(error instanceof Error ? error.message : "No se pudo completar la sincronización.");
+        }
+      },
+      error_callback: () => {
+        setGoogleStatus("error");
+        setGoogleMessage("La ventana de autorización se cerró o fue bloqueada.");
+      },
+    });
+    tokenClient.requestAccessToken({ prompt: "consent" });
+  }
+
   return <section className="route-planner title-planner" aria-labelledby="title-planner-heading" style={{ "--route-accent": "#b9d737" } as React.CSSProperties}>
+    <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onLoad={() => setGoogleReady(true)} />
     <div className="route-planner-intro">
       <div><p className="eyebrow"><span /> PLAN PERSONAL</p><h2 id="title-planner-heading">ORGANIZA TU SELECCIÓN</h2><p>Selecciona títulos del archivo y NEXUS los distribuirá según tu disponibilidad.</p></div>
       <button type="button" onClick={onClose}>CERRAR PLANIFICADOR</button>
@@ -52,7 +106,8 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
         <div className="route-planner-times"><label><span>DESDE</span><input type="time" value={startTime} onChange={(event) => setStartTime(event.target.value)} /></label><label><span>HASTA</span><input type="time" value={endTime} onChange={(event) => setEndTime(event.target.value)} /></label></div>
       </form>
       <div className="route-plan-preview">
-        <header><div><span>{plan.length} TÍTULOS SELECCIONADOS</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong></div><button type="button" onClick={downloadPlan} disabled={!plan.length}>AÑADIR AL CALENDARIO ↓</button></header>
+        <header><div><span>{plan.length} TÍTULOS SELECCIONADOS</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong></div><div className="calendar-actions"><button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button><button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
+        {googleMessage && <p className={`google-calendar-status ${googleStatus}`}>{googleMessage}</p>}
         {plan.length ? <ol>{plan.map((item, index) => <li key={`${item.id}-${item.start.toISOString()}`}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{formatDate(item.start)} · {formatTime(item.start)}–{formatTime(item.end)}</small><strong>{item.title}</strong></div></li>)}</ol> : <p className="route-plan-empty">Activa “Añadir al plan” en los títulos que quieras organizar.</p>}
       </div>
     </div>
