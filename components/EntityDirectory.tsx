@@ -11,7 +11,13 @@ export function EntityDirectory({ entities, eyebrow, title, outline, description
     <section className="entity-index-hero"><p className="eyebrow"><span /> {eyebrow}</p><h1>{title}<br /><em>{outline}</em></h1><p>{description}</p></section>
     <section className="entity-directory">
       {entities.map((entity, index) => <Link href={getEntityHref(entity)} className="entity-directory-card" key={entity.slug} data-reveal style={{ "--entity-accent": entity.color, "--delay": `${index * 75}ms` } as React.CSSProperties}>
-        <span>{String(index + 1).padStart(2, "0")}</span><i>{entity.symbol}</i><small>{entity.kicker}</small><h2>{entity.name}</h2><p>{entity.summary}</p><div><b>{entity.status}</b><b>{entity.titleIds.length} TÍTULOS</b></div><strong>EXPLORAR CONEXIONES ↗</strong>
+        <span className="entity-card-index">{String(index + 1).padStart(2, "0")}</span>
+        <i className="entity-card-symbol" aria-hidden="true">{entity.symbol}</i>
+        <small>{entity.kicker}</small>
+        <h2>{entity.name}</h2>
+        <p>{entity.summary}</p>
+        <div className="entity-card-meta"><b>{entity.status}</b><b>{entity.titleIds.length} TÍTULOS</b></div>
+        <strong className="entity-card-action"><span>EXPLORAR CONEXIONES</span><i aria-hidden="true">↗</i></strong>
       </Link>)}
     </section>
   </main>;
