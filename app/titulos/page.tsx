@@ -16,6 +16,7 @@ export default function TitlesPage() {
   const titles: TitleDirectoryEntry[] = mcuCatalog.map((title) => ({
     ...title,
     releaseDateISO: getTitleDetails(title.slug)?.releaseDateISO ?? "9999-12-31",
+    runtime: getTitleDetails(title.slug)?.runtime ?? "POR CONFIRMAR",
     coverage: getEditorialCoverage(title.slug),
     routes: viewingRoutes.filter(({ steps }) => steps.some(({ titleId }) => titleId === title.slug)).map(({ slug, name }) => ({ slug, name })),
   }));

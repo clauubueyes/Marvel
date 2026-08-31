@@ -27,6 +27,12 @@ function formatTime(date: Date) {
   return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" }).format(date);
 }
 
+function formatMinutes(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return hours ? `${hours} H${rest ? ` ${rest} MIN` : ""}` : `${rest} MIN`;
+}
+
 export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[]; onClose: () => void }) {
   const [startDate, setStartDate] = useState(() => localDateValue());
   const [weekDays, setWeekDays] = useState<number[]>([6]);
@@ -125,13 +131,13 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
       <form className="route-planner-form" onSubmit={(event) => event.preventDefault()}>
         <label><span>EMPEZAR A PARTIR DE</span><input type="date" value={startDate} min={localDateValue()} onChange={(event) => setStartDate(event.target.value)} /></label>
         <fieldset><legend>DÍAS DISPONIBLES</legend><div>{WEEK_DAYS.map((day) => <button type="button" key={day.value} className={weekDays.includes(day.value) ? "active" : ""} aria-pressed={weekDays.includes(day.value)} onClick={() => toggleWeekDay(day.value)}>{day.label}</button>)}</div></fieldset>
-        <label><span>TÍTULOS POR SEMANA</span><input type="number" min="1" max="7" value={titlesPerWeek} onChange={(event) => setTitlesPerWeek(Math.max(1, Math.min(7, Number(event.target.value))))} /></label>
+        <label><span>SESIONES POR SEMANA</span><input type="number" min="1" max="7" value={titlesPerWeek} onChange={(event) => setTitlesPerWeek(Math.max(1, Math.min(7, Number(event.target.value))))} /></label>
         <div className="route-planner-times"><label><span>DESDE</span><input type="time" value={startTime} onChange={(event) => setStartTime(event.target.value)} /></label><label><span>HASTA</span><input type="time" value={endTime} onChange={(event) => setEndTime(event.target.value)} /></label></div>
       </form>
       <div className="route-plan-preview">
-        <header><div><span>{plan.length} TÍTULOS SELECCIONADOS</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong>{syncedCalendarId && <small className="google-calendar-linked">● CALENDARIO NEXUS CONECTADO</small>}</div><div className="calendar-actions">{syncedCalendarId ? <><button type="button" className="google-calendar-button" onClick={replaceGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" && googleProgress ? `ACTUALIZANDO ${googleProgress}/${plan.length}` : "ACTUALIZAR GOOGLE"}</button><button type="button" className="google-calendar-remove" onClick={removeGoogleCalendar} disabled={googleStatus === "authorizing" || googleStatus === "syncing"}>ELIMINAR DE GOOGLE</button></> : <button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button>}<button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
+        <header><div><span>{titles.length} TÍTULOS · {plan.length} SESIONES</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong>{syncedCalendarId && <small className="google-calendar-linked">● CALENDARIO NEXUS CONECTADO</small>}</div><div className="calendar-actions">{syncedCalendarId ? <><button type="button" className="google-calendar-button" onClick={replaceGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" && googleProgress ? `ACTUALIZANDO ${googleProgress}/${plan.length}` : "ACTUALIZAR GOOGLE"}</button><button type="button" className="google-calendar-remove" onClick={removeGoogleCalendar} disabled={googleStatus === "authorizing" || googleStatus === "syncing"}>ELIMINAR DE GOOGLE</button></> : <button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button>}<button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
         {googleMessage && <p className={`google-calendar-status ${googleStatus}`}>{googleMessage}</p>}
-        {plan.length ? <ol>{plan.map((item, index) => <li key={`${item.id}-${item.start.toISOString()}`}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{formatDate(item.start)} · {formatTime(item.start)}–{formatTime(item.end)}</small><strong>{item.title}</strong></div></li>)}</ol> : <p className="route-plan-empty">Activa “Añadir al plan” en los títulos que quieras organizar.</p>}
+        {plan.length ? <ol>{plan.map((item, index) => <li key={`${item.id}-${item.start.toISOString()}`}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{formatDate(item.start)} · {formatTime(item.start)}–{formatTime(item.end)} · {formatMinutes(item.durationMinutes)}{item.estimated ? " EST." : ""}</small><strong>{item.title}</strong></div></li>)}</ol> : <p className="route-plan-empty">Activa “Añadir al plan” en los títulos que quieras organizar.</p>}
       </div>
     </div>
   </section>;

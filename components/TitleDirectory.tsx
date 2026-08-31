@@ -9,7 +9,7 @@ import type { MCUContinuity, MCUType } from "@/lib/mcuCatalog";
 export type TitleDirectoryEntry = {
   slug: string; order: number; title: string; period: string; type: MCUType;
   continuity: MCUContinuity; phase: string; event: string; releaseDateISO: string;
-  coverage: string; routes: { slug: string; name: string }[];
+  runtime: string; coverage: string; routes: { slug: string; name: string }[];
 };
 
 type Props = { titles: TitleDirectoryEntry[] };
@@ -93,7 +93,7 @@ export function TitleDirectory({ titles }: Props) {
 
   const pendingTitles = useMemo(() => titles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO"), [titles, watched]);
   const visiblePending = useMemo(() => visibleTitles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO"), [visibleTitles, watched]);
-  const plannerTitles = useMemo(() => titles.filter((title) => selectedTitles.has(title.slug)).map((title) => ({ id: title.slug, title: title.title, url: `/titulos/${title.slug}` })), [selectedTitles, titles]);
+  const plannerTitles = useMemo(() => titles.filter((title) => selectedTitles.has(title.slug)).map((title) => ({ id: title.slug, title: title.title, url: `/titulos/${title.slug}`, runtime: title.runtime })), [selectedTitles, titles]);
 
   function persistWatched(next: Set<string>) {
     window.localStorage.setItem(progressStorageKey, JSON.stringify([...next]));
