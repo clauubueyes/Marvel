@@ -75,8 +75,20 @@ main { overflow: hidden; background: var(--ink); }
     font-size: 14px; 
     letter-spacing: 1.5px; 
 }
-.nav a { position: relative; padding: 30px 0; }
-.nav a::after { content: ""; position: absolute; inset: auto 100% 23px 0; height: 2px; background: var(--accent); transition: .25s; }
+.nav a { 
+    position: relative; 
+    padding: 30px 0; 
+}
+
+/*Transicion subrayado links navbar*/
+.nav a::after { 
+    content: ""; 
+    position: absolute; 
+    inset: auto 100% 23px 0; 
+    height: 2px; 
+    background: var(--accent); 
+    transition: .25s;
+}
 .nav a:hover::after { right: 0; }
 .nav a[aria-current="page"]::after { right: 0; }.nav a[aria-current="page"] { color: var(--accent); }
 .menu { display: none; background: none; border: 0; font-size: 25px; }
