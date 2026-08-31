@@ -1,5 +1,6 @@
 import type { Character, CharacterAppearance } from "@/lib/characters";
 import { createContentSlug } from "@/lib/contentSlug";
+import { getScreenPortrait } from "@/lib/content/characters/screenPortraits";
 
 export type CharacterSeed = Pick<Character, "id" | "name" | "alias" | "quote" | "universe" | "color" | "color2" | "power" | "symbol" | "image" | "sourceUrl" | "role" | "origin" | "description" | "abilities" | "category" | "status" | "affiliations" | "variants" | "screenMoment"> & {
   appearances: Array<Omit<CharacterAppearance, "titleId"> & { catalogTitle: string }>;
@@ -28,7 +29,7 @@ export function buildCharacter(seed: CharacterSeed, number: number): Character {
   const appearances = seed.appearances.map(({ catalogTitle, ...appearance }) => ({ ...appearance, titleId: createContentSlug(catalogTitle) }));
   return {
     ...seed,
-    image: characterPortraits[seed.id] ?? seed.image,
+    image: getScreenPortrait(seed.id, characterPortraits[seed.id] ?? seed.image),
     imagePosition: characterImagePositions[seed.id],
     number: String(number).padStart(2, "0"),
     votes: 0,

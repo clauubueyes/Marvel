@@ -5,6 +5,7 @@ import { additionalCharacters } from "@/lib/content/characters/additional";
 import { essentialCharacters } from "@/lib/content/characters/essential";
 import { heroCharacters } from "@/lib/content/characters/heroes";
 import { futureSagaCharacters } from "@/lib/content/characters/futureSaga";
+import { getScreenPortrait } from "@/lib/content/characters/screenPortraits";
 
 export type CharacterAppearance = {
   titleId: string;
@@ -228,6 +229,7 @@ const appearanceCatalogTitles: Record<string, string> = {
 
 export const characters: Character[] = [...characterEntries.map((character) => ({
   ...character,
+  image: getScreenPortrait(character.id, character.image),
   ...getCharacterEditorialData(character.id, character.sourceUrl),
   appearances: character.appearances.map((appearance) => ({
     ...appearance,
