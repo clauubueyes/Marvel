@@ -25,8 +25,14 @@ export function MotionEffects() {
     });
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
-    const cards = document.querySelectorAll<HTMLElement>("[data-tilt]");
-    const cleanups = Array.from(cards).map((card) => {
+    const tiltCleanups = new Map<HTMLElement, () => void>();
+    const observeTilt = (root: ParentNode) => {
+      const cards = [
+        ...(root instanceof HTMLElement && root.matches("[data-tilt]") ? [root] : []),
+        ...Array.from(root.querySelectorAll<HTMLElement>("[data-tilt]")),
+      ];
+      cards.forEach((card) => {
+        if (tiltCleanups.has(card)) return;
       const move = (event: PointerEvent) => {
         const bounds = card.getBoundingClientRect();
         const x = (event.clientX - bounds.left) / bounds.width - 0.5;
@@ -39,8 +45,17 @@ export function MotionEffects() {
       const leave = () => { card.style.removeProperty("--tilt-x"); card.style.removeProperty("--tilt-y"); };
       card.addEventListener("pointermove", move);
       card.addEventListener("pointerleave", leave);
-      return () => { card.removeEventListener("pointermove", move); card.removeEventListener("pointerleave", leave); };
+        tiltCleanups.set(card, () => { card.removeEventListener("pointermove", move); card.removeEventListener("pointerleave", leave); });
+      });
+    };
+    observeTilt(document);
+
+    const tiltMutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
+        if (node instanceof HTMLElement) observeTilt(node);
+      }));
     });
+    tiltMutationObserver.observe(document.body, { childList: true, subtree: true });
 
     const visibilityFallback = window.setTimeout(() => {
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.setAttribute("data-revealed", "true"));
@@ -49,9 +64,10 @@ export function MotionEffects() {
     return () => {
       observer.disconnect();
       mutationObserver.disconnect();
+      tiltMutationObserver.disconnect();
       window.clearTimeout(visibilityFallback);
       document.documentElement.classList.remove("motion-ready");
-      cleanups.forEach((cleanup) => cleanup());
+      tiltCleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
