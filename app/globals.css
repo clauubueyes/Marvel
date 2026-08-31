@@ -196,7 +196,413 @@ footer { min-height: 120px; padding: 30px 8vw; display: flex; align-items: cente
 footer > a:last-child { color: #fff; }
 
 /* Character archive */
-.profile { --profile-paper: #eee9de; background: #090a0d; min-height: 100vh; }
+.profile { --profile-paper: #eee9de; background: #090a0d; min-height: 100vh; position: relative; overflow-x: hidden; perspective: 1600px; }
+.profile::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.02), transparent 12%, transparent 88%, rgba(255,255,255,.015)), repeating-linear-gradient(180deg, transparent 0 6px, rgba(255,255,255,.015) 6px 7px);
+  mix-blend-mode: screen;
+  animation: pageScan 16s linear infinite;
+}
+.profile > * { position: relative; z-index: 1; }
+.profile .profile-section,
+.profile .profile-hero,
+.profile .profile-intro,
+.profile .profile-power,
+.profile .profile-timeline,
+.profile .character-story {
+  transition: background .35s ease, box-shadow .35s ease, transform .45s ease;
+}
+.profile .profile-section::before,
+.profile .profile-hero::before,
+.profile .profile-intro::before,
+.profile .profile-power::before,
+.profile .profile-timeline::before,
+.profile .character-story::before {
+  content: "";
+  position: absolute;
+  inset: auto -18% 10% auto;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.09), transparent);
+  transform: translateX(-110%) rotate(12deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 1.2s cubic-bezier(.22,.8,.2,1), opacity .4s ease;
+}
+.profile .profile-section:hover::before,
+.profile .profile-hero:hover::before,
+.profile .profile-intro:hover::before,
+.profile .profile-power:hover::before,
+.profile .profile-timeline:hover::before,
+.profile .character-story:hover::before {
+  opacity: 1;
+  transform: translateX(120%) rotate(12deg);
+}
+.profile .profile-grid { animation: gridShift 20s linear infinite; }
+.profile .profile-title h1 span {
+  display: inline-block;
+  transition: transform .38s cubic-bezier(.22,.8,.2,1), text-shadow .38s ease, filter .38s ease;
+  will-change: transform;
+}
+.profile .profile-title h1 span:hover {
+  transform: translateY(-10px) scale(1.08) rotate(-2deg);
+  text-shadow: 0 12px 24px rgba(0,0,0,.26);
+}
+.profile .profile-meta span,
+.profile .profile-figure,
+.profile .profile-intro .identity-portrait,
+.profile .screen-moment .moment-video,
+.profile .facts-grid article,
+.profile .film-reel a,
+.profile-power .ability-list > div,
+.profile .character-story-rail article {
+  transition: transform .35s cubic-bezier(.22,.8,.2,1), box-shadow .35s ease, filter .35s ease, border-color .35s ease;
+}
+.profile .profile-meta span:hover {
+  transform: translateY(-4px);
+  color: var(--accent);
+}
+.profile .profile-figure:hover { transform: translateY(-8px) scale(1.01); }
+.profile .profile-figure:hover .profile-body { transform: scale(1.035) rotate(-1deg); }
+.profile .screen-moment .moment-video:hover,
+.profile .facts-grid article:hover,
+.profile .film-reel a:hover,
+.profile-power .ability-list > div:hover,
+.profile .character-story-rail article:hover {
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
+}
+.profile .identity-portrait:hover { transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-8px); }
+.profile .profile-hero .profile-body,
+.profile .profile-hero .profile-rings,
+.profile .profile-hero .arrival-trail,
+.profile .profile-hero .scroll-cue {
+  will-change: transform, opacity;
+}
+.profile .profile-hero::after,
+.profile .profile-section::after,
+.profile .profile-intro::after,
+.profile .profile-power::after,
+.profile .character-story::after,
+.profile .profile-timeline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--pulse-x, 75%) var(--pulse-y, 30%), rgba(255,255,255,.12), transparent 24%), linear-gradient(120deg, transparent 0%, rgba(255,255,255,.06) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: .8;
+  animation: lightPulse 10s ease-in-out infinite alternate;
+}
+.profile .profile-section::after,
+.profile .profile-intro::after,
+.profile .profile-power::after,
+.profile .character-story::after,
+.profile .profile-timeline::after {
+  inset: auto 0 0 0;
+  height: 35%;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.09));
+}
+.profile .profile-figure::after {
+  inset: -8% 8% -6% 8%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), transparent 58%);
+  filter: blur(18px);
+  opacity: .8;
+  animation: haloFloat 7s ease-in-out infinite alternate;
+}
+.profile .profile-rings::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 40px color-mix(in srgb, var(--accent) 18%, transparent), inset 0 0 26px color-mix(in srgb, var(--accent-2) 18%, transparent);
+  animation: haloFloat 9s ease-in-out infinite alternate-reverse;
+}
+@keyframes pageScan {
+  0% { transform: translateY(-8%) scaleY(1); opacity: .25; }
+  50% { opacity: .45; }
+  100% { transform: translateY(8%) scaleY(1.08); opacity: .25; }
+}
+@keyframes gridShift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 55px 55px, 55px 55px; }
+}
+@keyframes lightPulse {
+  0% { opacity: .2; transform: translate3d(-10px, 0, 0) scaleX(.98); }
+  50% { opacity: .75; transform: translate3d(18px, 8px, 0) scaleX(1.04); }
+  100% { opacity: .35; transform: translate3d(10px, -8px, 0) scaleX(1.02); }
+}
+@keyframes haloFloat {
+  0% { transform: translate3d(-12px, 0, 0) scale(.98); opacity: .48; }
+  50% { transform: translate3d(12px, -10px, 0) scale(1.06); opacity: .92; }
+  100% { transform: translate3d(-4px, 10px, 0) scale(1.02); opacity: .7; }
+}
+.profile-hero::before,
+.profile-hero::after,
+.profile-intro::before,
+.profile-intro::after,
+.profile-figure::before,
+.profile-figure::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.profile-hero::before,
+.profile-intro::before {
+  filter: blur(12px);
+}
+.profile-figure::before,
+.profile-figure::after {
+  inset: 10% 10% 12% 10%;
+  border-radius: 50%;
+  opacity: .8;
+}
+.profile-spider .profile-hero {
+  background: radial-gradient(circle at 68% 38%, rgba(255,255,255,.18), transparent 18%), radial-gradient(circle at 55% 60%, rgba(237,27,36,.38), transparent 28%), linear-gradient(120deg, #0d1018, #06070c 58%, #14181a);
+}
+.profile-spider .profile-hero::before {
+  inset: -10% -12% 12% 18%;
+  background: radial-gradient(circle at 50% 52%, rgba(240,240,240,.12), transparent 44%), repeating-radial-gradient(circle at 50% 50%, transparent 0 18px, rgba(255,255,255,.035) 18px 20px);
+  animation: ambientDrift 16s ease-in-out infinite alternate;
+}
+.profile-spider .profile-hero::after {
+  inset: 10% 15% auto auto;
+  width: 36vw;
+  height: 36vw;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px rgba(255,255,255,.02), 0 0 0 75px rgba(255,255,255,.01);
+  animation: spin 30s linear infinite;
+}
+.profile-spider .profile-figure::before {
+  inset: 8% 12% 10% 12%;
+  background: radial-gradient(circle, rgba(255,255,255,.32), transparent 60%);
+  box-shadow: 0 0 40px rgba(237,27,36,.38);
+  animation: pulse 3.8s ease-in-out infinite;
+}
+.profile-spider .profile-intro {
+  background: radial-gradient(circle at 39% 50%, rgba(237,27,36,.12), transparent 24%), linear-gradient(135deg, #f5efe6, #ebdfd0 48%, #d7d0c1);
+}
+.profile-spider .profile-intro::before {
+  inset: 6% auto auto -2%;
+  width: 62%;
+  height: 66%;
+  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(23,26,32,.04) 22px 24px);
+  transform: rotate(-9deg);
+}
+.profile-iron .profile-hero {
+  background: radial-gradient(circle at 76% 35%, rgba(255,194,0,.38), transparent 18%), radial-gradient(circle at 55% 58%, rgba(255,74,0,.44), transparent 28%), linear-gradient(120deg, #0d0f14, #090b0d 52%, #180d0a);
+}
+.profile-iron .profile-hero::before {
+  inset: -10% auto auto 22%;
+  width: 75%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(255,167,0,.18), transparent 52%);
+  filter: blur(18px);
+  animation: ambientDrift 14s ease-in-out infinite alternate;
+}
+.profile-iron .profile-hero::after {
+  inset: 18% 6% 12% 24%;
+  background: linear-gradient(90deg, transparent 42%, rgba(255,200,80,.18) 50%, transparent 58%);
+  transform: rotate(9deg);
+}
+.profile-iron .profile-figure::before {
+  background: radial-gradient(circle, rgba(255,178,72,.75), transparent 52%);
+  box-shadow: 0 0 70px rgba(255,140,0,.45);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+.profile-iron .profile-intro {
+  background: radial-gradient(circle at 52% 38%, rgba(255,166,0,.12), transparent 17%), linear-gradient(135deg, #f5efe7, #e9deca 46%, #c5b9a7);
+}
+.profile-iron .profile-intro::before {
+  inset: 8% auto auto 8%;
+  width: 80%;
+  height: 70%;
+  border: 1px solid rgba(255,115,0,.24);
+  border-radius: 50%;
+  transform: rotate(12deg);
+}
+.profile-strange .profile-hero {
+  background: radial-gradient(circle at 62% 40%, rgba(242,87,255,.28), transparent 18%), radial-gradient(circle at 54% 62%, rgba(32,179,255,.32), transparent 22%), linear-gradient(120deg, #0f1118, #05070d 60%, #120f18);
+}
+.profile-strange .profile-hero::before {
+  inset: -4% -14% 12% 12%;
+  background: repeating-radial-gradient(circle at 65% 44%, rgba(255,255,255,.08) 0 15px, transparent 15px 40px), radial-gradient(circle at 62% 44%, rgba(155,112,255,.2), transparent 40%);
+  animation: ambientDrift 17s ease-in-out infinite alternate;
+}
+.profile-strange .profile-hero::after {
+  inset: 14% auto auto 56%;
+  width: 32vw;
+  height: 32vw;
+  border: 1px dashed rgba(160,120,255,.34);
+  border-radius: 50%;
+  box-shadow: 0 0 0 22px rgba(160,120,255,.04), 0 0 0 46px rgba(72,183,255,.04);
+  animation: spin 24s linear infinite reverse;
+}
+.profile-strange .profile-figure::before {
+  background: radial-gradient(circle, rgba(146,122,255,.8), transparent 56%);
+  box-shadow: 0 0 75px rgba(111,76,255,.35);
+}
+.profile-strange .profile-intro {
+  background: radial-gradient(circle at 58% 44%, rgba(242,87,255,.12), transparent 20%), linear-gradient(135deg, #f4efe9, #e5d9f0 50%, #d8d8df);
+}
+.profile-strange .profile-intro::before {
+  inset: 10% 10% auto auto;
+  width: 60%;
+  height: 62%;
+  border: 1px solid rgba(111,76,255,.18);
+  border-radius: 50%;
+  box-shadow: 0 0 0 18px rgba(111,76,255,.04);
+}
+.profile-panther .profile-hero {
+  background: radial-gradient(circle at 68% 34%, rgba(39,230,187,.3), transparent 16%), radial-gradient(circle at 52% 60%, rgba(157,92,255,.35), transparent 28%), linear-gradient(120deg, #0d1212, #070a0c 58%, #11161a);
+}
+.profile-panther .profile-hero::before {
+  inset: 10% -12% 20% 20%;
+  background: linear-gradient(120deg, transparent 0 44%, rgba(39,230,187,.18) 48%, transparent 52%);
+  filter: blur(10px);
+  animation: ambientDrift 19s ease-in-out infinite alternate;
+}
+.profile-panther .profile-hero::after {
+  inset: 12% 12% auto auto;
+  width: 32vw;
+  height: 32vw;
+  background: linear-gradient(135deg, rgba(157,92,255,.12), rgba(39,230,187,.14));
+  border: 1px solid rgba(39,230,187,.25);
+  border-radius: 50%;
+  box-shadow: inset 0 0 18px rgba(39,230,187,.1);
+}
+.profile-panther .profile-figure::before {
+  background: radial-gradient(circle, rgba(39,230,187,.68), transparent 56%);
+  box-shadow: 0 0 70px rgba(39,230,187,.35);
+}
+.profile-panther .profile-intro {
+  background: radial-gradient(circle at 36% 48%, rgba(157,92,255,.12), transparent 20%), linear-gradient(135deg, #f5efe7, #e0d9cd 48%, #cfcbb9);
+}
+.profile-panther .profile-intro::before {
+  inset: 8% auto auto 5%;
+  width: 72%;
+  height: 66%;
+  background: linear-gradient(135deg, rgba(39,230,187,.15), transparent 60%);
+  border: 1px solid rgba(157,92,255,.18);
+  transform: rotate(-12deg);
+}
+.profile-wanda .profile-hero {
+  background: radial-gradient(circle at 66% 38%, rgba(255,23,79,.38), transparent 16%), radial-gradient(circle at 50% 60%, rgba(155,0,78,.4), transparent 26%), linear-gradient(120deg, #100b12, #07080d 58%, #1a0b13);
+}
+.profile-wanda .profile-hero::before {
+  inset: -18% 6% 0 0;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 20px, transparent 20px 36px), radial-gradient(circle at 58% 44%, rgba(255,23,79,.12), transparent 42%);
+  animation: ambientDrift 12s ease-in-out infinite alternate;
+}
+.profile-wanda .profile-hero::after {
+  inset: 18% 8% 14% 20%;
+  background: radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(255,23,79,.18) 35%, transparent 60%);
+  border-radius: 50%;
+}
+.profile-wanda .profile-figure::before {
+  background: radial-gradient(circle, rgba(255,100,140,.72), transparent 58%);
+  box-shadow: 0 0 75px rgba(255,23,79,.38);
+}
+.profile-wanda .profile-intro {
+  background: radial-gradient(circle at 52% 40%, rgba(255,23,79,.12), transparent 18%), linear-gradient(135deg, #f5efe8, #ecdfdf 52%, #d7c1c6);
+}
+.profile-wanda .profile-intro::before {
+  inset: 8% auto auto 12%;
+  width: 70%;
+  height: 64%;
+  border: 1px solid rgba(255,23,79,.18);
+  transform: rotate(14deg);
+}
+.profile-captain-america .profile-hero {
+  background: radial-gradient(circle at 69% 38%, rgba(23,117,209,.38), transparent 18%), radial-gradient(circle at 50% 62%, rgba(229,43,50,.26), transparent 24%), linear-gradient(120deg, #0d1220, #07090d 58%, #111825);
+}
+.profile-captain-america .profile-hero::before {
+  inset: -8% auto auto 24%;
+  width: 74%;
+  height: 74%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+  transform: rotate(-8deg);
+  animation: ambientDrift 15s ease-in-out infinite alternate;
+}
+.profile-captain-america .profile-figure::before {
+  background: radial-gradient(circle, rgba(86,156,255,.72), transparent 56%);
+  box-shadow: 0 0 70px rgba(23,117,209,.32);
+}
+.profile-captain-america .profile-intro {
+  background: radial-gradient(circle at 42% 40%, rgba(23,117,209,.12), transparent 18%), linear-gradient(135deg, #f2f1ee, #dfe5f1 48%, #c7ced8);
+}
+.profile-thor .profile-hero {
+  background: radial-gradient(circle at 70% 36%, rgba(79,168,255,.28), transparent 18%), radial-gradient(circle at 54% 60%, rgba(241,184,45,.28), transparent 22%), linear-gradient(120deg, #0a1120, #07090d 60%, #18130f);
+}
+.profile-thor .profile-hero::before {
+  inset: -6% 0 auto 42%;
+  width: 52%;
+  height: 52%;
+  background: radial-gradient(circle, rgba(255,202,74,.22), transparent 58%);
+  filter: blur(12px);
+  animation: ambientDrift 13s ease-in-out infinite alternate;
+}
+.profile-thor .profile-hero::after {
+  inset: 18% 12% auto auto;
+  width: 26vw;
+  height: 26vw;
+  border: 1px solid rgba(255,202,74,.35);
+  border-radius: 50%;
+  box-shadow: 0 0 0 18px rgba(255,202,74,.03);
+}
+.profile-thor .profile-figure::before {
+  background: radial-gradient(circle, rgba(255,206,96,.76), transparent 56%);
+  box-shadow: 0 0 70px rgba(255,208,89,.38);
+}
+.profile-thor .profile-intro {
+  background: radial-gradient(circle at 36% 48%, rgba(79,168,255,.1), transparent 20%), linear-gradient(135deg, #f3efe8, #e9e0c9 48%, #d8d0bd);
+}
+.profile-hulk .profile-hero {
+  background: radial-gradient(circle at 68% 38%, rgba(114,189,68,.42), transparent 18%), radial-gradient(circle at 52% 60%, rgba(116,70,168,.32), transparent 25%), linear-gradient(120deg, #0d150e, #060b08 55%, #111710);
+}
+.profile-hulk .profile-hero::before {
+  inset: 8% -10% auto 18%;
+  background: linear-gradient(120deg, transparent 0 38%, rgba(173,255,104,.14) 42%, transparent 50%);
+  animation: ambientDrift 15s ease-in-out infinite alternate;
+}
+.profile-hulk .profile-figure::before {
+  background: radial-gradient(circle, rgba(160,255,123,.76), transparent 58%);
+  box-shadow: 0 0 70px rgba(100,210,62,.35);
+}
+.profile-hulk .profile-intro {
+  background: radial-gradient(circle at 38% 54%, rgba(114,189,68,.12), transparent 18%), linear-gradient(135deg, #f3f1ea, #dfe7d6 48%, #c8d0bd);
+}
+.profile-black-widow .profile-hero {
+  background: radial-gradient(circle at 72% 36%, rgba(230,46,46,.32), transparent 18%), radial-gradient(circle at 54% 58%, rgba(24,26,31,.62), transparent 30%), linear-gradient(120deg, #120d0d, #090a0e 58%, #190d11);
+}
+.profile-black-widow .profile-hero::before {
+  inset: 8% -8% 10% 10%;
+  background: repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,255,255,.04) 18px 20px);
+  opacity: .7;
+}
+.profile-black-widow .profile-figure::before {
+  background: radial-gradient(circle, rgba(255,74,74,.7), transparent 56%);
+  box-shadow: 0 0 70px rgba(214,43,56,.32);
+}
+.profile-black-widow .profile-intro {
+  background: radial-gradient(circle at 38% 48%, rgba(230,46,46,.12), transparent 18%), linear-gradient(135deg, #f6efe9, #e8d5d1 48%, #d2c0bc);
+}
+.profile .profile-hero .profile-body,
+.profile .profile-figure > b,
+.profile .character-atmosphere i,
+.profile .profile-title h1 span {
+  animation-timing-function: ease-in-out;
+}
+@keyframes ambientDrift {
+  0% { transform: translate3d(-15px, 0, 0) scale(1); }
+  100% { transform: translate3d(18px, -18px, 0) scale(1.08); }
+}
 .character-atmosphere { position: fixed; inset: 0; z-index: 20; pointer-events: none; overflow: hidden; mix-blend-mode: screen; }
 .character-atmosphere i { position: absolute; display: block; opacity: 0; }
 .profile-spider .character-atmosphere { background: repeating-conic-gradient(from 15deg at 90% 15%,transparent 0 8deg,rgba(255,255,255,.025) 8.2deg 8.5deg); }
