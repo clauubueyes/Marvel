@@ -1,0 +1,27 @@
+/* Shared Doomsday catalog and home section primitives. */
+.doom-guide { --doom-green: #b7d84b; position: relative; padding: 125px 6vw; overflow: hidden; isolation: isolate; background: radial-gradient(circle at 82% 8%,rgba(95,125,43,.3),transparent 25%),linear-gradient(135deg,#080b09,#11160e 55%,#070908); }
+.doom-guide::before { content: "DOOM"; position: absolute; z-index: -1; right: -2vw; top: -3vw; color: rgba(183,216,75,.035); font: 26vw/.8 var(--font-display); }
+.doom-heading { display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: end; }
+.doom-heading .eyebrow span { background: var(--doom-green); }
+.doom-heading h2 em { color: var(--doom-green); -webkit-text-stroke: 0; text-shadow: 7px 7px 0 #33410f; }
+.doom-release { min-width: 260px; padding: 25px; border: 1px solid rgba(183,216,75,.35); background: rgba(183,216,75,.05); }
+.doom-release span { color: #7e8870; font-size: 7px; letter-spacing: 2px; }
+.doom-release strong { display: block; margin: 10px 0; font: 34px var(--font-display); color: var(--doom-green); }
+.doom-release p { margin: 0; font-size: 8px; }
+.doom-intro { margin: 65px 0 55px; padding: 22px 0; display: flex; justify-content: space-between; align-items: end; border-top: 1px solid rgba(255,255,255,.16); border-bottom: 1px solid rgba(255,255,255,.16); }
+.doom-intro > p { max-width: 680px; margin: 0; font: 22px/1.4 var(--font-display); text-transform: uppercase; }
+.doom-intro > span { display: flex; align-items: center; gap: 8px; color: #747b6c; font-size: 7px; }
+.doom-intro i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--doom-green); box-shadow: 0 0 10px var(--doom-green); }
+
+.section { padding: 105px 6vw; position: relative; }
+.section-backdrop { position: absolute; top: 20px; right: -1vw; z-index: -1; color: rgba(8,9,11,.035); font: 25vw/.8 var(--font-display); letter-spacing: -10px; pointer-events: none; }
+.section-heading { display: grid; grid-template-columns: 1.1fr .9fr; align-items: end; gap: 8vw; margin-bottom: 55px; }
+h2 { font: clamp(60px, 7.5vw, 112px)/.88 var(--font-display); letter-spacing: -2px; margin: 0; }
+h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 2px var(--accent,currentColor); }
+.heading-aside { max-width: 480px; position: relative; padding: 28px 30px 25px 80px; border-top: 1px solid #b9b3a7; border-bottom: 1px solid #b9b3a7; }
+.heading-aside > b { position: absolute; left: 0; top: 18px; font: 58px var(--font-display); color: var(--accent); }
+.heading-aside p { margin: 0 0 18px; font-size: 11px; line-height: 1.75; color: #666; }
+.heading-aside span { font-size: 7px; letter-spacing: 1.8px; }
+
+footer { min-height: 120px; padding: 30px 8vw; display: flex; align-items: center; justify-content: space-between; background: #08090b; font-size: 8px; color: #777; }
+footer > a:last-child { color: #fff; }

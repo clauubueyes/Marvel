@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { characters } from "@/lib/characters";
-import { mcuCatalog } from "@/lib/mcuCatalog";
-import { getEntityHref, mcuEntities } from "@/lib/mcuEntities";
-import { siteConfig } from "@/lib/site";
-import { viewingRoutes } from "@/lib/viewingRoutes";
+import { characters } from "@/repositories/characterRepository";
+import { mcuCatalog } from "@/data/mcuCatalog";
+import { getEntityHref, mcuEntities } from "@/data/mcuEntities";
+import { siteConfig } from "@/config/site";
+import { viewingRoutes } from "@/data/viewingRoutes";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const url = (path: string) => new URL(path, siteConfig.url).toString();

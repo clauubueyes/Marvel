@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { MotionEffects } from "@/components/MotionEffects";
-import { ViewingRouteExperience } from "@/components/ViewingRouteExperience";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/lib/viewingRoutes";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { MotionEffects } from "@/components/common/MotionEffects";
+import { ViewingRouteExperience } from "@/features/viewing-routes";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/data/viewingRoutes";
 
 type PageProps = { params: Promise<{ slug: string }> };
 

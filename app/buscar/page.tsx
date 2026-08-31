@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { MotionEffects } from "@/components/MotionEffects";
-import { SearchExperience } from "@/components/SearchExperience";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { MotionEffects } from "@/components/common/MotionEffects";
+import { SearchExperience } from "@/features/search";
 
 export const metadata: Metadata = {
   title: "Buscar en el MCU — NEXUS",

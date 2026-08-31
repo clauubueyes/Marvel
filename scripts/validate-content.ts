@@ -1,4 +1,4 @@
-import { validateContent } from "../lib/contentRepository";
+import { validateContent } from "../repositories/contentRepository";
 
 const errors = validateContent();
 
