@@ -4,17 +4,18 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { mcuCatalog, type MCUContinuity, type MCUType } from "@/lib/mcuCatalog";
+import { getTitleImage } from "@/lib/titleImages";
 
 type Filter = "TODO" | MCUType | MCUContinuity;
 const PAGE_SIZE = 7;
 const archiveImages: Record<string, string> = {
-  "Vengadores: Endgame": "https://i.ytimg.com/vi/TcMBFSGVi1c/maxresdefault.jpg",
-  "Loki · Temporadas 1 y 2": "https://i.ytimg.com/vi/nW948Va-l10/maxresdefault.jpg",
-  "Spider-Man: No Way Home": "https://i.ytimg.com/vi/JfVOs4VSpmA/maxresdefault.jpg",
-  "Doctor Strange en el Multiverso de la Locura": "https://i.ytimg.com/vi/aWzlQ2N6qqg/maxresdefault.jpg",
-  "Deadpool y Lobezno": "https://i.ytimg.com/vi/73_1biulkYk/maxresdefault.jpg",
-  "Los Cuatro Fantásticos: Primeros pasos": "https://i.ytimg.com/vi/18QQWa5MEcs/maxresdefault.jpg",
-  "Avengers: Doomsday": "https://i.ytimg.com/vi/399Ez7WHK5s/maxresdefault.jpg",
+  "Vengadores: Endgame": "/editorial/avengers-endgame.webp",
+  "Loki · Temporadas 1 y 2": "/editorial/loki.webp",
+  "Spider-Man: No Way Home": "/editorial/spider-man-no-way-home.webp",
+  "Doctor Strange en el Multiverso de la Locura": "/editorial/doctor-strange-multiverse.webp",
+  "Deadpool y Lobezno": "/editorial/deadpool-wolverine.webp",
+  "Los Cuatro Fantásticos: Primeros pasos": "/editorial/fantastic-four.webp",
+  "Avengers: Doomsday": "/editorial/avengers-doomsday.webp",
 };
 
 export function MCUCatalog() {
@@ -44,7 +45,7 @@ export function MCUCatalog() {
       {displayed.map(entry => <details className="catalog-entry watch-entry" key={`${entry.order}-${entry.title}`} data-reveal>
         <summary>
           <span className="watch-order">{String(entry.order).padStart(2, "0")}</span>
-          <div className={`catalog-art catalog-art-${entry.continuity.toLowerCase().replaceAll(" ", "-")} has-image`} aria-hidden="true"><Image src={archiveImages[entry.title] ?? `/api/title-image?title=${encodeURIComponent(entry.title)}&type=${encodeURIComponent(entry.type)}`} alt="" fill sizes="(max-width: 560px) 80vw, 245px" onError={event => { event.currentTarget.hidden = true; event.currentTarget.parentElement?.classList.remove("has-image"); }}/><b>{entry.title.split(" ").slice(0, 2).map(word => word[0]).join("")}</b><small>{entry.phase}</small><span>MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}</span></div>
+          <div className={`catalog-art catalog-art-${entry.continuity.toLowerCase().replaceAll(" ", "-")} has-image`} aria-hidden="true"><Image src={archiveImages[entry.title] ?? getTitleImage(entry.slug)} alt="" fill sizes="(max-width: 560px) 80vw, 245px" onError={event => { event.currentTarget.hidden = true; event.currentTarget.parentElement?.classList.remove("has-image"); }}/><b>{entry.title.split(" ").slice(0, 2).map(word => word[0]).join("")}</b><small>{entry.phase}</small><span>MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}</span></div>
           <div className="watch-main"><small>{entry.period} · {entry.type}</small><h3>{entry.title}</h3><p>{entry.event}</p><b>{entry.continuity}</b></div>
           <span className="expand-label"><i>+</i> VER SUCESO</span>
         </summary>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { TitleViewingPlanner } from "@/components/TitleViewingPlanner";
 import type { MCUContinuity, MCUType } from "@/lib/mcuCatalog";
+import { getTitleImage } from "@/lib/titleImages";
 
 export type TitleDirectoryEntry = {
   slug: string; order: number; title: string; period: string; type: MCUType;
@@ -162,7 +163,7 @@ export function TitleDirectory({ titles }: Props) {
         const isSelected = selectedTitles.has(title.slug);
         return <div className={`title-directory-row ${planning ? "is-planning" : ""} ${isSelected ? "is-selected" : ""} ${isWatched ? "is-watched" : ""}`} key={title.slug}>
           <Link className="title-directory-card" href={`/titulos/${title.slug}`} data-reveal>
-            <div className="title-card-art"><Image src={`/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`} alt={`Cartel de ${title.title}`} fill sizes={viewMode === "CUADRÍCULA" ? "(max-width: 700px) 90vw, (max-width: 1200px) 45vw, 30vw" : "180px"} /><span>{isWatched ? "✓" : String(title.order).padStart(2, "0")}</span><small>{title.type}</small></div>
+            <div className="title-card-art"><Image src={getTitleImage(title.slug)} alt={`Cartel de ${title.title}`} fill sizes={viewMode === "CUADRÍCULA" ? "(max-width: 700px) 90vw, (max-width: 1200px) 45vw, 30vw" : "180px"} /><span>{isWatched ? "✓" : String(title.order).padStart(2, "0")}</span><small>{title.type}</small></div>
             <div className="title-card-copy"><small>{title.period} · {title.coverage}</small><h2>{title.title}</h2><p>{title.event}</p>{title.routes.length > 0 && <div className="title-route-tags" aria-label="Recorridos relacionados">{title.routes.map((route) => <b key={route.slug}>{route.name}</b>)}</div>}</div>
             <aside><b>{title.phase}</b><small>{getSaga(title.phase)}</small><small>{title.continuity}</small><small>{title.releaseDateISO.slice(0, 4)}</small></aside><i>↗</i>
           </Link>
