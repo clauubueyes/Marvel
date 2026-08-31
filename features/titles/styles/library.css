@@ -1,4 +1,9 @@
-/* Visual title library: grid and illustrated list */
+/*
+ * BIBLIOTECA VISUAL DE TÍTULOS
+ * Complementa archive.css en `/titulos`: alterna entre rejilla ilustrada y lista,
+ * compacta el hero y presenta filtros avanzados, progreso y planificador.
+ */
+/* Selector de vista y modo rejilla de tres columnas. */
 .title-view-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
 .title-view-switch button { white-space: nowrap; }
 .titles-directory.is-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; padding-top: 40px; }
@@ -25,6 +30,7 @@
 .titles-directory.is-grid .title-card-actions button:only-child { grid-column: 1 / -1; }
 .titles-directory.is-grid .title-route-tags { padding-top: 3px; }
 
+/* Modo lista: miniatura lateral y mayor densidad de información. */
 .titles-directory.is-list { display: block; }
 .titles-directory.is-list .title-directory-card { grid-template-columns: 185px minmax(0,1fr) 165px 24px; gap: 26px; min-height: 175px; padding: 20px 175px 20px 0; }
 .titles-directory.is-list .title-card-art { width: 185px; height: 120px; }
@@ -55,7 +61,7 @@
   .titles-directory.is-list .title-card-actions { left: 0; right: 0; bottom: 18px; width: auto; }
 }
 
-/* Compact title archive header and filter hierarchy */
+/* Versión compacta del hero y jerarquía actual del toolbar/filtros. */
 .titles-index-hero { min-height: 480px; padding: 130px 6vw 55px; grid-template-columns: minmax(0,1.1fr) minmax(300px,.7fr); gap: 12px 7vw; }
 .titles-index-hero h1 { max-width: 820px; font-size: clamp(68px,8vw,125px); line-height: .8; letter-spacing: -2px; }
 .titles-index-hero > p:not(.eyebrow) { max-width: 510px; align-self: center; font-size: clamp(14px,1.15vw,18px); line-height: 1.6; }
@@ -113,6 +119,7 @@
   .title-bulk-actions > div { display: grid; grid-template-columns: 1fr 1fr; }
 }
 
+/* Ajustes del planificador cuando se abre desde la biblioteca de títulos. */
 .title-library-toolbar { grid-template-columns: minmax(300px,1fr) 170px minmax(245px,310px); }
 .title-planner .route-planner-intro { align-items: center; padding: 25px 30px; }
 .title-planner .route-planner-intro h2 { max-width: 680px; font-size: clamp(38px,4vw,58px); line-height: .9; }

@@ -1,4 +1,8 @@
-/* Crop every directory portrait around its character-specific focal point. */
+/*
+ * TARJETAS DEL DIRECTORIO DE PERSONAJES
+ * Es la capa final de la rejilla de `/personajes`: asegura el recorte de cada
+ * retrato alrededor de su punto focal y adapta el número de columnas.
+ */
 .characters-directory { padding:70px 6vw 120px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
 .character-directory-card { min-height:480px; position:relative; overflow:hidden; padding:24px; display:flex; flex-direction:column; justify-content:flex-end; color:#fff; background:#111; isolation:isolate; }
 .character-directory-card::after { content:""; position:absolute; z-index:-1; inset:0; background:linear-gradient(0deg,#050705 3%,transparent 75%); pointer-events:none; }

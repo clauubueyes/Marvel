@@ -1,4 +1,11 @@
-/* Shared responsive navigation, search and character rules. */
+/*
+ * RESPONSIVE COMPARTIDO
+ * Ajusta navegación, buscador y archivo de personajes. Los breakpoints propios
+ * de otras pantallas permanecen junto a sus estilos de feature.
+ */
+/* Tablet horizontal: reduce columnas y oculta el contexto de navegación. */
 @media (max-width: 1000px) { .global-navigation-context { display: none; }.search-hero { grid-template-columns: 1fr; align-content: center; }.search-command { max-width: 680px; }.search-result-grid { grid-template-columns: 1fr 1fr; }.characters-index-hero { grid-template-columns: 1fr; }.characters-index-hero aside { max-width: 600px; }.characters-directory { grid-template-columns: 1fr 1fr; } }
+/* Tablet vertical: convierte la navegación principal en menú desplegable. */
 @media (max-width: 900px) { .global-navigation .global-links { margin: 0; }.global-navigation .menu { display: block; }.global-navigation.profile-nav .nav { display: none; }.global-navigation.profile-nav .nav.open { display: flex; }.global-navigation.profile-nav .menu { margin-left: auto; }.global-navigation .nav { z-index: 1; }.global-navigation .brand,.global-navigation .menu { position: relative; z-index: 2; } }
+/* Móvil: una sola columna para resultados y tarjetas de personajes. */
 @media (max-width: 560px) { .search-hero { min-height: 720px; padding: 135px 6vw 65px; }.search-hero h1 { font-size: 18vw; }.search-command { padding: 20px; }.search-results { padding-inline: 5vw; }.search-result-tools { align-items: flex-start; flex-direction: column; padding: 20px 0; }.search-result-tools > div { width: 100%; overflow-x: auto; }.search-result-tools button { flex: 1 0 auto; }.search-result-grid { grid-template-columns: 1fr; }.search-result-card { min-height: 430px; }.characters-index-hero { min-height: 700px; padding: 140px 6vw 65px; }.characters-index-hero h1 { font-size: 21vw; }.characters-directory { grid-template-columns: 1fr; padding-inline: 5vw; }.character-directory-card { min-height: 500px; } }

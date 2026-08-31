@@ -1,5 +1,10 @@
-/* MCU / DOOMSDAY HOME */
+/*
+ * PORTADA MCU / DOOMSDAY
+ * Controla únicamente la página `/`: hero inicial, introducción editorial,
+ * cronología desplegable, catálogo MCU y personajes destacados.
+ */
 .mcu-home { background: #090b09; color: #f1eee4; }
+/* Hero principal: arte de Doomsday, retícula, título, CTA y ficha de estreno. */
 .doom-hero { min-height: 100svh; position: relative; display: flex; align-items: center; overflow: hidden; isolation: isolate; background: #090b09; }
 .doom-hero::before { content: "DOOM"; position: absolute; z-index: -1; right: -2vw; top: 8vh; color: rgba(185,215,55,.045); font: 31vw/.75 var(--font-display); letter-spacing: -.05em; }
 .doom-hero-image { position: absolute; z-index: -2; inset: 0 0 0 42%; background: linear-gradient(90deg,#090b09 0%,transparent 35%),linear-gradient(0deg,#090b09 0%,transparent 35%),url("/editorial/avengers-doomsday.webp") center/cover; filter: grayscale(.7) contrast(1.25); opacity: .66; }
@@ -20,6 +25,7 @@
 .doom-hero-fact { position: absolute; right: 4vw; bottom: 80px; width: 230px; padding: 20px; border-left: 3px solid #b9d737; background: rgba(5,7,5,.78); backdrop-filter: blur(12px); }
 .doom-hero-fact span,.doom-hero-fact p { display: block; color: #a6aa9e; font-size: 8px; line-height: 1.5; }.doom-hero-fact b { display: block; margin: 8px 0; font: 30px var(--font-display); color: #b9d737; }
 
+/* Introducción clara: explica el contexto y contiene las tres claves editoriales. */
 .doom-primer { min-height: 820px; display: grid; grid-template-columns: .62fr 1fr; gap: 4vw 7vw; position: relative; color: #10120d; background: #e8e5da; }
 .doom-primer h2 { font-size: clamp(72px,7.5vw,125px); line-height: .86; letter-spacing: .01em; }.doom-primer h2 em { color: #587023; -webkit-text-stroke: 0; }
 .doom-primer .section-backdrop { color: rgba(20,30,10,.035); }
@@ -30,6 +36,7 @@
 .truth-card { grid-column: 1 / -1; display: grid; grid-template-columns: 160px 1fr 1.3fr; align-items: center; gap: 35px; padding: 25px 35px; color: #eff4df; background: #1a2511; border-left: 8px solid #b9d737; }
 .truth-card span { font-size: 11px; line-height: 1.4; letter-spacing: 2px; }.truth-card strong { font: 40px/1.08 var(--font-display); letter-spacing: .01em; color: #b9d737; }.truth-card p { color: #cbd0c3; font-size: 14px; line-height: 1.7; }
 
+/* Controles y cronología de visionado desplegable en la guía Doomsday. */
 .route-controls { display: flex; justify-content: space-between; align-items: center; margin: 55px 0 25px; padding: 20px 0; border-top: 1px solid #465139; border-bottom: 1px solid #465139; }
 .route-controls p { max-width: 430px; color: #aeb4a5; font-size: 10px; }.route-controls > div { display: flex; gap: 8px; }
 .route-controls button { padding: 13px 17px; border: 1px solid #59654c; color: #aeb4a5; background: transparent; font: 8px var(--font-mono); cursor: pointer; }.route-controls button.active { color: #11150c; background: #b9d737; border-color: #b9d737; }
@@ -42,6 +49,7 @@
 .event-dossier ol { margin: 20px 0 0; padding-left: 18px; }.event-dossier li,.event-dossier p { margin-bottom: 12px; color: #555b4e; font-size: 10px; line-height: 1.6; }.event-dossier strong { color: #4f6721; font-size: 8px; }.event-dossier article { padding: 12px 0; border-bottom: 1px solid #adb5a0; }.event-dossier article b,.event-dossier article small { display: block; }.event-dossier article b { font: 17px var(--font-display); }.event-dossier article small { margin: 4px 0 8px; color: #6d7367; font-size: 7px; }.event-dossier article a { color: #4f6721; font-size: 7px; }
 .spoiler-note { margin-top: 22px; color: #828a78; font-size: 8px; }
 
+/* Archivo MCU completo: buscador, filtros y filas desplegables de títulos. */
 .mcu-catalog { color: #11130f; background: #eeece4; }
 .catalog-heading { display: grid; grid-template-columns: 1fr .7fr; align-items: end; gap: 8vw; }
 .catalog-heading h2 { font-size: clamp(70px,8vw,130px); }.catalog-heading h2 em { color: #668522; -webkit-text-stroke: 0; }
@@ -55,6 +63,7 @@
 .catalog-entry summary > b { color: #777c70; font: 25px var(--font-display); }.catalog-entry summary small { color: #708346; font-size: 7px; letter-spacing: 1.2px; }.catalog-entry h3 { margin: 7px 0 0; font: clamp(20px,2vw,30px) var(--font-display); text-transform: uppercase; }.catalog-entry summary > span { color: #64695f; font-size: 9px; }.catalog-entry summary > i { color: #526730; font: normal 7px var(--font-mono); }.catalog-entry summary > em { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid #91978a; border-radius: 50%; font: normal 17px var(--font-mono); transition: .3s; }.catalog-entry[open] summary > em { transform: rotate(45deg); color: #668522; }
 .catalog-event { display: grid; grid-template-columns: 180px 1fr; padding: 25px 30px 25px 83px; color: #e8ecde; background: #1b2117; }.catalog-event span { color: #a5bc74; font-size: 7px; letter-spacing: 1.4px; }.catalog-event p { max-width: 760px; font-size: 11px; line-height: 1.65; }.catalog-empty { padding: 80px 20px; text-align: center; }.catalog-empty b { font: 35px var(--font-display); }.catalog-empty p,.catalog-source { color: #73776e; font-size: 8px; }.catalog-source { margin-top: 22px; line-height: 1.65; }
 
+/* Galería de personajes destacados al final de la portada. */
 .mcu-characters { position: relative; background: #e8e5da; color: #11130f; }.mcu-characters .section-backdrop { color: rgba(10,20,5,.035); }.mcu-characters .heading-aside b { color: #668522; }.mcu-characters .section-heading > div:first-child { min-width: 0; }.mcu-characters .section-heading h2 { max-width: 650px; font-size: clamp(62px,6vw,98px); line-height: .84; letter-spacing: -1px; }.mcu-characters .section-heading h2 em { display: block; color: transparent; -webkit-text-stroke: 2px #668522; }
 .mcu-character-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 55px; }.mcu-character { min-height: 440px; position: relative; overflow: hidden; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; color: white; background: #111; isolation: isolate; }.mcu-character::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg,#070907 5%,transparent 75%); }.mcu-character img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.5); transition: .45s; }.mcu-character:hover img { transform: scale(1.05); filter: none; }.mcu-character span { color: var(--card-accent); font-size: 7px; }.mcu-character h3 { margin: 10px 0 2px; font: 28px var(--font-display); }.mcu-character p { color: #bbb; font-size: 8px; }.mcu-character > b { margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.25); font-size: 7px; }
 
@@ -74,7 +83,8 @@
   .catalog-heading > div:last-child { grid-template-columns: 80px 1fr; }.catalog-heading strong { font-size: 65px; }.catalog-tools { padding: 18px; }.catalog-tools label { display: block; }.catalog-tools label span { display: block; margin-bottom: 8px; }.catalog-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; }.catalog-filters button { flex: 0 0 auto; }.catalog-entry summary { grid-template-columns: 32px 1fr 25px; gap: 10px; padding: 18px 0; }.catalog-entry summary > span { grid-column: 2; }.catalog-entry summary > em { grid-column: 3; grid-row: 1 / 3; }.catalog-event { display: block; padding: 22px; }.catalog-event p { margin-top: 12px; }.catalog-result span:last-child { display: none; }
 }
 
-/* Full MCU archive shares the visual system of the Doom route */
+/* El archivo MCU completo reutiliza el lenguaje visual de la ruta Doomsday. */
+/* Refinamiento oscuro del catálogo MCU empleado por la versión actual de Home. */
 .mcu-catalog { color: #f0f3e8; background: radial-gradient(circle at 85% 5%,rgba(137,166,62,.18),transparent 27%),linear-gradient(145deg,#11160d,#080b07 70%); }
 .mcu-catalog .catalog-heading { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 5vw; }
 .mcu-catalog .catalog-heading h2 { font-size: clamp(65px,7.4vw,120px); }

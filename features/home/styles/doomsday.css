@@ -1,4 +1,9 @@
-/* Shared Doomsday catalog and home section primitives. */
+/*
+ * GUÍA DOOMSDAY Y SECCIONES EDITORIALES COMPARTIDAS
+ * Se usa en la portada para el bloque «Camino a Doomsday» y aporta la clase
+ * `.section`, los encabezados grandes y los paneles laterales reutilizados allí.
+ */
+/* Cabecera oscura de la guía, fecha de estreno y resumen editorial. */
 .doom-guide { --doom-green: #b7d84b; position: relative; padding: 125px 6vw; overflow: hidden; isolation: isolate; background: radial-gradient(circle at 82% 8%,rgba(95,125,43,.3),transparent 25%),linear-gradient(135deg,#080b09,#11160e 55%,#070908); }
 .doom-guide::before { content: "DOOM"; position: absolute; z-index: -1; right: -2vw; top: -3vw; color: rgba(183,216,75,.035); font: 26vw/.8 var(--font-display); }
 .doom-heading { display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: end; }
@@ -13,6 +18,7 @@
 .doom-intro > span { display: flex; align-items: center; gap: 8px; color: #747b6c; font-size: 7px; }
 .doom-intro i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--doom-green); box-shadow: 0 0 10px var(--doom-green); }
 
+/* Estructura común de las grandes franjas editoriales de la portada. */
 .section { padding: 105px 6vw; position: relative; }
 .section-backdrop { position: absolute; top: 20px; right: -1vw; z-index: -1; color: rgba(8,9,11,.035); font: 25vw/.8 var(--font-display); letter-spacing: -10px; pointer-events: none; }
 .section-heading { display: grid; grid-template-columns: 1.1fr .9fr; align-items: end; gap: 8vw; margin-bottom: 55px; }

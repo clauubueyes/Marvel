@@ -1,4 +1,11 @@
-/* Character archive */
+/*
+ * DOSSIER DE PERSONAJE — `/personajes/[id]`
+ * Este archivo contiene la dirección de arte completa de una ficha: atmósfera
+ * global, hero, identidad, momento en pantalla, datos, filmografía, poderes,
+ * cronología y navegación. Las variantes `.profile-{id}` personalizan el color,
+ * los halos y el fondo sin cambiar la estructura de los componentes.
+ */
+/* Lienzo general, barrido de página, brillos al hover y profundidad compartida. */
 .profile { --profile-paper: #eee9de; background: #090a0d; min-height: 100vh; position: relative; overflow-x: hidden; perspective: 1600px; }
 .profile::before {
   content: "";
@@ -126,6 +133,7 @@
   box-shadow: 0 0 40px color-mix(in srgb, var(--accent) 18%, transparent), inset 0 0 26px color-mix(in srgb, var(--accent-2) 18%, transparent);
   animation: haloFloat 9s ease-in-out infinite alternate-reverse;
 }
+/* Animaciones ambientales comunes a todas las fichas. */
 @keyframes pageScan {
   0% { transform: translateY(-8%) scaleY(1); opacity: .25; }
   50% { opacity: .45; }
@@ -145,6 +153,7 @@
   50% { transform: translate3d(12px, -10px, 0) scale(1.06); opacity: .92; }
   100% { transform: translate3d(-4px, 10px, 0) scale(1.02); opacity: .7; }
 }
+/* Capas decorativas base usadas por hero, retrato e introducción. */
 .profile-hero::before,
 .profile-hero::after,
 .profile-intro::before,
@@ -165,6 +174,7 @@
   border-radius: 50%;
   opacity: .8;
 }
+/* Spider-Man: telarañas concéntricas y contraste rojo/blanco. */
 .profile-spider .profile-hero {
   background: radial-gradient(circle at 68% 38%, rgba(255,255,255,.18), transparent 18%), radial-gradient(circle at 55% 60%, rgba(237,27,36,.38), transparent 28%), linear-gradient(120deg, #0d1018, #06070c 58%, #14181a);
 }
@@ -198,6 +208,7 @@
   background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(23,26,32,.04) 22px 24px);
   transform: rotate(-9deg);
 }
+/* Iron Man: resplandor de reactor, naranja tecnológico y geometría HUD. */
 .profile-iron .profile-hero {
   background: radial-gradient(circle at 76% 35%, rgba(255,194,0,.38), transparent 18%), radial-gradient(circle at 55% 58%, rgba(255,74,0,.44), transparent 28%), linear-gradient(120deg, #0d0f14, #090b0d 52%, #180d0a);
 }
@@ -230,6 +241,7 @@
   border-radius: 50%;
   transform: rotate(12deg);
 }
+/* Doctor Strange: círculos místicos, violeta y azul portal. */
 .profile-strange .profile-hero {
   background: radial-gradient(circle at 62% 40%, rgba(242,87,255,.28), transparent 18%), radial-gradient(circle at 54% 62%, rgba(32,179,255,.32), transparent 22%), linear-gradient(120deg, #0f1118, #05070d 60%, #120f18);
 }
@@ -262,6 +274,7 @@
   border-radius: 50%;
   box-shadow: 0 0 0 18px rgba(111,76,255,.04);
 }
+/* Black Panther: energía vibranium, turquesa y violeta de Wakanda. */
 .profile-panther .profile-hero {
   background: radial-gradient(circle at 68% 34%, rgba(39,230,187,.3), transparent 16%), radial-gradient(circle at 52% 60%, rgba(157,92,255,.35), transparent 28%), linear-gradient(120deg, #0d1212, #070a0c 58%, #11161a);
 }
@@ -295,6 +308,7 @@
   border: 1px solid rgba(157,92,255,.18);
   transform: rotate(-12deg);
 }
+/* Wanda: magia del caos, formas rotadas y halo carmesí. */
 .profile-wanda .profile-hero {
   background: radial-gradient(circle at 66% 38%, rgba(255,23,79,.38), transparent 16%), radial-gradient(circle at 50% 60%, rgba(155,0,78,.4), transparent 26%), linear-gradient(120deg, #100b12, #07080d 58%, #1a0b13);
 }
@@ -322,6 +336,7 @@
   border: 1px solid rgba(255,23,79,.18);
   transform: rotate(14deg);
 }
+/* Captain America: iluminación azul/roja y composición más simétrica. */
 .profile-captain-america .profile-hero {
   background: radial-gradient(circle at 69% 38%, rgba(23,117,209,.38), transparent 18%), radial-gradient(circle at 50% 62%, rgba(229,43,50,.26), transparent 24%), linear-gradient(120deg, #0d1220, #07090d 58%, #111825);
 }
@@ -340,6 +355,7 @@
 .profile-captain-america .profile-intro {
   background: radial-gradient(circle at 42% 40%, rgba(23,117,209,.12), transparent 18%), linear-gradient(135deg, #f2f1ee, #dfe5f1 48%, #c7ced8);
 }
+/* Thor: luz de tormenta azul y brillo dorado asgardiano. */
 .profile-thor .profile-hero {
   background: radial-gradient(circle at 70% 36%, rgba(79,168,255,.28), transparent 18%), radial-gradient(circle at 54% 60%, rgba(241,184,45,.28), transparent 22%), linear-gradient(120deg, #0a1120, #07090d 60%, #18130f);
 }
@@ -366,6 +382,7 @@
 .profile-thor .profile-intro {
   background: radial-gradient(circle at 36% 48%, rgba(79,168,255,.1), transparent 20%), linear-gradient(135deg, #f3efe8, #e9e0c9 48%, #d8d0bd);
 }
+/* Hulk: impacto gamma verde con contrapunto violeta. */
 .profile-hulk .profile-hero {
   background: radial-gradient(circle at 68% 38%, rgba(114,189,68,.42), transparent 18%), radial-gradient(circle at 52% 60%, rgba(116,70,168,.32), transparent 25%), linear-gradient(120deg, #0d150e, #060b08 55%, #111710);
 }
@@ -381,6 +398,7 @@
 .profile-hulk .profile-intro {
   background: radial-gradient(circle at 38% 54%, rgba(114,189,68,.12), transparent 18%), linear-gradient(135deg, #f3f1ea, #dfe7d6 48%, #c8d0bd);
 }
+/* Black Widow: retícula de espionaje, negro y rojo contenido. */
 .profile-black-widow .profile-hero {
   background: radial-gradient(circle at 72% 36%, rgba(230,46,46,.32), transparent 18%), radial-gradient(circle at 54% 58%, rgba(24,26,31,.62), transparent 30%), linear-gradient(120deg, #120d0d, #090a0e 58%, #190d11);
 }
@@ -406,6 +424,7 @@
   0% { transform: translate3d(-15px, 0, 0) scale(1); }
   100% { transform: translate3d(18px, -18px, 0) scale(1.08); }
 }
+/* Atmósfera fija sobre la ficha: partículas y símbolos propios del personaje. */
 .character-atmosphere { position: fixed; inset: 0; z-index: 20; pointer-events: none; overflow: hidden; mix-blend-mode: screen; }
 .character-atmosphere i { position: absolute; display: block; opacity: 0; }
 .profile-spider .character-atmosphere { background: repeating-conic-gradient(from 15deg at 90% 15%,transparent 0 8deg,rgba(255,255,255,.025) 8.2deg 8.5deg); }
@@ -423,6 +442,7 @@
 .profile-nav > p { margin: 0; color: #8a8c91; font-size: 9px; letter-spacing: 2px; }
 .profile-nav > a:last-child { font-size: 9px; letter-spacing: 2px; }
 .profile-nav > a:last-child b { margin-left: 10px; font-size: 20px; }
+/* Hero: nombre, alias, metadatos, figura recortada y señal de scroll. */
 .profile-hero { position: relative; min-height: 100vh; height: 850px; overflow: hidden; display: flex; align-items: center; background: radial-gradient(circle at 66% 48%, color-mix(in srgb,var(--accent) 48%,transparent), transparent 26%), linear-gradient(120deg,#0e1015,#050608); }
 .profile-grid { position: absolute; inset: 0; opacity: .35; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.06) 1px, transparent 1px); background-size: 55px 55px; mask-image: linear-gradient(90deg,transparent,black); }
 .profile-title { width: 72%; padding-left: 6vw; position: relative; z-index: 3; }
@@ -455,6 +475,7 @@
 .scroll-cue span { color: var(--accent); margin-top: 10px; }
 .profile-section { padding: 130px 8vw; }
 .section-label { color: var(--accent); font-size: 9px; letter-spacing: 2px; margin-bottom: 30px; }
+/* Identidad: retrato secundario, biografía y ficha de nombre/universo/estado. */
 .profile-intro { min-height: 850px; display: grid; grid-template-columns: .78fr .72fr 1fr; gap: 4vw; align-items: center; color: #111; background: radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 24%),var(--profile-paper); overflow: hidden; }
 .profile-intro::before { content: "IDENTITY"; position: absolute; left: -2vw; bottom: -4vw; color: rgba(0,0,0,.025); font: 18vw var(--font-display); pointer-events: none; }
 .identity-title { align-self: start; padding-top: 30px; position: relative; z-index: 2; }
@@ -482,6 +503,7 @@
 .intro-copy dt { color: #888279; font-size: 8px; }
 .intro-copy dd { margin: 0; font-size: 10px; text-transform: uppercase; }
 .image-credit { display: inline-block; margin-top: 24px; padding-bottom: 5px; border-bottom: 1px solid #aaa399; color: #777168; font-size: 7px; letter-spacing: 1px; }
+/* Momento en pantalla: texto editorial y fotograma/vídeo panorámico. */
 .screen-moment { min-height: 760px; display: grid; grid-template-columns: .72fr 1.28fr; gap: 7vw; align-items: center; position: relative; overflow: hidden; background: radial-gradient(circle at 80% 50%,color-mix(in srgb,var(--accent) 25%,transparent),transparent 35%),#090a0d; }
 .screen-moment::before { content: "CINEMA"; position: absolute; left: -2vw; bottom: -4vw; color: rgba(255,255,255,.025); font: 20vw var(--font-display); }
 .moment-copy { position: relative; z-index: 2; }
@@ -501,6 +523,7 @@
 .profile-facts { position: relative; color: #0a0b0c; background: radial-gradient(circle at 82% 18%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 28%),linear-gradient(115deg,#f1ede4,#e4ded1); overflow: hidden; }
 .profile-facts h2,.profile-facts h3,.profile-facts p,.profile-facts span { color: inherit; }
 .profile-facts .section-label { color: var(--accent); }
+/* Datos esenciales: tres grandes tarjetas numéricas sobre fondo claro. */
 .facts-heading { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr .6fr; align-items: end; gap: 4vw; margin-bottom: 55px; }
 .facts-heading .section-label { grid-column: 1 / -1; margin-bottom: 0; }
 .facts-heading h2 em { -webkit-text-stroke-color: var(--accent); }
@@ -515,6 +538,7 @@
 .facts-grid article:hover > strong { transform: translateX(10px); text-shadow: 6px 6px 0 color-mix(in srgb,var(--accent-2) 45%,transparent); }
 .facts-grid h3 { margin: 35px 0 12px; font: 19px var(--font-display); }
 .facts-grid p { max-width: 280px; margin: 0; color: #79736b; font-size: 9px; line-height: 1.65; }
+/* Filmografía: listado enlazado de apariciones con inversión de color al hover. */
 .filmography { display: grid; grid-template-columns: .75fr 1.25fr; gap: 8vw; background: color-mix(in srgb,var(--accent) 13%,#090a0d); }
 .film-heading > p:last-child { max-width: 360px; margin-top: 30px; color: #85878d; font-size: 9px; line-height: 1.7; }
 .film-reel { border-top: 1px solid rgba(255,255,255,.22); }
@@ -526,6 +550,7 @@
 .film-reel h3 { margin: 7px 0 0; font: 25px var(--font-display); text-transform: uppercase; }
 .film-reel a > strong { font: 17px var(--font-display); }
 .film-reel a > i { font-style: normal; }
+/* Poderes: visual central, nivel de amenaza y lista de habilidades. */
 .profile-power { min-height: 950px; position: relative; display: grid; grid-template-columns: .72fr .58fr 1fr; grid-template-rows: auto 1fr auto; gap: 4vw; color: #f4f0e7; overflow: hidden; background: radial-gradient(circle at 46% 52%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 24%),linear-gradient(135deg,#080a0d,#12141a); }
 .profile-power::before { content: "POWER"; position: absolute; left: -3vw; bottom: -5vw; color: rgba(255,255,255,.022); font: 20vw var(--font-display); }
 .profile-power h2,.profile-power h3,.profile-power p,.profile-power span { color: inherit; }
@@ -553,6 +578,7 @@
 .ability-list b { color: #5d5f65; font-size: 8px; }
 .ability-list span { font: 18px var(--font-display); text-transform: uppercase; }
 .ability-list i { position: absolute; right: 15px; top: 15px; color: var(--accent); font-size: 23px; font-style: normal; }
+/* Cronología vertical del personaje. */
 .profile-timeline { color: #111; background: var(--profile-paper); }
 .timeline-heading { margin-bottom: 100px; }
 .timeline-line { display: grid; grid-template-columns: repeat(3,1fr); border-top: 2px solid #171717; }
@@ -561,6 +587,7 @@
 .timeline-line article > b { font: 46px var(--font-display); color: var(--accent); }
 .timeline-line h3 { margin: 20px 0 10px; font: 23px var(--font-display); text-transform: uppercase; }
 .timeline-line p { color: #6f6b64; font-size: 10px; line-height: 1.7; }
+/* Historia horizontal: carrusel editorial de hitos con scroll-snap. */
 .character-story { overflow: hidden; background: radial-gradient(circle at 91% 16%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 25%),var(--profile-paper); }
 .character-story-heading { display: grid; grid-template-columns: minmax(0,1fr) 320px; align-items: end; gap: 6vw; margin-bottom: 75px; }.character-story-heading > div { min-width: 0; }.character-story-heading h2 { max-width: 760px; font-size: clamp(64px,5.4vw,96px); line-height: .82; letter-spacing: -1px; }.character-story-heading h2 em { display: block; color: transparent; -webkit-text-stroke: 2px var(--accent); }.character-story-heading aside { padding: 22px 0 5px 25px; border-left: 2px solid var(--accent); }.character-story-heading aside b { display: block; color: var(--accent); font: 55px/.8 var(--font-display); }.character-story-heading aside p { margin-top: 14px; color: #6f6b64; font-size: 9px; line-height: 1.65; }
 .character-story-rail { --story-count: 4; position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(310px,calc((100vw - 16vw - 60px) / 3)); gap: 30px; padding: 0 1px 25px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-color: var(--accent) #cbc7bd; scrollbar-width: thin; }.character-story-rail::before { content: ""; position: absolute; z-index: 0; left: 0; right: 0; top: 244px; height: 2px; background: #171717; }
@@ -595,6 +622,7 @@
 .motion-ready .profile-arrival { animation: hero-arrival 1.35s cubic-bezier(.15,.88,.25,1) both; }
 .motion-ready .profile-arrival .arrival-trail { animation: hero-trail 1.35s cubic-bezier(.15,.88,.25,1) both; }
 .motion-ready .profile-arrival-iron .profile-body { animation: impact-pulse 1.35s ease-out both, breathe 5s ease-in-out 1.35s infinite; }
+/* Accesibilidad: elimina la llegada y su estela con movimiento reducido. */
 @media (prefers-reduced-motion: reduce) { .profile-arrival,.profile-arrival * { animation: none !important; } .arrival-trail { display: none; } }
 
 @media (max-width: 900px) {

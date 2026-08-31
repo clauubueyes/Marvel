@@ -1,4 +1,10 @@
-/* Cinematic home intro */
+/*
+ * INTRO CINEMATOGRÁFICA DE HOME
+ * Overlay a pantalla completa mostrado al entrar en `/`. Monta seis fotogramas,
+ * un barrido de luz, el logotipo NEXUS, progreso y controles Entrar/Omitir.
+ * Los tiempos están coordinados con CinematicIntro.tsx; no cambiarlos aislados.
+ */
+/* Lienzo, salida y mosaico de fotogramas. */
 .cinematic-intro { position:fixed; z-index:10000; inset:0; overflow:hidden; display:grid; place-items:center; color:#fff; background:#030303; isolation:isolate; animation:intro-screen-in .35s ease-out both; }
 .cinematic-intro.is-leaving { pointer-events:none; animation:intro-screen-out .7s cubic-bezier(.7,0,.3,1) both; }
 .cinematic-intro-frames,.cinematic-intro-frame,.cinematic-intro-shutter { position:absolute; inset:0; }
@@ -6,10 +12,13 @@
 .cinematic-intro-frame { position:relative; overflow:hidden; opacity:0; transform:translateY(calc((var(--frame) - 2.5) * 3.5%)); animation:intro-panel-in 1.15s cubic-bezier(.16,.84,.3,1) calc(var(--frame) * 90ms) forwards; }
 .cinematic-intro-frame img { object-fit:cover; object-position:var(--frame-position); transform:scale(1.4); animation:intro-image-drift 6.3s cubic-bezier(.2,.65,.2,1) calc(var(--frame) * -160ms) both; }
 .cinematic-intro-frame::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.65)),linear-gradient(90deg,rgba(180,0,20,.55),transparent 55%); mix-blend-mode:multiply; }
+/* Viñeta y barrido de luz que atraviesa el mosaico. */
 .cinematic-intro-shutter { z-index:2; background:radial-gradient(circle at 50% 45%,transparent 10%,rgba(0,0,0,.22) 52%,#000 100%),linear-gradient(105deg,transparent 44%,rgba(255,255,255,.5) 49.8%,transparent 50.2%); background-size:100% 100%,240% 100%; animation:intro-light-sweep 5s ease-in-out .4s both; }
+/* Logotipo y copys centrales. */
 .cinematic-intro-title { z-index:3; display:flex; flex-direction:column; align-items:center; text-align:center; filter:drop-shadow(0 5px 25px #000); }
 .cinematic-intro-title strong { display:flex; align-items:center; gap:clamp(8px,1.2vw,18px); font:clamp(72px,15vw,230px)/.78 var(--font-display); letter-spacing:-.055em; transform:scale(4); opacity:0; animation:intro-logo-reveal 2.2s cubic-bezier(.15,.85,.2,1) 4.65s forwards; }
 .cinematic-intro-title strong i { display:grid; place-items:center; width:.73em; height:.78em; color:#fff; background:#e21a2d; font-style:normal; font-size:.72em; letter-spacing:0; }
+/* Botón Entrar: se habilita al acabar la secuencia principal. */
 .cinematic-intro-enter { position:absolute; z-index:6; bottom:clamp(55px,8vh,95px); display:grid; grid-template-columns:1fr 42px; align-items:center; min-width:min(330px,82vw); padding:0 0 0 23px; border:1px solid rgba(255,255,255,.48); color:#fff; background:rgba(3,3,3,.42); backdrop-filter:blur(12px); font:700 10px var(--font-mono); letter-spacing:.2em; opacity:0; translate:0 22px; pointer-events:none; cursor:pointer; overflow:hidden; transition:border-color .3s,background .3s,transform .3s; }
 .cinematic-intro-enter::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,#e21a2d,rgba(226,26,45,.35)); transform:scaleX(0); transform-origin:left; transition:transform .45s cubic-bezier(.16,.9,.25,1); }
 .cinematic-intro-enter i { display:grid; place-items:center; align-self:stretch; min-height:42px; border-left:1px solid rgba(255,255,255,.35); color:#fff; font-style:normal; font-size:16px; transition:transform .3s; }
@@ -17,6 +26,7 @@
 .cinematic-intro-enter:hover,.cinematic-intro-enter:focus-visible { border-color:#e21a2d; background:rgba(3,3,3,.7); outline:none; transform:scale(1.025); }.cinematic-intro-enter:hover::before,.cinematic-intro-enter:focus-visible::before { transform:scaleX(1); }.cinematic-intro-enter:hover i,.cinematic-intro-enter:focus-visible i { transform:translateY(4px); }
 .cinematic-intro-overline,.cinematic-intro-tagline { position:absolute; width:max-content; font:700 clamp(7px,.65vw,11px)/1 var(--font-mono); letter-spacing:.42em; opacity:0; animation:intro-copy-reveal .65s ease-out 6.25s forwards; }
 .cinematic-intro-overline { translate:0 clamp(-70px,-7vw,-35px); }.cinematic-intro-tagline { translate:0 clamp(42px,6vw,85px); color:#c9c9c9; }
+/* Control Omitir y barra temporal inferior. */
 .cinematic-intro-skip { position:absolute; z-index:5; top:clamp(20px,4vw,50px); right:clamp(20px,4vw,55px); padding:10px 0; border:0; border-bottom:1px solid rgba(255,255,255,.5); color:rgba(255,255,255,.78); background:transparent; font:700 9px var(--font-mono); letter-spacing:.14em; cursor:pointer; transition:color .2s,border-color .2s; }
 .cinematic-intro-skip:hover,.cinematic-intro-skip:focus-visible { color:#fff; border-color:#e21a2d; outline:none; }.cinematic-intro-skip span { color:#e21a2d; }
 .cinematic-intro-progress { position:absolute; z-index:5; right:0; bottom:0; left:0; height:2px; background:rgba(255,255,255,.12); transition:opacity .4s; }.cinematic-intro-progress i { display:block; width:100%; height:100%; transform-origin:left; background:#e21a2d; animation:intro-progress 7.2s linear both; }.cinematic-intro.is-ready .cinematic-intro-progress { opacity:0; }

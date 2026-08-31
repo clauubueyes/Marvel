@@ -53,18 +53,23 @@ export default async function TitlePage({ params }: PageProps) {
     sameAs: details.sources.map(({ url }) => url),
   } : undefined;
 
+  /* `title-profile` activa la dirección de arte verde/negra del dossier de títulos. */
   return <main className="title-profile" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
+    {/* Navegación y efectos compartidos por todas las fichas. */}
     <MotionEffects />
     <GlobalNavigation context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`} />
     <Breadcrumbs items={[{ label: "TÍTULOS", href: "/titulos" }, { label: title.title }]} />
     {structuredData && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c") }} />}
+    {/* Apertura visual y resumen del acontecimiento narrativo. */}
     <TitleHero title={title} details={details} imageUrl={getTitleImage(title.slug)} />
     <TitleEventDossier title={title} details={details} />
+    {/* Información editorial ampliada disponible para títulos documentados. */}
     {details && <>
       <TitleCredits title={title} details={details} />
       <TitleWatchOrder before={beforeTitles} after={afterTitles} />
       <TitlePostCredits scenes={details.postCredits} />
     </>}
+    {/* Cierre de la ficha: reparto, conexiones, fuentes y paginación. */}
     <TitleCast characters={title.characters} />
     <TitleConnections entities={connectedEntities} />
     {details && <TitleSources details={details} />}

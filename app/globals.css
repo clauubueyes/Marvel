@@ -1,20 +1,48 @@
+/*
+ * MAPA VISUAL DE NEXUS
+ * Este archivo no contiene reglas: define el orden de la cascada global.
+ * Para localizar un cambio visual, busca primero la pantalla o pieza indicada
+ * en los comentarios de cada import. El orden debe conservarse porque algunos
+ * estilos de detalle refinan reglas base cargadas anteriormente.
+ */
+
+/* Base visual compartida: variables, reset, tipografía, botones y cabecera clásica. */
 @import "../styles/base.css";
+/* Piezas editoriales compartidas por la portada y la guía de Doomsday. */
 @import "../features/home/styles/doomsday.css";
+/* Ficha de personaje: fondos individuales, secciones y efectos ambientales. */
 @import "../features/characters/styles/dossier.css";
+/* Índice de títulos: hero, filtros y filas del archivo. */
 @import "../features/titles/styles/archive.css";
+/* Footer, páginas legales y reglas históricas del detalle de títulos. */
 @import "../styles/legal.css";
+/* Portada: hero de Doomsday, explicación, catálogo y personajes destacados. */
 @import "../features/home/styles/home.css";
+/* Navegación superior global. */
 @import "../styles/navigation.css";
+/* Página de búsqueda y tarjetas de resultados. */
 @import "../features/search/Search.css";
+/* Cabecera, filtros y rejilla del archivo de personajes. */
 @import "../features/characters/directory/CharacterArchive.css";
+/* Entradas animadas y hover del archivo de personajes. */
 @import "../features/characters/styles/archive-motion.css";
+/* Adaptaciones móviles compartidas por navegación, búsqueda y personajes. */
 @import "../styles/responsive.css";
+/* Listado, detalle y planificador de rutas de visionado. */
 @import "../features/viewing-routes/ViewingRoutes.css";
+/* Índices y fichas de eventos, universos y equipos. */
 @import "../features/entities/styles/entities.css";
+/* Secciones editoriales específicas de una ficha de título. */
 @import "../features/titles/styles/dossier.css";
+/* Migas de pan, página 404 y preferencias de accesibilidad. */
 @import "../styles/navigation-aids.css";
+/* Fuentes, licencias y relaciones editoriales del personaje. */
 @import "../features/characters/styles/reference.css";
+/* Lenguaje de movimiento por arquetipo de personaje. */
 @import "../features/characters/styles/motion.css";
+/* Secuencia cinematográfica que cubre la portada al entrar. */
 @import "../features/home/components/CinematicIntro/CinematicIntro.css";
+/* Vista visual, toolbar y planificador del archivo de títulos. */
 @import "../features/titles/styles/library.css";
+/* Ajuste del punto focal de los retratos del directorio de personajes. */
 @import "../features/characters/directory/CharacterDirectory.css";
