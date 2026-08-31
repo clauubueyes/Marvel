@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
-    localPatterns: [{ pathname: "/api/title-image" }],
+    localPatterns: [{ pathname: "/api/title-image" }, { pathname: "/characters/**" }],
     remotePatterns: [
       { protocol: "https", hostname: "i.annihil.us" },
       { protocol: "https", hostname: "cdn.marvel.com" },

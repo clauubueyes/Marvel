@@ -229,7 +229,7 @@ const appearanceCatalogTitles: Record<string, string> = {
 
 export const characters: Character[] = [...characterEntries.map((character) => ({
   ...character,
-  image: getScreenPortrait(character.id, character.image),
+  image: getScreenPortrait(character.id),
   ...getCharacterEditorialData(character.id, character.sourceUrl),
   appearances: character.appearances.map((appearance) => ({
     ...appearance,

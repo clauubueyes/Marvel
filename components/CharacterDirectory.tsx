@@ -32,7 +32,7 @@ export function CharacterDirectory({ characters }: Props) {
     </section>
     <section className="characters-directory" key={`${category}-${status}-${universe}-${affiliation}`} aria-label="Catálogo de personajes" aria-live="polite">
       {visible.map((character, index) => <Link href={`/personajes/${character.id}`} className="character-directory-card" key={character.id} data-reveal data-tilt style={{ "--card-accent": character.color, "--delay": `${Math.min(index, 11) * 45}ms` } as React.CSSProperties}>
-        <Image src={character.image} alt="" fill sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 25vw" style={{ objectPosition: character.imagePosition ?? "center top" }} />
+        <Image src={character.image} alt="" fill quality={90} sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 25vw" style={{ objectPosition: character.imagePosition ?? "center top" }} />
         <i className="character-card-light" aria-hidden="true" /><span>{character.number} · {character.role}</span><h2>{character.name}</h2><p>{character.alias}</p><b>ABRIR EXPEDIENTE <i>↗</i></b>
       </Link>)}
       {!visible.length && <div className="character-empty"><strong>SIN COINCIDENCIAS</strong><p>Prueba otra combinación de filtros.</p><button onClick={reset}>MOSTRAR TODO</button></div>}

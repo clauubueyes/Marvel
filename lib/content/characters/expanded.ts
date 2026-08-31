@@ -8,28 +8,26 @@ export type CharacterSeed = Pick<Character, "id" | "name" | "alias" | "quote" | 
 
 const reviewedAt = "2026-08-30";
 
-const characterPortraits: Record<string, string> = {
-  "yelena-belova": "https://cdn.marvel.com/u/prod/marvel/i/mg/3/70/68128d1f9a161.webp",
-  "winter-soldier": "https://upload.wikimedia.org/wikipedia/en/9/9c/Bucky_%28James_Buchanan_Barnes%29.png",
-  vision: "https://upload.wikimedia.org/wikipedia/en/3/3d/Vision_%28Marvel_Comics%29.png",
-  "agatha-harkness": "https://upload.wikimedia.org/wikipedia/en/2/26/Agatha_Harkness_%282022_Design%29.webp",
-  daredevil: "https://upload.wikimedia.org/wikipedia/en/1/14/Daredevil_65.jpg",
-  kingpin: "https://upload.wikimedia.org/wikipedia/en/5/54/Kingpin_%28Wilson_Grant_Fisk%29.png",
-  thanos: "https://upload.wikimedia.org/wikipedia/en/b/b7/Thanos_%28Infobox_image%29.png",
-  shuri: "https://upload.wikimedia.org/wikipedia/en/2/2d/Shuri_as_Griot%2C_Black_Panther_%282018%29_Variant_Cover.jpg",
-  "monica-rambeau": "https://upload.wikimedia.org/wikipedia/en/6/6e/Monica_Rambeau_as_Photon_%282022%29.webp",
-};
-
 const characterImagePositions: Partial<Record<string, string>> = {
+  "agatha-harkness": "58% center",
+  "doctor-doom": "center 18%",
+  "human-torch": "center 12%",
+  "invisible-woman": "center 14%",
   vision: "center 12%",
-  kingpin: "center 8%",
+  kingpin: "center 10%",
+  mantis: "center 18%",
+  "mister-fantastic": "center 18%",
+  "moon-knight": "center 12%",
+  mysterio: "center 18%",
+  "peggy-carter": "center 15%",
+  thing: "center 18%",
 };
 
 export function buildCharacter(seed: CharacterSeed, number: number): Character {
   const appearances = seed.appearances.map(({ catalogTitle, ...appearance }) => ({ ...appearance, titleId: createContentSlug(catalogTitle) }));
   return {
     ...seed,
-    image: getScreenPortrait(seed.id, characterPortraits[seed.id] ?? seed.image),
+    image: getScreenPortrait(seed.id),
     imagePosition: characterImagePositions[seed.id],
     number: String(number).padStart(2, "0"),
     votes: 0,
