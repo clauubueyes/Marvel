@@ -221,7 +221,7 @@ footer > a:last-child { color: #fff; }
 .profile-meta { display: flex; gap: 0; margin-top: 38px; }
 .profile-meta span { padding: 0 22px; border-right: 1px solid rgba(255,255,255,.3); font-size: 9px; text-transform: uppercase; }
 .profile-meta span:first-child { padding-left: 0; color: var(--accent); }
-.profile-figure { position: absolute; right: 3vw; width: 45vw; height: 78%; display: grid; place-items: center; }
+.profile-figure { position: absolute; z-index: 3; right: 3vw; width: 45vw; height: 78%; display: grid; place-items: center; }
 .profile-arrival { isolation: isolate; }
 .arrival-trail { position: absolute; z-index: -1; width: 170%; height: 55%; right: 25%; top: 32%; pointer-events: none; opacity: 0; transform: rotate(-28deg); transform-origin: right center; background: linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--accent) 10%,transparent) 45%,color-mix(in srgb,var(--accent) 65%,transparent) 100%); filter: blur(7px); }
 .arrival-trail::before { content: ""; position: absolute; right: 0; top: 50%; width: 78%; height: 3px; background: linear-gradient(90deg,transparent,var(--accent),#fff); box-shadow: 0 -24px 18px color-mix(in srgb,var(--accent) 50%,transparent),0 24px 18px color-mix(in srgb,var(--accent-2) 50%,transparent); }
@@ -233,6 +233,9 @@ footer > a:last-child { color: #fff; }
 .profile-body::after { content: ""; position: absolute; inset: 0; background: linear-gradient(155deg,transparent 45%,color-mix(in srgb,var(--accent) 65%,transparent)), repeating-linear-gradient(125deg,transparent 0 15px,rgba(255,255,255,.08) 16px 17px); mix-blend-mode: screen; }
 .profile-body img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: contrast(1.12) saturate(.9); }
 .profile-figure > b { position: absolute; font-size: 16vw; opacity: .18; color: white; }
+.iron-cluster { position: absolute; z-index: 1; right: 0; top: 10%; width: min(48vw,760px); height: 78%; opacity: .34; filter: drop-shadow(0 0 45px rgba(255,45,0,.18)); cursor: crosshair; }
+.iron-cluster::after { content: "ARC REACTOR / FACE ARRAY"; position: absolute; right: 9%; top: 15%; color: rgba(255,207,113,.62); font: 7px var(--font-mono); letter-spacing: 1.8px; writing-mode: vertical-rl; }
+.iron-cluster canvas { display: block; width: 100%; height: 100%; }
 .profile-rings, .profile-rings i { position: absolute; display: block; border: 1px solid color-mix(in srgb,var(--accent) 62%,transparent); border-radius: 50%; }
 .profile-rings { width: 100%; aspect-ratio: 1; animation: spin 35s linear infinite; }
 .profile-rings i:nth-child(1) { inset: 10%; border-style: dashed; }
@@ -423,6 +426,7 @@ footer > a:last-child { color: #fff; }
   .profile-title { width: 100%; padding: 140px 6vw 0; }
   .profile-title h1 { font-size: clamp(78px,18vw,145px); }
   .profile-figure { width: 80vw; height: 490px; right: -5vw; top: 340px; opacity: .72; }
+  .iron-cluster { width: 72vw; height: 520px; right: -12vw; top: 315px; opacity: .27; }
   .profile-body { width: 290px; }
   .profile-hero blockquote { font-size: 17px; bottom: 55px; max-width: 300px; }
   .profile-intro { grid-template-columns: 1fr; gap: 0; }
@@ -475,6 +479,7 @@ footer > a:last-child { color: #fff; }
   .profile-meta { flex-direction: column; gap: 8px; }
   .profile-meta span { border: 0; padding: 0; }
   .profile-figure { width: 100vw; height: 420px; right: -17vw; top: 330px; }
+  .iron-cluster { width: 96vw; height: 420px; right: -34vw; top: 330px; opacity: .2; pointer-events: none; }
   .profile-hero blockquote { left: 6vw; right: auto; bottom: 50px; max-width: 270px; text-align: left; }
   .profile-section { padding: 80px 6vw; }
   .intro-copy > p { font-size: 21px; }
@@ -1017,6 +1022,88 @@ footer > a:last-child { color: #fff; }
   .motion-ready .profile [data-scroll-section] [data-reveal]:not([data-revealed]) { transform:translateY(32px); filter:blur(3px); }
 }
 @media (prefers-reduced-motion:reduce) { .profile [data-scroll-section] *,.profile [data-scroll-section]::after { translate:none !important; filter:none !important; } }
+
+/* Character motion signatures: one shared system, art-directed by identity. */
+.character-motion-field { position:absolute; z-index:0; inset:0; overflow:hidden; pointer-events:none; perspective:900px; }
+.motion-emblem { position:absolute; right:8vw; top:16%; width:min(42vw,620px); aspect-ratio:1; border:1px solid color-mix(in srgb,var(--accent) 22%,transparent); border-radius:50%; translate:calc(var(--hero-pointer-x,0) * -14px) calc(var(--hero-pointer-y,0) * -10px); transition:translate .12s linear; }
+.motion-emblem::before,.motion-emblem::after,.motion-emblem i { content:""; position:absolute; border:1px solid color-mix(in srgb,var(--accent) 28%,transparent); border-radius:inherit; }
+.motion-emblem::before { inset:9%; border-style:dashed; }.motion-emblem::after { inset:24%; }.motion-emblem i:nth-of-type(1) { inset:35%; }.motion-emblem i:nth-of-type(2) { inset:46%; border-color:color-mix(in srgb,var(--accent-2) 45%,transparent); }.motion-emblem i:nth-of-type(3) { inset:-6%; border-style:dotted; }
+.motion-emblem span { position:absolute; inset:0; display:grid; place-items:center; color:color-mix(in srgb,var(--accent) 16%,transparent); font:clamp(130px,21vw,350px)/1 var(--font-display); }
+.motion-elements,.motion-sweep { position:absolute; inset:0; }.motion-elements i { position:absolute; left:var(--x); top:var(--y); width:clamp(8px,1.2vw,19px); height:clamp(8px,1.2vw,19px); opacity:.22; border:1px solid var(--accent); rotate:var(--r); scale:var(--s); }
+.motion-sweep { opacity:.16; background:linear-gradient(105deg,transparent 42%,var(--accent) 49.7%,color-mix(in srgb,var(--accent-2) 65%,transparent) 50%,transparent 57%); translate:-110% 0; }
+.profile-title h1 span { display:inline-block; transform-origin:50% 100%; }
+.motion-ready .profile-title h1 span { animation:signature-letter-in .9s cubic-bezier(.16,.9,.25,1) calc(.2s + var(--letter) * 28ms) both; }
+.motion-ready .motion-emblem { animation:signature-emblem var(--motion-cycle) linear infinite; }
+.motion-ready .motion-emblem::before { animation:signature-counter var(--motion-counter-cycle) linear infinite; }
+.motion-ready .motion-emblem i:nth-of-type(2) { animation:signature-pulse var(--motion-pulse-cycle) ease-in-out infinite; }
+.motion-ready .motion-elements i { animation:signature-particle var(--motion-particle-cycle) ease-in-out calc(var(--i) * -310ms) infinite; }
+.motion-ready .motion-sweep { animation:signature-sweep var(--motion-sweep-cycle) cubic-bezier(.2,.7,.2,1) infinite; }
+@keyframes signature-letter-in { from { opacity:0; transform:translateY(80%) rotateX(-72deg); filter:blur(8px); } to { opacity:1; transform:none; filter:none; } }
+@keyframes signature-emblem { to { rotate:360deg; } } @keyframes signature-counter { to { rotate:-360deg; } }
+@keyframes signature-pulse { 50% { scale:1.12; opacity:.45; box-shadow:0 0 38px color-mix(in srgb,var(--accent) 32%,transparent); } }
+@keyframes signature-particle { 50% { opacity:.62; translate:calc(var(--motion-drift) * .65) calc(var(--motion-drift) * -1); } }
+@keyframes signature-sweep { 0%,65% { translate:-110% 0; } 82%,100% { translate:110% 0; } }
+
+/* Technology: scans, hard edges and measured assembly. */
+.profile[data-motion="tech"] .motion-emblem { border-radius:18%; transform:rotate(45deg); }.profile[data-motion="tech"] .motion-emblem span { transform:rotate(-45deg); }
+.profile[data-motion="tech"] .motion-elements i { border-radius:2px; clip-path:polygon(50% 0,100% 25%,88% 100%,12% 100%,0 25%); }
+.motion-ready .profile[data-motion="tech"] .profile-body { animation:signature-tech-body 1.25s cubic-bezier(.16,.9,.25,1) both,breathe 5s ease-in-out 1.25s infinite; }
+@keyframes signature-tech-body { from { opacity:0; clip-path:polygon(48% 49%,52% 49%,52% 51%,48% 51%); filter:brightness(3); } to { opacity:1; filter:none; } }
+
+/* Mystic: concentric geometry, softer particles and a portal reveal. */
+.profile[data-motion="mystic"] .motion-emblem { border-style:dashed; }.profile[data-motion="mystic"] .motion-elements i { border-radius:50%; box-shadow:0 0 12px var(--accent); }
+.profile[data-motion="mystic"] .motion-sweep { background:conic-gradient(from 90deg at 70% 50%,transparent,var(--accent),transparent 22%); transform-origin:70% 50%; }
+.motion-ready .profile[data-motion="mystic"] .profile-body { animation:signature-mystic-body 1.35s cubic-bezier(.16,.9,.25,1) both,breathe 5.5s ease-in-out 1.35s infinite; }
+@keyframes signature-mystic-body { from { opacity:0; clip-path:circle(2% at 50% 50%); rotate:-8deg; scale:.82; } to { opacity:1; rotate:0deg; scale:1; } }
+
+/* Cosmic: orbital depth and star-like points. */
+.profile[data-motion="cosmic"] .motion-emblem { scale:1.18 .72; }.profile[data-motion="cosmic"] .motion-elements i { width:4px; height:4px; border:0; border-radius:50%; background:#fff; box-shadow:0 0 14px 3px var(--accent); }
+.profile[data-motion="cosmic"] .motion-sweep { background:radial-gradient(ellipse at 72% 48%,color-mix(in srgb,var(--accent) 55%,transparent),transparent 48%); animation-direction:alternate; }
+.motion-ready .profile[data-motion="cosmic"] .profile-body { animation:signature-cosmic-body 1.4s cubic-bezier(.16,.9,.25,1) both,breathe 6s ease-in-out 1.4s infinite; }
+@keyframes signature-cosmic-body { from { opacity:0; transform:translateY(55px) scale(.78); filter:blur(14px) brightness(1.8); } to { opacity:1; transform:none; filter:none; } }
+
+/* Kinetic: directional streaks and a fast diagonal reveal. */
+.profile[data-motion="kinetic"] .motion-emblem { scale:1.25; border-radius:34% 66% 48% 52%; }.profile[data-motion="kinetic"] .motion-elements i { width:clamp(35px,7vw,120px); height:1px; border:0; background:linear-gradient(90deg,transparent,var(--accent)); }
+.motion-ready .profile[data-motion="kinetic"] .profile-body { animation:signature-kinetic-body 1.05s cubic-bezier(.12,.88,.2,1) both,breathe 4.4s ease-in-out 1.05s infinite; }
+@keyframes signature-kinetic-body { from { opacity:0; transform:translate(24vw,-18vh) skewX(-8deg); clip-path:polygon(100% 0,100% 0,80% 100%,80% 100%); } to { opacity:1; transform:none; } }
+
+/* Stealth: narrow blades, restrained opacity and lateral cuts. */
+.profile[data-motion="stealth"] .motion-emblem { border-radius:0; rotate:12deg; opacity:.62; }.profile[data-motion="stealth"] .motion-elements i { width:1px; height:90px; border:0; background:linear-gradient(transparent,var(--accent),transparent); }
+.profile[data-motion="stealth"] .motion-sweep { opacity:.08; background:repeating-linear-gradient(90deg,transparent 0 8%,var(--accent) 8.1% 8.2%,transparent 8.3% 16%); }
+.motion-ready .profile[data-motion="stealth"] .profile-body { animation:signature-stealth-body 1.2s cubic-bezier(.2,.75,.2,1) both,breathe 6s ease-in-out 1.2s infinite; }
+@keyframes signature-stealth-body { from { opacity:0; clip-path:inset(0 100% 0 0); transform:translateX(35px); filter:grayscale(1); } to { opacity:1; clip-path:inset(0); transform:none; filter:none; } }
+
+/* Gamma: impact rings, block particles and weight. */
+.profile[data-motion="gamma"] .motion-emblem { border-width:2px; scale:1.25; }.profile[data-motion="gamma"] .motion-elements i { border-width:2px; background:color-mix(in srgb,var(--accent) 25%,transparent); }
+.motion-ready .profile[data-motion="gamma"] .profile-body { animation:signature-gamma-body 1.15s cubic-bezier(.12,.9,.2,1) both,breathe 4.2s ease-in-out 1.15s infinite; }
+@keyframes signature-gamma-body { 0% { opacity:0; transform:translateY(-35vh) scale(1.25); } 72% { opacity:1; transform:translateY(12px) scale(.97,1.03); } 100% { transform:none; } }
+
+/* Regal: symmetrical lattice and deliberate vertical reveal. */
+.profile[data-motion="regal"] .motion-emblem { border-radius:0; transform:rotate(45deg) scale(.82); }.profile[data-motion="regal"] .motion-elements i { clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); background:color-mix(in srgb,var(--accent-2) 16%,transparent); }
+.motion-ready .profile[data-motion="regal"] .profile-body { animation:signature-regal-body 1.4s cubic-bezier(.16,.9,.25,1) both,breathe 5.8s ease-in-out 1.4s infinite; }
+@keyframes signature-regal-body { from { opacity:0; clip-path:inset(100% 0 0); transform:translateY(35px); } to { opacity:1; clip-path:inset(0); transform:none; } }
+
+/* Quantum: shifting cells and scale discontinuity. */
+.profile[data-motion="quantum"] .motion-emblem { border-radius:38% 62% 65% 35%; }.profile[data-motion="quantum"] .motion-elements i { border-radius:35%; backdrop-filter:blur(2px); }
+.profile[data-motion="quantum"] .motion-sweep { background:repeating-conic-gradient(from 20deg at 70% 45%,transparent 0 7deg,color-mix(in srgb,var(--accent) 25%,transparent) 8deg 9deg,transparent 10deg 18deg); }
+.motion-ready .profile[data-motion="quantum"] .profile-body { animation:signature-quantum-body 1.3s steps(7,end) both,breathe 5s ease-in-out 1.3s infinite; }
+@keyframes signature-quantum-body { 0% { opacity:0; transform:scale(.08) translate(250px,120px); filter:hue-rotate(90deg); } 55% { opacity:.7; transform:scale(1.08,.72); } 75% { transform:scale(.94,1.06); } 100% { opacity:1; transform:none; filter:none; } }
+
+/* Signature-specific chapter entrances borrow the same visual grammar. */
+.motion-ready .profile[data-motion="tech"] [data-scroll-section] [data-reveal]:not([data-revealed]) { clip-path:inset(0 0 100%); }
+.motion-ready .profile[data-motion="mystic"] [data-scroll-section] [data-reveal]:not([data-revealed]) { scale:.92; rotate:-1.5deg; }
+.motion-ready .profile[data-motion="cosmic"] [data-scroll-section] [data-reveal]:not([data-revealed]) { filter:blur(12px) brightness(1.4); scale:.94; }
+.motion-ready .profile[data-motion="kinetic"] [data-scroll-section] [data-reveal]:not([data-revealed]) { transform:translate3d(85px,30px,0) skewX(-4deg); }
+.motion-ready .profile[data-motion="stealth"] [data-scroll-section] [data-reveal]:not([data-revealed]) { clip-path:inset(0 100% 0 0); filter:grayscale(1); }
+.motion-ready .profile[data-motion="gamma"] [data-scroll-section] [data-reveal]:not([data-revealed]) { transform:translateY(-45px) scale(1.04); }
+.motion-ready .profile[data-motion="regal"] [data-scroll-section] [data-reveal]:not([data-revealed]) { clip-path:inset(100% 0 0); }
+.motion-ready .profile[data-motion="quantum"] [data-scroll-section] [data-reveal]:not([data-revealed]) { scale:.82 1.08; filter:blur(7px) hue-rotate(40deg); }
+.profile[data-motion] [data-scroll-section] [data-reveal][data-revealed] { clip-path:inset(0); scale:1; rotate:0deg; filter:none; }
+.profile[data-motion] [data-scroll-section] [data-reveal] { transition-property:opacity,transform,filter,clip-path,scale,rotate; transition-duration:.85s,1s,.8s,1s,1s,1s; transition-timing-function:ease,cubic-bezier(.16,.9,.25,1),ease,cubic-bezier(.16,.9,.25,1),cubic-bezier(.16,.9,.25,1),cubic-bezier(.16,.9,.25,1); transition-delay:var(--delay,0ms); }
+
+@media (max-width:900px) { .motion-emblem { right:-10vw; top:34%; width:72vw; opacity:.55; }.motion-elements { opacity:.65; } }
+@media (max-width:560px) { .motion-emblem { right:-30vw; top:39%; width:100vw; opacity:.38; }.motion-elements { opacity:.4; }.motion-sweep { display:none; } }
+@media (prefers-reduced-motion:reduce) { .character-motion-field { opacity:.45; }.character-motion-field *,.profile-title h1 span { animation:none !important; translate:none !important; rotate:0deg !important; scale:1 !important; } }
 
 /* Visual title library: grid and illustrated list */
 .title-view-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }

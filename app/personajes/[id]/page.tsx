@@ -8,6 +8,9 @@ import { GlobalNavigation } from "@/components/GlobalNavigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/lib/contentRepository";
 import { getEntityHref } from "@/lib/mcuEntities";
+import { IronManCluster } from "@/components/IronManCluster";
+import { CharacterMotionField } from "@/components/CharacterMotionField";
+import { getCharacterMotionProfile } from "@/lib/characterMotion";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -31,9 +34,10 @@ export default async function CharacterPage({ params }: PageProps) {
   const next = characters[(currentIndex + 1) % characters.length];
   const connectedEntities = getEntitiesForCharacter(character.id);
   const relatedRoutes = getViewingRoutesForCharacter(character.id);
+  const motion = getCharacterMotionProfile(character);
 
   return (
-    <main className={`profile profile-${character.id}`} style={{ "--accent": character.color, "--accent-2": character.color2 } as React.CSSProperties}>
+    <main className={`profile profile-${character.id}`} data-motion={motion.signature} style={{ "--accent": character.color, "--accent-2": character.color2, "--motion-cycle": `${motion.tempo * 18}s`, "--motion-counter-cycle": `${motion.tempo * 12}s`, "--motion-pulse-cycle": `${motion.tempo * 3.4}s`, "--motion-particle-cycle": `${motion.tempo * 5}s`, "--motion-sweep-cycle": `${motion.tempo * 7}s`, "--motion-drift": `${motion.drift}px` } as React.CSSProperties}>
       <MotionEffects />
       <div className="character-atmosphere" aria-hidden="true"><i /><i /><i /><i /></div>
       <GlobalNavigation context={`ARCHIVO / ${character.number}`} />
@@ -42,9 +46,11 @@ export default async function CharacterPage({ params }: PageProps) {
 
       <section className="profile-hero">
         <div className="profile-grid" aria-hidden="true" />
+        <CharacterMotionField profile={motion} symbol={character.symbol} />
+        {character.id === "iron" && <IronManCluster />}
         <div className="profile-title profile-title-arrival">
           <p className="eyebrow"><span /> {character.role}</p>
-          <h1>{character.name}</h1>
+          <h1 aria-label={character.name}>{Array.from(character.name).map((letter, index) => <span aria-hidden="true" style={{ "--letter": index } as React.CSSProperties} key={`${letter}-${index}`}>{letter === " " ? "\u00a0" : letter}</span>)}</h1>
           <div className="profile-meta"><span>{character.alias}</span><span>{character.universe}</span><span>{character.origin}</span></div>
         </div>
         <div className={`profile-figure profile-arrival profile-arrival-${character.id}`} aria-hidden="true">
