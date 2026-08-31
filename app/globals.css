@@ -667,6 +667,29 @@ footer > a:last-child { color: #fff; }
   .title-plan-selection-actions { margin-inline: 5vw; align-items: stretch; flex-direction: column; }
   .title-plan-selection-actions span { margin: 0 0 5px; }
 }
+
+/* Public legal information required by the calendar integration */
+.legal-footer { padding: 30px 6vw; display: grid; grid-template-columns: 1fr auto; gap: 18px 50px; border-top: 1px solid #35402e; color: #aab2a2; background: #070a06; }
+.legal-footer strong { color: #b9d737; font-size: 9px; letter-spacing: 1px; }
+.legal-footer p { max-width: 650px; margin-top: 8px; font-size: 9px; line-height: 1.6; }
+.legal-footer nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 20px; }
+.legal-footer nav a { color: #d2d8cc; font-size: 8px; letter-spacing: .8px; }
+.legal-footer nav a:hover { color: #b9d737; }
+.legal-footer small { grid-column: 1 / -1; padding-top: 15px; border-top: 1px solid #242b21; color: #737c6e; font-size: 7px; }
+.legal-page { min-height: 100vh; color: #e9eee3; background: radial-gradient(circle at 80% 5%,rgba(185,215,55,.12),transparent 27%),#090c08; }
+.legal-page > header { min-height: 500px; padding: 155px 7vw 65px; display: flex; flex-direction: column; justify-content: flex-end; border-bottom: 1px solid #3e4935; }
+.legal-page > header h1 { margin-top: 20px; font: clamp(65px,9vw,135px)/.8 var(--font-display); }
+.legal-page > header h1 em { color: #b9d737; font-style: normal; }
+.legal-page > header > p:last-child { margin-top: 25px; color: #929b89; font-size: 9px; }
+.legal-page > article { width: min(980px,88vw); margin: 0 auto; padding: 75px 0 110px; }
+.legal-page article section { padding: 31px 0; border-bottom: 1px solid #323b2e; }
+.legal-page article h2 { margin-bottom: 16px; color: #b9d737; font: 28px/1 var(--font-display); text-transform: uppercase; }
+.legal-page article p { color: #b6beb0; font-size: 13px; line-height: 1.85; }
+.legal-page article p + p { margin-top: 13px; }
+.legal-page article a { color: #cbe463; text-decoration: underline; text-underline-offset: 3px; }
+.legal-page article > nav { display: flex; justify-content: space-between; gap: 25px; margin-top: 45px; }
+.legal-page article > nav a { font-size: 8px; text-decoration: none; }
+@media (max-width: 650px) { .legal-footer { grid-template-columns: 1fr; padding-inline: 5vw; }.legal-footer nav { justify-content: flex-start; }.legal-footer small { grid-column: 1; }.legal-page > header { min-height: 450px; padding: 135px 5vw 55px; }.legal-page > header h1 { font-size: 18vw; }.legal-page > article { width: 90vw; padding-top: 45px; }.legal-page article > nav { align-items: flex-start; flex-direction: column; } }
 .title-profile-hero { min-height: 850px; display: grid; grid-template-columns: minmax(320px,46vw) 1fr; align-items: end; position: relative; padding: 135px 6vw 90px; overflow: hidden; border-bottom: 1px solid #3e4935; }.title-profile-hero::after { content: "NEXUS"; position: absolute; inset: auto 0 -4vw; color: transparent; -webkit-text-stroke: 1px rgba(185,215,55,.1); font: 20vw/.8 var(--font-display); text-align: center; pointer-events: none; }
 .title-profile-art { position: absolute; inset: 95px 0 0 48%; overflow: hidden; }.title-profile-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,#080b07 0,transparent 40%),linear-gradient(0deg,#080b07 0,transparent 45%),rgba(40,55,25,.12); }.title-profile-art img { object-fit: cover; filter: saturate(.78) contrast(1.08); }
 .title-profile-copy { position: relative; z-index: 2; grid-column: 1 / -1; max-width: 1050px; }.title-profile-copy h1 { max-width: 980px; margin: 22px 0 28px; font: clamp(76px,10vw,160px)/.82 var(--font-display); letter-spacing: -3px; }.title-profile-copy > p:not(.eyebrow) { max-width: 650px; color: #c0c7b7; font-size: clamp(16px,1.45vw,21px); line-height: 1.65; }.title-profile-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }.title-profile-tags span { padding: 9px 12px; border: 1px solid #617052; color: #d8dfcc; font-size: 8px; letter-spacing: 1px; background: rgba(8,11,7,.65); }.title-profile-number { position: absolute; z-index: 2; right: 5vw; bottom: 55px; color: #b9d737; font: 100px/.8 var(--font-display); opacity: .5; }
