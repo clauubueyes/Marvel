@@ -57,7 +57,7 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="scroll-cue">DESPLAZA PARA EXPLORAR <span>↓</span></div>
       </section>
 
-      <section className="profile-intro profile-section">
+      <section className="profile-intro profile-section" data-scroll-section data-section-index="01">
         <div className="identity-title" data-reveal><p className="section-label">01 / IDENTIDAD</p><h2>DETRÁS<br />DEL <em>SÍMBOLO</em></h2><div className="identity-status"><i /> EXPEDIENTE ACTIVO <b>NXS-{character.number}616</b></div></div>
         <div className="identity-portrait" data-reveal data-tilt aria-hidden="true">
           <div className="portrait-orbit"><i /><i /></div>
@@ -69,7 +69,7 @@ export default async function CharacterPage({ params }: PageProps) {
         <div className="intro-copy" data-reveal><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd>{character.status}</dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
       </section>
 
-      <section className="screen-moment profile-section">
+      <section className="screen-moment profile-section" data-scroll-section data-section-index="02">
         <div className="moment-copy" data-reveal>
           <p className="section-label">02 / ESCENA ESENCIAL</p>
           <span>{character.screenMoment.kicker}</span>
@@ -83,22 +83,21 @@ export default async function CharacterPage({ params }: PageProps) {
         </a>
       </section>
 
-      <section className="profile-facts profile-section">
-        <div className="facts-aura" aria-hidden="true"><span>{character.symbol}</span><i /><i /><i /></div>
+      <section className="profile-facts profile-section" data-scroll-section data-section-index="03">
         <div className="facts-heading" data-reveal><p className="section-label">03 / DATOS CURIOSOS</p><h2>LO QUE NO<br/><em>SE VE</em></h2><span>TRES FRAGMENTOS DEL EXPEDIENTE QUE CAMBIAN LA FORMA DE ENTENDER AL PERSONAJE.</span></div>
         <div className="facts-grid">
           {character.facts.map((fact, index) => <article data-reveal style={{ "--delay": `${index * 100}ms` } as React.CSSProperties} key={fact.label}><span>0{index + 1}</span><strong>{fact.value}</strong><h3>{fact.label}</h3><p>{fact.text}</p></article>)}
         </div>
       </section>
 
-      <section className="filmography profile-section">
+      <section className="filmography profile-section" data-scroll-section data-section-index="04">
         <div className="film-heading" data-reveal><p className="section-label">04 / EN PANTALLA</p><h2>SU HISTORIA<br/><em>EN CINE</em></h2><p>Una selección de los capítulos que definieron su recorrido audiovisual.</p></div>
         <div className="film-reel" data-reveal>
           {character.appearances.map((appearance, index) => <Link href={`/titulos/${appearance.titleId}`} key={appearance.title}><b>{String(index + 1).padStart(2, "0")}</b><div><span>{appearance.type}</span><h3>{appearance.title}</h3></div><strong>{appearance.year}</strong><i>↗</i></Link>)}
         </div>
       </section>
 
-      <section className="profile-power profile-section">
+      <section className="profile-power profile-section" data-scroll-section data-section-index="05">
         <div className="power-heading" data-reveal><p className="section-label">05 / CAPACIDADES</p><h2>MEDIR LO<br/><em>IMPOSIBLE</em></h2><span>LECTURA DE ENERGÍA / NEXUS</span></div>
         <div className="power-core" data-reveal aria-hidden="true">
           <div className="core-rings"><i /><i /><i /></div>
@@ -115,7 +114,7 @@ export default async function CharacterPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="profile-timeline profile-section character-story">
+      <section className="profile-timeline profile-section character-story" data-scroll-section data-section-index="06">
         <div className="timeline-heading character-story-heading" data-reveal>
           <div><p className="section-label">06 / CRONOLOGÍA</p><h2>MOMENTOS<br/>QUE <em>DEFINEN</em></h2></div>
           <aside><b>{String(character.appearances.length).padStart(2, "0")}</b><p>Películas y series. Cada capítulo revela qué sucede y cómo transforma a {character.name}.</p></aside>
@@ -130,9 +129,9 @@ export default async function CharacterPage({ params }: PageProps) {
         <p className="story-scroll-cue">DESLIZA PARA RECORRER SU HISTORIA <span>→</span></p>
       </section>
 
-      {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header data-reveal><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity, index) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} data-reveal data-tilt style={{ "--node-accent": entity.color, "--delay": `${index * 90}ms` } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
+      {connectedEntities.length > 0 && <section className="context-nodes profile-section" data-scroll-section data-section-index="07"><header data-reveal><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity, index) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} data-reveal data-tilt style={{ "--node-accent": entity.color, "--delay": `${index * 90}ms` } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
 
-      <section className="character-reference profile-section">
+      <section className="character-reference profile-section" data-scroll-section data-section-index="08">
         <header data-reveal><p className="section-label">08 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
         <div className="character-reference-grid">
           <article data-reveal><span>VARIANTES</span>{character.variants.length ? character.variants.map((variant) => <div key={`${variant.name}-${variant.universe}`}><h3>{variant.name}</h3><b>{variant.universe}</b><p>{variant.description}</p></div>) : <p>No hay variantes audiovisuales relevantes documentadas.</p>}</article>

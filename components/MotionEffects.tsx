@@ -57,6 +57,25 @@ export function MotionEffects() {
     });
     tiltMutationObserver.observe(document.body, { childList: true, subtree: true });
 
+    const scrollSections = Array.from(document.querySelectorAll<HTMLElement>("[data-scroll-section]"));
+    let scrollFrame = 0;
+    const updateScrollProgress = () => {
+      scrollFrame = 0;
+      const viewportHeight = window.innerHeight;
+      scrollSections.forEach((section) => {
+        const bounds = section.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, (viewportHeight - bounds.top) / (viewportHeight + bounds.height)));
+        section.style.setProperty("--scroll-progress", progress.toFixed(3));
+        section.style.setProperty("--scroll-shift", `${((progress - 0.5) * 2).toFixed(3)}`);
+      });
+    };
+    const queueScrollUpdate = () => {
+      if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollProgress);
+    };
+    updateScrollProgress();
+    window.addEventListener("scroll", queueScrollUpdate, { passive: true });
+    window.addEventListener("resize", queueScrollUpdate);
+
     const visibilityFallback = window.setTimeout(() => {
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.setAttribute("data-revealed", "true"));
     }, 1800);
@@ -65,6 +84,9 @@ export function MotionEffects() {
       observer.disconnect();
       mutationObserver.disconnect();
       tiltMutationObserver.disconnect();
+      window.removeEventListener("scroll", queueScrollUpdate);
+      window.removeEventListener("resize", queueScrollUpdate);
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
       window.clearTimeout(visibilityFallback);
       document.documentElement.classList.remove("motion-ready");
       tiltCleanups.forEach((cleanup) => cleanup());
