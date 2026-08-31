@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
   const media = request.nextUrl.searchParams.get("type")?.trim() ?? "";
   if (!title) return new NextResponse(null, { status: 400 });
 
-  const image = (media === "PERSONAJE" ? null : await findImdbImage(title, media)) ?? await findThumbnail(title, media, "en") ?? await findThumbnail(title, media, "es");
+  const image = await resolveTitleImage(title, media);
   if (!image) return new NextResponse(null, { status: 404 });
   const imageUrl = new URL(image);
   if (!imageUrl.hostname.endsWith("wikimedia.org") && !imageUrl.hostname.endsWith("media-amazon.com")) return new NextResponse(null, { status: 404 });
@@ -96,4 +96,10 @@ export async function GET(request: NextRequest) {
   } catch {
     return new NextResponse(null, { status: 504 });
   }
+}
+
+export async function resolveTitleImage(title: string, media: string) {
+  return (media === "PERSONAJE" ? null : await findImdbImage(title, media))
+    ?? await findThumbnail(title, media, "en")
+    ?? await findThumbnail(title, media, "es");
 }

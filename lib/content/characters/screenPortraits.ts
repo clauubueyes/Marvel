@@ -58,5 +58,5 @@ const screenPortraits: Readonly<Record<string, string>> = {
 export function getScreenPortrait(characterId: string) {
   const portrait = screenPortraits[characterId];
   if (!portrait) throw new Error(`Falta el retrato audiovisual del personaje: ${characterId}`);
-  return portrait;
+  return portrait.startsWith("http") ? `/characters/${characterId}.webp` : portrait;
 }

@@ -99,7 +99,7 @@ h1 .outline { color: transparent; -webkit-text-stroke: 2px #fff; }
 .final-event .doom-event-copy small,.final-event .doom-event-copy h3 { color: var(--doom-green); }
 .final-event .doom-event-copy > p:not(:first-child) { color: #979e8b; }
 .final-event .doom-event-copy > strong { border-color: #37402f; color: #c8d0be; }
-.doom-destination { min-height: 430px; margin-top: 75px; padding: 60px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; background: linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.25)),url("https://i.ytimg.com/vi/399Ez7WHK5s/maxresdefault.jpg") center/cover; border: 1px solid rgba(183,216,75,.35); }
+.doom-destination { min-height: 430px; margin-top: 75px; padding: 60px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; background: linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.25)),url("/editorial/avengers-doomsday.webp") center/cover; border: 1px solid rgba(183,216,75,.35); }
 .doom-destination::after { content: "VICTOR"; position: absolute; right: -1vw; bottom: -4vw; color: rgba(183,216,75,.08); font: 13vw var(--font-display); }
 .doom-destination > div { position: relative; z-index: 2; }
 .doom-destination span { color: var(--doom-green); font-size: 8px; letter-spacing: 2px; }
@@ -706,7 +706,15 @@ footer > a:last-child { color: #fff; }
 .mcu-home { background: #090b09; color: #f1eee4; }
 .doom-hero { min-height: 100svh; position: relative; display: flex; align-items: center; overflow: hidden; isolation: isolate; background: #090b09; }
 .doom-hero::before { content: "DOOM"; position: absolute; z-index: -1; right: -2vw; top: 8vh; color: rgba(185,215,55,.045); font: 31vw/.75 var(--font-display); letter-spacing: -.05em; }
-.doom-hero-image { position: absolute; z-index: -2; inset: 0 0 0 42%; background: linear-gradient(90deg,#090b09 0%,transparent 35%),linear-gradient(0deg,#090b09 0%,transparent 35%),url("https://i.ytimg.com/vi/399Ez7WHK5s/maxresdefault.jpg") center/cover; filter: grayscale(.7) contrast(1.25); opacity: .66; }
+.doom-hero-image { position: absolute; z-index: -2; inset: 0 0 0 42%; background: linear-gradient(90deg,#090b09 0%,transparent 35%),linear-gradient(0deg,#090b09 0%,transparent 35%),url("/editorial/avengers-doomsday.webp") center/cover; filter: grayscale(.7) contrast(1.25); opacity: .66; }
+
+/* Las secciones fuera del viewport conservan su geometría, pero no consumen
+   pintura ni layout hasta que el usuario se acerca a ellas. */
+.section:not(:first-child), .doom-guide, .mcu-characters, .stories, .characters-directory,
+.titles-directory, .viewing-route-list, .entity-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
 .doom-hero-grid { position: absolute; inset: 0; z-index: -1; opacity: .12; background-image: linear-gradient(rgba(185,215,55,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(185,215,55,.3) 1px,transparent 1px); background-size: 70px 70px; mask-image: linear-gradient(90deg,black,transparent 75%); }
 .doom-hero-copy { width: min(790px,62vw); padding: 120px 0 100px 8vw; }
 .doom-hero h1 { margin: 25px 0; font-size: clamp(80px,10.5vw,175px); line-height: .78; letter-spacing: -.035em; }

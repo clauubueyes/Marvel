@@ -84,7 +84,7 @@ export default async function CharacterPage({ params }: PageProps) {
           <a href={`https://www.youtube.com/watch?v=${character.screenMoment.videoId}`} target="_blank" rel="noreferrer">VER VÍDEO OFICIAL <b>↗</b></a>
         </div>
         <a className="moment-video" data-reveal data-tilt href={`https://www.youtube.com/watch?v=${character.screenMoment.videoId}`} target="_blank" rel="noreferrer" aria-label={`Ver ${character.screenMoment.title}`}>
-          <Image src={`https://img.youtube.com/vi/${character.screenMoment.videoId}/maxresdefault.jpg`} alt={`Fotograma del tráiler: ${character.screenMoment.title}`} fill sizes="(max-width: 900px) 88vw, 50vw" />
+          <Image src={`/moments/${character.id}.webp`} alt={`Fotograma del tráiler: ${character.screenMoment.title}`} fill sizes="(max-width: 900px) 88vw, 50vw" />
           <span className="play"><i>▶</i></span><small>FUENTE OFICIAL · YOUTUBE</small>
         </a>
       </section>

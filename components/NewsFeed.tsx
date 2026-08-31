@@ -7,9 +7,9 @@ import { fallbackNews, type NewsItem } from "@/lib/news";
 const artClasses = ["story-red", "story-blue", "story-purple"];
 const symbols = ["🕸", "⚡", "◇"];
 const artwork = [
-  "https://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b.jpg",
-  "https://i.annihil.us/u/prod/marvel/i/mg/9/c0/527bb7b37ff55.jpg",
-  "https://cdn.marvel.com/content/1x/blackpanther_lob_crd_01_4.jpg",
+  "/editorial/news-spider-man.webp",
+  "/editorial/news-iron-man.webp",
+  "/editorial/news-black-panther.webp",
 ];
 
 function formatDate(value: string) {

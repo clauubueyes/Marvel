@@ -9,13 +9,15 @@
     "lint": "eslint .",
     "validate:content": "tsx scripts/validate-content.ts",
     "audit:content": "tsx scripts/audit-content.ts",
-    "audit:links": "tsx scripts/check-content-links.ts"
+    "audit:links": "tsx scripts/check-content-links.ts",
+    "assets:localize": "tsx scripts/localize-static-images.ts"
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "sharp": "^0.35.4",
     "three": "^0.185.1"
   },
   "devDependencies": {
