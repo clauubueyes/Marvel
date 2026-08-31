@@ -6,11 +6,13 @@ import { MotionEffects } from "@/components/MotionEffects";
 import { DoomsdayGuide } from "@/components/DoomsdayGuide";
 import { MCUCatalog } from "@/components/MCUCatalog";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { CinematicIntro } from "@/components/CinematicIntro";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function Home() {
   return <main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
+    <CinematicIntro />
     <MotionEffects />
     <GlobalNavigation home context="RUTA MCU · 2026" />
 
