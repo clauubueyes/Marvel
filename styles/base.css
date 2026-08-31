@@ -41,10 +41,40 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible {
 main { overflow: hidden; background: var(--ink); }
 
 /* Cabecera clásica. Es la base de la navegación que aparece arriba de cada página. */
-.topbar { height: 78px; display: flex; align-items: center; padding: 0 4vw; border-bottom: 1px solid var(--line); position: absolute; width: 100%; z-index: 20; }
-.brand { display: flex; gap: 11px; align-items: center; font: 24px var(--font-display); letter-spacing: 2px; }
-.brand span { display: grid; place-items: center; width: 34px; height: 38px; color: #fff; background: var(--accent, #ed1b24); clip-path: polygon(0 0, 100% 0, 84% 100%, 0 90%); }
-.nav { display: flex; gap: 38px; margin-left: auto; margin-right: 7vw; font-size: 11px; letter-spacing: 1.5px; }
+.topbar { 
+    height: 78px; 
+    display: flex; 
+    align-items: center; 
+    padding: 0 4vw; 
+    border-bottom: 1px solid var(--line); 
+    position: absolute; 
+    width: 100%; 
+    z-index: 20; 
+}
+.brand { 
+    display: flex; 
+    gap: 11px; 
+    align-items: center; 
+    font: 24px var(--font-display); 
+    letter-spacing: 2px; 
+}
+.brand span { 
+    display: grid; 
+    place-items: center; 
+    width: 34px; 
+    height: 38px; 
+    color: #fff; 
+    background: var(--accent, #ed1b24); 
+    clip-path: polygon(0 0, 100% 0, 84% 100%, 0 90%); 
+}
+.nav { 
+    display: flex; 
+    gap: 25px; 
+    margin-left: auto; 
+    margin-right: 7vw; 
+    font-size: 14px; 
+    letter-spacing: 1.5px; 
+}
 .nav a { position: relative; padding: 30px 0; }
 .nav a::after { content: ""; position: absolute; inset: auto 100% 23px 0; height: 2px; background: var(--accent); transition: .25s; }
 .nav a:hover::after { right: 0; }
