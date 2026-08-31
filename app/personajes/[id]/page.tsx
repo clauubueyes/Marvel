@@ -42,7 +42,7 @@ export default async function CharacterPage({ params }: PageProps) {
 
       <section className="profile-hero">
         <div className="profile-grid" aria-hidden="true" />
-        <div className="profile-title">
+        <div className="profile-title profile-title-arrival">
           <p className="eyebrow"><span /> {character.role}</p>
           <h1>{character.name}</h1>
           <div className="profile-meta"><span>{character.alias}</span><span>{character.universe}</span><span>{character.origin}</span></div>
@@ -53,20 +53,20 @@ export default async function CharacterPage({ params }: PageProps) {
           <div className="profile-body"><Image src={character.image} alt={character.name} fill priority sizes="(max-width: 900px) 290px, 32vw" style={{ objectPosition: character.imagePosition ?? "center top" }} /></div>
           <b>{character.symbol}</b>
         </div>
-        <blockquote>“{character.quote}”</blockquote>
+        <blockquote className="profile-quote-arrival">“{character.quote}”</blockquote>
         <div className="scroll-cue">DESPLAZA PARA EXPLORAR <span>↓</span></div>
       </section>
 
       <section className="profile-intro profile-section">
         <div className="identity-title" data-reveal><p className="section-label">01 / IDENTIDAD</p><h2>DETRÁS<br />DEL <em>SÍMBOLO</em></h2><div className="identity-status"><i /> EXPEDIENTE ACTIVO <b>NXS-{character.number}616</b></div></div>
-        <div className="identity-portrait" data-reveal aria-hidden="true">
+        <div className="identity-portrait" data-reveal data-tilt aria-hidden="true">
           <div className="portrait-orbit"><i /><i /></div>
           <span className="portrait-symbol">{character.symbol}</span>
           <Image src={character.image} alt="" fill sizes="(max-width: 560px) 86vw, 520px" style={{ objectPosition: character.imagePosition ?? "center top" }} />
           <b className="portrait-index">{character.number}</b>
           <small>{character.alias} / {character.role}</small>
         </div>
-        <div className="intro-copy"><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd>{character.status}</dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
+        <div className="intro-copy" data-reveal><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd>{character.status}</dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
       </section>
 
       <section className="screen-moment profile-section">
@@ -111,17 +111,17 @@ export default async function CharacterPage({ params }: PageProps) {
           </div>)}
         </div>
         <div className="ability-list">
-          {character.abilities.map((ability, index) => <div key={ability}><b>0{index + 1}</b><span>{ability}</span><i>{character.symbol}</i></div>)}
+          {character.abilities.map((ability, index) => <div key={ability} data-reveal style={{ "--delay": `${index * 70}ms` } as React.CSSProperties}><b>0{index + 1}</b><span>{ability}</span><i>{character.symbol}</i></div>)}
         </div>
       </section>
 
       <section className="profile-timeline profile-section character-story">
-        <div className="timeline-heading character-story-heading">
+        <div className="timeline-heading character-story-heading" data-reveal>
           <div><p className="section-label">06 / CRONOLOGÍA</p><h2>MOMENTOS<br/>QUE <em>DEFINEN</em></h2></div>
           <aside><b>{String(character.appearances.length).padStart(2, "0")}</b><p>Películas y series. Cada capítulo revela qué sucede y cómo transforma a {character.name}.</p></aside>
         </div>
         <div className="character-story-rail">
-          {character.appearances.map((appearance, index) => <article className="character-story-event" key={appearance.title}>
+          {character.appearances.map((appearance, index) => <article className="character-story-event" key={appearance.title} data-reveal style={{ "--delay": `${Math.min(index, 7) * 80}ms` } as React.CSSProperties}>
             <div className="story-event-art"><Image src={`/api/title-image?title=${encodeURIComponent(appearance.title)}&type=${encodeURIComponent(appearance.type)}`} alt={`Imagen de ${appearance.title}`} fill sizes="(max-width: 560px) 84vw, 30vw" /><span>{String(index + 1).padStart(2, "0")}</span></div>
             <div className="story-event-point"><i /></div>
             <div className="story-event-copy"><div><b>{appearance.year}</b><small>{appearance.type}</small></div><h3><Link href={`/titulos/${appearance.titleId}`}>{appearance.title} ↗</Link></h3><p>{appearance.event}</p></div>
@@ -130,14 +130,14 @@ export default async function CharacterPage({ params }: PageProps) {
         <p className="story-scroll-cue">DESLIZA PARA RECORRER SU HISTORIA <span>→</span></p>
       </section>
 
-      {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} style={{ "--node-accent": entity.color } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
+      {connectedEntities.length > 0 && <section className="context-nodes profile-section"><header data-reveal><p className="section-label">07 / CONEXIONES</p><h2>SU LUGAR<br /><em>EN EL NEXUS</em></h2></header><div>{connectedEntities.map((entity, index) => <Link href={getEntityHref(entity)} key={`${entity.kind}-${entity.slug}`} data-reveal data-tilt style={{ "--node-accent": entity.color, "--delay": `${index * 90}ms` } as React.CSSProperties}><span>{entity.kind}</span><strong>{entity.symbol}</strong><h3>{entity.name}</h3><p>{entity.summary}</p><b>EXPLORAR ↗</b></Link>)}</div></section>}
 
       <section className="character-reference profile-section">
-        <header><p className="section-label">08 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
+        <header data-reveal><p className="section-label">08 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
         <div className="character-reference-grid">
-          <article><span>VARIANTES</span>{character.variants.length ? character.variants.map((variant) => <div key={`${variant.name}-${variant.universe}`}><h3>{variant.name}</h3><b>{variant.universe}</b><p>{variant.description}</p></div>) : <p>No hay variantes audiovisuales relevantes documentadas.</p>}</article>
-          <article><span>QUÉ VER PARA CONOCERLE</span>{relatedRoutes.map((route) => <Link href={`/rutas/${route.slug}`} key={route.slug}><h3>{route.name}</h3><p>{route.description}</p><b>ABRIR RECORRIDO ↗</b></Link>)}</article>
-          <article><span>FUENTES Y REVISIÓN</span>{character.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.label} ↗</a>)}<p>Última revisión: <time dateTime={character.reviewedAt}>{character.reviewedAt}</time></p></article>
+          <article data-reveal><span>VARIANTES</span>{character.variants.length ? character.variants.map((variant) => <div key={`${variant.name}-${variant.universe}`}><h3>{variant.name}</h3><b>{variant.universe}</b><p>{variant.description}</p></div>) : <p>No hay variantes audiovisuales relevantes documentadas.</p>}</article>
+          <article data-reveal style={{ "--delay": "90ms" } as React.CSSProperties}><span>QUÉ VER PARA CONOCERLE</span>{relatedRoutes.map((route) => <Link href={`/rutas/${route.slug}`} key={route.slug}><h3>{route.name}</h3><p>{route.description}</p><b>ABRIR RECORRIDO ↗</b></Link>)}</article>
+          <article data-reveal style={{ "--delay": "180ms" } as React.CSSProperties}><span>FUENTES Y REVISIÓN</span>{character.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>{source.label} ↗</a>)}<p>Última revisión: <time dateTime={character.reviewedAt}>{character.reviewedAt}</time></p></article>
         </div>
       </section>
 
