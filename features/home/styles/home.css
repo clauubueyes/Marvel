@@ -21,7 +21,13 @@
 .doom-hero h1 { margin: 25px 0; font-size: clamp(80px,10.5vw,175px); line-height: .78; letter-spacing: -.035em; }
 .doom-hero h1 em { display: block; color: transparent; font-style: normal; -webkit-text-stroke: 2px #b9d737; }
 .doom-deck { max-width: 650px; color: #b2b5ab; font-size: clamp(16px,1.45vw,22px); line-height: 1.55; }
-.ghost-action { display: grid; place-items: center; padding: 0 24px; border: 1px solid rgba(255,255,255,.35); font-size: 8px; letter-spacing: 1px; }
+.ghost-action { 
+  display: grid; 
+  place-items: center; 
+  padding: 0 24px; 
+  border: 1px solid rgba(255,255,255,.35); 
+  font-size: 12px; 
+  letter-spacing: 1px; }
 .doom-hero-fact { position: absolute; right: 4vw; bottom: 80px; width: 230px; padding: 20px; border-left: 3px solid #b9d737; background: rgba(5,7,5,.78); backdrop-filter: blur(12px); }
 .doom-hero-fact span,.doom-hero-fact p { display: block; color: #a6aa9e; font-size: 8px; line-height: 1.5; }.doom-hero-fact b { display: block; margin: 8px 0; font: 30px var(--font-display); color: #b9d737; }
 
