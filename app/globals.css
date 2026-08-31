@@ -1000,3 +1000,25 @@ footer > a:last-child { color: #fff; }
   .title-advanced-filters .filter-reset { grid-column: 1 / -1; }
   .title-bulk-actions > div { display: grid; grid-template-columns: 1fr 1fr; }
 }
+
+.title-library-toolbar { grid-template-columns: minmax(300px,1fr) 170px minmax(245px,310px); }
+.title-planner .route-planner-intro { align-items: center; padding: 25px 30px; }
+.title-planner .route-planner-intro h2 { max-width: 680px; font-size: clamp(38px,4vw,58px); line-height: .9; }
+.title-planner .route-planner-intro > div > p:last-child { margin-top: 12px; font-size: 14px; line-height: 1.55; }
+.title-planner .route-planner-intro > button { min-height: 42px; font-size: 9px; }
+.title-planner .route-planner-form { gap: 21px; padding: 27px 30px; }
+.title-planner .route-planner-form label > span,.title-planner .route-planner-form legend { font-size: 9px; }
+.title-planner .route-planner-form input:not([type="checkbox"]) { font-size: 13px; }
+.title-planner .route-planner-form fieldset button { font-size: 8px; }
+.planner-content-mode > div { grid-template-columns: repeat(3,1fr) !important; gap: 6px !important; }
+.planner-content-mode button { min-height: 42px !important; }
+.planner-content-mode > small { color: #879080; font-size: 9px; line-height: 1.45; }
+.title-planner .route-plan-preview { padding: 27px 30px; }
+.title-planner .route-plan-preview li strong { font-size: 14px; }
+.title-planner .route-plan-preview li small { font-size: 9px; line-height: 1.5; }
+@media (max-width: 700px) {
+  .title-library-toolbar { grid-template-columns: 1fr; }
+  .title-planner .route-planner-intro { padding: 23px 20px; }
+  .title-planner .route-planner-intro h2 { font-size: 42px; }
+  .title-planner .route-planner-form,.title-planner .route-plan-preview { padding: 23px 20px; }
+}

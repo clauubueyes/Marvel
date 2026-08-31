@@ -91,9 +91,9 @@ export function TitleDirectory({ titles }: Props) {
     });
   }, [continuity, orderMode, phase, progressFilter, query, saga, sortMode, titles, type, watched]);
 
-  const pendingTitles = useMemo(() => titles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO"), [titles, watched]);
-  const visiblePending = useMemo(() => visibleTitles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO"), [visibleTitles, watched]);
-  const plannerTitles = useMemo(() => titles.filter((title) => selectedTitles.has(title.slug)).map((title) => ({ id: title.slug, title: title.title, url: `/titulos/${title.slug}`, runtime: title.runtime })), [selectedTitles, titles]);
+  const pendingTitles = useMemo(() => titles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO" && title.type !== "ONE-SHOT" && !/CORTOS/i.test(title.runtime)), [titles, watched]);
+  const visiblePending = useMemo(() => visibleTitles.filter((title) => !watched.has(title.slug) && title.coverage !== "TÍTULO ANUNCIADO" && title.type !== "ONE-SHOT" && !/CORTOS/i.test(title.runtime)), [visibleTitles, watched]);
+  const plannerTitles = useMemo(() => titles.filter((title) => selectedTitles.has(title.slug)).map((title) => ({ id: title.slug, title: title.title, url: `/titulos/${title.slug}`, runtime: title.runtime, type: title.type })), [selectedTitles, titles]);
 
   function persistWatched(next: Set<string>) {
     window.localStorage.setItem(progressStorageKey, JSON.stringify([...next]));

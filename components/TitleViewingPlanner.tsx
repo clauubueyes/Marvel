@@ -39,13 +39,20 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
   const [titlesPerWeek, setTitlesPerWeek] = useState(2);
   const [startTime, setStartTime] = useState("21:00");
   const [endTime, setEndTime] = useState("00:00");
+  const [contentMode, setContentMode] = useState<"TODO" | "PELÍCULAS" | "SERIES">("TODO");
   const [googleReady, setGoogleReady] = useState(false);
   const [googleStatus, setGoogleStatus] = useState<"idle" | "authorizing" | "syncing" | "done" | "error">("idle");
   const [googleProgress, setGoogleProgress] = useState(0);
   const [googleMessage, setGoogleMessage] = useState("");
   const subscribeCalendar = useCallback((callback: () => void) => subscribeGoogleCalendar(callback), []);
   const syncedCalendarId = useSyncExternalStore(subscribeCalendar, googleCalendarSnapshot, () => "");
-  const plan = useMemo(() => createViewingPlan(titles, { startDate, weekDays, titlesPerWeek, startTime, endTime }), [endTime, startDate, startTime, titles, titlesPerWeek, weekDays]);
+  const activeTitles = useMemo(() => titles.filter((title) => {
+    if (title.type === "ONE-SHOT" || /CORTOS/i.test(title.runtime ?? "")) return false;
+    if (contentMode === "PELÍCULAS") return title.type === "PELÍCULA";
+    if (contentMode === "SERIES") return title.type === "SERIE";
+    return true;
+  }), [contentMode, titles]);
+  const plan = useMemo(() => createViewingPlan(activeTitles, { startDate, weekDays, titlesPerWeek, startTime, endTime }), [activeTitles, endTime, startDate, startTime, titlesPerWeek, weekDays]);
 
   function toggleWeekDay(day: number) {
     setWeekDays((current) => current.includes(day) ? current.length === 1 ? current : current.filter((value) => value !== day) : [...current, day]);
@@ -129,13 +136,14 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
     </div>
     <div className="route-planner-workspace">
       <form className="route-planner-form" onSubmit={(event) => event.preventDefault()}>
+        <fieldset className="planner-content-mode"><legend>QUÉ QUIERES VER</legend><div><button type="button" className={contentMode === "TODO" ? "active" : ""} onClick={() => setContentMode("TODO")}>TODO</button><button type="button" className={contentMode === "PELÍCULAS" ? "active" : ""} onClick={() => setContentMode("PELÍCULAS")}>PELÍCULAS</button><button type="button" className={contentMode === "SERIES" ? "active" : ""} onClick={() => setContentMode("SERIES")}>SERIES</button></div><small>Los one-shots y cortos quedan fuera del plan automático.</small></fieldset>
         <label><span>EMPEZAR A PARTIR DE</span><input type="date" value={startDate} min={localDateValue()} onChange={(event) => setStartDate(event.target.value)} /></label>
         <fieldset><legend>DÍAS DISPONIBLES</legend><div>{WEEK_DAYS.map((day) => <button type="button" key={day.value} className={weekDays.includes(day.value) ? "active" : ""} aria-pressed={weekDays.includes(day.value)} onClick={() => toggleWeekDay(day.value)}>{day.label}</button>)}</div></fieldset>
         <label><span>SESIONES POR SEMANA</span><input type="number" min="1" max="7" value={titlesPerWeek} onChange={(event) => setTitlesPerWeek(Math.max(1, Math.min(7, Number(event.target.value))))} /></label>
         <div className="route-planner-times"><label><span>DESDE</span><input type="time" value={startTime} onChange={(event) => setStartTime(event.target.value)} /></label><label><span>HASTA</span><input type="time" value={endTime} onChange={(event) => setEndTime(event.target.value)} /></label></div>
       </form>
       <div className="route-plan-preview">
-        <header><div><span>{titles.length} TÍTULOS · {plan.length} SESIONES</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong>{syncedCalendarId && <small className="google-calendar-linked">● CALENDARIO NEXUS CONECTADO</small>}</div><div className="calendar-actions">{syncedCalendarId ? <><button type="button" className="google-calendar-button" onClick={replaceGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" && googleProgress ? `ACTUALIZANDO ${googleProgress}/${plan.length}` : "ACTUALIZAR GOOGLE"}</button><button type="button" className="google-calendar-remove" onClick={removeGoogleCalendar} disabled={googleStatus === "authorizing" || googleStatus === "syncing"}>ELIMINAR DE GOOGLE</button></> : <button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button>}<button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
+        <header><div><span>{activeTitles.length} TÍTULOS · {plan.length} SESIONES</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "NO HAY TÍTULOS EN ESTE MODO"}</strong>{syncedCalendarId && <small className="google-calendar-linked">● CALENDARIO NEXUS CONECTADO</small>}</div><div className="calendar-actions">{syncedCalendarId ? <><button type="button" className="google-calendar-button" onClick={replaceGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" && googleProgress ? `ACTUALIZANDO ${googleProgress}/${plan.length}` : "ACTUALIZAR GOOGLE"}</button><button type="button" className="google-calendar-remove" onClick={removeGoogleCalendar} disabled={googleStatus === "authorizing" || googleStatus === "syncing"}>ELIMINAR DE GOOGLE</button></> : <button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button>}<button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
         {googleMessage && <p className={`google-calendar-status ${googleStatus}`}>{googleMessage}</p>}
         {plan.length ? <ol>{plan.map((item, index) => <li key={`${item.id}-${item.start.toISOString()}`}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{formatDate(item.start)} · {formatTime(item.start)}–{formatTime(item.end)} · {formatMinutes(item.durationMinutes)}{item.estimated ? " EST." : ""}</small><strong>{item.title}</strong></div></li>)}</ol> : <p className="route-plan-empty">Activa “Añadir al plan” en los títulos que quieras organizar.</p>}
       </div>

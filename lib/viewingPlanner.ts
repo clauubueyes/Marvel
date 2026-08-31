@@ -8,7 +8,7 @@ export const WEEK_DAYS = [
   { value: 6, label: "SÁB" },
 ] as const;
 
-export type PlannerTitle = { id: string; title: string; url: string; runtime?: string };
+export type PlannerTitle = { id: string; title: string; url: string; runtime?: string; type?: string };
 
 export type PlannerPreferences = {
   startDate: string;
