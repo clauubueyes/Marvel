@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import Script from "next/script";
-import { addPlanToGoogleCalendar } from "@/lib/googleCalendar";
+import { addPlanToGoogleCalendar, deleteNexusGoogleCalendar, googleCalendarSnapshot, replaceNexusGoogleCalendar, subscribeGoogleCalendar } from "@/lib/googleCalendar";
 import { createIcsCalendar, createViewingPlan, type PlannerTitle, WEEK_DAYS } from "@/lib/viewingPlanner";
 
 type GoogleTokenResponse = { access_token?: string; error?: string };
@@ -37,6 +37,8 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
   const [googleStatus, setGoogleStatus] = useState<"idle" | "authorizing" | "syncing" | "done" | "error">("idle");
   const [googleProgress, setGoogleProgress] = useState(0);
   const [googleMessage, setGoogleMessage] = useState("");
+  const subscribeCalendar = useCallback((callback: () => void) => subscribeGoogleCalendar(callback), []);
+  const syncedCalendarId = useSyncExternalStore(subscribeCalendar, googleCalendarSnapshot, () => "");
   const plan = useMemo(() => createViewingPlan(titles, { startDate, weekDays, titlesPerWeek, startTime, endTime }), [endTime, startDate, startTime, titles, titlesPerWeek, weekDays]);
 
   function toggleWeekDay(day: number) {
@@ -54,7 +56,7 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
     URL.revokeObjectURL(url);
   }
 
-  function connectGoogleCalendar() {
+  function authorizeGoogle(action: (accessToken: string) => Promise<void>) {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     if (!clientId || !window.google) {
       setGoogleStatus("error");
@@ -72,13 +74,8 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
           setGoogleMessage("Google no concedió acceso al calendario.");
           return;
         }
-        setGoogleStatus("syncing");
-        setGoogleMessage("Creando sesiones…");
-        setGoogleProgress(0);
         try {
-          const result = await addPlanToGoogleCalendar(response.access_token, plan, setGoogleProgress);
-          setGoogleStatus("done");
-          setGoogleMessage(`${result.created} sesiones añadidas a Google Calendar.`);
+          await action(response.access_token);
         } catch (error) {
           setGoogleStatus("error");
           setGoogleMessage(error instanceof Error ? error.message : "No se pudo completar la sincronización.");
@@ -90,6 +87,32 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
       },
     });
     tokenClient.requestAccessToken({ prompt: "consent" });
+  }
+
+  function connectGoogleCalendar() {
+    authorizeGoogle(async (accessToken) => {
+      setGoogleStatus("syncing"); setGoogleMessage("Creando sesiones…"); setGoogleProgress(0);
+      const result = await addPlanToGoogleCalendar(accessToken, plan, setGoogleProgress);
+      setGoogleStatus("done"); setGoogleMessage(`${result.created} sesiones añadidas a Google Calendar.`);
+    });
+  }
+
+  function replaceGoogleCalendar() {
+    if (!window.confirm("Se eliminará el calendario NEXUS actual y se creará de nuevo con este plan. ¿Continuar?")) return;
+    authorizeGoogle(async (accessToken) => {
+      setGoogleStatus("syncing"); setGoogleMessage("Reemplazando el plan anterior…"); setGoogleProgress(0);
+      const result = await replaceNexusGoogleCalendar(accessToken, plan, setGoogleProgress);
+      setGoogleStatus("done"); setGoogleMessage(`Plan actualizado: ${result.created} sesiones sincronizadas.`);
+    });
+  }
+
+  function removeGoogleCalendar() {
+    if (!window.confirm("Se eliminará de Google Calendar el calendario NEXUS y todas sus sesiones. Esta acción no se puede deshacer. ¿Continuar?")) return;
+    authorizeGoogle(async (accessToken) => {
+      setGoogleStatus("syncing"); setGoogleMessage("Eliminando el calendario NEXUS…");
+      await deleteNexusGoogleCalendar(accessToken);
+      setGoogleStatus("done"); setGoogleMessage("El calendario NEXUS se ha eliminado de Google Calendar.");
+    });
   }
 
   return <section className="route-planner title-planner" aria-labelledby="title-planner-heading" style={{ "--route-accent": "#b9d737" } as React.CSSProperties}>
@@ -106,7 +129,7 @@ export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[
         <div className="route-planner-times"><label><span>DESDE</span><input type="time" value={startTime} onChange={(event) => setStartTime(event.target.value)} /></label><label><span>HASTA</span><input type="time" value={endTime} onChange={(event) => setEndTime(event.target.value)} /></label></div>
       </form>
       <div className="route-plan-preview">
-        <header><div><span>{plan.length} TÍTULOS SELECCIONADOS</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong></div><div className="calendar-actions"><button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button><button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
+        <header><div><span>{plan.length} TÍTULOS SELECCIONADOS</span><strong>{plan.length ? `FINAL: ${formatDate(plan[plan.length - 1].end)}` : "SELECCIONA TÍTULOS ABAJO"}</strong>{syncedCalendarId && <small className="google-calendar-linked">● CALENDARIO NEXUS CONECTADO</small>}</div><div className="calendar-actions">{syncedCalendarId ? <><button type="button" className="google-calendar-button" onClick={replaceGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" && googleProgress ? `ACTUALIZANDO ${googleProgress}/${plan.length}` : "ACTUALIZAR GOOGLE"}</button><button type="button" className="google-calendar-remove" onClick={removeGoogleCalendar} disabled={googleStatus === "authorizing" || googleStatus === "syncing"}>ELIMINAR DE GOOGLE</button></> : <button type="button" className="google-calendar-button" onClick={connectGoogleCalendar} disabled={!plan.length || googleStatus === "authorizing" || googleStatus === "syncing"}>{googleStatus === "syncing" ? `AÑADIENDO ${googleProgress}/${plan.length}` : googleReady ? "GOOGLE CALENDAR ↗" : "CONECTAR GOOGLE"}</button>}<button type="button" onClick={downloadPlan} disabled={!plan.length}>DESCARGAR .ICS ↓</button></div></header>
         {googleMessage && <p className={`google-calendar-status ${googleStatus}`}>{googleMessage}</p>}
         {plan.length ? <ol>{plan.map((item, index) => <li key={`${item.id}-${item.start.toISOString()}`}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{formatDate(item.start)} · {formatTime(item.start)}–{formatTime(item.end)}</small><strong>{item.title}</strong></div></li>)}</ol> : <p className="route-plan-empty">Activa “Añadir al plan” en los títulos que quieras organizar.</p>}
       </div>

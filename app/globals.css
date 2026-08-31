@@ -841,6 +841,8 @@ footer > a:last-child { color: #fff; }
 .route-plan-preview header button:disabled { opacity: .35; cursor: not-allowed; }
 .calendar-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
 .route-plan-preview header .google-calendar-button { color: #11160e; border-color: #b9d737; background: #b9d737; }
+.route-plan-preview header .google-calendar-remove { color: #e5a1a1; border-color: #834848; }
+.google-calendar-linked { margin-top: 5px; color: #b9d737; font-size: 7px; letter-spacing: 1px; }
 .google-calendar-status { margin: 14px 0 0; padding: 11px 13px; border-left: 3px solid #78836e; color: #b6beb0; background: #11160e; font-size: 9px; line-height: 1.5; }
 .google-calendar-status.done { border-color: #b9d737; color: #dce8ae; }
 .google-calendar-status.error { border-color: #d76060; color: #e6a5a5; }

@@ -2,6 +2,7 @@ import type { PlannedViewing } from "@/lib/viewingPlanner";
 
 const API_ROOT = "https://www.googleapis.com/calendar/v3";
 const calendarStorageKey = "nexus:google-calendar-id";
+export const googleCalendarEvent = "nexus-google-calendar-change";
 
 type GoogleApiError = { error?: { message?: string } };
 
@@ -33,7 +34,45 @@ async function getOrCreateNexusCalendar(accessToken: string) {
     body: JSON.stringify({ summary: "NEXUS · Plan de visionado", description: "Sesiones planificadas desde NEXUS." }),
   });
   window.localStorage.setItem(calendarStorageKey, calendar.id);
+  window.dispatchEvent(new Event(googleCalendarEvent));
   return calendar.id;
+}
+
+export function googleCalendarSnapshot() {
+  return window.localStorage.getItem(calendarStorageKey) ?? "";
+}
+
+export function subscribeGoogleCalendar(callback: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === calendarStorageKey) callback();
+  };
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(googleCalendarEvent, callback);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(googleCalendarEvent, callback);
+  };
+}
+
+export async function deleteNexusGoogleCalendar(accessToken: string) {
+  const calendarId = window.localStorage.getItem(calendarStorageKey);
+  if (!calendarId) return false;
+  const response = await fetch(`${API_ROOT}/calendars/${encodeURIComponent(calendarId)}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!response.ok && response.status !== 404 && response.status !== 410) {
+    const payload = await response.json().catch(() => ({})) as GoogleApiError;
+    throw new Error(payload.error?.message ?? "No se pudo eliminar el calendario NEXUS.");
+  }
+  window.localStorage.removeItem(calendarStorageKey);
+  window.dispatchEvent(new Event(googleCalendarEvent));
+  return true;
+}
+
+export async function replaceNexusGoogleCalendar(accessToken: string, plan: PlannedViewing[], onProgress: (created: number) => void) {
+  await deleteNexusGoogleCalendar(accessToken);
+  return addPlanToGoogleCalendar(accessToken, plan, onProgress);
 }
 
 function eventId(item: PlannedViewing, index: number) {
