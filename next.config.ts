@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { pathname: "/characters/**" },
       { pathname: "/editorial/**" },
       { pathname: "/moments/**" },
+      { pathname: "/cinematic/**" },
       { pathname: "/titles/**" },
       { pathname: "/trailers/**" },
     ],

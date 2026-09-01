@@ -6,12 +6,12 @@ import { useCallback, useEffect, useState } from "react";
 const GATE_REVEAL_MS = 7200;
 
 const frames = [
-  { src: "/moments/iron.webp", position: "50% 32%" },
-  { src: "/moments/captain-america.webp", position: "50% 24%" },
-  { src: "/moments/black-panther.webp", position: "50% 24%" },
-  { src: "/moments/strange.webp", position: "50% 25%" },
-  { src: "/moments/spider.webp", position: "50% 25%" },
-  { src: "/moments/doctor-doom.webp", position: "50% 18%" },
+  { src: "/cinematic/iron-man.jpg", position: "50% 32%" },
+  { src: "/cinematic/capitan-america.jpg", position: "50% 24%" },
+  { src: "/cinematic/dr-strange-wanda.jpg", position: "50% 24%" },
+  { src: "/cinematic/spiderman.jpg", position: "50% 25%" },
+  { src: "/cinematic/tanos.jpg", position: "50% 25%" },
+  { src: "/cinematic/viuda-negra.jpg", position: "50% 18%" },
 ];
 
 export function CinematicIntro() {
@@ -67,8 +67,7 @@ export function CinematicIntro() {
       <div className="cinematic-intro-title" aria-hidden="true">
         <span className="cinematic-intro-overline">EL UNIVERSO CINEMATOGRÁFICO</span>
         <strong><i>N</i>NEXUS</strong>
-        <span className="cinematic-intro-tagline">TODO ESTÁ CONECTADO</span>
-      </div>
+              </div>
       <button className="cinematic-intro-enter" type="button" onClick={finish} tabIndex={ready ? 0 : -1} aria-hidden={!ready}>
         <span>ENTRAR AL UNIVERSO</span><i aria-hidden="true">↓</i>
       </button>
