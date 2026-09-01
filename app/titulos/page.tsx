@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { MotionEffects } from "@/components/common/MotionEffects";
+import { createPageMetadata } from "@/config/seo";
 import { TitleDirectory, type TitleDirectoryEntry } from "@/features/titles/directory";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { getDetailedTitleIds, getEditorialCoverage, getTitleDetails } from "@/data/titles";
 import { viewingRoutes } from "@/data/viewingRoutes";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Películas y series del MCU — NEXUS",
   description: "Archivo cronológico de películas, series, especiales y one-shots del universo audiovisual de Marvel.",
-  alternates: { canonical: "/titulos" },
-};
+  path: "/titulos",
+});
 
 export default function TitlesPage() {
   const titles: TitleDirectoryEntry[] = mcuCatalog.map((title) => ({

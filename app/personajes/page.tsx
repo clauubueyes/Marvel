@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { MotionEffects } from "@/components/common/MotionEffects";
+import { createPageMetadata } from "@/config/seo";
 import { characters } from "@/repositories/characterRepository";
 import { CharacterDirectory } from "@/features/characters/directory";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Personajes del MCU — NEXUS",
   description: "Expedientes de héroes, villanos y figuras esenciales del universo cinematográfico de Marvel.",
-  alternates: { canonical: "/personajes" },
-};
+  path: "/personajes",
+});
 
 export default function CharactersPage() {
   return <main className="characters-index" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>

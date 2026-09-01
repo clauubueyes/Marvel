@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { MotionEffects } from "@/components/common/MotionEffects";
+import { createPageMetadata } from "@/config/seo";
 import { formatRouteDuration, viewingRoutes } from "@/data/viewingRoutes";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Rutas de visionado del MCU — NEXUS",
   description: "Recorridos temáticos para entender Doomsday, el multiverso, la TVA, las incursiones y sus personajes esenciales.",
-  alternates: { canonical: "/rutas" },
-};
+  path: "/rutas",
+});
 
 export default function RoutesPage() {
   return <main className="routes-index" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>

@@ -12,9 +12,18 @@ export const metadata: Metadata = {
   title: "NEXUS — El camino hacia Doomsday",
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  openGraph: { type: "website", locale: "es_ES", siteName: siteConfig.name, title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description, url: "/" },
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  category: "entertainment",
+  formatDetection: { address: false, email: false, telephone: false },
+  openGraph: { type: "website", locale: siteConfig.locale, siteName: siteConfig.name, title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description, url: "/" },
   twitter: { card: "summary_large_image", title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  verification: { google: "kj3TIYD9OX2ZhgjzdHflfzFJUlUgj945t3WZzdMWAC4" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

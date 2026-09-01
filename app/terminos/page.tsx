@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Condiciones de uso — Planificador de visionado",
   description: "Condiciones aplicables al uso de NEXUS y su planificador de visionado.",
-  alternates: { canonical: "/terminos" },
-};
+  path: "/terminos",
+});
 
 export default function TermsPage() {
   return <main className="legal-page" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>

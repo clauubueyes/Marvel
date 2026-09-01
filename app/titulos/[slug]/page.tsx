@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { getTitleDetails } from "@/data/titles";
 import {
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = getTitleDossier((await params).slug);
   const details = title ? getTitleDetails(title.slug) : undefined;
   return title
-    ? { title: `${title.title} — Archivo NEXUS`, description: details?.spoilerFreeSynopsis ?? title.event, alternates: { canonical: `/titulos/${title.slug}` }, openGraph: { title: title.title, description: details?.spoilerFreeSynopsis ?? title.event, url: `/titulos/${title.slug}` } }
+    ? createPageMetadata({ title: `${title.title} — Archivo NEXUS`, socialTitle: title.title, description: details?.spoilerFreeSynopsis ?? title.event, path: `/titulos/${title.slug}` })
     : { title: "Título no encontrado — NEXUS" };
 }
 
@@ -46,11 +48,14 @@ export default async function TitlePage({ params }: PageProps) {
     "@type": title.type === "PELÍCULA" ? "Movie" : "TVSeries",
     name: title.title,
     description: details.spoilerFreeSynopsis,
+    url: new URL(`/titulos/${title.slug}`, siteConfig.url).toString(),
+    image: new URL(getTitleImage(title.slug), siteConfig.url).toString(),
     datePublished: details.releaseDateISO,
     director: details.directors.map((name) => ({ "@type": "Person", name })),
     actor: details.cast.map((name) => ({ "@type": "Person", name })),
     contentRating: details.certification,
     sameAs: details.sources.map(({ url }) => url),
+    mainEntityOfPage: new URL(`/titulos/${title.slug}`, siteConfig.url).toString(),
   } : undefined;
 
   /* `title-profile` activa la dirección de arte verde/negra del dossier de títulos. */
