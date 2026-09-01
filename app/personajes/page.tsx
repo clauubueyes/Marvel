@@ -6,9 +6,10 @@ import { characters } from "@/repositories/characterRepository";
 import { CharacterDirectory } from "@/features/characters/directory";
 
 export const metadata = createPageMetadata({
-  title: "Personajes del MCU — NEXUS",
-  description: "Expedientes de héroes, villanos y figuras esenciales del universo cinematográfico de Marvel.",
+  title: "Personajes Marvel y del MCU — Guía Marvel",
+  description: "Explora héroes, villanos, alias, poderes e historias del MCU en Guía Marvel, el archivo NEXUS del universo Marvel en español.",
   path: "/personajes",
+  keywords: ["personajes Marvel", "personajes MCU", "héroes Marvel", "villanos Marvel", "fichas de personajes Marvel"],
 });
 
 export default function CharactersPage() {
