@@ -1,0 +1,51 @@
+/*
+ * MOVIMIENTO DEL ARCHIVO DE PERSONAJES
+ * Se ve en `/personajes`: entrada del hero, líneas de escaneo, feedback de los
+ * filtros y profundidad 3D/iluminación al pasar por una tarjeta.
+ */
+/* Barrido y líneas ambientales del hero. */
+.characters-index-hero::before { content:""; position:absolute; z-index:0; inset:0; background:linear-gradient(105deg,transparent 42%,rgba(185,215,55,.055) 50%,transparent 58%); transform:translateX(-120%); pointer-events:none; }
+.characters-hero-scan { position:absolute !important; z-index:0 !important; inset:0; overflow:hidden; pointer-events:none; }
+.characters-hero-scan i { position:absolute; width:1px; height:130%; top:-15%; background:linear-gradient(transparent,rgba(185,215,55,.3),transparent); transform:rotate(18deg); opacity:.35; }
+.characters-hero-scan i:nth-child(1) { left:56%; }.characters-hero-scan i:nth-child(2) { left:68%; }.characters-hero-scan i:nth-child(3) { left:80%; }
+.characters-hero-title h1 { perspective:900px; }
+.characters-hero-title h1 span,.characters-hero-title h1 em { display:inline-block; transform-origin:left center; }
+.characters-index-hero aside { transition:border-color .35s,background .35s,transform .35s; }
+.characters-index-hero aside:hover { padding-inline:22px; border-color:#788b4f; background:rgba(185,215,55,.035); transform:translateY(-5px); }
+.characters-index-hero aside a { display:inline-block; transition:letter-spacing .25s,transform .25s; }.characters-index-hero aside a:hover { letter-spacing:1.5px; transform:translateX(4px); }
+.characters-scroll-cue { position:absolute !important; z-index:2; left:6vw; bottom:24px; display:flex; align-items:center; gap:12px; color:#7f8975; font-size:7px; letter-spacing:1.4px; }
+.characters-scroll-cue span { width:29px; height:29px; display:grid; place-items:center; border:1px solid #526044; border-radius:50%; color:#b9d737; }
+/* Respuesta visual de los controles de filtrado. */
+.character-filters { position:relative; z-index:5; transition:box-shadow .3s,background .3s; }
+.character-filters button,.character-filters select { cursor:pointer; transition:color .2s,border-color .2s,background .2s,transform .2s,box-shadow .2s; }
+.character-filters button:hover,.character-filters select:hover { border-color:#859358; transform:translateY(-2px); }
+.character-filters button.active { box-shadow:0 0 24px rgba(185,215,55,.16); }
+/* Profundidad, halo y elevación de las tarjetas del directorio. */
+.characters-directory { perspective:1200px; }
+.character-directory-card { transform-style:preserve-3d; transform-origin:center; transition:opacity .75s ease var(--delay,0ms),transform .75s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),box-shadow .4s; }
+.character-directory-card::before { content:""; position:absolute; z-index:0; inset:0; border:1px solid transparent; background:linear-gradient(135deg,color-mix(in srgb,var(--card-accent) 65%,transparent),transparent 35%) border-box; mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0); mask-composite:exclude; opacity:0; transition:opacity .35s; pointer-events:none; }
+.character-directory-card:hover { z-index:2; box-shadow:0 28px 65px rgba(0,0,0,.48),0 0 35px color-mix(in srgb,var(--card-accent) 13%,transparent); }
+.character-directory-card:hover::before { opacity:1; }
+.character-card-light { position:absolute; z-index:-1; inset:0; background:radial-gradient(circle at var(--light-x,50%) var(--light-y,50%),color-mix(in srgb,var(--card-accent) 30%,transparent),transparent 34%); opacity:0; transition:opacity .35s; pointer-events:none; }
+.character-directory-card:hover .character-card-light { opacity:1; }
+.character-directory-card span,.character-directory-card h2,.character-directory-card p,.character-directory-card b { position:relative; z-index:1; transition:transform .35s,text-shadow .35s; }
+.character-directory-card:hover span,.character-directory-card:hover h2,.character-directory-card:hover p,.character-directory-card:hover b { transform:translateZ(24px); }
+.character-directory-card:hover h2 { text-shadow:0 8px 25px rgba(0,0,0,.65); }
+.character-directory-card b { display:flex; justify-content:space-between; align-items:center; }
+.character-directory-card b i { color:var(--card-accent); font-size:13px; font-style:normal; transition:transform .3s; }.character-directory-card:hover b i { transform:translate(3px,-3px); }
+@keyframes character-hero-sweep { to { transform:translateX(120%); } }
+@keyframes character-title-in { from { opacity:0; transform:translateY(70px) rotateX(-18deg); } to { opacity:1; transform:none; } }
+@keyframes character-aside-in { from { opacity:0; transform:translateX(45px); } to { opacity:1; transform:none; } }
+@keyframes character-scan-drift { 50% { transform:translateX(30px) rotate(18deg); opacity:.7; } }
+@keyframes character-cue { 50% { transform:translateY(5px); } }
+/* Las entradas solo arrancan cuando MotionEffects añade `.motion-ready`. */
+.motion-ready .characters-index-hero::before { animation:character-hero-sweep 1.5s cubic-bezier(.2,.75,.2,1) .15s both; }
+.motion-ready .characters-hero-title .eyebrow { animation:character-title-in .8s cubic-bezier(.2,.8,.2,1) .1s both; }
+.motion-ready .characters-hero-title h1 span { animation:character-title-in 1s cubic-bezier(.16,.9,.25,1) .2s both; }
+.motion-ready .characters-hero-title h1 em { animation:character-title-in 1s cubic-bezier(.16,.9,.25,1) .34s both; }
+.motion-ready .characters-index-hero aside { animation:character-aside-in .9s cubic-bezier(.2,.8,.2,1) .55s both; }
+.motion-ready .characters-hero-scan i { animation:character-scan-drift 7s ease-in-out infinite; }.motion-ready .characters-hero-scan i:nth-child(2) { animation-delay:-2s; }.motion-ready .characters-hero-scan i:nth-child(3) { animation-delay:-4s; }
+.motion-ready .characters-scroll-cue span { animation:character-cue 1.6s ease-in-out infinite; }
+@media (max-width:900px) { .characters-index-hero aside:hover { padding-inline:12px; }.character-directory-card:hover span,.character-directory-card:hover h2,.character-directory-card:hover p,.character-directory-card:hover b { transform:none; } }
+@media(max-width:1100px){.character-filters{grid-template-columns:1fr 1fr 1fr}.character-filters>div{grid-column:1/-1}}
+@media(max-width:650px){.character-filters{grid-template-columns:1fr 1fr}.character-filters label{grid-column:span 1}.character-filters>div,.character-filters label:nth-of-type(3){grid-column:1/-1}}

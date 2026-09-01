@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { MotionEffects } from "@/components/MotionEffects";
-import { TitleDirectory, type TitleDirectoryEntry } from "@/components/TitleDirectory";
-import { mcuCatalog } from "@/lib/mcuCatalog";
-import { getDetailedTitleIds, getEditorialCoverage, getTitleDetails } from "@/lib/content/titles/details";
-import { viewingRoutes } from "@/lib/viewingRoutes";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { MotionEffects } from "@/components/common/MotionEffects";
+import { TitleDirectory, type TitleDirectoryEntry } from "@/features/titles/directory";
+import { mcuCatalog } from "@/data/mcuCatalog";
+import { getDetailedTitleIds, getEditorialCoverage, getTitleDetails } from "@/data/titles";
+import { viewingRoutes } from "@/data/viewingRoutes";
 
 export const metadata: Metadata = {
   title: "Películas y series del MCU — NEXUS",

@@ -1,0 +1,1 @@
+export { EntityDossier } from "./EntityDossier";

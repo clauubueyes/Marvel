@@ -1,5 +1,5 @@
-import { auditEditorialContent } from "../lib/contentAudit";
-import { reviewedChronologyCount } from "../lib/content/titles/editorialReview";
+import { auditEditorialContent } from "../validation/contentAudit";
+import { reviewedChronologyCount } from "../data/titles/editorialReview";
 
 const issues = auditEditorialContent();
 const relevant = issues.filter(({ severity }) => severity !== "INFO");

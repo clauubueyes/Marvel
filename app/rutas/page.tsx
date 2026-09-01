@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { MotionEffects } from "@/components/MotionEffects";
-import { formatRouteDuration, viewingRoutes } from "@/lib/viewingRoutes";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { MotionEffects } from "@/components/common/MotionEffects";
+import { formatRouteDuration, viewingRoutes } from "@/data/viewingRoutes";
 
 export const metadata: Metadata = {
   title: "Rutas de visionado del MCU — NEXUS",

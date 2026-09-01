@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 
 export const metadata: Metadata = {
   title: "Política de privacidad — Planificador de visionado",

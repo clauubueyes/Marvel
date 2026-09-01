@@ -1,4 +1,4 @@
-import { getDetailedTitleIds, getTitleDetails } from "../lib/content/titles/details";
+import { getDetailedTitleIds, getTitleDetails } from "../data/titles";
 
 type LinkTarget = { titleId: string; label: string; url: string };
 type LinkResult = LinkTarget & { status: number; ok: boolean; error?: string };

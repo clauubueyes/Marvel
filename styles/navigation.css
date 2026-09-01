@@ -1,0 +1,6 @@
+/*
+ * NAVEGACIÓN GLOBAL
+ * Complementa `.topbar` de base.css. Se muestra en la cabecera de todas las
+ * rutas y controla enlaces, contexto editorial y acceso visual al buscador.
+ */
+.global-navigation { color: #f4f6ef; }.global-navigation .global-links { margin-left: auto; margin-right: 3vw; }.global-navigation-context { min-width: 125px; padding-left: 24px; border-left: 1px solid rgba(255,255,255,.18); color: #a4aa9c; font-size: 8px; letter-spacing: 1.2px; text-align: right; }.global-search-link span { color: var(--accent); font-size: 18px; vertical-align: -2px; }

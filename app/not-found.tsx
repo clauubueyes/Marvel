@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 
 export const metadata: Metadata = { title: "Expediente no encontrado — NEXUS", robots: { index: false, follow: false } };
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 
 export const metadata: Metadata = {
   title: "Condiciones de uso — Planificador de visionado",

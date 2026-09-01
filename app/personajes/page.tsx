@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/GlobalNavigation";
-import { MotionEffects } from "@/components/MotionEffects";
-import { characters } from "@/lib/characters";
-import { CharacterDirectory } from "@/components/CharacterDirectory";
+import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { MotionEffects } from "@/components/common/MotionEffects";
+import { characters } from "@/repositories/characterRepository";
+import { CharacterDirectory } from "@/features/characters/directory";
 
 export const metadata: Metadata = {
   title: "Personajes del MCU — NEXUS",

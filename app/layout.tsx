@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Anton, Space_Mono } from "next/font/google";
 import "./globals.css";
-import { siteConfig } from "@/lib/site";
-import { LegalFooter } from "@/components/LegalFooter";
+import { siteConfig } from "@/config/site";
+import { LegalFooter } from "@/components/layout/LegalFooter";
 
 const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });

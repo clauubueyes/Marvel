@@ -1,10 +1,10 @@
 import { access, mkdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { characters } from "../lib/characters";
-import { mcuCatalog } from "../lib/mcuCatalog";
-import { resolveTitleImage } from "../app/api/title-image/route";
-import { getTitleDetails } from "../lib/content/titles/details";
+import { characters } from "../repositories/characterRepository";
+import { mcuCatalog } from "../data/mcuCatalog";
+import { resolveTitleImage } from "../services/titleImageService";
+import { getTitleDetails } from "../data/titles";
 
 const staticImages = new Map<string, string>([
   ...characters.filter(({ image }) => image.startsWith("http")).map(({ id, image }) => [`characters/${id}`, image] as const),
