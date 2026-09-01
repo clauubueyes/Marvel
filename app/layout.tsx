@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "es_ES", siteName: siteConfig.name, title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description, url: "/" },
   twitter: { card: "summary_large_image", title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description },
   robots: { index: true, follow: true },
+  verification: { google: "kj3TIYD9OX2ZhgjzdHflfzFJUlUgj945t3WZzdMWAC4" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
