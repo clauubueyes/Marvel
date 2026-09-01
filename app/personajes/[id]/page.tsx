@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
-import { createPageMetadata } from "@/config/seo";
-import { siteConfig } from "@/config/site";
+import { createCharacterMetadata, createCharacterStructuredData } from "@/config/characterSeo";
 import {
   CharacterConnections,
   CharacterFacts,
@@ -30,8 +29,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const character = getCharacter((await params).id);
   return character
-    ? createPageMetadata({ title: `${character.name} — Archivo NEXUS`, socialTitle: character.name, description: character.description, path: `/personajes/${character.id}` })
-    : { title: "Personaje no encontrado — NEXUS" };
+    ? createCharacterMetadata(character)
+    : { title: "Personaje no encontrado — Guía Marvel", robots: { index: false, follow: false } };
 }
 
 export default async function CharacterPage({ params }: PageProps) {
@@ -44,17 +43,7 @@ export default async function CharacterPage({ params }: PageProps) {
   const connectedEntities = getEntitiesForCharacter(character.id);
   const relatedRoutes = getViewingRoutesForCharacter(character.id);
   const motion = getCharacterMotionProfile(character);
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: character.name,
-    alternateName: character.alias,
-    description: character.description,
-    url: new URL(`/personajes/${character.id}`, siteConfig.url).toString(),
-    image: new URL(character.image, siteConfig.url).toString(),
-    sameAs: character.sourceUrl,
-    mainEntityOfPage: new URL(`/personajes/${character.id}`, siteConfig.url).toString(),
-  };
+  const structuredData = createCharacterStructuredData(character);
 
   /*
    * Variables visuales de la ficha:

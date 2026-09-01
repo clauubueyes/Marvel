@@ -2,4 +2,5 @@ import { createSocialImage, socialImageSize } from "@/components/common/SocialIm
 import { siteConfig } from "@/config/site";
 export const size = socialImageSize;
 export const contentType = "image/png";
-export default function OpenGraphImage() { return createSocialImage({ kicker: "GUÍA EDITORIAL DEL MCU", title: "El camino hacia Doomsday", subtitle: siteConfig.description }); }
+export const alt = "Guía Marvel y NEXUS — guía del MCU en español";
+export default function OpenGraphImage() { return createSocialImage({ kicker: "NEXUS · GUÍA DEL MCU", title: "Guía Marvel", subtitle: siteConfig.description }); }

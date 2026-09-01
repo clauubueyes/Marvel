@@ -6,13 +6,25 @@ type PageMetadataOptions = {
   description: string;
   path: string;
   socialTitle?: string;
+  keywords?: readonly string[];
   index?: boolean;
 };
 
-export function createPageMetadata({ title, description, path, socialTitle = title, index = true }: PageMetadataOptions): Metadata {
+const brandKeywords = [
+  siteConfig.name,
+  siteConfig.alternateName,
+  "Guía Marvel en español",
+  "NEXUS Marvel",
+  "MCU",
+  "Universo Cinematográfico de Marvel",
+  "Marvel Cinematic Universe",
+];
+
+export function createPageMetadata({ title, description, path, socialTitle = title, keywords = [], index = true }: PageMetadataOptions): Metadata {
   return {
     title,
     description,
+    keywords: [...new Set([...brandKeywords, ...keywords])],
     alternates: { canonical: path },
     openGraph: {
       type: "website",
