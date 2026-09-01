@@ -5,11 +5,14 @@ import { siteConfig } from "@/config/site";
 import { characters } from "@/repositories/characterRepository";
 import { CinematicIntro, DoomsdayGuide, HomeCharacterPreview, HomeFooter, HomeHero, MCUCatalog } from "@/features/home/components";
 
-export const metadata = createPageMetadata({
-  title: "NEXUS — El camino hacia Doomsday",
-  description: siteConfig.description,
-  path: "/",
-});
+export const metadata = {
+  ...createPageMetadata({
+    title: siteConfig.title,
+    description: siteConfig.description,
+    path: "/",
+  }),
+  alternates: undefined,
+};
 
 const websiteStructuredData = {
   "@context": "https://schema.org",
@@ -24,7 +27,7 @@ const websiteStructuredData = {
 
 export default function Home() {
   /* La paleta verde se comparte con todos los bloques editoriales de la portada. */
-  return <main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
+  return <><link rel="canonical" href={`${siteConfig.url}/`} /><main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData).replaceAll("<", "\\u003c") }} />
     {/* Overlay de entrada; desaparece antes de mostrar el contenido de Home. */}
     <CinematicIntro />
@@ -37,5 +40,5 @@ export default function Home() {
     <MCUCatalog />
     <HomeCharacterPreview characters={characters} />
     <HomeFooter />
-  </main>;
+  </main></>;
 }

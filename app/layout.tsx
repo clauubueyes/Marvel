@@ -9,15 +9,15 @@ const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: 
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: "NEXUS — El camino hacia Doomsday",
+  title: siteConfig.title,
   description: siteConfig.description,
   applicationName: siteConfig.name,
   creator: siteConfig.name,
   publisher: siteConfig.name,
   category: "entertainment",
   formatDetection: { address: false, email: false, telephone: false },
-  openGraph: { type: "website", locale: siteConfig.locale, siteName: siteConfig.name, title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description, url: "/" },
-  twitter: { card: "summary_large_image", title: "NEXUS — El camino hacia Doomsday", description: siteConfig.description },
+  openGraph: { type: "website", locale: siteConfig.locale, siteName: siteConfig.name, title: siteConfig.title, description: siteConfig.description, url: "/" },
+  twitter: { card: "summary_large_image", title: siteConfig.title, description: siteConfig.description },
   robots: {
     index: true,
     follow: true,
