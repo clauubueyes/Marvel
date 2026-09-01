@@ -5,6 +5,8 @@ import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { ViewingRouteExperience } from "@/features/viewing-routes";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/data/viewingRoutes";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -15,7 +17,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const route = getViewingRoute((await params).slug);
-  return route ? { title: `${route.name} — Ruta NEXUS`, description: route.description, alternates: { canonical: `/rutas/${route.slug}` }, openGraph: { title: route.name, description: route.description, url: `/rutas/${route.slug}` } } : { title: "Ruta no encontrada — NEXUS" };
+  return route ? createPageMetadata({ title: `${route.name} — Ruta NEXUS`, socialTitle: route.name, description: route.description, path: `/rutas/${route.slug}` }) : { title: "Ruta no encontrada — NEXUS" };
 }
 
 export default async function RoutePage({ params }: PageProps) {
@@ -25,7 +27,7 @@ export default async function RoutePage({ params }: PageProps) {
     <MotionEffects />
     <GlobalNavigation context="RUTA DE VISIONADO" />
     <Breadcrumbs items={[{ label: "RUTAS", href: "/rutas" }, { label: route.name }]} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: route.name, description: route.description, numberOfItems: route.steps.length, itemListElement: route.steps.map((step, index) => ({ "@type": "ListItem", position: index + 1, url: `/titulos/${step.titleId}` })) }).replaceAll("<", "\\u003c") }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", url: new URL(`/rutas/${route.slug}`, siteConfig.url).toString(), name: route.name, description: route.description, numberOfItems: route.steps.length, itemListElement: route.steps.map((step, index) => ({ "@type": "ListItem", position: index + 1, url: new URL(`/titulos/${step.titleId}`, siteConfig.url).toString() })) }).replaceAll("<", "\\u003c") }} />
     <section className="route-profile-hero" style={{ "--route-accent": route.accent } as React.CSSProperties}>
       <p className="eyebrow"><span /> {route.kicker}</p><h1>{route.name}</h1><p>{route.description}</p><div><span>{String(route.steps.length).padStart(2, "0")} CAPÍTULOS</span><span>{formatRouteDuration(route.estimatedMinutes)}</span><span>PROGRESO LOCAL</span></div>
     </section>

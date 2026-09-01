@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 import {
   CharacterConnections,
   CharacterFacts,
@@ -28,7 +30,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const character = getCharacter((await params).id);
   return character
-    ? { title: `${character.name} — Archivo NEXUS`, description: character.description, alternates: { canonical: `/personajes/${character.id}` }, openGraph: { title: character.name, description: character.description, url: `/personajes/${character.id}` } }
+    ? createPageMetadata({ title: `${character.name} — Archivo NEXUS`, socialTitle: character.name, description: character.description, path: `/personajes/${character.id}` })
     : { title: "Personaje no encontrado — NEXUS" };
 }
 
@@ -48,8 +50,10 @@ export default async function CharacterPage({ params }: PageProps) {
     name: character.name,
     alternateName: character.alias,
     description: character.description,
-    image: character.image,
+    url: new URL(`/personajes/${character.id}`, siteConfig.url).toString(),
+    image: new URL(character.image, siteConfig.url).toString(),
     sameAs: character.sourceUrl,
+    mainEntityOfPage: new URL(`/personajes/${character.id}`, siteConfig.url).toString(),
   };
 
   /*

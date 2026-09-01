@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Política de privacidad — Planificador de visionado",
   description: "Cómo el planificador de visionado utiliza y protege los datos relacionados con Google Calendar.",
-  alternates: { canonical: "/privacidad" },
-};
+  path: "/privacidad",
+});
 
 export default function PrivacyPage() {
   return <main className="legal-page" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>

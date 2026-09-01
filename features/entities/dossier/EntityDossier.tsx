@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { siteConfig } from "@/config/site";
+import { getEntityHref } from "@/data/mcuEntities";
 import { getEntityDossier } from "@/repositories/entityRepository";
 import type { MCUEntity } from "@/types/entity";
 import { EntityCharacters } from "./components/EntityCharacters";
@@ -14,7 +16,8 @@ const roots = { EVENTO: { label: "EVENTOS", href: "/eventos" }, UNIVERSO: { labe
 
 export function EntityDossier({ entity }: { entity: MCUEntity }) {
   const dossier = getEntityDossier(entity);
-  const structuredData = { "@context": "https://schema.org", "@type": "Article", headline: entity.name, description: entity.summary, articleSection: entity.kind, about: entity.connections.map(({ label }) => label) };
+  const entityUrl = new URL(getEntityHref(entity), siteConfig.url).toString();
+  const structuredData = { "@context": "https://schema.org", "@type": "Article", headline: entity.name, description: entity.summary, articleSection: entity.kind, url: entityUrl, mainEntityOfPage: entityUrl, inLanguage: siteConfig.language, about: entity.connections.map(({ label }) => label) };
 
   /* `--entity-accent` adapta círculos, títulos y enlaces al color de la entidad. */
   return <main className="entity-profile" style={{ "--accent": entity.color, "--entity-accent": entity.color, "--accent-2": "#4f6b28" } as React.CSSProperties}>
