@@ -46,8 +46,19 @@
   background: rgba(7,10,6,.98); 
   box-shadow: 0px 1px 200px 650px rgba(2, 2, 2, 0.78); 
 }
-.consent-banner strong,.consent-choice strong { color: #b9d737; font-size: 11px; letter-spacing: 1.4px; }
-.consent-banner p,.consent-choice p { max-width: 730px; margin: 8px 0; color: #b6beb0; font-size: 11px; line-height: 1.65; }
+.consent-banner strong,.consent-choice strong { 
+  color: #b9d737; 
+  font-size: 14px; 
+  font-weight: 400;
+  letter-spacing: 1.2px; 
+}
+.consent-banner p,.consent-choice p {
+  max-width: 730px; 
+  margin: 8px 0; 
+  color: #b6beb0; 
+  font-size: 12px; 
+  line-height: 1.65; 
+}
 .consent-banner a { color: #dce9a7; font-size: 8px; text-decoration: underline; text-underline-offset: 3px; }
 .consent-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
 .consent-actions button { min-height: 42px; padding: 0 16px; border: 1px solid #718055; font-size: 9px; font-weight: 700; letter-spacing: .8px; }
