@@ -447,6 +447,7 @@
     .cinematic-intro-enter {
         min-width:260px;
         font-size:11px;
+        letter-spacing: .14em;
     }
 }
 @media (prefers-reduced-motion:reduce) { .cinematic-intro { display:none; } }
