@@ -376,7 +376,7 @@
 }.cinematic-intro.is-ready .cinematic-intro-progress { opacity:0; }
 @keyframes intro-screen-in {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: scale(1.08);
         filter: blur(8px);
     }
