@@ -36,10 +36,19 @@ function safeSearchTerm(value: string) {
     .replace(/(?:\+?\d[\s().-]*){7,}/g, "[dato omitido]");
 }
 
+export function createGtagCommandQueue(dataLayer: unknown[]) {
+  const gtag: (...args: GtagArguments) => void = function gtag() {
+    // El formato IArguments es el contrato del snippet oficial que consume gtag.js.
+    // eslint-disable-next-line prefer-rest-params
+    dataLayer.push(arguments);
+  };
+  return gtag;
+}
+
 export function initializeConsentMode() {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = window.gtag ?? function gtag(...args: GtagArguments) { window.dataLayer?.push(args); };
+  window.gtag = window.gtag ?? createGtagCommandQueue(window.dataLayer);
   window.gtag("consent", "default", {
     ad_storage: "denied",
     ad_user_data: "denied",
