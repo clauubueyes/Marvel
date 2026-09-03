@@ -337,18 +337,20 @@
 }
 /* Control Omitir y barra temporal inferior. */
 .cinematic-intro-skip { 
+    opacity: .65;
     position:absolute; 
     z-index:5; top:clamp(20px,4vw,50px); 
     right:clamp(20px,4vw,55px); 
-    padding:10px 0; border:0; 
-    border-bottom:1px solid rgba(255,255,255,.5); 
+    padding:7px 0 4px 2px; 
+    border-bottom:1px solid rgba(255,255,255,.28); 
     color:rgba(255,255,255,.78); 
     background:transparent; 
     font:700 9px var(--font-mono); 
     letter-spacing:.14em; cursor:pointer; 
-    transition:color .2s,border-color .2s; 
+    transition:opacity .2s,color .2s,border-color .2s;
 }
 .cinematic-intro-skip:hover,.cinematic-intro-skip:focus-visible { 
+    opacity:1;
     color:#fff; 
     border-color:#e21a2d; 
     outline:none; 
