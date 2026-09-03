@@ -265,7 +265,7 @@
 .cinematic-intro-enter { 
     position:absolute; 
     z-index:6; 
-    bottom:clamp(55px,14vh,95px); 
+    bottom:clamp(75px,17vh,115px);
     display:grid; 
     grid-template-columns:1fr 42px; 
     align-items:center; 
@@ -444,6 +444,10 @@
     .cinematic-intro-overline,.cinematic-intro-tagline { letter-spacing:.2em; }
     .cinematic-intro-overline { translate:0 -55px; }
     .cinematic-intro-tagline { translate:0 48px; }
+    .cinematic-intro-enter {
+        min-width:260px;
+        font-size:11px;
+    }
 }
 @media (prefers-reduced-motion:reduce) { .cinematic-intro { display:none; } }
 
