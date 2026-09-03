@@ -3,11 +3,239 @@
  * Controla únicamente la página `/`: hero inicial, introducción editorial,
  * cronología desplegable, catálogo MCU y personajes destacados.
  */
-.mcu-home { background: #090b09; color: #f1eee4; }
+.mcu-home { 
+  background: #090b09; 
+  color: #f1eee4; 
+}
 /* Hero principal: arte de Doomsday, retícula, título, CTA y ficha de estreno. */
-.doom-hero { min-height: 100svh; position: relative; display: flex; align-items: center; overflow: hidden; isolation: isolate; background: #090b09; }
-.doom-hero::before { content: "DOOM"; position: absolute; z-index: -1; right: -2vw; top: 8vh; color: rgba(185,215,55,.045); font: 31vw/.75 var(--font-display); letter-spacing: -.05em; }
-.doom-hero-image { position: absolute; z-index: -2; inset: 0 0 0 42%; background: linear-gradient(90deg,#090b09 0%,transparent 35%),linear-gradient(0deg,#090b09 0%,transparent 35%),url("/editorial/avengers-doomsday.webp") center/cover; filter: grayscale(.7) contrast(1.25); opacity: .66; }
+.doom-hero {
+  min-height: 100svh; 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+  overflow: hidden; 
+  isolation: isolate; 
+  background:
+    linear-gradient(90deg, rgba(8, 11, 10, .66) 0%, rgba(8, 11, 10, .5) 48%, rgba(8, 11, 10, .34) 100%),
+    linear-gradient(rgba(12, 15, 14, .62), rgba(6, 9, 8, .72)),
+    url("/editorial/doom-ambient.webp") 35% center / cover no-repeat;
+}
+.doom-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(rgba(119, 151, 68, .06), rgba(10, 39, 31, .08)),
+    url("/editorial/doom-ambient.webp") 35% center / cover no-repeat;
+  clip-path: var(--ambient-clip, polygon(50% 50%, 50% 50%, 50% 50%));
+  filter: saturate(1.16) brightness(1.12) blur(16px);
+  transition: opacity .55s ease;
+}
+.doom-hero[data-pointer-active="true"]::after { opacity: 1; }
+.doom-hero::before { 
+  content: "DOOM"; 
+  position: absolute; 
+  z-index: -1; 
+  right: -2vw; 
+  top: 8vh; 
+  color: rgba(185,215,55,.045); 
+  font: 900 31vw / 0.75 var(--font-display, sans-serif);
+  letter-spacing: -.05em; 
+  background: linear-gradient(
+    180deg, 
+    rgba(185, 215, 55, 0.06) 0%, 
+    rgba(185, 215, 55, 0.005) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: rgba(186, 215, 55, 0.67); /* Fallback */
+}
+.doom-hero-canvas {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 0 32%;
+  overflow: hidden;
+  container-type: size;
+  touch-action: pan-y;
+}
+.doom-hero-canvas::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse 30px 12px at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgba(184, 220, 72, .17),
+      rgba(60, 123, 71, .1) 42%,
+      transparent 74%
+    ),
+    radial-gradient(
+      ellipse 30px 14px at calc(var(--spotlight-x, 50%) - 34px) calc(var(--spotlight-y, 50%) + 18px),
+      rgba(38, 105, 76, .12),
+      transparent 72%
+    );
+ 
+  mix-blend-mode: screen;
+  transition: opacity .5s ease;
+  animation: doom-aura-breathe 4.6s ease-in-out infinite;
+}
+.doom-hero-canvas[data-exploring="true"]::before { opacity: .82; }
+@keyframes doom-aura-breathe {
+  0%, 100% { filter: blur(11px) brightness(.86); }
+  50% { filter: blur(15px) brightness(1.18); }
+}
+.doom-hero-layer {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  /* Recorta fuera del Hero los bordes del montaje original. */
+  background-size: 123% auto;
+  background-repeat: no-repeat;
+  transition: background-size 1.1s cubic-bezier(.22, 1, .36, 1);
+}
+.doom-hero-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #08110e 0%, rgba(8, 17, 14, .82) 16%, transparent 44%),
+    linear-gradient(0deg, #08110e 0%, rgba(8, 17, 14, .5) 14%, transparent 36%);
+}
+.doom-hero-masked {
+  background-image: url("/editorial/doom-masked-aligned-v2.webp");
+  filter: grayscale(.7) contrast(1.25);
+  opacity: .90;
+}
+.doom-hero-canvas[data-exploring="true"] .doom-hero-layer {
+  background-size: 125% auto;
+}
+.doom-hero-unmasked,
+.doom-hero-trail {
+  background-image: none;
+  -webkit-mask-image:
+    radial-gradient(ellipse var(--spotlight-width, 70px) var(--spotlight-height, 60px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
+    radial-gradient(ellipse 42px 45px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -42px)) calc(var(--spotlight-y, 50%) + 10px), #000 58%, transparent 100%),
+    radial-gradient(ellipse 44px 43px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 44px)) calc(var(--spotlight-y, 50%) - 10px), #000 60%, transparent 100%),
+    radial-gradient(ellipse 45px 38px at calc(var(--spotlight-x, 50%) + 10px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 34px)), #000 55%, transparent 100%);
+  mask-image:
+    radial-gradient(ellipse var(--spotlight-width, 70px) var(--spotlight-height, 60px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
+    radial-gradient(ellipse 42px 45px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -42px)) calc(var(--spotlight-y, 50%) + 10px), #000 58%, transparent 100%),
+    radial-gradient(ellipse 44px 43px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 44px)) calc(var(--spotlight-y, 50%) - 10px), #000 60%, transparent 100%),
+    radial-gradient(ellipse 45px 38px at calc(var(--spotlight-x, 50%) + 10px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 34px)), #000 55%, transparent 100%);
+  opacity: 0;
+  transition: opacity 320ms cubic-bezier(.22, 1, .36, 1);
+  will-change: opacity, mask-image;
+}
+.doom-hero-trail {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: url("/editorial/doom-masked-aligned-v2.webp") center / 125% auto no-repeat;
+  filter: saturate(1.32) contrast(1.08) brightness(1.06);
+  transition: none;
+  animation: doom-reveal-trail 5s cubic-bezier(.16, 1, .3, 1) forwards;
+  will-change: opacity;
+}
+@keyframes doom-reveal-trail {
+  0%, 65% { opacity: 1; }
+  82% { opacity: .5; }
+  100% { opacity: 0; }
+}
+.doom-hero-unmasked { z-index: 1; }
+.doom-hero-unmasked::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: url("/editorial/rdj-unmasked-aligned.webp") center / 123% auto no-repeat;
+  /* El degradado conserva solo el rostro y difumina la unión con la máscara. */
+  -webkit-mask-image: radial-gradient(
+    ellipse max(14cqw, 14cqh) max(18cqw, 18cqh) at
+      calc(50% - max(.7cqw, .7cqh))
+      calc(50% - max(2cqw, 2cqh)),
+    #000 48%,
+    rgba(0, 0, 0, .9) 68%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse max(14cqw, 14cqh) max(18cqw, 18cqh) at
+      calc(50% - max(.7cqw, .7cqh))
+      calc(50% - max(2cqw, 2cqh)),
+    #000 48%,
+    rgba(0, 0, 0, .9) 68%,
+    transparent 100%
+  );
+  filter: saturate(1) contrast(1.02) brightness(.96);
+  opacity: 1;
+  transition: background-size 1.1s cubic-bezier(.22, 1, .36, 1);
+  
+}
+.doom-hero-unmasked::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: url("/editorial/doom-masked-aligned-v2.webp") center / 123% auto no-repeat;
+  filter: saturate(1.42) contrast(1.12) brightness(1.1);
+  transition: background-size 1.1s cubic-bezier(.22, 1, .36, 1);
+}
+.doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::before {
+  background-size: 125% auto;
+}
+.doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::after {
+  background-size: 125% auto;
+}
+.doom-hero-unmasked[data-visible="true"] {
+  opacity: 1;
+  transition-duration: 160ms;
+}
+.doom-hero-interaction-hint {
+  position: absolute;
+  z-index: 3;
+  left: 18%;
+  bottom: 116px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: rgba(225, 232, 207, .62);
+  pointer-events: none;
+  transition: opacity .35s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.doom-hero-interaction-hint i {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  border: 1px solid rgba(185, 215, 55, .65);
+  border-radius: 50%;
+  animation: doom-hint-pulse 2.4s ease-in-out infinite;
+}
+.doom-hero-interaction-hint i::before,
+.doom-hero-interaction-hint i::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  background: #b9d737;
+  translate: -50% -50%;
+}
+.doom-hero-interaction-hint i::before { width: 12px; height: 1px; }
+.doom-hero-interaction-hint i::after { width: 1px; height: 12px; }
+.doom-hero-interaction-hint span,
+.doom-hero-interaction-hint b { display: block; }
+.doom-hero-interaction-hint span { font-size: 7px; letter-spacing: 1.8px; }
+.doom-hero-interaction-hint b { margin-top: 5px; color: #b9d737; font-size: 8px; }
+.doom-hero-canvas[data-exploring="true"] .doom-hero-interaction-hint {
+  opacity: .22;
+  transform: translateX(8px);
+}
+@keyframes doom-hint-pulse {
+  50% { box-shadow: 0 0 0 9px rgba(185, 215, 55, 0); transform: scale(1.08); }
+}
 
 /* Las secciones fuera del viewport conservan su geometría, pero no consumen
    pintura ni layout hasta que el usuario se acerca a ellas. */
@@ -16,8 +244,8 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
-.doom-hero-grid { position: absolute; inset: 0; z-index: -1; opacity: .12; background-image: linear-gradient(rgba(185,215,55,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(185,215,55,.3) 1px,transparent 1px); background-size: 70px 70px; mask-image: linear-gradient(90deg,black,transparent 75%); }
-.doom-hero-copy { width: min(790px,62vw); padding: 120px 0 100px 8vw; }
+.doom-hero-grid { position: absolute; inset: 0; z-index: 1; opacity: .12; background-image: linear-gradient(rgba(185,215,55,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(185,215,55,.3) 1px,transparent 1px); background-size: 70px 70px; mask-image: linear-gradient(90deg,black,transparent 75%); pointer-events: none; }
+.doom-hero-copy { position: relative; z-index: 2; width: min(790px,62vw); padding: 120px 0 100px 8vw; }
 .doom-hero h1 { margin: 25px 0; font-size: clamp(80px,10.5vw,175px); line-height: .78; letter-spacing: -.035em; }
 .doom-hero h1 em { display: block; color: transparent; font-style: normal; -webkit-text-stroke: 2px #b9d737; }
 .doom-deck { max-width: 650px; color: #b2b5ab; font-size: clamp(16px,1.45vw,22px); line-height: 1.55; }
@@ -28,7 +256,7 @@
   border: 1px solid rgba(255,255,255,.35); 
   font-size: 12px; 
   letter-spacing: 1px; }
-.doom-hero-fact { position: absolute; right: 4vw; bottom: 80px; width: 230px; padding: 20px; border-left: 3px solid #b9d737; background: rgba(5,7,5,.78); backdrop-filter: blur(12px); }
+.doom-hero-fact { position: absolute; z-index: 2; right: 4vw; bottom: 80px; width: 230px; padding: 20px; border-left: 3px solid #b9d737; background: rgba(5,7,5,.78); backdrop-filter: blur(12px); }
 .doom-hero-fact span,.doom-hero-fact p { display: block; color: #a6aa9e; font-size: 8px; line-height: 1.5; }.doom-hero-fact b { display: block; margin: 8px 0; font: 30px var(--font-display); color: #b9d737; }
 
 /* Introducción clara: explica el contexto y contiene las tres claves editoriales. */
@@ -74,13 +302,27 @@
 .mcu-character-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 55px; }.mcu-character { min-height: 440px; position: relative; overflow: hidden; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; color: white; background: #111; isolation: isolate; }.mcu-character::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg,#070907 5%,transparent 75%); }.mcu-character img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.5); transition: .45s; }.mcu-character:hover img { transform: scale(1.05); filter: none; }.mcu-character span { color: var(--card-accent); font-size: 7px; }.mcu-character h3 { margin: 10px 0 2px; font: 28px var(--font-display); }.mcu-character p { color: #bbb; font-size: 8px; }.mcu-character > b { margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.25); font-size: 7px; }
 
 @media (max-width: 900px) {
-  .doom-hero-copy { width: 88%; padding-left: 6vw; }.doom-hero-image { inset-left: 20%; opacity: .45; }.doom-hero-fact { display: none; }
+  .doom-hero-copy { width: 88%; padding-left: 6vw; }.doom-hero-canvas { left: 12%; opacity: .7; }.doom-hero-fact { display: none; }
   .doom-primer { grid-template-columns: 1fr; }.truth-card { grid-template-columns: 1fr 1fr; }.truth-card p { grid-column: 1 / -1; }
   .watch-entry summary { grid-template-columns: 45px 180px 1fr; }.expand-label { grid-column: 3; }.event-dossier { margin-left: 0; grid-template-columns: 1fr 1fr; }.event-dossier > div:last-child { grid-column: 1 / -1; }
   .mcu-character-grid { grid-template-columns: repeat(2,1fr); }.mcu-character { min-height: 390px; }
   .catalog-heading { grid-template-columns: 1fr; }.catalog-heading > div:last-child { width: min(500px,100%); }.catalog-entry summary { grid-template-columns: 45px 1fr 120px 25px; }.catalog-entry summary > i { display: none; }
 }
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .doom-hero-unmasked, .doom-hero-trail, .doom-hero-interaction-hint { display: none; }
+  .doom-hero::after, .doom-hero-canvas::before { display: none; }
+}
 @media (max-width: 560px) {
+  .doom-hero-layer,
+  .doom-hero-canvas[data-exploring="true"] .doom-hero-layer,
+  .doom-hero-unmasked::before,
+  .doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::before,
+  .doom-hero-unmasked::after,
+  .doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::after,
+  .doom-hero-trail {
+    background-size: auto 123%;
+  }
   .doom-hero { min-height: 800px; align-items: flex-start; }.doom-hero-copy { width: 100%; padding: 145px 6vw 100px; }.doom-hero h1 { font-size: 20vw; }.doom-deck { font-size: 15px; }.doom-hero .hero-actions { width: 100%; }.ghost-action { min-height: 48px; }
   .doom-primer { display: block; }.primer-copy { margin-top: 40px; }.primer-grid { display: block; }.primer-grid article,.primer-grid article + article { padding: 22px 0; border-right: 0; border-bottom: 1px solid #aaa99e; }.primer-grid h3 { margin-top: 15px; }.truth-card { display: block; margin-top: 35px; }.truth-card strong,.truth-card p { display: block; margin-top: 15px; }
   .route-controls { align-items: flex-start; flex-direction: column; gap: 18px; }.route-controls > div { width: 100%; }.route-controls button { flex: 1; }
