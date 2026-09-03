@@ -5,12 +5,15 @@ import { WEEK_DAYS } from "@/utils/viewingPlanner";
 import type { PlannerTitle } from "@/types/planner";
 import { useTitleViewingPlanner } from "./hooks/useTitleViewingPlanner";
 import { formatMinutes, formatPlannerDate, formatPlannerTime, localDateValue } from "./utils/plannerFormatters";
+import { AnalyticsView } from "@/features/analytics";
 
 export function TitleViewingPlanner({ titles, onClose }: { titles: PlannerTitle[]; onClose: () => void }) {
   const planner = useTitleViewingPlanner(titles);
   const isSyncing = planner.googleStatus === "authorizing" || planner.googleStatus === "syncing";
 
   return <section className="route-planner title-planner" aria-labelledby="title-planner-heading" style={{ "--route-accent": "#b9d737" } as React.CSSProperties}>
+    <AnalyticsView kind="planner" />
+    {!!planner.plan.length && <AnalyticsView kind="planner_generated" titleCount={planner.activeTitles.length} sessionCount={planner.plan.length} />}
     <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onLoad={() => planner.setGoogleReady(true)} />
     <div className="route-planner-intro">
       <div><p className="eyebrow"><span /> PLAN PERSONAL</p><h2 id="title-planner-heading">ORGANIZA TU SELECCIÓN</h2><p>Selecciona títulos del archivo y NEXUS los distribuirá según tu disponibilidad.</p></div>

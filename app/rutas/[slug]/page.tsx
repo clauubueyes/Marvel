@@ -5,6 +5,7 @@ import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { ViewingRouteExperience } from "@/features/viewing-routes";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { AnalyticsView } from "@/features/analytics";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/data/viewingRoutes";
@@ -24,6 +25,7 @@ export default async function RoutePage({ params }: PageProps) {
   const route = getViewingRoute((await params).slug);
   if (!route) notFound();
   return <main className="route-profile" style={{ "--accent": route.accent, "--accent-2": "#4f6b28" } as React.CSSProperties}>
+    <AnalyticsView kind="route" slug={route.slug} name={route.name} />
     <MotionEffects />
     <GlobalNavigation context="RUTA DE VISIONADO" />
     <Breadcrumbs items={[{ label: "RUTAS", href: "/rutas" }, { label: route.name }]} />

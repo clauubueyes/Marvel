@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { AnalyticsView } from "@/features/analytics";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createCharacterMetadata, createCharacterStructuredData } from "@/config/characterSeo";
@@ -52,6 +53,7 @@ export default async function CharacterPage({ params }: PageProps) {
    * - `data-motion` selecciona la firma tecnológica, mística, cósmica, etc.
    */
   return <main className={`profile profile-${character.id}`} data-motion={motion.signature} style={{ "--accent": character.color, "--accent-2": character.color2, "--motion-cycle": `${motion.tempo * 18}s`, "--motion-counter-cycle": `${motion.tempo * 12}s`, "--motion-pulse-cycle": `${motion.tempo * 3.4}s`, "--motion-particle-cycle": `${motion.tempo * 5}s`, "--motion-sweep-cycle": `${motion.tempo * 7}s`, "--motion-drift": `${motion.drift}px` } as React.CSSProperties}>
+    <AnalyticsView kind="character" id={character.id} name={character.name} />
     {/* Capa funcional y ambiental que permanece por encima del dossier. */}
     <MotionEffects />
     <div className="character-atmosphere" aria-hidden="true"><i /><i /><i /><i /></div>

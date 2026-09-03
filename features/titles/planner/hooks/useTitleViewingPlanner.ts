@@ -6,6 +6,7 @@ import { requestGoogleCalendarToken } from "@/services/googleIdentityService";
 import type { PlannerTitle } from "@/types/planner";
 import { createIcsCalendar, createViewingPlan } from "@/utils/viewingPlanner";
 import { localDateValue } from "../utils/plannerFormatters";
+import { trackPlannerIcsExport } from "@/services/analytics";
 
 export type PlannerContentMode = "TODO" | "PELÍCULAS" | "SERIES";
 export type GoogleSyncStatus = "idle" | "authorizing" | "syncing" | "done" | "error";
@@ -44,6 +45,7 @@ export function useTitleViewingPlanner(titles: PlannerTitle[]) {
     anchor.download = "nexus-mi-plan.ics";
     anchor.click();
     URL.revokeObjectURL(url);
+    trackPlannerIcsExport(activeTitles.length, plan.length);
   }
 
   async function authorizeGoogle(action: (accessToken: string) => Promise<void>) {

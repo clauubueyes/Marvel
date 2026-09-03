@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { AnalyticsView } from "@/features/analytics";
 import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createPageMetadata } from "@/config/seo";
@@ -60,6 +61,7 @@ export default async function TitlePage({ params }: PageProps) {
 
   /* `title-profile` activa la dirección de arte verde/negra del dossier de títulos. */
   return <main className="title-profile" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
+    <AnalyticsView kind="title" slug={title.slug} name={title.title} titleType={title.type} />
     {/* Navegación y efectos compartidos por todas las fichas. */}
     <MotionEffects />
     <GlobalNavigation context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`} />

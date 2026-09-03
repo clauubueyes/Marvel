@@ -1,9 +1,10 @@
 "use client";
 
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { searchContent, searchIndex } from "@/services/searchService";
 import type { SearchResult } from "@/types/search";
+import { trackSearch } from "@/services/analytics";
 
 export type SearchFilter = "TODO" | SearchResult["type"];
 
@@ -14,6 +15,7 @@ export function useSearchExperience(initialQuery: string) {
   const deferredQuery = useDeferredValue(query);
   const allResults = searchContent(deferredQuery, filter);
   const results = deferredQuery.trim() ? allResults : allResults.slice(0, 12);
+  const lastTrackedSearch = useRef("");
   const counts = {
     PERSONAJE: searchIndex.filter(({ type }) => type === "PERSONAJE").length,
     TÍTULO: searchIndex.filter(({ type }) => type === "TÍTULO").length,
@@ -21,6 +23,16 @@ export function useSearchExperience(initialQuery: string) {
     UNIVERSO: searchIndex.filter(({ type }) => type === "UNIVERSO").length,
     EQUIPO: searchIndex.filter(({ type }) => type === "EQUIPO").length,
   };
+
+  useEffect(() => {
+    const term = deferredQuery.trim();
+    if (term.length < 2 || term === lastTrackedSearch.current) return;
+    const timeout = window.setTimeout(() => {
+      trackSearch(term, allResults.length);
+      lastTrackedSearch.current = term;
+    }, 700);
+    return () => window.clearTimeout(timeout);
+  }, [allResults.length, deferredQuery]);
 
   function updateQuery(value: string) {
     setQuery(value);

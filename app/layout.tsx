@@ -3,6 +3,7 @@ import { Anton, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { LegalFooter } from "@/components/layout/LegalFooter";
+import { Analytics } from "@/features/analytics";
 
 const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${display.variable} ${mono.variable}`}><a className="skip-link" href="#main-content">SALTAR AL CONTENIDO</a><div id="main-content">{children}</div><LegalFooter /></body>
+      <body className={`${display.variable} ${mono.variable}`}><a className="skip-link" href="#main-content">SALTAR AL CONTENIDO</a><div id="main-content">{children}</div><LegalFooter /><Analytics /></body>
     </html>
   );
 }

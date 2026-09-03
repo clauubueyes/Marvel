@@ -7,6 +7,7 @@ import { TitleDirectoryCard } from "./components/TitleDirectoryCard";
 import { TitleFilters } from "./components/TitleFilters";
 import { TitleLibraryToolbar } from "./components/TitleLibraryToolbar";
 import { useTitleDirectory } from "./hooks/useTitleDirectory";
+import { trackTitleMarkedWatched } from "@/services/analytics";
 
 export function TitleDirectory({ titles }: { titles: TitleDirectoryEntry[] }) {
   const directory = useTitleDirectory(titles);
@@ -28,7 +29,7 @@ export function TitleDirectory({ titles }: { titles: TitleDirectoryEntry[] }) {
         isSelected={directory.selectedTitles.has(title.slug)}
         isWatched={directory.watched.has(title.slug)}
         onToggleSelected={() => directory.togglePlannedTitle(title.slug)}
-        onToggleWatched={() => directory.setTitlesWatched([title.slug], !directory.watched.has(title.slug))}
+        onToggleWatched={() => { const watched = directory.watched.has(title.slug); directory.setTitlesWatched([title.slug], !watched); if (!watched) trackTitleMarkedWatched(title.slug, title.title); }}
         key={title.slug}
       />)}
       {!directory.visibleTitles.length && <div className="title-directory-empty"><strong>SIN COINCIDENCIAS</strong><p>Prueba otra búsqueda o combinación de filtros.</p><button onClick={directory.resetFilters}>MOSTRAR TODO</button></div>}
