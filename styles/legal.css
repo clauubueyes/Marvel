@@ -88,7 +88,7 @@
 .consent-secondary { 
   color: #dce2d5; 
   background: transparent; 
-  font-weight: 500;
+  font-weight: 100;
   font-size: 11px;
 }
 .consent-overlay { position: fixed; z-index: 1001; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.72); }
