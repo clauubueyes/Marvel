@@ -61,6 +61,35 @@
   container-type: size;
   touch-action: pan-y;
 }
+.doom-hero-canvas::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse 30px 12px at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgba(184, 220, 72, .17),
+      rgba(60, 123, 71, .1) 42%,
+      transparent 74%
+    ),
+    radial-gradient(
+      ellipse 30px 14px at calc(var(--spotlight-x, 50%) - 34px) calc(var(--spotlight-y, 50%) + 18px),
+      rgba(38, 105, 76, .12),
+      transparent 72%
+    );
+ 
+  mix-blend-mode: screen;
+  transition: opacity .5s ease;
+  animation: doom-aura-breathe 4.6s ease-in-out infinite;
+}
+.doom-hero-canvas[data-exploring="true"]::before { opacity: .82; }
+@keyframes doom-aura-breathe {
+  0%, 100% { filter: blur(11px) brightness(.86); }
+  50% { filter: blur(15px) brightness(1.18); }
+}
 .doom-hero-layer {
   position: absolute;
   inset: 0;
@@ -85,22 +114,40 @@
 .doom-hero-canvas[data-exploring="true"] .doom-hero-layer {
   background-size: 125% auto;
 }
-.doom-hero-unmasked {
+.doom-hero-unmasked,
+.doom-hero-trail {
   background-image: none;
   -webkit-mask-image:
-    radial-gradient(ellipse var(--spotlight-width, 65px) var(--spotlight-height, 45px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
-    radial-gradient(ellipse 42px 37px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -50px)) calc(var(--spotlight-y, 50%) + 12px), #000 58%, transparent 100%),
-    radial-gradient(ellipse 40px 38px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 55px)) calc(var(--spotlight-y, 50%) - 12px), #000 60%, transparent 100%),
-    radial-gradient(ellipse 48px 30px at calc(var(--spotlight-x, 50%) + 15px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 35px)), #000 55%, transparent 100%);
+    radial-gradient(ellipse var(--spotlight-width, 70px) var(--spotlight-height, 60px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
+    radial-gradient(ellipse 42px 45px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -42px)) calc(var(--spotlight-y, 50%) + 10px), #000 58%, transparent 100%),
+    radial-gradient(ellipse 44px 43px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 44px)) calc(var(--spotlight-y, 50%) - 10px), #000 60%, transparent 100%),
+    radial-gradient(ellipse 45px 38px at calc(var(--spotlight-x, 50%) + 10px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 34px)), #000 55%, transparent 100%);
   mask-image:
-    radial-gradient(ellipse var(--spotlight-width, 65px) var(--spotlight-height, 45px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
-    radial-gradient(ellipse 42px 37px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -50px)) calc(var(--spotlight-y, 50%) + 12px), #000 58%, transparent 100%),
-    radial-gradient(ellipse 40px 38px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 55px)) calc(var(--spotlight-y, 50%) - 12px), #000 60%, transparent 100%),
-    radial-gradient(ellipse 48px 30px at calc(var(--spotlight-x, 50%) + 15px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 35px)), #000 55%, transparent 100%);
+    radial-gradient(ellipse var(--spotlight-width, 70px) var(--spotlight-height, 60px) at var(--spotlight-x, 50%) var(--spotlight-y, 50%), #000 62%, transparent 100%),
+    radial-gradient(ellipse 42px 45px at calc(var(--spotlight-x, 50%) + var(--spotlight-left-x, -42px)) calc(var(--spotlight-y, 50%) + 10px), #000 58%, transparent 100%),
+    radial-gradient(ellipse 44px 43px at calc(var(--spotlight-x, 50%) + var(--spotlight-right-x, 44px)) calc(var(--spotlight-y, 50%) - 10px), #000 60%, transparent 100%),
+    radial-gradient(ellipse 45px 38px at calc(var(--spotlight-x, 50%) + 10px) calc(var(--spotlight-y, 50%) + var(--spotlight-lower-y, 34px)), #000 55%, transparent 100%);
   opacity: 0;
   transition: opacity 320ms cubic-bezier(.22, 1, .36, 1);
   will-change: opacity, mask-image;
 }
+.doom-hero-trail {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: url("/editorial/doom-masked-aligned-v2.webp") center / 125% auto no-repeat;
+  filter: saturate(1.32) contrast(1.08) brightness(1.06);
+  transition: none;
+  animation: doom-reveal-trail 5s cubic-bezier(.16, 1, .3, 1) forwards;
+  will-change: opacity;
+}
+@keyframes doom-reveal-trail {
+  0%, 65% { opacity: 1; }
+  82% { opacity: .5; }
+  100% { opacity: 0; }
+}
+.doom-hero-unmasked { z-index: 1; }
 .doom-hero-unmasked::before {
   content: "";
   position: absolute;
@@ -124,9 +171,10 @@
     rgba(0, 0, 0, .9) 68%,
     transparent 100%
   );
-  filter: saturate(.72) contrast(1.02) brightness(.96);
+  filter: saturate(1) contrast(1.02) brightness(.96);
   opacity: 1;
   transition: background-size 1.1s cubic-bezier(.22, 1, .36, 1);
+  
 }
 .doom-hero-unmasked::after {
   content: "";
@@ -262,8 +310,8 @@
 }
 
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .doom-hero-unmasked, .doom-hero-interaction-hint { display: none; }
-  .doom-hero::after { display: none; }
+  .doom-hero-unmasked, .doom-hero-trail, .doom-hero-interaction-hint { display: none; }
+  .doom-hero::after, .doom-hero-canvas::before { display: none; }
 }
 @media (max-width: 560px) {
   .doom-hero-layer,
@@ -271,7 +319,8 @@
   .doom-hero-unmasked::before,
   .doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::before,
   .doom-hero-unmasked::after,
-  .doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::after {
+  .doom-hero-canvas[data-exploring="true"] .doom-hero-unmasked::after,
+  .doom-hero-trail {
     background-size: auto 123%;
   }
   .doom-hero { min-height: 800px; align-items: flex-start; }.doom-hero-copy { width: 100%; padding: 145px 6vw 100px; }.doom-hero h1 { font-size: 20vw; }.doom-deck { font-size: 15px; }.doom-hero .hero-actions { width: 100%; }.ghost-action { min-height: 48px; }
