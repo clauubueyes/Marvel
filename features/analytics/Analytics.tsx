@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { configureAnalytics, GA_MEASUREMENT_ID, initializeConsentMode, trackPageView, updateAnalyticsConsent } from "@/services/analytics";
 import { ANALYTICS_SETTINGS_EVENT, persistAnalyticsConsent, readAnalyticsConsent, subscribeAnalyticsConsent } from "@/services/analytics/consent";
+import { CINEMATIC_INTRO_EVENT } from "@/constants/uiEvents";
 
 export function Analytics() {
   const pathname = usePathname();
@@ -13,6 +14,7 @@ export function Analytics() {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
   const [ready, setReady] = useState(false);
+  const [cinematicIntroActive, setCinematicIntroActive] = useState(pathname === "/");
   const lastPage = useRef("");
   const settingsFocus = useRef<HTMLButtonElement>(null);
 
@@ -21,6 +23,14 @@ export function Analytics() {
     const openSettings = () => { setAnalyticsEnabled(readAnalyticsConsent() === "accepted"); setPreferencesOpen(true); };
     window.addEventListener(ANALYTICS_SETTINGS_EVENT, openSettings);
     return () => window.removeEventListener(ANALYTICS_SETTINGS_EVENT, openSettings);
+  }, []);
+
+  useEffect(() => {
+    const handleIntro = (event: Event) => {
+      if (event instanceof CustomEvent) setCinematicIntroActive(event.detail === true);
+    };
+    window.addEventListener(CINEMATIC_INTRO_EVENT, handleIntro);
+    return () => window.removeEventListener(CINEMATIC_INTRO_EVENT, handleIntro);
   }, []);
 
   useEffect(() => { updateAnalyticsConsent(consent === "accepted"); }, [consent]);
@@ -48,7 +58,7 @@ export function Analytics() {
     setPreferencesOpen(false);
   }, []);
 
-  const showBanner = consent === null && !preferencesOpen;
+  const showBanner = consent === null && !preferencesOpen && !cinematicIntroActive;
   return <>
     {consent === "accepted" && <Script id="nexus-ga4" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" onLoad={() => { configureAnalytics(); setReady(true); }} />}
     {showBanner && <section className="consent-banner" role="dialog" aria-modal="false" aria-labelledby="consent-title" aria-describedby="consent-description">

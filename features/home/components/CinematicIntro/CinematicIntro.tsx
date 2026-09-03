@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { CINEMATIC_INTRO_EVENT } from "@/constants/uiEvents";
 
 const GATE_REVEAL_MS = 7200;
 
@@ -21,19 +22,29 @@ export function CinematicIntro() {
 
   const finish = useCallback(() => {
     setLeaving(true);
-    window.setTimeout(() => setVisible(false), 700);
+    window.setTimeout(() => {
+      setVisible(false);
+      window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
+    }, 700);
   }, []);
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: true }));
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) {
-      const dismissTimer = window.setTimeout(() => setVisible(false), 0);
+      const dismissTimer = window.setTimeout(() => {
+        setVisible(false);
+        window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
+      }, 0);
       return () => window.clearTimeout(dismissTimer);
     }
 
     const timer = window.setTimeout(() => setReady(true), GATE_REVEAL_MS);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
+    };
   }, []);
 
   useEffect(() => {
