@@ -313,15 +313,90 @@
   color: #b9d737; }
 
 /* Introducción clara: explica el contexto y contiene las tres claves editoriales. */
-.doom-primer { min-height: 820px; display: grid; grid-template-columns: .62fr 1fr; gap: 4vw 7vw; position: relative; color: #10120d; background: #e8e5da; }
-.doom-primer h2 { font-size: clamp(72px,7.5vw,125px); line-height: .86; letter-spacing: .01em; }.doom-primer h2 em { color: #587023; -webkit-text-stroke: 0; }
-.doom-primer .section-backdrop { color: rgba(20,30,10,.035); }
-.primer-lead { max-width: 760px; margin: 45px 0 52px; font: clamp(22px,2vw,32px)/1.48 var(--font-mono); letter-spacing: .01em; }
-.primer-grid { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid #aaa99e; }
-.primer-grid article { padding: 25px 20px 25px 0; border-right: 1px solid #aaa99e; }.primer-grid article + article { padding-left: 20px; }
-.primer-grid b { color: #668522; font-size: 12px; letter-spacing: .6px; }.primer-grid h3 { margin: 35px 0 18px; font: clamp(27px,1.8vw,34px)/1.12 var(--font-display); letter-spacing: .015em; text-transform: uppercase; }.primer-grid p { color: #55584f; font-size: 14px; line-height: 1.75; }
-.truth-card { grid-column: 1 / -1; display: grid; grid-template-columns: 160px 1fr 1.3fr; align-items: center; gap: 35px; padding: 25px 35px; color: #eff4df; background: #1a2511; border-left: 8px solid #b9d737; }
-.truth-card span { font-size: 11px; line-height: 1.4; letter-spacing: 2px; }.truth-card strong { font: 40px/1.08 var(--font-display); letter-spacing: .01em; color: #b9d737; }.truth-card p { color: #cbd0c3; font-size: 14px; line-height: 1.7; }
+.doom-primer {
+  min-height: 0;
+  padding: 90px 6vw 70px;
+  display: grid;
+  grid-template-columns: minmax(390px, .62fr) minmax(0, 1fr);
+  gap: 2.5vw 6vw;
+  position: relative;
+  color: #10120d;
+  background: #e8e5da;
+}
+.doom-primer h2 {
+  margin: 0;
+  font-size: clamp(68px, 6.2vw, 108px);
+  line-height: .84;
+  letter-spacing: .01em;
+}
+.doom-primer h2 em {
+  color: #587023;
+  -webkit-text-stroke: 0;
+}
+.doom-primer .section-backdrop { 
+  color: rgba(20,30,10,.035); 
+}
+.primer-lead {
+  max-width: 680px;
+  margin: 0 0 35px;
+  font: clamp(19px, 1.3vw, 27px)/1.42 var(--font-mono);
+  letter-spacing: .01em;
+}
+.primer-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3,1fr); 
+  border-top: 1px solid #aaa99e; 
+}
+.primer-grid article { 
+  padding: 22px 18px 18px 0; 
+  border-right: 1px solid #aaa99e; 
+}
+.primer-grid article + article { 
+  padding-left: 18px; 
+}
+.primer-grid b { 
+  color: #668522;
+  font-size: 14px; 
+  letter-spacing: .6px; 
+}
+.primer-grid h3 { 
+  margin: 20px 0 18px; 
+  font: clamp(24px, 1.55vw, 31px)/1.08 var(--font-display);
+  letter-spacing: .015em; 
+  text-transform: uppercase; 
+}
+.primer-grid p { 
+  color: #55584f; 
+  font-size: 14px; 
+  line-height: 1.75; 
+}
+.truth-card { 
+  grid-column: 1 / -1; 
+  display: grid; 
+  grid-template-columns: 160px 1fr 1.3fr; 
+  align-items: center; 
+  gap: 35px; 
+  padding: 25px 35px; 
+  color: #eff4df; 
+  background: #1a2511; 
+  border-left: 8px solid #b9d737;
+}
+.truth-card span { 
+  font-size: 16px; 
+  line-height: 1.4; 
+  letter-spacing: 2px; 
+}
+.truth-card strong { 
+  font: 40px/1.08 var(--font-display); 
+  MARGIN-LEFT: 156px;
+  letter-spacing: .01em; 
+  color: #b9d737; 
+}
+.truth-card p { 
+  color: #cbd0c3; 
+  font-size: 16px; 
+  line-height: 1.7; 
+}
 
 /* Controles y cronología de visionado desplegable en la guía Doomsday. */
 .route-controls { display: flex; justify-content: space-between; align-items: center; margin: 55px 0 25px; padding: 20px 0; border-top: 1px solid #465139; border-bottom: 1px solid #465139; }
