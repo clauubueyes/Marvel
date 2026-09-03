@@ -214,7 +214,7 @@
     flex-direction:column; 
     align-items:center; 
     text-align:center; 
-    filter:drop-shadow(0 5px 25px #000); 
+    filter:drop-shadow(0 5px 25px #2c0101); 
     perspective:900px;
 }
 .cinematic-intro-title strong { 
@@ -222,7 +222,7 @@
     display:flex; 
     align-items:center; 
     gap:clamp(8px,1.2vw,18px); 
-    font:clamp(72px,15vw,230px)/.78 var(--font-display); 
+    font:clamp(60px,9vw,150px)/.78 var(--font-display); 
     letter-spacing:-.055em; 
     transform:scale(4); 
     opacity:0; 
