@@ -2,6 +2,8 @@ import { ANALYTICS_READY_EVENT, readAnalyticsConsent } from "./consent";
 
 export const GA_MEASUREMENT_ID = "G-BVHF42HVE8";
 
+let consentModeInitialized = false;
+
 type GtagArguments =
   | [command: "js", loadedAt: Date]
   | [command: "config", measurementId: string, parameters?: Record<string, unknown>]
@@ -50,7 +52,7 @@ export function createGtagCommandQueue(dataLayer: unknown[]) {
 }
 
 export function initializeConsentMode() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || consentModeInitialized) return;
   window.dataLayer = window.dataLayer ?? [];
   window.gtag = window.gtag ?? createGtagCommandQueue(window.dataLayer);
   window.gtag("consent", "default", {
@@ -60,10 +62,10 @@ export function initializeConsentMode() {
     analytics_storage: "denied",
     wait_for_update: 500,
   });
+  consentModeInitialized = true;
 }
 
 export function updateAnalyticsConsent(granted: boolean) {
-  initializeConsentMode();
   window.gtag?.("consent", "update", {
     ad_storage: "denied",
     ad_user_data: "denied",
