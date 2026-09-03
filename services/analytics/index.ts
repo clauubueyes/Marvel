@@ -2,7 +2,11 @@ import { ANALYTICS_READY_EVENT, readAnalyticsConsent } from "./consent";
 
 export const GA_MEASUREMENT_ID = "G-BVHF42HVE8";
 
-type GtagArguments = [command: string, targetOrAction: string, parameters?: Record<string, unknown>];
+type GtagArguments =
+  | [command: "js", loadedAt: Date]
+  | [command: "config", measurementId: string, parameters?: Record<string, unknown>]
+  | [command: "event", eventName: string, parameters?: Record<string, unknown>]
+  | [command: "consent", action: "default" | "update", parameters: Record<string, unknown>];
 
 declare global {
   interface Window {
@@ -70,7 +74,7 @@ export function updateAnalyticsConsent(granted: boolean) {
 
 export function configureAnalytics() {
   if (typeof window === "undefined" || readAnalyticsConsent() !== "accepted") return;
-  window.gtag?.("js", new Date().toISOString());
+  window.gtag?.("js", new Date());
   window.gtag?.("config", GA_MEASUREMENT_ID, {
     send_page_view: false,
     allow_google_signals: false,
