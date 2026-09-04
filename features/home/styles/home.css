@@ -544,7 +544,11 @@
 .catalog-entry { 
   border-bottom: 1px solid #b9bcb2; 
 }.catalog-entry summary { min-height: 112px; display: grid; grid-template-columns: 58px 1fr 160px 125px 28px; align-items: center; gap: 25px; list-style: none; cursor: pointer; transition: padding .25s,background .25s; }.catalog-entry summary::-webkit-details-marker { display: none; }.catalog-entry summary:hover { padding: 0 16px; background: #e0e4d5; }
-.catalog-entry summary > b { color: #777c70; font: 25px var(--font-display); }.catalog-entry summary small { color: #708346; font-size: 7px; letter-spacing: 1.2px; }.catalog-entry h3 { margin: 7px 0 0; font: clamp(20px,2vw,30px) var(--font-display); text-transform: uppercase; }.catalog-entry summary > span { color: #64695f; font-size: 9px; }.catalog-entry summary > i { color: #526730; font: normal 7px var(--font-mono); }.catalog-entry summary > em { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid #91978a; border-radius: 50%; font: normal 17px var(--font-mono); transition: .3s; }.catalog-entry[open] summary > em { transform: rotate(45deg); color: #668522; }
+.catalog-entry summary > b { color: #777c70; font: 25px var(--font-display); }.catalog-entry summary small { color: #708346; font-size: 7px; letter-spacing: 1.2px; }.catalog-entry h3 { margin: 7px 0 0; font: clamp(20px,2vw,30px) var(--font-display); text-transform: uppercase; }
+.catalog-entry summary > span { 
+  color: #64695f90; 
+  font-size: 40px; 
+}.catalog-entry summary > i { color: #526730; font: normal 7px var(--font-mono); }.catalog-entry summary > em { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid #91978a; border-radius: 50%; font: normal 17px var(--font-mono); transition: .3s; }.catalog-entry[open] summary > em { transform: rotate(45deg); color: #668522; }
 .catalog-event { display: grid; grid-template-columns: 180px 1fr; padding: 25px 30px 25px 83px; color: #e8ecde; background: #1b2117; }.catalog-event span { color: #a5bc74; font-size: 7px; letter-spacing: 1.4px; }.catalog-event p { max-width: 760px; font-size: 11px; line-height: 1.65; }.catalog-empty { padding: 80px 20px; text-align: center; }.catalog-empty b { font: 35px var(--font-display); }.catalog-empty p,.catalog-source { color: #73776e; font-size: 8px; }.catalog-source { margin-top: 22px; line-height: 1.65; }
 
 /* Galería de personajes destacados al final de la portada. */
@@ -740,9 +744,15 @@
   align-items: end; 
   gap: 5vw; 
 }
-.mcu-catalog .catalog-heading h2 { font-size: clamp(65px,7.4vw,120px); }
-.mcu-catalog .catalog-heading h2 em { color: #b9d737; -webkit-text-stroke: 0; }
-.mcu-catalog .catalog-count { display: block; min-width: 250px; }
+.mcu-catalog .catalog-heading h2 { 
+  font-size: clamp(35px,4.4vw,63px); 
+}
+.mcu-catalog .catalog-heading h2 em { 
+  color: #b9d737; -webkit-text-stroke: 0; 
+}
+.mcu-catalog .catalog-count { 
+  display: block; min-width: 250px; 
+}
 .mcu-catalog .catalog-count strong { 
   font: 35px var(--font-display); 
   color: #dfe8bf; 
