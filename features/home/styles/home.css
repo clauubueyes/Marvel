@@ -628,7 +628,8 @@
 @media (max-width: 900px) {
   .doom-hero-copy { 
     width: 88%; 
-    padding-left: 6vw; 
+    padding-left:165px 6vw 4px; 
+    align-items:center ;
   }
   .doom-hero-canvas { 
     left: 0%; 
@@ -636,15 +637,32 @@
   }.doom-hero-fact { 
     display: none; 
   }
+  .doom-hero-grid { 
+    opacity: .22; 
+  }
   .doom-primer { 
     grid-template-columns: 1fr; 
   }
   .truth-card { 
     grid-template-columns: 1fr 1fr; 
+    padding: 20px 25px;
   }
-  .truth-card p { 
-    grid-column: 1 / -1; 
-  }
+  .truth-card span { 
+  font-size: 13px; 
+  line-height: 1.4; 
+  letter-spacing: 2px; 
+}
+.truth-card strong { 
+  font: 14px;
+  MARGIN-LEFT: 6px;
+  letter-spacing: .01em; 
+  color: #b9d737; 
+}
+.truth-card p { 
+  color: #cbd0c3; 
+  font-size: 13px; 
+  line-height: 1.7; 
+}
   .watch-entry summary { 
     grid-template-columns: 45px 180px 1fr; 
   }.expand-label { 
@@ -707,6 +725,7 @@
   }
   .doom-deck { 
     font-size: 14px; 
+    padding-block-end: 5px;
   }
   .doom-hero .hero-actions { width: 100%; }.ghost-action { min-height: 48px; }
   .doom-primer { 
@@ -720,7 +739,12 @@
       padding: 10px 0; 
       border-right: 0; 
       border-bottom: 1px solid #aaa99e; 
-    }.primer-grid h3 { 
+      
+    }
+    .primer-grid p { 
+    font-size: 13px; 
+  }.primer-grid h3 { 
+    font-size: 25px;
       margin-top: 10px; 
     }.truth-card { 
       display: block; 
