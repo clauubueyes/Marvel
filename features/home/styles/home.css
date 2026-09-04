@@ -978,6 +978,12 @@
 .catalog-connections-empty {
   margin-top: 16px;
 }
+
+/* Los controles del panel flotante solo se muestran en la versión móvil. */
+.catalog-event-backdrop,
+.catalog-event-close {
+  display: none;
+}
 .dossier-link { 
   display: inline-block; 
   margin-top: 22px; 
@@ -1041,9 +1047,166 @@
   .mcu-catalog .catalog-intro {
     margin: 28px 0 24px;
   }
-  .mcu-catalog .catalog-entry summary { grid-template-columns: 35px 1fr; gap: 13px; padding: 18px 0; }.mcu-catalog .catalog-entry summary:hover { padding: 18px 0; }
-  .mcu-catalog .catalog-entry .catalog-art { grid-column: 2; height: 170px; }.mcu-catalog .catalog-entry .watch-main { grid-column: 2; }.mcu-catalog .catalog-entry .expand-label { grid-column: 2; grid-row: auto; text-align: left; }
-  .mcu-catalog .catalog-event { display: block; padding: 22px; }.catalog-intro { align-items: flex-start; flex-direction: column; gap: 20px; }
+
+  /* La introducción respira menos y conserva una línea de lectura cómoda. */
+  .mcu-catalog .catalog-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 0;
+  }
+  .mcu-catalog .catalog-intro > p {
+    font-size: clamp(20px, 6.5vw, 27px);
+    line-height: 1.25;
+  }
+  .mcu-catalog .catalog-intro > span {
+    flex-wrap: wrap;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  /* Buscador compacto con filtros desplazables y campos sin recortes. */
+  .mcu-catalog .catalog-tools {
+    margin-top: 0;
+    padding: 18px;
+  }
+  .mcu-catalog .catalog-tools label {
+    display: block;
+  }
+  .mcu-catalog .catalog-tools label span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+  .mcu-catalog .catalog-tools input {
+    min-width: 0;
+    padding: 12px 0;
+    font-size: 16px;
+  }
+  .mcu-catalog .catalog-filters {
+    width: calc(100% + 18px);
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 16px 18px 6px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #71815e transparent;
+  }
+  .mcu-catalog .catalog-filters button {
+    min-height: 42px;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  .mcu-catalog .catalog-result {
+    padding: 18px 0 14px;
+    font-size: 12px;
+  }
+
+  /* Cada título pasa a ser una tarjeta vertical de ancho completo. */
+  .mcu-catalog .catalog-entry summary {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 0 24px;
+  }
+  .mcu-catalog .catalog-entry summary:hover {
+    padding: 20px 0 24px;
+  }
+  .mcu-catalog .catalog-entry .watch-order {
+    grid-column: 1;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #465139;
+    font-size: 30px;
+    line-height: 1;
+  }
+  .mcu-catalog .catalog-entry .catalog-art {
+    grid-column: 1;
+    width: 100%;
+    height: clamp(170px, 58vw, 230px);
+  }
+  .mcu-catalog .catalog-entry .watch-main {
+    grid-column: 1;
+  }
+  .mcu-catalog .catalog-entry .watch-main h3 {
+    margin: 8px 0;
+    font-size: clamp(26px, 8vw, 34px);
+    line-height: 1;
+  }
+  .mcu-catalog .catalog-entry .watch-main p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .mcu-catalog .catalog-entry .expand-label {
+    grid-column: 1;
+    grid-row: auto;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    font-size: 12px;
+  }
+
+  /* El suceso se abre como una ficha flotante sin desplazar la cronología. */
+  .mcu-catalog .catalog-entry[open]::before {
+    content: "";
+    position: fixed;
+    z-index: 50;
+    inset: 0;
+    background: rgba(3, 6, 2, .82);
+    backdrop-filter: blur(5px);
+  }
+  .mcu-catalog .catalog-entry[open] > .catalog-event-backdrop {
+    position: fixed;
+    z-index: 51;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: default;
+  }
+  .mcu-catalog .catalog-event {
+    position: fixed;
+    z-index: 52;
+    inset: max(16px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom));
+    display: block;
+    max-height: calc(100svh - 32px);
+    margin: 0;
+    padding: 58px 22px 28px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #829262;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
+    animation: catalog-card-enter .25s cubic-bezier(.22, 1, .36, 1);
+  }
+  .mcu-catalog .catalog-event-close {
+    position: absolute;
+    z-index: 2;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #7c9631;
+    border-radius: 50%;
+    color: #526817;
+    background: #dfe3d2;
+    transition: color .2s ease, background .2s ease;
+  }
+  .mcu-catalog .catalog-event-close span {
+    font: 24px/1 var(--font-mono);
+    transform: translateY(-1px);
+  }
+  .mcu-catalog .catalog-event-close:hover,
+  .mcu-catalog .catalog-event-close:focus-visible {
+    color: #11150c;
+    background: #b9d737;
+  }
   .catalog-event-facts,
   .catalog-event-links {
     margin-top: 24px;
@@ -1052,7 +1215,7 @@
     border-left: 0;
   }
   .catalog-event-facts dl > div {
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 96px minmax(0, 1fr);
   }
   .catalog-event-overview p {
     font-size: 16px;
@@ -1068,5 +1231,22 @@
     .mcu-catalog .catalog-heading h2{
       font-size: clamp(22px, 20vw, 48px);
     }
+}
+
+@keyframes catalog-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcu-catalog .catalog-event {
+    animation: none;
+  }
 }
 

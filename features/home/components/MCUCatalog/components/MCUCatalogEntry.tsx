@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import type { MouseEvent } from "react";
 import { HOME_CATALOG_IMAGES } from "@/constants/homeCatalog";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { getTitleDetails } from "@/data/titles";
@@ -9,6 +12,10 @@ import { getTitleImage } from "@/utils/titleImages";
 const catalogTitlesBySlug = new Map(
   mcuCatalog.map((item) => [item.slug, item.title]),
 );
+
+function closeCatalogCard(event: MouseEvent<HTMLButtonElement>) {
+  event.currentTarget.closest("details")?.removeAttribute("open");
+}
 
 function CatalogConnections({
   label,
@@ -83,7 +90,21 @@ export function MCUCatalogEntry({ entry }: { entry: MCUEntry }) {
           <i>+</i> VER SUCESO
         </span>
       </summary>
+      <button
+        className="catalog-event-backdrop"
+        type="button"
+        aria-label={`Cerrar información de ${entry.title}`}
+        onClick={closeCatalogCard}
+      />
       <div className="event-dossier catalog-event">
+        <button
+          className="catalog-event-close"
+          type="button"
+          aria-label={`Cerrar información de ${entry.title}`}
+          onClick={closeCatalogCard}
+        >
+          <span aria-hidden="true">×</span>
+        </button>
         <div className="catalog-event-overview">
           <span>DE QUÉ VA · SIN SPOILERS</span>
           <p>{details?.spoilerFreeSynopsis ?? entry.event}</p>
