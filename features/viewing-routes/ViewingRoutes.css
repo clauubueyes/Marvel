@@ -103,7 +103,11 @@
 }.viewing-route-list article > div small { 
     color: #7e8875; 
     font-size: 10px; 
-}.viewing-route-list h3 { margin: 12px 0; font: clamp(30px,3.5vw,55px)/.9 var(--font-display); text-transform: uppercase; }.viewing-route-list h3 a:hover { color: var(--route-accent); }
+}.viewing-route-list h3 { 
+    margin: 12px 0; 
+    font: clamp(30px,3.5vw,55px)/.9 var(--font-display); 
+    text-transform: uppercase; 
+}.viewing-route-list h3 a:hover { color: var(--route-accent); }
 .viewing-route-list article > p { 
     max-width: 780px; 
     color: #9da596; 
@@ -116,7 +120,158 @@
 }.route-spoiler { padding: 14px; border-left: 2px solid var(--route-accent); background: rgba(255,255,255,.04); }.route-spoiler b { margin-right: 10px; color: var(--route-accent); font-size: 7px; }.route-back { padding: 35px 6vw; border-top: 1px solid #3d4736; color: #aab2a1; background: #070906; font-size: 8px; }
 @media (max-width: 900px) { 
     .routes-directory { grid-template-columns: 1fr; }.viewing-route-header { grid-template-columns: 1fr; }.viewing-route-header aside { width: min(380px,100%); }.viewing-route-list li { grid-template-columns: 45px 190px 1fr; } }
-@media (max-width: 650px) { .routes-index-hero { min-height: 700px; padding: 140px 6vw 70px; }.routes-index-hero h1 { font-size: 21vw; }.routes-directory { padding-inline: 5vw; }.route-directory-card { min-height: 440px; padding: 27px; }.route-profile-hero { min-height: 720px; padding: 145px 6vw 70px; }.route-profile-hero h1 { font-size: 20vw; }.viewing-route { padding: 85px 5vw; }.viewing-route-controls { align-items: stretch; flex-direction: column; }.viewing-route-controls > div { overflow-x: auto; }.viewing-route-controls button { flex: 1 0 auto; }.viewing-route-list li { grid-template-columns: 38px 1fr; gap: 14px; padding: 28px 0; }.route-step-art { grid-column: 2; height: 210px; }.viewing-route-list article { grid-column: 2; }.viewing-route-header h2 { font-size: 18vw; } }
+/*
+ * MÓVIL
+ * Compacta la presentación de la ruta y aprovecha todo el ancho disponible sin
+ * perder el progreso, los filtros ni las acciones de cada capítulo.
+ */
+@media (max-width: 650px) {
+    .routes-index-hero {
+        min-height: 700px;
+        padding: 140px 6vw 70px;
+    }
+    .routes-index-hero h1 {
+        font-size: 21vw;
+    }
+    .routes-directory {
+        padding-inline: 5vw;
+    }
+    .route-directory-card {
+        min-height: 440px;
+        padding: 27px;
+    }
+    .route-profile-hero {
+        min-height: 720px;
+        padding: 145px 6vw 70px;
+    }
+    .route-profile-hero h1 {
+        font-size: 20vw;
+    }
+
+    /* Cabecera: menos altura y texto ajustado a una lectura móvil cómoda. */
+    .viewing-route,
+    .viewing-route-compact {
+        padding: 64px 5vw 78px;
+    }
+    .viewing-route-header {
+        gap: 28px;
+    }
+    .viewing-route-header h2 {
+        max-width: 8ch;
+        font-size: clamp(50px, 15vw, 72px);
+        line-height: .82;
+        letter-spacing: -1px;
+    }
+    .viewing-route-header > div > p:last-child {
+        margin-top: 20px;
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    /* El porcentaje y la barra comparten una banda horizontal compacta. */
+    .viewing-route-header aside {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        align-items: center;
+        gap: 6px 18px;
+        padding: 18px;
+        border-left: 3px solid var(--route-accent);
+        background: color-mix(in srgb, var(--route-accent) 4%, transparent);
+    }
+    .viewing-route-header aside strong {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        font-size: clamp(42px, 14vw, 58px);
+        line-height: .8;
+    }
+    .viewing-route-header aside span {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+    .viewing-route-header aside div {
+        grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+        margin-top: 3px;
+    }
+
+    /* Controles: selector de ruta en dos columnas y spoilers a ancho completo. */
+    .viewing-route-controls {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        margin: 30px 0 18px;
+        padding: 16px 0;
+    }
+    .viewing-route-controls > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        overflow: visible;
+    }
+    .viewing-route-controls button {
+        min-height: 44px;
+        min-width: 0;
+        flex: none;
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+
+    /* Capítulos: tarjeta vertical sin la columna vacía que antes desplazaba todo. */
+    .viewing-route-list li {
+        position: relative;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 24px 0 30px;
+    }
+    .route-check {
+        position: absolute;
+        z-index: 2;
+        top: 36px;
+        left: 12px;
+        width: 40px;
+        height: 40px;
+        border-color: rgba(255, 255, 255, .65);
+        background: rgba(8, 11, 7, .82);
+        backdrop-filter: blur(6px);
+    }
+    .complete .route-check,
+    .destination .route-check {
+        background: var(--route-accent);
+    }
+    .route-step-art {
+        grid-column: 1;
+        width: 100%;
+        height: clamp(190px, 62vw, 270px);
+    }
+    .viewing-route-list article {
+        grid-column: 1;
+    }
+    .viewing-route-list article > div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .viewing-route-list article > div span,
+    .viewing-route-list article > div small,
+    .viewing-route-list article > a {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    .viewing-route-list h3 {
+        margin: 12px 0;
+        font-size: clamp(30px, 9vw, 44px);
+        line-height: .92;
+    }
+    .viewing-route-list article > p {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+}
 
 /* PLANIFICADOR PERSONAL: fechas, días, horarios y vista previa del calendario. */
 .route-planner { margin: 46px 0 30px; border: 1px solid color-mix(in srgb,var(--route-accent) 40%,#394034); background: linear-gradient(135deg,color-mix(in srgb,var(--route-accent) 8%,#0d110b),#0a0d09 62%); }
