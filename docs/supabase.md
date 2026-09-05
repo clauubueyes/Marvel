@@ -16,6 +16,8 @@ Una respuesta perdida puede significar que el servidor sí guardó un cambio: tr
 
 ## Almacenamiento local
 
+El acceso a «Mi cuenta» está en la navegación principal, incluido el menú móvil. En títulos y rutas no hay una barra permanente de cuenta: `ProgressStatus` solo aparece durante recuperación de sesión, carga, guardado o errores. Los errores ofrecen REINTENTAR para volver a cargar el progreso.
+
 - Invitados: `nexus:titles:watched` y `nexus:route:<slug>` mantienen el comportamiento previo separado por contexto. Solo se escriben desde el modo invitado; nunca se importan automáticamente a cuentas. Si el almacenamiento falla, el hook conserva cambios en memoria durante la sesión de la aplicación.
 - Cuenta: `movie_progress` es la fuente de verdad; los datos privados solo están en el estado en memoria. El SDK almacena su propia sesión Auth en localStorage, independiente del progreso.
 - Calendar: `nexus:google-calendar-id`; analítica: `nexus:analytics-consent`. Siguen independientes de Auth.

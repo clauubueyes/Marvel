@@ -31,6 +31,7 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
         <Link href="/titulos" onClick={closeMenu} aria-current={active("/titulos") ? "page" : undefined}>TÍTULOS</Link>
         <Link href="/personajes" onClick={closeMenu} aria-current={active("/personajes") ? "page" : undefined}>PERSONAJES</Link>
         <Link className="global-search-link" href="/buscar" onClick={closeMenu} aria-current={active("/buscar") ? "page" : undefined}>BUSCAR <span aria-hidden="true">⌕</span></Link>
+        <Link href="/cuenta" onClick={closeMenu} aria-current={active("/cuenta") ? "page" : undefined}>MI CUENTA</Link>
       </nav>
       <div className="global-navigation-context">{context ?? "ARCHIVO MCU"}</div>
       <button className="menu" type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} aria-controls="global-navigation-menu">{menuOpen ? "×" : "☰"}</button>

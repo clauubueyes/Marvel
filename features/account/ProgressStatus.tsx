@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useAccount } from "./AccountProvider";
 
 export function ProgressStatus() {
   const { user, initialized, ready, pending, error, store } = useAccount();
+  if (initialized && (!user || (ready && !pending && !error))) return null;
   return <div className="title-plan-selection-actions" aria-live="polite">
-    <span>{!initialized ? "RECUPERANDO SESIÓN…" : !user ? "PROGRESO DE INVITADO · SOLO EN ESTE NAVEGADOR" : !ready && !error ? "CARGANDO PROGRESO…" : pending ? "GUARDANDO PROGRESO…" : "PROGRESO DE TU CUENTA"}</span>
+    {!error && <span>{!initialized ? "RECUPERANDO SESIÓN…" : !ready ? "CARGANDO PROGRESO…" : "GUARDANDO PROGRESO…"}</span>}
     {error && <span role="alert">{error}</span>}
-    {user && <button type="button" disabled={!!pending || (!ready && !error)} onClick={() => void store.load()}>RECARGAR PROGRESO</button>}
-    <Link href="/cuenta">{user ? "MI CUENTA" : "INICIAR SESIÓN / REGISTRARSE"}</Link>
+    {user && error && <button type="button" disabled={!!pending} onClick={() => void store.load()}>REINTENTAR</button>}
   </div>;
 }
