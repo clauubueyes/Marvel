@@ -53,12 +53,12 @@
   transform: translateX(120%) rotate(12deg);
 }
 .profile .profile-grid { animation: gridShift 20s linear infinite; }
-.profile .profile-title h1 span {
+.profile .profile-title h1 .profile-name-letter {
   display: inline-block;
   transition: transform .38s cubic-bezier(.22,.8,.2,1), text-shadow .38s ease, filter .38s ease;
   will-change: transform;
 }
-.profile .profile-title h1 span:hover {
+.profile .profile-title h1 .profile-name-letter:hover {
   transform: translateY(-10px) scale(1.08) rotate(-2deg);
   text-shadow: 0 12px 24px rgba(0,0,0,.26);
 }
@@ -417,7 +417,7 @@
 .profile .profile-hero .profile-body,
 .profile .profile-figure > b,
 .profile .character-atmosphere i,
-.profile .profile-title h1 span {
+.profile .profile-title h1 .profile-name-letter {
   animation-timing-function: ease-in-out;
 }
 @keyframes ambientDrift {
@@ -447,6 +447,7 @@
 .profile-grid { position: absolute; inset: 0; opacity: .35; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.06) 1px, transparent 1px); background-size: 55px 55px; mask-image: linear-gradient(90deg,transparent,black); }
 .profile-title { width: 72%; padding-left: 6vw; position: relative; z-index: 3; }
 .profile-title h1 { font-size: clamp(105px,14vw,220px); max-width: 1100px; text-shadow: 10px 10px 0 rgba(0,0,0,.2); }
+.profile-title h1 .profile-name-line { display: block; white-space: nowrap; }
 .profile-meta { display: flex; gap: 0; margin-top: 38px; }
 .profile-meta span { padding: 0 22px; border-right: 1px solid rgba(255,255,255,.3); font-size: 9px; text-transform: uppercase; }
 .profile-meta span:first-child { padding-left: 0; color: var(--accent); }
