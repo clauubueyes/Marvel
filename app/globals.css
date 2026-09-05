@@ -46,3 +46,5 @@
 @import "../features/titles/styles/library.css";
 /* Ajuste del punto focal de los retratos del directorio de personajes. */
 @import "../features/characters/directory/CharacterDirectory.css";
+/* Cuenta: panel de acceso y resumen personal. */
+@import "../features/account/Account.css";

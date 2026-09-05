@@ -21,7 +21,7 @@ Una respuesta perdida puede significar que el servidor sí guardó un cambio: tr
 - Calendar: `nexus:google-calendar-id`; analítica: `nexus:analytics-consent`. Siguen independientes de Auth.
 - Intro: `nexus:cinematic-intro:seen`, una vez por navegador hasta borrar almacenamiento. Se registra al entrar, también si se omite o se prefiere movimiento reducido. Si localStorage está bloqueado, solo se garantiza una vez durante la vida de la aplicación.
 
-El contacto usa `target="_blank"` y `rel="noopener noreferrer"`; la apertura del cliente de correo depende del navegador. No se han modificado CSS, tipografías, nombres de personajes ni sus saltos de línea. La UI añadida se limita a `/cuenta`, acceso a la cuenta y estados/errores de persistencia, reutilizando clases existentes.
+El contacto usa `target="_blank"` y `rel="noopener noreferrer"`; la apertura del cliente de correo depende del navegador. La sección `/cuenta` tiene estilos propios en `features/account/Account.css`, tras la petición de mejorar su presentación: composición compacta de dos columnas en escritorio y una en móvil, panel de acceso y resumen del progreso existente. Conserva las fuentes y paleta de Nexus, sin alterar otras secciones ni nombres de personajes. El formulario ya no hereda estilos del planificador. El registro muestra confirmación pendiente cuando Auth no devuelve sesión, o cuenta creada cuando inicia sesión directamente; la interfaz no modifica la política de confirmación de Supabase.
 
 ## Tabla y SQL
 
