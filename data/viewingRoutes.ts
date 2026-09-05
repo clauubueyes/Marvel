@@ -7,6 +7,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "LA RUTA PRINCIPAL",
     description: "Seis capítulos para comprender el multiverso, las incursiones y las piezas que convergen en Avengers: Doomsday.",
     accent: "#b9d737",
+    coverImage: "/editorial/avengers-doomsday.webp",
+    coverPosition: "center 28%",
     estimatedMinutes: 790,
     steps: [
       { titleId: "vengadores-endgame", priority: "RECOMENDADO", contribution: "Establece el viaje temporal y las consecuencias de alterar el pasado.", spoiler: "El atraco temporal abre ramificaciones y devuelve a quienes desaparecieron durante el Blip." },
@@ -23,6 +25,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "REALIDADES EN COLISIÓN",
     description: "De las primeras ramas temporales a universos completos que empiezan a interferir entre sí.",
     accent: "#9c64d6",
+    coverImage: "/editorial/doctor-strange-multiverse.webp",
+    coverPosition: "center 35%",
     estimatedMinutes: 1090,
     steps: [
       { titleId: "vengadores-endgame", priority: "RECOMENDADO", contribution: "Introduce las ramificaciones creadas por el viaje temporal.", spoiler: "Los Vengadores visitan momentos del pasado y generan nuevas consecuencias." },
@@ -39,6 +43,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "FUERA DEL TIEMPO",
     description: "La ruta corta para entender quién vigilaba el tiempo, por qué dejó de hacerlo y qué ocupa ahora su lugar.",
     accent: "#e19b3d",
+    coverImage: "/editorial/loki.webp",
+    coverPosition: "center 32%",
     estimatedMinutes: 650,
     steps: [
       { titleId: "los-vengadores", priority: "RECOMENDADO", contribution: "Presenta al Loki del que nace la variante perseguida por la TVA.", spoiler: "Loki fracasa en la invasión de Nueva York y queda bajo custodia." },
@@ -53,6 +59,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "CAOS, DUELO Y DARKHOLD",
     description: "La transformación de Wanda Maximoff y las consecuencias que deja en la parte mágica del MCU.",
     accent: "#e32961",
+    coverImage: "/cinematic/dr-strange-wanda.jpg",
+    coverPosition: "center 25%",
     estimatedMinutes: 890,
     steps: [
       { titleId: "vengadores-la-era-de-ultron", priority: "RECOMENDADO", contribution: "Introduce a Wanda, sus poderes y la pérdida de Pietro.", spoiler: "Wanda se vuelve contra Ultron y termina uniéndose a los Vengadores." },
@@ -68,6 +76,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "LA PRIMERA FAMILIA",
     description: "Una entrada directa a la familia que ocupará una posición central en el siguiente choque de universos.",
     accent: "#4aa9dc",
+    coverImage: "/editorial/fantastic-four.webp",
+    coverPosition: "center 28%",
     estimatedMinutes: 245,
     steps: [
       { titleId: "los-cuatro-fantasticos-primeros-pasos", priority: "ESENCIAL", contribution: "Presenta al equipo, su dinámica familiar y Tierra-828.", spoiler: "La familia se enfrenta a Galactus dentro de su universo retrofuturista." },
@@ -80,6 +90,8 @@ export const viewingRoutes: ViewingRoute[] = [
     kicker: "CUANDO DOS UNIVERSOS CHOCAN",
     description: "Las historias que preparan el concepto más peligroso de la Saga del Multiverso.",
     accent: "#d76ad9",
+    coverImage: "/titles/the-marvels.webp",
+    coverPosition: "center 35%",
     estimatedMinutes: 690,
     steps: [
       { titleId: "loki-temporadas-1-y-2", priority: "RECOMENDADO", contribution: "Establece la coexistencia de innumerables ramas temporales.", spoiler: "El multiverso queda abierto y sostenido como un árbol de realidades." },
