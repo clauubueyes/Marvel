@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { TITLE_PROGRESS_EVENT, TITLE_PROGRESS_STORAGE_KEY, type TitleOrderMode, type TitleProgressFilter, type TitleSortMode, type TitleTypeFilter, type TitleViewMode } from "@/constants/titleDirectory";
-import { usePersistentStringSet } from "@/hooks/usePersistentStringSet";
+import { useMovieProgress } from "@/hooks/useMovieProgress";
 import type { TitleDirectoryEntry } from "@/types/title";
 import { normalizeSearchText } from "@/utils/text";
 import { getTitleSaga } from "@/utils/title";
@@ -24,7 +24,7 @@ export function useTitleDirectory(titles: TitleDirectoryEntry[]) {
   const [planning, setPlanning] = useState(false);
   const [selectedTitles, setSelectedTitles] = useState<Set<string>>(() => new Set());
   const validIds = useMemo(() => new Set(titles.map(({ slug }) => slug)), [titles]);
-  const { values: watched, setMany: setTitlesWatched } = usePersistentStringSet({ storageKey: TITLE_PROGRESS_STORAGE_KEY, eventName: TITLE_PROGRESS_EVENT, validIds });
+  const { values: watched, setMany: setTitlesWatched, toggle: toggleTitleWatched, ready: progressReady } = useMovieProgress({ storageKey: TITLE_PROGRESS_STORAGE_KEY, eventName: TITLE_PROGRESS_EVENT, validIds });
   const phases = useMemo(() => [...new Set(titles.map((title) => title.phase))].sort(), [titles]);
 
   const visibleTitles = useMemo(() => {
@@ -64,5 +64,5 @@ export function useTitleDirectory(titles: TitleDirectoryEntry[]) {
     setProgressFilter("TODOS"); setOrderMode("NARRATIVO"); setSortMode("ORDEN");
   }
 
-  return { continuity, orderMode, pendingTitles, phase, phases, plannerTitles, planning, progressFilter, query, resetFilters, saga, selectedTitles, selectForPlan, setContinuity, setOrderMode, setPhase, setPlanning, setProgressFilter, setQuery, setSaga, setSelectedTitles, setSortMode, setTitlesWatched, setType, setViewMode, sortMode, titles, togglePlannedTitle, type, viewMode, visiblePending, visibleTitles, watched };
+  return { continuity, orderMode, pendingTitles, phase, phases, plannerTitles, planning, progressFilter, progressReady, query, resetFilters, saga, selectedTitles, selectForPlan, setContinuity, setOrderMode, setPhase, setPlanning, setProgressFilter, setQuery, setSaga, setSelectedTitles, setSortMode, setTitlesWatched, setType, setViewMode, sortMode, titles, togglePlannedTitle, toggleTitleWatched, type, viewMode, visiblePending, visibleTitles, watched };
 }

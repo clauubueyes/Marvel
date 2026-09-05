@@ -11,6 +11,8 @@ npm run dev
 
 Abre `http://localhost:3000` en el navegador.
 
+Para configurar cuentas, persistencia de progreso y migraciones en Nexus-Local / Nexus-Main, consulta [la guía de Supabase](docs/supabase.md) y `.env.example`.
+
 Para generar URLs canónicas, el sitemap y las tarjetas sociales con el dominio de producción, configura:
 
 ```bash
