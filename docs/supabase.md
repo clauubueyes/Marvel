@@ -44,6 +44,10 @@ RLS está habilitada y forzada. Se retiran los permisos de `PUBLIC`, `anon` y `a
 
 ## Variables y entornos
 
+Estado comprobado de producción: Nexus-Main (`ghkozebxebtzobennaxh`) ya tiene registrada la migración `20260906000000`. Se verificaron sus columnas, restricciones, trigger, RLS activada y forzada, las cuatro policies de propietario y la ausencia de permisos SELECT/INSERT/UPDATE/DELETE para `anon`. El dry-run no muestra migraciones pendientes; no fue necesario volver a ejecutar el SQL.
+
+En Vercel, proyecto `clauubyys-projects/nexus`, se configuraron y verificaron en **Production** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` con los valores de Nexus-Main, y `NEXT_PUBLIC_SITE_URL=https://guia-marvel.vercel.app`. Las variables requieren un nuevo despliegue para entrar en el bundle; esta configuración no ejecutó un despliegue. `.env.local` y el enlace de la CLI de Supabase se mantienen en Nexus-Local. Auth de Main permite registro por email y mantiene la confirmación obligatoria; falta validar el envío de confirmaciones y la configuración de retorno al dominio público antes de dar por terminado el flujo de registro en producción.
+
 Partir de [`.env.example`](../.env.example). En `.env.local` configurar, sin sobrescribir otras variables existentes:
 
 ```dotenv
