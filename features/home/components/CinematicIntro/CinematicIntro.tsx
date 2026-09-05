@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CINEMATIC_INTRO_EVENT } from "@/constants/uiEvents";
+import { claimCinematicIntro } from "@/utils/cinematicIntro";
 
 const GATE_REVEAL_MS = 7200;
 
@@ -16,33 +17,36 @@ const frames = [
 ];
 
 export function CinematicIntro() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [ready, setReady] = useState(false);
+  const finishTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const finish = useCallback(() => {
     setLeaving(true);
-    window.setTimeout(() => {
+    clearTimeout(finishTimer.current);
+    finishTimer.current = setTimeout(() => {
       setVisible(false);
       window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
     }, 700);
   }, []);
 
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: true }));
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reducedMotion) {
-      const dismissTimer = window.setTimeout(() => {
-        setVisible(false);
-        window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
-      }, 0);
-      return () => window.clearTimeout(dismissTimer);
-    }
-
-    const timer = window.setTimeout(() => setReady(true), GATE_REVEAL_MS);
+    let revealTimer: ReturnType<typeof setTimeout>;
+    // Defer the claim so React Strict Mode's effect replay cannot consume it.
+    const timer = window.setTimeout(() => {
+      const play = claimCinematicIntro({
+        getItem: (key) => window.localStorage.getItem(key),
+        setItem: (key, value) => window.localStorage.setItem(key, value),
+      }) && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setVisible(play);
+      window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: play }));
+      if (play) revealTimer = setTimeout(() => setReady(true), GATE_REVEAL_MS);
+    }, 0);
     return () => {
       window.clearTimeout(timer);
+      clearTimeout(revealTimer);
+      clearTimeout(finishTimer.current);
       window.dispatchEvent(new CustomEvent(CINEMATIC_INTRO_EVENT, { detail: false }));
     };
   }, []);

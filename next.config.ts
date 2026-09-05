@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import { assertPublicSupabaseKey } from "./config/supabaseEnvironment";
+
+// Fail before bundling a mistakenly configured privileged key into NEXT_PUBLIC_*.
+if (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+  assertPublicSupabaseKey(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+}
 
 const nextConfig: NextConfig = {
   images: {

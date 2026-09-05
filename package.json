@@ -7,13 +7,15 @@
     "build": "npm run validate:content && npm run audit:content && next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "tsx --test services/analytics/index.test.ts",
+    "test": "tsx --test services/analytics/index.test.ts services/progress/*.test.ts",
+    "test:e2e": "playwright test",
     "validate:content": "tsx scripts/validate-content.ts",
     "audit:content": "tsx scripts/audit-content.ts",
     "audit:links": "tsx scripts/check-content-links.ts",
     "assets:localize": "tsx scripts/localize-static-images.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.115.0",
     "fast-xml-parser": "^5.11.1",
     "next": "latest",
     "react": "latest",
@@ -22,6 +24,8 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.63.0",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
