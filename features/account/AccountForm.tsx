@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useSyncExternalStore, type FormEvent } from "react";
 import Link from "next/link";
 import { getSupabaseClient } from "@/services/supabase/client";
 import { authErrorMessage } from "@/services/supabase/authErrorMessage";
-import { useAccount } from "./AccountProvider";
+import { useAccount, useFavoritesStore } from "./AccountProvider";
 
 export function AccountForm() {
   const { user, initialized, pending, watched, ready, error, store } = useAccount();
+  const favorites = useFavoritesStore();
+  const { pending: favoritePending } = useSyncExternalStore(favorites.subscribe, favorites.getSnapshot, favorites.getServerSnapshot);
   const [register, setRegister] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -49,7 +51,7 @@ export function AccountForm() {
       <div className="account-progress" aria-live="polite"><strong>{ready ? String(watched.size).padStart(2, "0") : "—"}</strong><div><span>TÍTULOS VISTOS</span><p>{error ? "El progreso necesita tu atención." : pending ? "Guardando tus últimos cambios…" : ready ? "Tu recorrido, guardado en tu cuenta." : "Recuperando tu progreso…"}</p></div></div>
       {error && <div className="account-message" role="alert"><p>{error}</p><button className="account-text-button" type="button" disabled={!!pending} onClick={() => void store.load()}>REINTENTAR</button></div>}
       <Link className="account-button account-button-primary" href="/titulos">IR A MIS TÍTULOS <span aria-hidden="true">↗</span></Link>
-      <div className="account-session-footer"><span>Sesión en este dispositivo</span><button type="button" className="account-text-button" disabled={busy || !!pending} onClick={logout}>{pending ? "GUARDANDO CAMBIOS…" : "CERRAR SESIÓN"}</button></div>
+      <div className="account-session-footer"><span>Sesión en este dispositivo</span><button type="button" className="account-text-button" disabled={busy || !!pending || favoritePending} onClick={logout}>{pending || favoritePending ? "GUARDANDO CAMBIOS…" : "CERRAR SESIÓN"}</button></div>
     </div> :
       <form className="account-form" onSubmit={submit}>
         <label><span>EMAIL</span><input name="email" type="email" autoComplete="email" placeholder="tu@email.com" required maxLength={254} disabled={busy} /></label>

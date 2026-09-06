@@ -3,6 +3,7 @@ import { CharacterMotionField } from "@/features/characters/dossier/components/C
 import { IronManCluster } from "@/features/characters/dossier/components/IronManCluster";
 import type { Character } from "@/types/character";
 import type { CharacterMotionProfile } from "@/utils/characterMotion";
+import { CharacterFavorite } from "@/features/characters/favorites/CharacterFavorite";
 
 type CharacterHeroProps = { character: Character; motion: CharacterMotionProfile };
 
@@ -17,6 +18,7 @@ export function CharacterHero({ character, motion }: CharacterHeroProps) {
       <p className="eyebrow"><span /> {character.role}</p>
       <h1 aria-label={character.name}>{nameLines.map((line, lineIndex) => <span className="profile-name-line" aria-hidden="true" key={`${line}-${lineIndex}`}>{Array.from(line).map((letter, letterIndex) => <span className="profile-name-letter" style={{ "--letter": letterIndex } as React.CSSProperties} key={`${letter}-${letterIndex}`}>{letter === " " ? "\u00a0" : letter}</span>)}</span>)}</h1>
       <div className="profile-meta"><span>{character.alias}</span><span>{character.universe}</span><span>{character.origin}</span></div>
+      <CharacterFavorite characterId={character.id} name={character.name} />
     </div>
     <div className={`profile-figure profile-arrival profile-arrival-${character.id}`} aria-hidden="true">
       <div className="arrival-trail"><i /><i /><i /><i /><i /></div>
