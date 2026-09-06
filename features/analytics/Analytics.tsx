@@ -67,7 +67,7 @@ export function Analytics() {
     </section>}
     {preferencesOpen && <div className="consent-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && consent !== null) setPreferencesOpen(false); }}>
       <section className="consent-settings" role="dialog" aria-modal="true" aria-labelledby="consent-settings-title">
-        <p className="eyebrow"><span /> PREFERENCIAS</p><h2 id="consent-settings-title">CONFIGURAR COOKIES</h2>
+        <p className="eyebrow"></p><h2 id="consent-settings-title">CONFIGURAR COOKIES</h2>
         <div className="consent-choice"><div><strong>ALMACENAMIENTO NECESARIO</strong><p>Conserva tus decisiones y progreso local. No puede desactivarse desde este panel.</p></div><span>SIEMPRE ACTIVO</span></div>
         <label className="consent-choice"><div><strong>ANALÍTICA</strong><p>Permite medir páginas e interacciones mediante Google Analytics 4.</p></div><input type="checkbox" checked={analyticsEnabled} onChange={(event) => setAnalyticsEnabled(event.target.checked)} /></label>
         <p className="consent-review">El texto informativo debe revisarse conforme a las obligaciones legales aplicables al responsable del sitio.</p>

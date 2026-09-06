@@ -1,0 +1,75 @@
+/* Isolated controls: do not change card dimensions, typography or motion. */
+.character-directory-card > .character-card-link { position: absolute; inset: 0; z-index: 2; }
+.character-card-link:focus-visible { outline: 2px solid var(--card-accent); outline-offset: -4px; }
+.character-favorite {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 7px 11px;
+  color: #b8bdb3;
+  background: rgba(17,17,17,.9);
+  font: 10px/1.5 var(--font-mono);
+}
+.character-favorite .character-favorite-control,
+.character-favorite .character-favorite-retry {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--card-accent, var(--accent));
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.character-favorite small { font: 9px/1.4 var(--font-mono); }
+.character-favorite .character-favorite-control:disabled { cursor: default; opacity: .6; }
+.character-favorite :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.profile-title > .character-favorite {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 3;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  margin-top: 20px;
+  padding: 8px 13px;
+  border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+  background: rgba(5,7,5,.82);
+  box-shadow: 0 10px 28px rgba(0,0,0,.28);
+  font-size: 12px;
+}
+.profile-title > .character-favorite .character-favorite-control {
+  min-height: 40px;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.profile-title > .character-favorite small {
+  padding-left: 13px;
+  border-left: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
+  font-size: 10px;
+  color: #d0d3cf;
+}
+@media (pointer: coarse) {
+  .character-favorite .character-favorite-control,
+  .character-favorite .character-favorite-retry { min-height: 44px; }
+}
+@media (max-width: 700px) {
+  .character-directory-card > .character-favorite { top: 14px; right: 14px; }
+  .profile-title > .character-favorite {
+    margin-top: 16px;
+    padding: 7px 10px;
+    gap: 10px;
+  }
+  .profile-title > .character-favorite small {
+    padding-left: 10px;
+  }
+}

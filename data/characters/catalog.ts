@@ -42,7 +42,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "Ke1Y3P9D0Bc", title: "Enfrentarse a sus propios fantasmas", kicker: "IRON MAN 3 · TRÁILER OFICIAL", text: "Sin respuestas fáciles ni una armadura infalible, Tony debe descubrir qué queda del héroe cuando todo lo demás desaparece." },
   },
   {
-    id: "strange", name: "DOCTOR STRANGE", alias: "Stephen Strange", number: "03",
+    id: "strange", name: "DOCTOR STRANGE", nameLines: ["DOCTOR", "STRANGE"], alias: "Stephen Strange", number: "03",
     quote: "La realidad es una de muchas posibilidades.", universe: "Tierra-616",
     color: "#f257ff", color2: "#00d9ff", power: "Artes místicas", symbol: "◎", votes: 3267,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/5/f0/5261a85a501fe.jpg", sourceUrl: "https://www.marvel.com/characters/doctor-strange-stephen-strange/",
@@ -56,7 +56,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "aWzlQ2N6qqg", title: "La realidad pierde sus límites", kicker: "MULTIVERSE OF MADNESS · TRÁILER OFICIAL", text: "Las decisiones de Strange abren dimensiones imposibles y le obligan a mirar versiones de sí mismo que nunca quiso conocer." },
   },
   {
-    id: "panther", name: "BLACK PANTHER", alias: "T'Challa", number: "04",
+    id: "panther", name: "BLACK PANTHER", nameLines: ["BLACK", "PANTHER"], alias: "T'Challa", number: "04",
     quote: "Wakanda no observa la historia. La escribe.", universe: "Tierra-616",
     color: "#9d5cff", color2: "#27e6bb", power: "Corazón de Wakanda", symbol: "◇", votes: 3710,
     image: "https://cdn.marvel.com/content/1x/blackpanther_lob_crd_01_4.jpg", sourceUrl: "https://www.marvel.com/characters/black-panther-t-challa/",
@@ -70,7 +70,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "xjDjIWPwcPU", title: "Un rey vuelve a casa", kicker: "BLACK PANTHER · TRÁILER OFICIAL", text: "T'Challa regresa a Wakanda para heredar el trono y descubre que gobernar exige mucho más que vencer en combate." },
   },
   {
-    id: "wanda", name: "SCARLET WITCH", alias: "Wanda Maximoff", number: "05",
+    id: "wanda", name: "SCARLET WITCH", nameLines: ["SCARLET", "WITCH"], alias: "Wanda Maximoff", number: "05",
     quote: "El caos también sabe crear.", universe: "Tierra-616",
     color: "#ff174f", color2: "#9b004e", power: "Magia del caos", symbol: "✦", votes: 4420,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/9/b0/537bc2375dfb9.jpg", sourceUrl: "https://www.marvel.com/characters/scarlet-witch-wanda-maximoff/",
@@ -84,7 +84,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "sj9J2ecsSpo", title: "Un mundo perfecto se agrieta", kicker: "WANDAVISION · TRÁILER OFICIAL", text: "Una vida de comedia clásica comienza a revelar interferencias, ausencias y una verdad que Wanda no está preparada para aceptar." },
   },
   {
-    id: "captain-america", name: "CAPTAIN AMERICA", alias: "Steve Rogers", number: "06",
+    id: "captain-america", name: "CAPTAIN AMERICA", nameLines: ["CAPTAIN", "AMERICA"], alias: "Steve Rogers", number: "06",
     quote: "Puedo hacer esto todo el día.", universe: "Tierra-616", color: "#1775d1", color2: "#e52b32", power: "Voluntad inquebrantable", symbol: "★", votes: 4688,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg", sourceUrl: "https://www.marvel.com/characters/captain-america-steve-rogers/", role: "El primer Vengador", origin: "Brooklyn · Nueva York",
     description: "Antes que supersoldado, Steve Rogers fue un hombre incapaz de mirar hacia otro lado. Su escudo representa una idea: hacer lo correcto incluso cuando nadie más está dispuesto.",
@@ -116,7 +116,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "eOrNdBpGMv8", title: "El equipo necesita un monstruo", kicker: "THE AVENGERS · TRÁILER OFICIAL", text: "La amenaza de Loki obliga a Banner a dejar de huir y dirigir a Hulk hacia algo que merece ser destruido." },
   },
   {
-    id: "black-widow", name: "BLACK WIDOW", alias: "Natasha Romanoff", number: "09", quote: "Tengo mucho rojo en mi cuenta.", universe: "Tierra-616", color: "#e62e2e", color2: "#181a1f", power: "Espionaje total", symbol: "⌛", votes: 4227,
+    id: "black-widow", name: "BLACK WIDOW", nameLines: ["BLACK", "WIDOW"], alias: "Natasha Romanoff", number: "09", quote: "Tengo mucho rojo en mi cuenta.", universe: "Tierra-616", color: "#e62e2e", color2: "#181a1f", power: "Espionaje total", symbol: "⌛", votes: 4227,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/f/30/50fecad1f395b.jpg", sourceUrl: "https://www.marvel.com/characters/black-widow-natasha-romanoff/", role: "La espía", origin: "Rusia",
     description: "La Habitación Roja la convirtió en arma. Natasha convirtió esa deuda en una vida dedicada a reunir personas, derribar imperios ocultos y dar a otros la familia que encontró.",
     stats: [{ label: "Espionaje", value: 100 }, { label: "Combate", value: 97 }, { label: "Estrategia", value: 94 }, { label: "Voluntad", value: 98 }], abilities: ["Infiltración", "Artes marciales", "Interrogatorio", "Tiro experto"],
@@ -153,7 +153,7 @@ const characterEntries: CharacterEntry[] = [
     screenMoment: { videoId: "Z1BCujX3pw8", title: "Recordar quién eres", kicker: "CAPTAIN MARVEL · TRÁILER OFICIAL", text: "Carol descubre que su historia fue reescrita y que el límite impuesto a su poder nunca fue real." },
   },
   {
-    id: "sam-wilson", name: "CAPTAIN AMERICA", alias: "Sam Wilson", number: "13", quote: "El único poder que tengo es creer que podemos hacerlo mejor.", universe: "Tierra-616", color: "#225ca8", color2: "#d72d35", power: "El nuevo símbolo", symbol: "★", votes: 3520,
+    id: "sam-wilson", name: "CAPTAIN AMERICA", nameLines: ["CAPTAIN", "AMERICA"], alias: "Sam Wilson", number: "13", quote: "El único poder que tengo es creer que podemos hacerlo mejor.", universe: "Tierra-616", color: "#225ca8", color2: "#d72d35", power: "El nuevo símbolo", symbol: "★", votes: 3520,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/d/c0/569e646046152.jpg", sourceUrl: "https://www.marvel.com/characters/falcon-sam-wilson/", role: "El heredero", origin: "Delacroix · Luisiana", description: "Veterano, consejero y Vengador. Sam acepta el escudo sabiendo que representa una historia imperfecta y decide usarlo para exigir un futuro mejor.",
     stats: [{ label: "Liderazgo", value: 98 }, { label: "Vuelo", value: 96 }, { label: "Combate", value: 91 }, { label: "Empatía", value: 100 }], abilities: ["Vuelo táctico", "Escudo de vibranium", "Drones Redwing", "Rescate militar"],
     timeline: [{ year: "2014", title: "A tu izquierda", text: "Ayuda a Steve a derribar los Helicarriers infiltrados por HYDRA." }, { year: "2024", title: "El escudo", text: "Acepta públicamente el manto de Capitán América." }, { year: "2027", title: "Un mundo nuevo", text: "Defiende su legitimidad frente a una crisis internacional." }],

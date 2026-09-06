@@ -9,9 +9,13 @@ type PersistentStringSetOptions = {
   validIds: ReadonlySet<string>;
 };
 
+const memoryFallback = new Map<string, string>();
+
 export function usePersistentStringSet({ storageKey, eventName, validIds }: PersistentStringSetOptions) {
   const subscribe = useCallback((callback: () => void) => {
-    const handleStorage = (event: StorageEvent) => { if (event.key === storageKey) callback(); };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === storageKey || event.key === null) { memoryFallback.delete(storageKey); callback(); }
+    };
     const handleChange = (event: Event) => {
       if (!(event instanceof CustomEvent) || event.detail === storageKey) callback();
     };
@@ -23,12 +27,18 @@ export function usePersistentStringSet({ storageKey, eventName, validIds }: Pers
     };
   }, [eventName, storageKey]);
 
-  const getSnapshot = useCallback(() => window.localStorage.getItem(storageKey) ?? "[]", [storageKey]);
+  const getSnapshot = useCallback(() => {
+    if (memoryFallback.has(storageKey)) return memoryFallback.get(storageKey)!;
+    try { return window.localStorage.getItem(storageKey) ?? "[]"; }
+    catch { return memoryFallback.get(storageKey) ?? "[]"; }
+  }, [storageKey]);
   const snapshot = useSyncExternalStore(subscribe, getSnapshot, () => "[]");
   const values = parsePersistedStringSet(snapshot, validIds);
 
   const persist = useCallback((next: ReadonlySet<string>) => {
-    window.localStorage.setItem(storageKey, JSON.stringify([...next]));
+    const serialized = JSON.stringify([...next]);
+    try { window.localStorage.setItem(storageKey, serialized); memoryFallback.delete(storageKey); }
+    catch { memoryFallback.set(storageKey, serialized); }
     window.dispatchEvent(new CustomEvent(eventName, { detail: storageKey }));
   }, [eventName, storageKey]);
 

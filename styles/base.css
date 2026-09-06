@@ -7,6 +7,23 @@
     --ink: #08090b;
     --paper: #f2eee4;
     --line: #ffffff2e;
+
+    /*
+     * TOKENS DE BREAKPOINT — única fuente de verdad sobre anchos de viewport.
+     * Las media queries nativas requieren literales (var() no se resuelve ahí),
+     * así que estos valores son la referencia canónica: cualquier @media nuevo
+     * debe reutilizar uno de estos números en lugar de inventar uno.
+     * --bp-sm / --bp-xs se mezclan según la pantalla (legal, íntimo, móvil).
+     */
+    --bp-xl: 1400px;   /* Rejillas de archivo muy anchas */
+    --bp-wide: 1250px; /* Límite superior del contexto de navegación */
+    --bp-lg: 1100px;   /* Filtros de personajes, toolbar de títulos */
+    --bp-tablet: 1000px; /* Tablet horizontal */
+    --bp-md: 900px;      /* Navegación → menú hamburguesa */
+    --bp-mobile: 700px;  /* Móvil compartido */
+    --bp-sm: 650px;      /* Teléfonos compactos */
+    --bp-xs: 560px;      /* Columna única en heroes */
+    --bp-2xs: 380px;     /* Pantallas muy pequeñas */
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }

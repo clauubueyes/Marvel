@@ -46,3 +46,9 @@
 @import "../features/titles/styles/library.css";
 /* Ajuste del punto focal de los retratos del directorio de personajes. */
 @import "../features/characters/directory/CharacterDirectory.css";
+/* Cuenta: panel de acceso y resumen personal. */
+@import "../features/account/Account.css";
+/* Favorito y contador compartidos por catálogo y ficha de personaje. */
+@import "../features/characters/favorites/favorites.css";
+/* Última capa: ajustes móviles compartidos, sin alterar el escritorio. */
+@import "../styles/mobile.css";

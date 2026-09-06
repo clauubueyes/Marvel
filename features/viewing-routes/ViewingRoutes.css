@@ -9,12 +9,269 @@
 /* Hero del detalle de una ruta. */
 .route-profile-hero { min-height: 720px; padding: 170px 6vw 85px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; border-bottom: 1px solid #455039; background: radial-gradient(circle at 80% 45%,color-mix(in srgb,var(--route-accent) 28%,transparent),transparent 30%); }.route-profile-hero::after { content: "RUTA"; position: absolute; right: -2vw; bottom: -4vw; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb,var(--route-accent) 18%,transparent); font: 29vw/.8 var(--font-display); }.route-profile-hero > * { position: relative; z-index: 1; }.route-profile-hero h1 { max-width: 1050px; color: var(--route-accent); font: clamp(90px,12vw,190px)/.78 var(--font-display); }.route-profile-hero > p:not(.eyebrow) { max-width: 680px; margin-top: 30px; color: #afb7a8; font-size: 16px; line-height: 1.7; }.route-profile-hero > div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }.route-profile-hero > div span { padding: 9px 11px; border: 1px solid #5f6c52; font-size: 8px; }
 /* Cabecera de progreso y controles del itinerario. */
-.viewing-route { --route-accent:#b9d737; padding: 110px 6vw 125px; color: #edf1e5; background: #0b0f09; }.viewing-route-compact { padding-top: 125px; background: radial-gradient(circle at 82% 5%,color-mix(in srgb,var(--route-accent) 14%,transparent),transparent 28%),#0b0f09; }.viewing-route-header { display: grid; grid-template-columns: 1fr 220px; align-items: end; gap: 7vw; }.viewing-route-header h2 { max-width: 1000px; color: var(--route-accent); text-transform: uppercase; }.viewing-route-header > div > p:last-child { max-width: 680px; margin-top: 25px; color: #929b89; font-size: 12px; line-height: 1.7; }.viewing-route-header aside { padding: 25px; border: 1px solid #4e5b43; }.viewing-route-header aside strong,.viewing-route-header aside span { display: block; }.viewing-route-header aside strong { color: var(--route-accent); font: 58px var(--font-display); }.viewing-route-header aside span { color: #828b79; font-size: 7px; letter-spacing: 1.3px; }.viewing-route-header aside div { height: 3px; margin-top: 18px; background: #30382b; }.viewing-route-header aside i { display: block; height: 100%; background: var(--route-accent); transition: width .35s; }
-.viewing-route-controls { display: flex; justify-content: space-between; gap: 20px; margin: 55px 0 25px; padding: 18px 0; border-top: 1px solid #465139; border-bottom: 1px solid #465139; }.viewing-route-controls > div { display: flex; gap: 7px; }.viewing-route-controls button { padding: 11px 14px; border: 1px solid #4f5b45; color: #a8b09f; background: transparent; font-size: 7px; }.viewing-route-controls button.active { color: #11150d; border-color: var(--route-accent); background: var(--route-accent); }
+.viewing-route { --route-accent:#b9d737; padding: 110px 6vw 125px; color: #edf1e5; background: #0b0f09; }.viewing-route-compact { padding-top: 125px; background: radial-gradient(circle at 82% 5%,color-mix(in srgb,var(--route-accent) 14%,transparent),transparent 28%),#0b0f09; }
+.viewing-route-header { 
+    display: grid; 
+    grid-template-columns: 1fr 220px; 
+    align-items: end; 
+    gap: 7vw; 
+}.viewing-route-header h2 { max-width: 1000px; color: var(--route-accent); text-transform: uppercase; }
+.viewing-route-header > div > p:last-child { 
+    max-width: 680px; 
+    margin-top: 25px; 
+    color: #929b89; 
+    font-size: 14px; 
+    line-height: 1.7; 
+}.viewing-route-header aside { padding: 25px; border: 1px solid #4e5b43; }.viewing-route-header aside strong,.viewing-route-header aside span { display: block; }.viewing-route-header aside strong { color: var(--route-accent); font: 58px var(--font-display); }.viewing-route-header aside span { color: #828b79; font-size: 7px; letter-spacing: 1.3px; }.viewing-route-header aside div { height: 3px; margin-top: 18px; background: #30382b; }.viewing-route-header aside i { display: block; height: 100%; background: var(--route-accent); transition: width .35s; }
+.viewing-route-controls { display: flex; justify-content: space-between; gap: 20px; margin: 55px 0 25px; padding: 18px 0; border-top: 1px solid #465139; border-bottom: 1px solid #465139; }.viewing-route-controls > div { display: flex; gap: 7px; }
+.viewing-route-controls button { 
+    padding: 11px 14px; 
+    border: 1px solid #4f5b45; 
+    color: #a8b09f; 
+    background: transparent; 
+    font-size: 12px; 
+}
+.viewing-route-controls button.active { 
+    color: #11150d; 
+    border-color: var(--route-accent); 
+    background: var(--route-accent); 
+}
 /* Pasos numerados con portada, check de completado y aviso de spoiler. */
-.viewing-route-list { margin: 0; padding: 0; list-style: none; counter-reset: route-step; }.viewing-route-list li { counter-increment: route-step; min-height: 235px; display: grid; grid-template-columns: 55px 245px 1fr; align-items: center; gap: 28px; padding: 25px 0; border-bottom: 1px solid #3d4736; transition: opacity .25s; }.viewing-route-list li.complete { opacity: .58; }.viewing-route-list li.destination { background: linear-gradient(90deg,color-mix(in srgb,var(--route-accent) 8%,transparent),transparent); }.route-check { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #647257; border-radius: 50%; color: #0a0d08; background: transparent; font-weight: 700; }.complete .route-check,.destination .route-check { border-color: var(--route-accent); background: var(--route-accent); }.route-step-art { height: 175px; position: relative; overflow: hidden; background: #181e14; }.route-step-art::after { content: counter(route-step,decimal-leading-zero); position: absolute; right: 10px; bottom: 3px; color: white; font: 43px var(--font-display); text-shadow: 0 2px 15px #000; }.route-step-art img { object-fit: cover; filter: saturate(.65) contrast(1.1); transition: transform .4s,filter .4s; }.route-step-art:hover img { transform: scale(1.05); filter: none; }.viewing-route-list article > div { display: flex; align-items: center; gap: 12px; }.viewing-route-list article > div span { padding: 6px 8px; color: #11150d; background: var(--route-accent); font-size: 7px; font-weight: 700; }.viewing-route-list article > div small { color: #7e8875; font-size: 8px; }.viewing-route-list h3 { margin: 12px 0; font: clamp(30px,3.5vw,55px)/.9 var(--font-display); text-transform: uppercase; }.viewing-route-list h3 a:hover { color: var(--route-accent); }.viewing-route-list article > p { max-width: 780px; color: #9da596; font-size: 10px; line-height: 1.65; }.viewing-route-list article > a { color: var(--route-accent); font-size: 7px; letter-spacing: 1px; }.route-spoiler { padding: 14px; border-left: 2px solid var(--route-accent); background: rgba(255,255,255,.04); }.route-spoiler b { margin-right: 10px; color: var(--route-accent); font-size: 7px; }.route-back { padding: 35px 6vw; border-top: 1px solid #3d4736; color: #aab2a1; background: #070906; font-size: 8px; }
-@media (max-width: 900px) { .routes-directory { grid-template-columns: 1fr; }.viewing-route-header { grid-template-columns: 1fr; }.viewing-route-header aside { width: min(380px,100%); }.viewing-route-list li { grid-template-columns: 45px 190px 1fr; } }
-@media (max-width: 650px) { .routes-index-hero { min-height: 700px; padding: 140px 6vw 70px; }.routes-index-hero h1 { font-size: 21vw; }.routes-directory { padding-inline: 5vw; }.route-directory-card { min-height: 440px; padding: 27px; }.route-profile-hero { min-height: 720px; padding: 145px 6vw 70px; }.route-profile-hero h1 { font-size: 20vw; }.viewing-route { padding: 85px 5vw; }.viewing-route-controls { align-items: stretch; flex-direction: column; }.viewing-route-controls > div { overflow-x: auto; }.viewing-route-controls button { flex: 1 0 auto; }.viewing-route-list li { grid-template-columns: 38px 1fr; gap: 14px; padding: 28px 0; }.route-step-art { grid-column: 2; height: 210px; }.viewing-route-list article { grid-column: 2; }.viewing-route-header h2 { font-size: 18vw; } }
+.viewing-route-list { 
+    margin: 0; 
+    padding: 0; 
+    list-style: none; 
+    counter-reset: route-step; 
+}.viewing-route-list li { 
+    counter-increment: route-step; 
+    min-height: 235px; 
+    display: grid; 
+    grid-template-columns: 55px 245px 1fr; 
+    align-items: center; 
+    gap: 28px; 
+    padding: 25px 0; 
+    border-bottom: 1px solid #3d4736; 
+    transition: opacity .25s; 
+}.viewing-route-list li.complete { 
+    opacity: .58; 
+}.viewing-route-list li.destination { 
+    background: 
+        linear-gradient(90deg,color-mix(in srgb,var(--route-accent) 8%,transparent),transparent);
+}.route-check { 
+    width: 35px; 
+    height: 35px; 
+    display: grid; 
+    place-items: center; 
+    border: 1px solid #647257; 
+    border-radius: 50%; 
+    color: #0a0d08; 
+    background: transparent; 
+    font-weight: 700; 
+}.complete .route-check,.destination .route-check {
+    border-color: var(--route-accent); 
+    background: var(--route-accent); 
+}.route-step-art { 
+    height: 175px; 
+    position: relative; 
+    overflow: hidden; 
+    background: #181e14; 
+}.route-step-art::after { 
+    content: counter(route-step,decimal-leading-zero); 
+    position: absolute; 
+    right: 10px; 
+    bottom: 3px; 
+    color: white; 
+    font: 43px var(--font-display); 
+    text-shadow: 0 2px 15px #000; }
+.route-step-art img { 
+    object-fit: cover; 
+    filter: saturate(.65) contrast(1.1); 
+    transition: transform .4s,filter .4s; 
+}.route-step-art:hover img { 
+    transform: scale(1.05); 
+    filter: none; 
+}.viewing-route-list article > div { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}.viewing-route-list article > div span { 
+    padding: 6px 8px; 
+    color: #11150d; 
+    background: var(--route-accent); 
+    font-size: 10px; 
+    font-weight: 500; 
+}.viewing-route-list article > div small { 
+    color: #7e8875; 
+    font-size: 10px; 
+}.viewing-route-list h3 { 
+    margin: 12px 0; 
+    font: clamp(30px,3.5vw,55px)/.9 var(--font-display); 
+    text-transform: uppercase; 
+}.viewing-route-list h3 a:hover { color: var(--route-accent); }
+.viewing-route-list article > p { 
+    max-width: 780px; 
+    color: #9da596; 
+    font-size: 13px; 
+    line-height: 1.65; 
+}.viewing-route-list article > a { 
+    color: var(--route-accent); 
+    font-size: 10px; 
+    letter-spacing: 1px; 
+}.route-spoiler { padding: 14px; border-left: 2px solid var(--route-accent); background: rgba(255,255,255,.04); }.route-spoiler b { margin-right: 10px; color: var(--route-accent); font-size: 7px; }.route-back { padding: 35px 6vw; border-top: 1px solid #3d4736; color: #aab2a1; background: #070906; font-size: 8px; }
+@media (max-width: 900px) { 
+    .routes-directory { grid-template-columns: 1fr; }.viewing-route-header { grid-template-columns: 1fr; }.viewing-route-header aside { width: min(380px,100%); }.viewing-route-list li { grid-template-columns: 45px 190px 1fr; } }
+/*
+ * MÓVIL
+ * Compacta la presentación de la ruta y aprovecha todo el ancho disponible sin
+ * perder el progreso, los filtros ni las acciones de cada capítulo.
+ */
+@media (max-width: 650px) {
+    .routes-index-hero {
+        min-height: 700px;
+        padding: 140px 6vw 70px;
+    }
+    .routes-index-hero h1 {
+        font-size: 21vw;
+    }
+    .routes-directory {
+        padding-inline: 5vw;
+    }
+    .route-directory-card {
+        min-height: 440px;
+        padding: 27px;
+    }
+    .route-profile-hero {
+        min-height: 720px;
+        padding: 145px 6vw 70px;
+    }
+    .route-profile-hero h1 {
+        font-size: 20vw;
+    }
+
+    /* Cabecera: menos altura y texto ajustado a una lectura móvil cómoda. */
+    .viewing-route,
+    .viewing-route-compact {
+        padding: 64px 5vw 78px;
+    }
+    .viewing-route-header {
+        gap: 28px;
+    }
+    .viewing-route-header h2 {
+        max-width: 8ch;
+        font-size: clamp(50px, 15vw, 72px);
+        line-height: .82;
+        letter-spacing: -1px;
+    }
+    .viewing-route-header > div > p:last-child {
+        margin-top: 20px;
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    /* El porcentaje y la barra comparten una banda horizontal compacta. */
+    .viewing-route-header aside {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        align-items: center;
+        gap: 6px 18px;
+        padding: 18px;
+        border-left: 3px solid var(--route-accent);
+        background: color-mix(in srgb, var(--route-accent) 4%, transparent);
+    }
+    .viewing-route-header aside strong {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        font-size: clamp(42px, 14vw, 58px);
+        line-height: .8;
+    }
+    .viewing-route-header aside span {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+    .viewing-route-header aside div {
+        grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+        margin-top: 3px;
+    }
+
+    /* Controles: selector de ruta en dos columnas y spoilers a ancho completo. */
+    .viewing-route-controls {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        margin: 30px 0 18px;
+        padding: 16px 0;
+    }
+    .viewing-route-controls > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        overflow: visible;
+    }
+    .viewing-route-controls button {
+        min-height: 44px;
+        min-width: 0;
+        flex: none;
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+
+    /* Capítulos: tarjeta vertical sin la columna vacía que antes desplazaba todo. */
+    .viewing-route-list li {
+        position: relative;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 24px 0 30px;
+    }
+    .route-check {
+        position: absolute;
+        z-index: 2;
+        top: 36px;
+        left: 12px;
+        width: 40px;
+        height: 40px;
+        border-color: rgba(255, 255, 255, .65);
+        background: rgba(8, 11, 7, .82);
+        backdrop-filter: blur(6px);
+    }
+    .complete .route-check,
+    .destination .route-check {
+        background: var(--route-accent);
+    }
+    .route-step-art {
+        grid-column: 1;
+        width: 100%;
+        height: clamp(190px, 62vw, 270px);
+    }
+    .viewing-route-list article {
+        grid-column: 1;
+    }
+    .viewing-route-list article > div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .viewing-route-list article > div span,
+    .viewing-route-list article > div small,
+    .viewing-route-list article > a {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    .viewing-route-list h3 {
+        margin: 12px 0;
+        font-size: clamp(30px, 9vw, 44px);
+        line-height: .92;
+    }
+    .viewing-route-list article > p {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+}
 
 /* PLANIFICADOR PERSONAL: fechas, días, horarios y vista previa del calendario. */
 .route-planner { margin: 46px 0 30px; border: 1px solid color-mix(in srgb,var(--route-accent) 40%,#394034); background: linear-gradient(135deg,color-mix(in srgb,var(--route-accent) 8%,#0d110b),#0a0d09 62%); }
