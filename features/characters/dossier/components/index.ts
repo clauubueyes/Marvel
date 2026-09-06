@@ -1,4 +1,5 @@
 export { CharacterConnections } from "./CharacterConnections/CharacterConnections";
+export { CharacterChapter } from "./CharacterChapter/CharacterChapter";
 export { CharacterFacts } from "./CharacterFacts/CharacterFacts";
 export { CharacterFilmography } from "./CharacterFilmography/CharacterFilmography";
 export { CharacterHero } from "./CharacterHero/CharacterHero";
@@ -7,4 +8,4 @@ export { CharacterPagination } from "./CharacterPagination/CharacterPagination";
 export { CharacterPowers } from "./CharacterPowers/CharacterPowers";
 export { CharacterReference } from "./CharacterReference/CharacterReference";
 export { CharacterScreenMoment } from "./CharacterScreenMoment/CharacterScreenMoment";
-export { CharacterStory } from "./CharacterStory/CharacterStory";
+export { StorylineRail } from "./StorylineRail/StorylineRail";

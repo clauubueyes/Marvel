@@ -5,8 +5,8 @@ import type { ViewingRoute } from "@/types/viewingRoute";
 type CharacterReferenceProps = { character: Character; routes: ViewingRoute[] };
 
 export function CharacterReference({ character, routes }: CharacterReferenceProps) {
-  return <section className="character-reference profile-section" data-scroll-section data-section-index="08">
-    <header data-reveal><p className="section-label">08 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
+  return <section className="character-reference profile-section" data-scroll-section data-section-index="07">
+    <header data-reveal><p className="section-label">07 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
     <div className="character-reference-grid">
       <article className="character-reference-variants" data-reveal><span>VARIANTES</span>{character.variants.length ? character.variants.map((variant) => <div key={`${variant.name}-${variant.universe}`}><h3>{variant.name}</h3><b>{variant.universe}</b><p>{variant.description}</p></div>) : <p>No hay variantes audiovisuales relevantes documentadas.</p>}</article>
       <article className="character-reference-routes" data-reveal style={{ "--delay": "90ms" } as React.CSSProperties}><span>QUÉ VER PARA CONOCERLE</span><div className="character-reference-route-list">{routes.map((route) => <Link href={`/rutas/${route.slug}`} key={route.slug}><h3>{route.name}</h3><p>{route.description}</p><b>ABRIR RECORRIDO ↗</b></Link>)}</div></article>

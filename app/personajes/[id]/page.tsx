@@ -6,6 +6,7 @@ import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createCharacterMetadata, createCharacterStructuredData } from "@/config/characterSeo";
 import {
+  CharacterChapter,
   CharacterConnections,
   CharacterFacts,
   CharacterFilmography,
@@ -15,7 +16,7 @@ import {
   CharacterPowers,
   CharacterReference,
   CharacterScreenMoment,
-  CharacterStory,
+  StorylineRail,
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
@@ -46,6 +47,10 @@ export default async function CharacterPage({ params }: PageProps) {
   const motion = getCharacterMotionProfile(character);
   const structuredData = createCharacterStructuredData(character);
 
+  const beats = character.story.slice(0, 4);
+  const actLabels = ["I · EL ORIGEN", "II · EL PODER", "III · LA CRISIS", "IV · EL DESENLACE"];
+  const actNumerals = ["I", "II", "III", "IV"];
+
   /*
    * Variables visuales de la ficha:
    * - `--accent` y `--accent-2` aplican la paleta propia del personaje.
@@ -61,15 +66,20 @@ export default async function CharacterPage({ params }: PageProps) {
     <Breadcrumbs items={[{ label: "PERSONAJES", href: "/personajes" }, { label: character.name }]} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c") }} />
 
+    {beats.length > 0 && <StorylineRail beats={beats.map((beat, index) => ({ act: actLabels[index], year: beat.year }))} />}
+
     {/* Primer impacto visual: nombre, retrato principal y metadatos. */}
     <CharacterHero character={character} motion={motion} />
-    {/* Secciones editoriales claras y oscuras que desarrollan el personaje. */}
+    {/* La historia es la columna vertebral: cada capítulo abre una sección. */}
+    {beats[0] && <CharacterChapter chapter={beats[0]} act={actLabels[0]} actNumeral={actNumerals[0]} position="left" />}
     <CharacterIdentity character={character} />
     <CharacterScreenMoment character={character} />
+    {beats[1] && <CharacterChapter chapter={beats[1]} act={actLabels[1]} actNumeral={actNumerals[1]} position="right" />}
+    <CharacterPowers character={character} />
     <CharacterFacts facts={character.facts} />
     <CharacterFilmography appearances={character.appearances} />
-    <CharacterPowers character={character} />
-    <CharacterStory character={character} />
+    {beats[2] && <CharacterChapter chapter={beats[2]} act={actLabels[2]} actNumeral={actNumerals[2]} position="left" />}
+    {beats[3] && <CharacterChapter chapter={beats[3]} act={actLabels[3]} actNumeral={actNumerals[3]} position="right" />}
     {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
     <CharacterConnections entities={connectedEntities} />
     <CharacterReference character={character} routes={relatedRoutes} />
