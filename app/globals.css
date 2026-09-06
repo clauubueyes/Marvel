@@ -50,3 +50,5 @@
 @import "../features/account/Account.css";
 /* Favorito y contador compartidos por catálogo y ficha de personaje. */
 @import "../features/characters/favorites/favorites.css";
+/* Última capa: ajustes móviles compartidos, sin alterar el escritorio. */
+@import "../styles/mobile.css";

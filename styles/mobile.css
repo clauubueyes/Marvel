@@ -1,0 +1,286 @@
+/*
+ * RESPONSIVE MÓVIL COMPARTIDO
+ * Sigue el patrón de Ruta Doom: márgenes de 5-6vw, rejillas compactas,
+ * imágenes fluidas y controles con un objetivo táctil mínimo de 44px.
+ */
+@media (max-width: 700px) {
+    .titles-index-hero,
+    .search-hero,
+    .characters-index-hero,
+    .entity-index-hero,
+    .route-profile-hero {
+        min-height: 0;
+        padding-top: 135px;
+        padding-bottom: 70px;
+    }
+
+    .titles-index-hero,
+    .search-hero,
+    .characters-index-hero,
+    .entity-index-hero {
+        min-height: 620px;
+    }
+
+    .route-profile-hero {
+        min-height: 680px;
+    }
+
+    .titles-index-hero h1,
+    .search-hero h1,
+    .characters-index-hero h1,
+    .entity-index-hero h1,
+    .route-profile-hero h1 {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .entity-index-hero {
+        padding-top: 145px;
+    }
+
+    .entity-profile-hero {
+        min-height: 0;
+        padding-top: 155px;
+        padding-bottom: 70px;
+    }
+
+    .entity-profile-art {
+        inset: 80px -35% 0 0;
+        opacity: .42;
+    }
+
+    .entity-profile-hero h1 {
+        max-width: 100%;
+        font-size: 20vw;
+        overflow-wrap: anywhere;
+    }
+
+    .entity-profile-hero > div > p:not(.eyebrow) {
+        font-size: 15px;
+        line-height: 1.55;
+    }
+
+    .profile-title h1 .profile-name-line {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-hero {
+        min-height: 720px;
+        height: auto;
+    }
+
+    .profile-title {
+        width: 100%;
+    }
+
+    .profile-title h1 {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-figure,
+    .iron-cluster {
+        max-width: 100%;
+    }
+
+    .entity-explanation,
+    .screen-moment,
+    .filmography {
+        min-height: 0;
+    }
+
+    .section,
+    .profile-section {
+        padding-inline: 5vw;
+    }
+
+    .entity-section-tabs {
+        max-width: 90vw;
+    }
+
+    .entity-titles > div > a,
+    .film-reel a {
+        min-width: 0;
+    }
+
+    .title-directory-card h2,
+    .title-card-copy h2,
+    .search-result-card h2,
+    .entity-titles h3,
+    .film-reel h3 {
+        overflow-wrap: anywhere;
+    }
+
+    .title-directory-card p,
+    .search-result-card p,
+    .entity-directory-card > p {
+        overflow-wrap: anywhere;
+    }
+
+    .title-filters button,
+    .title-filters select,
+    .character-filters button,
+    .character-filters select,
+    .search-result-tools button,
+    .viewing-route-controls button,
+    .route-planner button,
+    .account-button {
+        min-height: 44px;
+    }
+
+    .title-filter-types,
+    .search-result-tools > div {
+        max-width: 100%;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+
+    .title-directory-card,
+    .title-directory-row,
+    .search-result-card,
+    .entity-directory-card,
+    .route-directory-card,
+    .character-directory-card {
+        min-width: 0;
+    }
+
+    .title-card-art,
+    .route-step-art,
+    .character-directory-card img,
+    .search-result-card img {
+        max-width: 100%;
+    }
+
+    /* Películas y series: dos tarjetas por fila, como el bloque de personajes de Doom. */
+    .titles-directory.is-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .titles-directory.is-grid .title-directory-row {
+        min-height: clamp(360px, 102vw, 400px);
+    }
+
+    /* La tarjeta base reserva acciones con padding; en dos columnas esa reserva
+       se sumaba al alto mínimo y extendía visualmente cada fila. */
+    .titles-directory.is-grid .title-directory-card {
+        min-height: 0;
+        height: 100%;
+        box-sizing: border-box;
+        padding-bottom: 62px;
+    }
+
+    .titles-directory.is-grid .title-card-art {
+        aspect-ratio: 16 / 10;
+    }
+
+    .titles-directory.is-grid .title-card-copy {
+        padding: 12px 12px 4px;
+    }
+
+    .titles-directory.is-grid .title-card-copy > small {
+        font-size: 8px;
+        letter-spacing: .45px;
+    }
+
+    .titles-directory.is-grid .title-card-copy h2 {
+        margin: 6px 0 3px;
+        font-size: clamp(19px, 5.7vw, 25px);
+        line-height: .9;
+    }
+
+    .titles-directory.is-grid .title-card-copy p {
+        display: none;
+    }
+
+    .titles-directory.is-grid .title-directory-card aside {
+        padding: 8px 12px 0;
+        gap: 3px 7px;
+    }
+
+    .titles-directory.is-grid .title-directory-card aside b,
+    .titles-directory.is-grid .title-directory-card aside small {
+        font-size: 8px;
+    }
+
+    .titles-directory.is-grid .title-directory-card > i {
+        right: 13px;
+        bottom: 29px;
+    }
+
+    .titles-directory.is-grid .title-card-actions {
+        right: 12px;
+        bottom: 10px;
+        left: 12px;
+    }
+
+    .titles-directory.is-grid .title-card-actions button {
+        min-height: 42px;
+        padding-inline: 6px;
+        font-size: 7px;
+    }
+
+    /* Personajes: tarjetas verticales compactas para conservar dos columnas. */
+    .characters-directory {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .character-directory-card {
+        min-height: clamp(255px, 82vw, 330px);
+        padding: 13px;
+    }
+
+    .character-directory-card h2 {
+        margin-top: 7px;
+        font-size: clamp(20px, 6.2vw, 30px);
+        line-height: .95;
+    }
+
+    .character-directory-card p {
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .character-directory-card b {
+        margin-top: 12px;
+        padding-top: 9px;
+        font-size: 8px;
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 380px) {
+    .route-profile-hero,
+    .viewing-route,
+    .viewing-route-compact,
+    .profile-section,
+    .section {
+        padding-inline: 5vw;
+    }
+
+    .viewing-route-header h2 {
+        font-size: clamp(46px, 15vw, 62px);
+    }
+
+    .viewing-route-controls button {
+        padding-inline: 6px;
+        font-size: 10px;
+    }
+
+    .profile-title h1 {
+        font-size: 19vw;
+    }
+
+    .profile-meta span {
+        font-size: 8px;
+    }
+
+    .entity-index-hero h1,
+    .titles-index-hero h1,
+    .search-hero h1,
+    .characters-index-hero h1 {
+        font-size: 18vw;
+    }
+}
