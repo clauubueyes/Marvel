@@ -10,9 +10,9 @@ export const metadata = createPageMetadata({
 });
 
 export default function PrivacyPage() {
-  return <main className="legal-page" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
+  return <main className="legal-page privacy-page" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
     <GlobalNavigation context="PRIVACIDAD" />
-    <header><p className="eyebrow"><span /> INFORMACIÓN LEGAL</p><h1>POLÍTICA DE<br /><em>PRIVACIDAD</em></h1><p>Última actualización: 3 de septiembre de 2026</p></header>
+    <header className="legal-page-header"><p className="eyebrow"><span /> INFORMACIÓN LEGAL</p><h1>POLÍTICA DE<br /><em>PRIVACIDAD</em></h1><p>Última actualización: 3 de septiembre de 2026</p></header>
     <article>
       <section><h2>1. Responsable y alcance</h2><p>Esta política describe el tratamiento de datos realizado por el planificador de visionado disponible en NEXUS. Para consultas relacionadas con privacidad puedes escribir a <a href="mailto:clauubyy@gmail.com">clauubyy@gmail.com</a>.</p></section>
       <section><h2>2. Datos locales de la aplicación</h2><p>El progreso de títulos vistos, la selección de contenidos y el identificador del calendario creado se guardan en el almacenamiento local de tu navegador. Estos datos no se envían a un servidor propio y puedes eliminarlos borrando los datos del sitio en tu navegador.</p></section>

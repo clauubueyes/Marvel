@@ -13,10 +13,11 @@
 .legal-footer small { grid-column: 1 / -1; padding-top: 15px; border-top: 1px solid #242b21; color: #737c6e; font-size: 7px; }
 /* Cabecera y cuerpo editorial de las páginas legales. */
 .legal-page { min-height: 100vh; color: #e9eee3; background: radial-gradient(circle at 80% 5%,rgba(185,215,55,.12),transparent 27%),#090c08; }
-.legal-page > header { min-height: 500px; padding: 155px 7vw 65px; display: flex; flex-direction: column; justify-content: flex-end; border-bottom: 1px solid #3e4935; }
-.legal-page > header h1 { margin-top: 20px; font: clamp(65px,9vw,135px)/.8 var(--font-display); }
-.legal-page > header h1 em { color: #b9d737; font-style: normal; }
-.legal-page > header > p:last-child { margin-top: 25px; color: #929b89; font-size: 9px; }
+.legal-page > .legal-page-header { min-height: 500px; padding: 155px 7vw 65px; display: flex; flex-direction: column; justify-content: flex-end; border-bottom: 1px solid #3e4935; }
+.legal-page-header h1 { margin-top: 20px; font: clamp(65px,9vw,135px)/.8 var(--font-display); }
+.privacy-page > .legal-page-header h1 { font-size: clamp(58px,8vw,120px); }
+.legal-page-header h1 em { color: #b9d737; font-style: normal; }
+.legal-page-header > p:last-child { margin-top: 25px; color: #929b89; font-size: 9px; }
 .legal-page > article { width: min(980px,88vw); margin: 0 auto; padding: 75px 0 110px; }
 .legal-page article section { padding: 31px 0; border-bottom: 1px solid #323b2e; }
 .legal-page article h2 { margin-bottom: 16px; color: #b9d737; font: 28px/1 var(--font-display); text-transform: uppercase; }
@@ -240,7 +241,7 @@
 
 }
 /* Adaptación móvil del footer y de los textos legales. */
-@media (max-width: 650px) { .legal-footer { grid-template-columns: 1fr; padding-inline: 5vw; }.legal-footer nav { justify-content: flex-start; }.legal-footer small { grid-column: 1; }.legal-page > header { min-height: 450px; padding: 135px 5vw 55px; }.legal-page > header h1 { font-size: 18vw; }.legal-page > article { width: 90vw; padding-top: 45px; }.legal-page article > nav { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 650px) { .legal-footer { grid-template-columns: 1fr; padding-inline: 5vw; }.legal-footer nav { justify-content: flex-start; }.legal-footer small { grid-column: 1; }.legal-page > .legal-page-header { min-height: 450px; padding: 135px 5vw 55px; }.legal-page-header h1 { font-size: 18vw; }.privacy-page > .legal-page-header h1 { font-size: 16vw; }.legal-page > article { width: 90vw; padding-top: 45px; }.legal-page article > nav { align-items: flex-start; flex-direction: column; } }
 /* Hero de /titulos/[slug]: imagen de fondo, titular, etiquetas y numeración. */
 .title-profile-hero { min-height: 850px; display: grid; grid-template-columns: minmax(320px,46vw) 1fr; align-items: end; position: relative; padding: 135px 6vw 90px; overflow: hidden; border-bottom: 1px solid #3e4935; }.title-profile-hero::after { content: "NEXUS"; position: absolute; inset: auto 0 -4vw; color: transparent; -webkit-text-stroke: 1px rgba(185,215,55,.1); font: 20vw/.8 var(--font-display); text-align: center; pointer-events: none; }
 .title-profile-art { position: absolute; inset: 95px 0 0 48%; overflow: hidden; }.title-profile-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,#080b07 0,transparent 40%),linear-gradient(0deg,#080b07 0,transparent 45%),rgba(40,55,25,.12); }.title-profile-art img { object-fit: cover; filter: saturate(.78) contrast(1.08); }
