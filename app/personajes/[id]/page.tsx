@@ -78,10 +78,7 @@ export default async function CharacterPage({ params }: PageProps) {
       <h2 data-reveal>CUATRO ACTOS<br /><em>UNA LÍNEA DE TIEMPO</em></h2>
       <span data-reveal>LA VERDAD DE {character.name} SE CUENTA DE CORRIDO, CAPÍTULO A CAPÍTULO, SIN EXPEDIENTES DE POR MEDIO.</span>
     </section>}
-    {beats[0] && <CharacterChapter chapter={beats[0]} act={actLabels[0]} actNumeral={actNumerals[0]} position="left" index={0} total={beats.length} />}
-    {beats[1] && <CharacterChapter chapter={beats[1]} act={actLabels[1]} actNumeral={actNumerals[1]} position="right" index={1} total={beats.length} />}
-    {beats[2] && <CharacterChapter chapter={beats[2]} act={actLabels[2]} actNumeral={actNumerals[2]} position="left" index={2} total={beats.length} />}
-    {beats[3] && <CharacterChapter chapter={beats[3]} act={actLabels[3]} actNumeral={actNumerals[3]} position="right" index={3} total={beats.length} />}
+    {beats.map((beat, index) => <CharacterChapter key={beat.year} chapter={beat} act={actLabels[index]} actNumeral={actNumerals[index]} position={index % 2 === 0 ? "left" : "right"} index={index} total={beats.length} portrait={character.image} portraitPosition={character.imagePosition} nextAct={beats[index + 1] ? actLabels[index + 1] : undefined} nextYear={beats[index + 1]?.year} />)}
     {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
     <CharacterScreenMoment character={character} />
     <CharacterPowers character={character} />

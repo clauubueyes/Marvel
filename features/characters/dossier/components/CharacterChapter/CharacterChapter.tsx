@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import type { StoryChapter } from "@/types/character";
 
@@ -10,6 +11,10 @@ type CharacterChapterProps = {
   position: "left" | "right";
   index: number;
   total: number;
+  portrait?: string;
+  portraitPosition?: string;
+  nextAct?: string;
+  nextYear?: string;
 };
 
 const MOOD_BY_ACT: Record<string, string> = {
@@ -19,7 +24,7 @@ const MOOD_BY_ACT: Record<string, string> = {
   IV: "resolution",
 };
 
-export function CharacterChapter({ chapter, act, actNumeral, position, index, total }: CharacterChapterProps) {
+export function CharacterChapter({ chapter, act, actNumeral, position, index, total, portrait, portraitPosition, nextAct, nextYear }: CharacterChapterProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isLast = index === total - 1;
   const mood = MOOD_BY_ACT[actNumeral] ?? "origin";
@@ -35,6 +40,8 @@ export function CharacterChapter({ chapter, act, actNumeral, position, index, to
 
   return <section ref={sectionRef} className="profile-section story-beat" data-scroll-section data-section-index={actNumeral} data-beat={position} data-mood={mood} aria-label={`${act} · ${chapter.title}`}>
     <div className="story-beat-atmosphere" aria-hidden="true">
+      {portrait && <div className="story-beat-backdrop"><Image src={portrait} alt="" fill sizes="(max-width: 900px) 100vw, 62vw" style={{ objectPosition: portraitPosition ?? "center 24%" }} /></div>}
+      <div className="story-beat-grain" />
       <div className="story-beat-beam" />
       <div className="story-beat-orbit"><i /><i /><i /></div>
       <div className="story-beat-particles">{Array.from({ length: 9 }, (_, particle) => {
@@ -49,7 +56,13 @@ export function CharacterChapter({ chapter, act, actNumeral, position, index, to
       <div className="story-beat-meta"><span>{act}</span><b>{chapter.year}</b><em>{numbers}</em></div>
       <h2><em>{chapter.kicker}</em><span className="story-beat-title" aria-label={chapter.title}>{titleLetters.map((letter, letterIndex) => letter === " " ? <span className="story-beat-space" key={letterIndex} aria-hidden="true">{" "}</span> : <i className="story-beat-title-letter" style={{ "--letter": letterIndex } as React.CSSProperties} key={letterIndex} aria-hidden="true">{letter}</i>)}</span></h2>
       <p>{chapter.text}</p>
-      <button type="button" className="story-beat-cta" onClick={continueStory}><span>{isLast ? "SIGUE EL RECORRIDO DEL NEXO" : "CONTINUAR LA HISTORIA"}</span><b aria-hidden="true">{isLast ? "↘" : "↓"}</b></button>
+      <button type="button" className="story-beat-cta" onClick={continueStory}>
+        <span className="story-beat-cta-copy">
+          <strong>{isLast ? "SIGUE EL RECORRIDO DEL NEXO" : "CONTINUAR LA HISTORIA"}</strong>
+          {!isLast && nextAct ? <em>{nextAct} · {nextYear}</em> : null}
+        </span>
+        <b aria-hidden="true">{isLast ? "↘" : "↓"}</b>
+      </button>
     </article>
   </section>;
 }

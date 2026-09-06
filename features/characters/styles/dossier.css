@@ -608,19 +608,20 @@
    y cartela editorial. El estado `data-mood` altera la energía de la escena. */
 .story-beat { min-height: 100vh; min-height: 100svh; padding: 16vh 11vw; overflow: hidden; }
 .story-beat-atmosphere { position: absolute; inset: 0; z-index: 0; pointer-events: none; isolation: isolate; }
-.story-beat-atmosphere::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(0,0,0,.42) 100%); }
-.story-beat-beam { position: absolute; inset: 6vh auto auto 50%; width: 1px; height: 72vh; translate: -50% 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 40%, transparent), color-mix(in srgb, var(--accent) 80%, #fff) 56%, transparent); filter: blur(1px); opacity: .5; }
-.story-beat-orbit { position: absolute; inset: 50% auto auto 50%; width: min(58vw, 860px); aspect-ratio: 1; transform: translate(-50%, -50%); }
+.story-beat-atmosphere::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(0,0,0,.42) 100%); }
+.story-beat-beam { position: absolute; inset: 6vh auto auto 50%; z-index: 1; width: 1px; height: 72vh; translate: -50% 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 40%, transparent), color-mix(in srgb, var(--accent) 80%, #fff) 56%, transparent); filter: blur(1px); opacity: .5; }
+.story-beat-orbit { position: absolute; inset: 50% auto auto 50%; z-index: 1; width: min(58vw, 860px); aspect-ratio: 1; transform: translate(-50%, -50%); }
 .story-beat-orbit i { position: absolute; inset: 0; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 50%; }
 .story-beat-orbit i:nth-child(2) { inset: 17%; border-style: dashed; border-color: color-mix(in srgb, var(--accent-2) 34%, transparent); }
 .story-beat-orbit i:nth-child(3) { inset: 34%; border: 0; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%); }
 .story-beat-orbit::after { content: ""; position: absolute; top: 50%; left: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
 .story-beat-particles i { position: absolute; width: clamp(4px, .7vw, 10px); height: clamp(4px, .7vw, 10px); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); opacity: 0; }
+.story-beat-particles { position: absolute; inset: 0; z-index: 1; }
 .story-beat-particles i::after { content: ""; position: absolute; inset: -62%; border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent); border-radius: 50%; }
-.story-beat-watermark { position: absolute; z-index: -1; top: 7vh; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 26%, transparent); font: clamp(240px, 36vw, 540px)/1 var(--font-display); opacity: .2; pointer-events: none; }
+.story-beat-watermark { position: absolute; z-index: 1; top: 7vh; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 26%, transparent); font: clamp(240px, 36vw, 540px)/1 var(--font-display); opacity: .2; pointer-events: none; }
 .story-beat[data-beat="left"] .story-beat-watermark { right: 3vw; }
 .story-beat[data-beat="right"] .story-beat-watermark { left: 3vw; }
-.story-beat-year { position: absolute; z-index: -1; bottom: -1.5vw; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-2) 32%, transparent); font: clamp(120px, 16vw, 230px)/1 var(--font-display); opacity: .55; pointer-events: none; }
+.story-beat-year { position: absolute; z-index: 1; bottom: -1.5vw; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-2) 32%, transparent); font: clamp(120px, 16vw, 230px)/1 var(--font-display); opacity: .55; pointer-events: none; }
 .story-beat[data-beat="left"] .story-beat-year { right: 5vw; }
 .story-beat[data-beat="right"] .story-beat-year { left: 5vw; }
 .story-beat-card { padding: clamp(28px, 3.4vw, 54px) clamp(26px, 3vw, 48px); background: linear-gradient(160deg, rgba(14,15,18,.82), rgba(10,11,13,.62)); border: 1px solid rgba(255,255,255,.08); backdrop-filter: blur(9px); box-shadow: 0 30px 60px rgba(0,0,0,.45); }
@@ -640,6 +641,32 @@
 .story-beat[data-mood="crisis"] .story-beat-card { background: linear-gradient(160deg, rgba(24,13,11,.9), rgba(12,10,8,.7)); }
 .story-beat[data-mood="resolution"] .story-beat-beam { inset: auto auto -7vh 50%; height: 32vh; opacity: .36; }
 .story-beat[data-mood="resolution"] .story-beat-orbit { inset: 44% auto auto 50%; }
+
+/* Cinematografía: retrato del personaje como fondo de escena, grano de película
+   y claqueta. El fondo se desvanece hacia la columna de texto y se tinía según
+   el acto. */
+.story-beat-backdrop { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.story-beat-backdrop img { object-fit: cover; filter: brightness(.44) saturate(.88) contrast(1.06); }
+.story-beat[data-beat="left"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, transparent 22%, rgba(0,0,0,.4) 46%, #000 64%); mask-image: linear-gradient(90deg, transparent 22%, rgba(0,0,0,.4) 46%, #000 64%); }
+.story-beat[data-beat="right"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, #000 34%, rgba(0,0,0,.45) 54%, transparent 78%); mask-image: linear-gradient(90deg, #000 34%, rgba(0,0,0,.45) 54%, transparent 78%); }
+.story-beat[data-mood="origin"] .story-beat-backdrop img { filter: brightness(.46) saturate(.62); }
+.story-beat[data-mood="power"] .story-beat-backdrop img { filter: brightness(.5) saturate(1.06) contrast(1.1); }
+.story-beat[data-mood="crisis"] .story-beat-backdrop img { filter: brightness(.4) saturate(1.3) contrast(1.22) hue-rotate(-10deg); }
+.story-beat[data-mood="resolution"] .story-beat-backdrop img { filter: brightness(.5) saturate(.88) sepia(.14); }
+.story-beat-orbit { opacity: .58; }
+.story-beat-grain { position: absolute; inset: 0; z-index: 1; opacity: .055; pointer-events: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>"); background-size: 140px 140px; mix-blend-mode: overlay; }
+
+/* El numeral de acto "crece" al entrar en pantalla a medida que se lee. */
+.story-beat .story-beat-watermark { transform: scale(calc(.78 + var(--scroll-progress, 0) * .46)); opacity: calc(.1 + var(--scroll-progress, 0) * .3); }
+.story-beat .story-beat-year { opacity: calc(.12 + var(--scroll-progress, 0) * .5); }
+
+/* Claqueta: la cabecera del capítulo como pizarra de rodaje. */
+.story-beat-meta { position: relative; align-self: start; width: max-content; padding: 11px 14px 11px 16px; background: #050608; border: 1px solid #2c2f27; clip-path: polygon(0 0, 100% 0, 100% 100%, 11px 100%, 0 calc(100% - 11px)); }
+.story-beat-meta::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent) 0 7px, transparent 7px 13px); opacity: .55; pointer-events: none; }
+.story-beat-meta span, .story-beat-meta b, .story-beat-meta em { position: relative; z-index: 1; }
+.story-beat-cta-copy { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; }
+.story-beat-cta-copy strong { font-weight: 400; }
+.story-beat-cta-copy em { color: var(--accent); font-style: normal; font-size: 8px; letter-spacing: 1.6px; }
 
 /* Intro del corredor narrativo: puente entre el expediente y los capítulos. */
 .story-corridor { position: relative; padding: 11vh 11vw 9vh; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 6vw; background: #090a0d; }
