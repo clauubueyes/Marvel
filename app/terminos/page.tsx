@@ -11,7 +11,7 @@ export const metadata = createPageMetadata({
 export default function TermsPage() {
   return <main className="legal-page" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
     <GlobalNavigation context="CONDICIONES" />
-    <header><p className="eyebrow"><span /> INFORMACIÓN LEGAL</p><h1>CONDICIONES<br /><em>DE USO</em></h1><p>Última actualización: 31 de agosto de 2026</p></header>
+    <header className="legal-page-header"><p className="eyebrow"><span /> INFORMACIÓN LEGAL</p><h1>CONDICIONES<br /><em>DE USO</em></h1><p>Última actualización: 31 de agosto de 2026</p></header>
     <article>
       <section><h2>1. Aceptación</h2><p>Al utilizar NEXUS y su planificador aceptas estas condiciones. Si no estás de acuerdo, no conectes tu cuenta de Google ni utilices las funciones de planificación.</p></section>
       <section><h2>2. Descripción del servicio</h2><p>La aplicación ofrece información editorial sobre producciones audiovisuales y permite preparar un plan personal de visionado. Opcionalmente, puede crear un calendario secundario en Google Calendar o generar un archivo compatible con aplicaciones de calendario.</p></section>

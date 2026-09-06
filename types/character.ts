@@ -9,6 +9,7 @@ export type CharacterAppearance = {
 export type Character = {
   id: string;
   name: string;
+  nameLines?: string[];
   alias: string;
   number: string;
   quote: string;
