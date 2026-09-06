@@ -125,8 +125,16 @@
     .search-result-tools button,
     .viewing-route-controls button,
     .route-planner button,
-    .account-button {
+    .account-button,
+    .global-navigation .menu,
+    .title-advanced-filters summary {
         min-height: 44px;
+    }
+
+    /* Los CTAs del hero conservan su altura de 48px de home.css y la
+       extienden al tramo 561–700px, donde el ghost-action solo tenía padding. */
+    .doom-hero .hero-actions a {
+        min-height: 48px;
     }
 
     .title-filter-types,
