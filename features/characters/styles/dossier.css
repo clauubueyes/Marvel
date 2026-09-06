@@ -450,7 +450,7 @@
 .arrival-trail i:nth-child(1) { top: 12%; }.arrival-trail i:nth-child(2) { top: 31%; right: 32%; }.arrival-trail i:nth-child(3) { top: 68%; right: 24%; }.arrival-trail i:nth-child(4) { top: 82%; right: 52%; }.arrival-trail i:nth-child(5) { top: 42%; right: 68%; }
 .profile-arrival-iron .arrival-trail { background: linear-gradient(90deg,transparent 0%,rgba(255,71,0,.08) 40%,rgba(255,112,0,.58) 100%); }
 .profile-arrival-iron .arrival-trail::before { background: linear-gradient(90deg,transparent,#ff3d00 48%,#ffd35a 78%,#fff); }
-.profile-body { --profile-body-clip:polygon(36% 0,65% 2%,76% 17%,74% 31%,94% 47%,82% 64%,89% 100%,11% 100%,19% 62%,5% 43%,27% 26%,25% 11%); width: min(29vw,430px); height: 88%; display: grid; place-items: center; background: linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent-2) 40%,#050505)); clip-path:var(--profile-body-clip); animation: breathe 5s ease-in-out infinite; }
+.profile-body { position: relative; --profile-body-clip:polygon(36% 0,65% 2%,76% 17%,74% 31%,94% 47%,82% 64%,89% 100%,11% 100%,19% 62%,5% 43%,27% 26%,25% 11%); width: min(29vw,430px); height: 88%; display: grid; place-items: center; background: linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent-2) 40%,#050505)); clip-path:var(--profile-body-clip); animation: breathe 5s ease-in-out infinite; }
 .profile-body::after { content: ""; position: absolute; inset: 0; background: linear-gradient(155deg,transparent 45%,color-mix(in srgb,var(--accent) 65%,transparent)), repeating-linear-gradient(125deg,transparent 0 15px,rgba(255,255,255,.08) 16px 17px); mix-blend-mode: screen; }
 .profile-body img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: contrast(1.12) saturate(.9); }
 .profile-figure > b { position: absolute; font-size: 16vw; opacity: .18; color: white; }
@@ -574,7 +574,7 @@
 .ability-list i { position: absolute; right: 15px; top: 15px; color: var(--accent); font-size: 23px; font-style: normal; }
 /* Línea-tiempo vertebral: capítulos de la historia intercalados como actos
    sobre un eje central que atraviesa la ficha, con el detalle pulsante. */
-.story-beat { min-height: 62vh; display: grid; grid-template-columns: 1fr 2px 1fr; align-items: center; gap: 9vw; padding: 13vh 11vw; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 55%), #090a0d; }
+.story-beat { min-height: 62vh; display: grid; grid-template-columns: minmax(0, 5fr) 2px minmax(0, 7fr); align-items: center; gap: clamp(2vw, 4.5vw, 6vw); padding: 13vh 11vw; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 55%), #090a0d; }
 .profile [data-scroll-section].story-beat::after { content: ""; position: absolute; z-index: 0; inset: 0 auto 0 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 45%, #20221d) 14%, color-mix(in srgb, var(--accent) 45%, #20221d) 86%, transparent); -webkit-text-stroke: 0; font: inherit; opacity: 1; translate: none; }
 .story-beat .story-beat-node { grid-column: 2; grid-row: 1; justify-self: center; align-self: center; position: relative; z-index: 2; }
 .story-beat .story-beat-node i { position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; margin: -13px 0 0 -13px; border: 4px solid #090a0d; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 28px color-mix(in srgb, var(--accent) 70%, transparent); animation: breathe 3.2s ease-in-out infinite; }
@@ -608,7 +608,7 @@
    y cartela editorial. El estado `data-mood` altera la energía de la escena. */
 .story-beat { min-height: 100vh; min-height: 100svh; padding: 16vh 11vw; overflow: hidden; }
 .story-beat-atmosphere { position: absolute; inset: 0; z-index: 0; pointer-events: none; isolation: isolate; }
-.story-beat-atmosphere::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(0,0,0,.42) 100%); }
+.story-beat-atmosphere::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at 50% 42%, transparent 46%, rgba(0,0,0,.3) 100%); }
 .story-beat-beam { position: absolute; inset: 6vh auto auto 50%; z-index: 1; width: 1px; height: 72vh; translate: -50% 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 40%, transparent), color-mix(in srgb, var(--accent) 80%, #fff) 56%, transparent); filter: blur(1px); opacity: .5; }
 .story-beat-orbit { position: absolute; inset: 50% auto auto 50%; z-index: 1; width: min(58vw, 860px); aspect-ratio: 1; transform: translate(-50%, -50%); }
 .story-beat-orbit i { position: absolute; inset: 0; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 50%; }
@@ -618,6 +618,8 @@
 .story-beat-particles i { position: absolute; width: clamp(4px, .7vw, 10px); height: clamp(4px, .7vw, 10px); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); opacity: 0; }
 .story-beat-particles { position: absolute; inset: 0; z-index: 1; }
 .story-beat-particles i::after { content: ""; position: absolute; inset: -62%; border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent); border-radius: 50%; }
+.story-beat-particle-mote { border: 0 !important; border-radius: 50%; background: color-mix(in srgb, var(--accent) 45%, #fff); box-shadow: 0 0 12px 2px color-mix(in srgb, var(--accent) 50%, transparent), inset 0 0 6px rgba(255,255,255,.38); }
+.story-beat-particle-shard { border-color: color-mix(in srgb, var(--accent-2) 78%, transparent) !important; filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent-2) 55%, transparent)); }
 .story-beat-watermark { position: absolute; z-index: 1; top: 7vh; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 26%, transparent); font: clamp(240px, 36vw, 540px)/1 var(--font-display); opacity: .2; pointer-events: none; }
 .story-beat[data-beat="left"] .story-beat-watermark { right: 3vw; }
 .story-beat[data-beat="right"] .story-beat-watermark { left: 3vw; }
@@ -645,16 +647,34 @@
 /* Cinematografía: retrato del personaje como fondo de escena, grano de película
    y claqueta. El fondo se desvanece hacia la columna de texto y se tinía según
    el acto. */
-.story-beat-backdrop { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.story-beat-backdrop img { object-fit: cover; filter: brightness(.44) saturate(.88) contrast(1.06); }
-.story-beat[data-beat="left"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, transparent 22%, rgba(0,0,0,.4) 46%, #000 64%); mask-image: linear-gradient(90deg, transparent 22%, rgba(0,0,0,.4) 46%, #000 64%); }
-.story-beat[data-beat="right"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, #000 34%, rgba(0,0,0,.45) 54%, transparent 78%); mask-image: linear-gradient(90deg, #000 34%, rgba(0,0,0,.45) 54%, transparent 78%); }
-.story-beat[data-mood="origin"] .story-beat-backdrop img { filter: brightness(.46) saturate(.62); }
-.story-beat[data-mood="power"] .story-beat-backdrop img { filter: brightness(.5) saturate(1.06) contrast(1.1); }
-.story-beat[data-mood="crisis"] .story-beat-backdrop img { filter: brightness(.4) saturate(1.3) contrast(1.22) hue-rotate(-10deg); }
-.story-beat[data-mood="resolution"] .story-beat-backdrop img { filter: brightness(.5) saturate(.88) sepia(.14); }
+.story-beat-backdrop { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; transform: translate3d(calc(var(--mx, 0) * -16px), calc(var(--my, 0) * -10px), 0); transition: transform .5s cubic-bezier(.22, 1, .36, 1); }
+.story-beat-backdrop img { object-fit: cover; filter: brightness(.54) saturate(1.02) contrast(1.08); }
+.story-beat-backdrop::after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 20%, transparent), transparent 42%), linear-gradient(300deg, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 38%); mix-blend-mode: screen; }
+.story-beat[data-beat="left"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,.24) 0%, rgba(0,0,0,.42) 34%, #000 56%, #000 100%); mask-image: linear-gradient(90deg, rgba(0,0,0,.24) 0%, rgba(0,0,0,.42) 34%, #000 56%, #000 100%); object-position: 70% 20%; transform: scale(1.06); }
+.story-beat[data-beat="right"] .story-beat-backdrop img { -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 44%, rgba(0,0,0,.42) 66%, rgba(0,0,0,.24) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 44%, rgba(0,0,0,.42) 66%, rgba(0,0,0,.24) 100%); object-position: 30% 20%; transform: scale(1.06); }
+.story-beat[data-mood="origin"] .story-beat-backdrop img { filter: brightness(.58) saturate(.7); }
+.story-beat[data-mood="power"] .story-beat-backdrop img { filter: brightness(.64) saturate(1.06) contrast(1.1); }
+.story-beat[data-mood="crisis"] .story-beat-backdrop img { filter: brightness(.52) saturate(1.28) contrast(1.18) hue-rotate(-10deg); }
+.story-beat[data-mood="resolution"] .story-beat-backdrop img { filter: brightness(.6) saturate(.9) sepia(.12); }
+.story-beat:hover .story-beat-backdrop img, .story-beat:focus-within .story-beat-backdrop img { filter: brightness(.72) saturate(1.06) contrast(1.12); }
+.story-beat:hover .story-beat-orbit, .story-beat:focus-within .story-beat-orbit { opacity: .9; }
+.story-beat:hover .story-beat-watermark, .story-beat:focus-within .story-beat-watermark { -webkit-text-stroke-color: color-mix(in srgb, var(--accent) 46%, transparent); opacity: .34; }
+@media (max-width: 900px) {
+  .story-beat-backdrop img, .story-beat[data-beat] .story-beat-backdrop img { object-position: center 18% !important; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.62) 30%, rgba(0,0,0,.5) 72%, rgba(0,0,0,.18) 100%) !important; mask-image: linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.62) 30%, rgba(0,0,0,.5) 72%, rgba(0,0,0,.18) 100%) !important; }
+}
 .story-beat-orbit { opacity: .58; }
 .story-beat-grain { position: absolute; inset: 0; z-index: 1; opacity: .055; pointer-events: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>"); background-size: 140px 140px; mix-blend-mode: overlay; }
+
+/* Fantasía: nebulosa teñida con la paleta del personaje, chispas que flotan
+   y sigilos en el anillo orbital. La nebulosa "respira" bajo la imagen. */
+.story-beat-aura { position: absolute; inset: -18%; z-index: 0; pointer-events: none; opacity: .45; mix-blend-mode: screen; filter: blur(52px) saturate(130%); will-change: transform; background: radial-gradient(36% 44% at 70% 28%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%), radial-gradient(30% 38% at 24% 66%, color-mix(in srgb, var(--accent-2) 34%, transparent), transparent 72%), radial-gradient(50% 42% at 60% 82%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 74%); }
+.story-beat[data-beat="right"] .story-beat-aura { background: radial-gradient(36% 44% at 30% 28%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%), radial-gradient(30% 38% at 76% 66%, color-mix(in srgb, var(--accent-2) 34%, transparent), transparent 72%), radial-gradient(50% 42% at 40% 82%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 74%); }
+.story-beat[data-mood="power"] .story-beat-aura { opacity: .62; }
+.story-beat[data-mood="crisis"] .story-beat-aura { opacity: .6; filter: blur(50px) saturate(150%) hue-rotate(-18deg); }
+.story-beat[data-mood="resolution"] .story-beat-aura { opacity: .38; }
+.story-beat-sparks { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.story-beat-sparks b { position: absolute; color: color-mix(in srgb, var(--accent-2) 65%, #fff); font-size: clamp(12px, 1.4vw, 22px); text-shadow: 0 0 10px color-mix(in srgb, var(--accent-2) 70%, transparent), 0 0 26px color-mix(in srgb, var(--accent) 45%, transparent); opacity: 0; }
+.story-beat-orbit b { position: absolute; top: 50%; left: 50%; --r: min(28vw, 415px); transform: rotate(var(--angle)) translateY(calc(var(--r) * -1)) rotate(calc(var(--angle) * -1)); color: color-mix(in srgb, var(--accent) 62%, #fff); font-size: clamp(12px, 1.2vw, 18px); opacity: .55; text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 75%, transparent), 0 0 30px color-mix(in srgb, var(--accent) 30%, transparent); }
 
 /* El numeral de acto "crece" al entrar en pantalla a medida que se lee. */
 .story-beat .story-beat-watermark { transform: scale(calc(.78 + var(--scroll-progress, 0) * .46)); opacity: calc(.1 + var(--scroll-progress, 0) * .3); }
