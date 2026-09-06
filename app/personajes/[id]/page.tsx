@@ -70,16 +70,23 @@ export default async function CharacterPage({ params }: PageProps) {
 
     {/* Primer impacto visual: nombre, retrato principal y metadatos. */}
     <CharacterHero character={character} motion={motion} />
-    {/* La historia es la columna vertebral: cada capítulo abre una sección. */}
-    {beats[0] && <CharacterChapter chapter={beats[0]} act={actLabels[0]} actNumeral={actNumerals[0]} position="left" />}
+    {/* Expediente rápido de quién es antes de entrar al relato. */}
     <CharacterIdentity character={character} />
+    {/* La historia es la columna vertebral: capítulos continuos sin interrupciones. */}
+    {beats.length > 0 && <section className="story-corridor profile-section" data-scroll-section data-section-index="HISTORIA">
+      <p className="section-label" data-reveal>LA HISTORIA</p>
+      <h2 data-reveal>CUATRO ACTOS<br /><em>UNA LÍNEA DE TIEMPO</em></h2>
+      <span data-reveal>LA VERDAD DE {character.name} SE CUENTA DE CORRIDO, CAPÍTULO A CAPÍTULO, SIN EXPEDIENTES DE POR MEDIO.</span>
+    </section>}
+    {beats[0] && <CharacterChapter chapter={beats[0]} act={actLabels[0]} actNumeral={actNumerals[0]} position="left" index={0} total={beats.length} />}
+    {beats[1] && <CharacterChapter chapter={beats[1]} act={actLabels[1]} actNumeral={actNumerals[1]} position="right" index={1} total={beats.length} />}
+    {beats[2] && <CharacterChapter chapter={beats[2]} act={actLabels[2]} actNumeral={actNumerals[2]} position="left" index={2} total={beats.length} />}
+    {beats[3] && <CharacterChapter chapter={beats[3]} act={actLabels[3]} actNumeral={actNumerals[3]} position="right" index={3} total={beats.length} />}
+    {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
     <CharacterScreenMoment character={character} />
-    {beats[1] && <CharacterChapter chapter={beats[1]} act={actLabels[1]} actNumeral={actNumerals[1]} position="right" />}
     <CharacterPowers character={character} />
     <CharacterFacts facts={character.facts} />
     <CharacterFilmography appearances={character.appearances} />
-    {beats[2] && <CharacterChapter chapter={beats[2]} act={actLabels[2]} actNumeral={actNumerals[2]} position="left" />}
-    {beats[3] && <CharacterChapter chapter={beats[3]} act={actLabels[3]} actNumeral={actNumerals[3]} position="right" />}
     {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
     <CharacterConnections entities={connectedEntities} />
     <CharacterReference character={character} routes={relatedRoutes} />

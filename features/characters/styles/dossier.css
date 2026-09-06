@@ -603,6 +603,54 @@
   .story-beat-card h2 { font-size: clamp(40px,12vw,58px); }
   .story-beat-card p { font-size: 13px; }
 }
+/* Escenas inmersivas: cada capítulo ocupa una pantalla completa con capas de
+   ambiente (haz, órbitas y partículas), numeral de acto gigante, año de rodaje
+   y cartela editorial. El estado `data-mood` altera la energía de la escena. */
+.story-beat { min-height: 100vh; min-height: 100svh; padding: 16vh 11vw; overflow: hidden; }
+.story-beat-atmosphere { position: absolute; inset: 0; z-index: 0; pointer-events: none; isolation: isolate; }
+.story-beat-atmosphere::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(0,0,0,.42) 100%); }
+.story-beat-beam { position: absolute; inset: 6vh auto auto 50%; width: 1px; height: 72vh; translate: -50% 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 40%, transparent), color-mix(in srgb, var(--accent) 80%, #fff) 56%, transparent); filter: blur(1px); opacity: .5; }
+.story-beat-orbit { position: absolute; inset: 50% auto auto 50%; width: min(58vw, 860px); aspect-ratio: 1; transform: translate(-50%, -50%); }
+.story-beat-orbit i { position: absolute; inset: 0; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 50%; }
+.story-beat-orbit i:nth-child(2) { inset: 17%; border-style: dashed; border-color: color-mix(in srgb, var(--accent-2) 34%, transparent); }
+.story-beat-orbit i:nth-child(3) { inset: 34%; border: 0; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%); }
+.story-beat-orbit::after { content: ""; position: absolute; top: 50%; left: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
+.story-beat-particles i { position: absolute; width: clamp(4px, .7vw, 10px); height: clamp(4px, .7vw, 10px); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); opacity: 0; }
+.story-beat-particles i::after { content: ""; position: absolute; inset: -62%; border: 1px solid color-mix(in srgb, var(--accent-2) 32%, transparent); border-radius: 50%; }
+.story-beat-watermark { position: absolute; z-index: -1; top: 7vh; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 26%, transparent); font: clamp(240px, 36vw, 540px)/1 var(--font-display); opacity: .2; pointer-events: none; }
+.story-beat[data-beat="left"] .story-beat-watermark { right: 3vw; }
+.story-beat[data-beat="right"] .story-beat-watermark { left: 3vw; }
+.story-beat-year { position: absolute; z-index: -1; bottom: -1.5vw; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--accent-2) 32%, transparent); font: clamp(120px, 16vw, 230px)/1 var(--font-display); opacity: .55; pointer-events: none; }
+.story-beat[data-beat="left"] .story-beat-year { right: 5vw; }
+.story-beat[data-beat="right"] .story-beat-year { left: 5vw; }
+.story-beat-card { padding: clamp(28px, 3.4vw, 54px) clamp(26px, 3vw, 48px); background: linear-gradient(160deg, rgba(14,15,18,.82), rgba(10,11,13,.62)); border: 1px solid rgba(255,255,255,.08); backdrop-filter: blur(9px); box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.story-beat-card:hover { box-shadow: 0 40px 80px rgba(0,0,0,.58), inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent); }
+.story-beat-card h2 { font-size: clamp(52px, 6vw, 96px); }
+.story-beat-title { display: block; max-width: 700px; }
+.story-beat-title-letter { display: inline-block; transform-origin: 50% 100%; }
+.story-beat-space { white-space: pre; }
+.story-beat-meta em { margin-left: auto; color: #5f6157; font-style: normal; font-size: 9px; letter-spacing: 1.6px; }
+.story-beat-cta { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; margin-top: clamp(28px, 3.6vh, 44px); padding: 14px 0 0; border: 0; border-top: 1px solid rgba(255,255,255,.12); background: none; color: inherit; font: 9px var(--font-mono); letter-spacing: 2.2px; text-transform: uppercase; cursor: pointer; text-align: left; }
+.story-beat-cta b { display: grid; place-items: center; width: 34px; height: 34px; color: #090a0b; background: var(--accent); border-radius: 50%; font-size: 15px; font-style: normal; transition: transform .3s ease, background .3s ease; }
+.story-beat-cta:hover b, .story-beat-cta:focus-visible b { transform: translateY(3px); background: var(--accent-2); }
+.story-beat[data-mood="origin"] .story-beat-beam { height: 42vh; opacity: .32; }
+.story-beat[data-mood="power"] .story-beat-beam { height: 86vh; filter: none; opacity: .85; }
+.story-beat[data-mood="crisis"] .story-beat-watermark { opacity: .34; }
+.story-beat[data-mood="crisis"] .story-beat-particles i { border-radius: 2px; }
+.story-beat[data-mood="crisis"] .story-beat-card { background: linear-gradient(160deg, rgba(24,13,11,.9), rgba(12,10,8,.7)); }
+.story-beat[data-mood="resolution"] .story-beat-beam { inset: auto auto -7vh 50%; height: 32vh; opacity: .36; }
+.story-beat[data-mood="resolution"] .story-beat-orbit { inset: 44% auto auto 50%; }
+
+/* Intro del corredor narrativo: puente entre el expediente y los capítulos. */
+.story-corridor { position: relative; padding: 11vh 11vw 9vh; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 6vw; background: #090a0d; }
+.story-corridor h2 { font-size: clamp(48px, 5.4vw, 86px); line-height: .86; letter-spacing: -1px; }
+.story-corridor h2 em { display: block; -webkit-text-stroke: 1.5px var(--accent); color: transparent; }
+.story-corridor > span { max-width: 380px; justify-self: end; padding: 17px 0 17px 20px; border-left: 2px solid var(--accent); color: #85878d; font-size: 9px; line-height: 1.8; letter-spacing: 1px; }
+@media (max-width: 700px) {
+  .story-corridor { display: block; padding: 90px 8vw 70px; }
+  .story-corridor > span { display: block; margin-top: 25px; }
+}
+
 /* Rail lateral de los actos: recorre toda la ficha y marca el capítulo activo. */
 .storyline-rail { position: fixed; z-index: 12; left: clamp(14px, 2vw, 40px); top: 50%; display: flex; flex-direction: column; gap: 30px; transform: translateY(-50%); }
 .storyline-rail-track { position: absolute; left: 5px; top: -24px; bottom: -24px; width: 2px; background: linear-gradient(180deg, transparent, #2f322a 14%, #2f322a 86%, transparent); }
@@ -763,5 +811,20 @@
   .power-core > strong { right: 0; }
   .stat-list { margin: 55px 0; }
   .ability-list { display: grid; }
+  .story-beat { padding: 105px 6vw 130px; }
+  .story-beat-card { padding: 24px 20px; }
+  .story-beat-watermark { top: 10vh; font-size: clamp(110px, 42vw, 200px); }
+  .story-beat[data-beat] .story-beat-watermark { right: 2vw; left: auto; }
+  .story-beat-year { font-size: clamp(62px, 22vw, 92px); }
+  .story-beat-orbit { width: 52vw; opacity: .8; }
+  .story-beat-cta { font-size: 8px; }
+  .story-beat-card h2 { letter-spacing: -1px; }
+}
+
+@media (max-width: 380px) {
+  .story-beat-orbit { width: 62vw; }
+  .story-beat-card h2 { font-size: clamp(34px, 10.5vw, 46px); }
+  .story-beat-meta span { font-size: 10px; letter-spacing: 2px; }
+  .story-beat-meta em { display: none; }
 }
 

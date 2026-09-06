@@ -153,4 +153,24 @@
 @media (max-width:900px) { .motion-emblem { right:-10vw; top:34%; width:72vw; opacity:.55; }.motion-elements { opacity:.65; } }
 @media (max-width:560px) { .motion-emblem { right:-30vw; top:39%; width:100vw; opacity:.38; }.motion-elements { opacity:.4; }.motion-sweep { display:none; } }
 @media (prefers-reduced-motion:reduce) { .character-motion-field { opacity:.45; }.character-motion-field *,.profile-title h1 span { animation:none !important; translate:none !important; rotate:0deg !important; scale:1 !important; } }
+/* Escenas de capítulo: registro de título letra a letra, energía de acto y
+   parallax de las capas de ambiente sobre la línea de tiempo. */
+.motion-ready .story-beat-title-letter { opacity:0; filter:blur(7px); transform:translateY(85%) rotateX(-68deg); }
+.motion-ready .story-beat-card[data-revealed] .story-beat-title-letter,
+.motion-ready [data-reveal][data-revealed] .story-beat-title-letter { opacity:1; filter:none; transform:none; transition:opacity .4s ease calc(var(--letter,0) * 26ms + 120ms),transform .75s cubic-bezier(.16,.9,.25,1) calc(var(--letter,0) * 26ms + 120ms),filter .6s ease calc(var(--letter,0) * 26ms + 120ms); }
+.motion-ready .story-beat-orbit { animation:story-orbit-spin calc(var(--motion-cycle,16s) * 2.2) linear infinite; }
+.motion-ready .story-beat[data-mood="origin"] .story-beat-orbit { animation-duration:calc(var(--motion-cycle,16s) * 3.4); }
+.motion-ready .story-beat[data-mood="power"] .story-beat-orbit { animation-duration:calc(var(--motion-cycle,16s) * 1.4); animation-direction:reverse; }
+.motion-ready .story-beat[data-mood="crisis"] .story-beat-orbit { animation-duration:calc(var(--motion-cycle,16s) * .6); }
+.motion-ready .story-beat[data-mood="crisis"] .story-beat-orbit::after { box-shadow:0 0 26px color-mix(in srgb,var(--accent-2) 85%,transparent); background:var(--accent-2); }
+.motion-ready .story-beat[data-mood="crisis"] .story-beat-orbit i { animation:story-orbit-shock 3.4s cubic-bezier(.2,.7,.2,1) infinite; }
+.motion-ready .story-beat[data-mood="resolution"] .story-beat-orbit { animation-duration:calc(var(--motion-cycle,16s) * 4.4); }
+.motion-ready .story-beat-particles i { animation:story-particle var(--motion-particle-cycle,5s) ease-in-out infinite; animation-delay:var(--dly,0s); }
+.motion-ready .story-beat[data-mood="crisis"] .story-beat-particles i { animation-duration:calc(var(--motion-particle-cycle,5s) * .55); border-color:color-mix(in srgb,var(--accent-2) 70%,transparent); }
+.story-beat-watermark { translate:0 calc(var(--scroll-shift,0) * -42px); transition:translate .12s linear; }
+.story-beat-year { translate:0 calc(var(--scroll-shift,0) * 30px); transition:translate .12s linear; }
+@keyframes story-orbit-spin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+@keyframes story-orbit-shock { 0% { opacity:.9; scale:.55; } 70% { opacity:.12; scale:1.06; } 100% { opacity:0; scale:1.06; } }
+@keyframes story-particle { 0% { opacity:0; translate:0 20vh; } 18% { opacity:.6; } 52% { opacity:.2; translate:calc(var(--sway,10px) * 1) 4vh; } 84% { opacity:.42; } 100% { opacity:0; translate:calc(var(--sway,10px) * -1) -22vh; } }
+@media (prefers-reduced-motion:reduce) { .story-beat-atmosphere { opacity:.35; } .story-beat-atmosphere * { animation:none !important; translate:none !important; } }
 
