@@ -3,6 +3,7 @@ import { CharacterMotionField } from "@/features/characters/dossier/components/C
 import { IronManCluster } from "@/features/characters/dossier/components/IronManCluster";
 import type { Character } from "@/types/character";
 import type { CharacterMotionProfile } from "@/utils/characterMotion";
+import { CharacterFavorite } from "@/features/characters/favorites/CharacterFavorite";
 
 type CharacterHeroProps = { character: Character; motion: CharacterMotionProfile };
 
@@ -26,5 +27,6 @@ export function CharacterHero({ character, motion }: CharacterHeroProps) {
     </div>
     <blockquote className="profile-quote-arrival">“{character.quote}”</blockquote>
     <div className="scroll-cue">DESPLAZA PARA EXPLORAR <span>↓</span></div>
+    <CharacterFavorite characterId={character.id} name={character.name} />
   </section>;
 }

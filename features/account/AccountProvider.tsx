@@ -4,22 +4,30 @@ import { createContext, useContext, useEffect, useState, useSyncExternalStore } 
 import { getSupabaseClient } from "@/services/supabase/client";
 import { createMovieProgressRepository } from "@/repositories/movieProgressRepository";
 import { MovieProgressStore } from "@/services/progress/movieProgressStore";
+import { CharacterFavoritesStore } from "@/services/favorites/characterFavoritesStore";
+import { createCharacterFavoritesRepository } from "@/repositories/characterFavoritesRepository";
 
 const AccountContext = createContext<MovieProgressStore | null>(null);
+const FavoritesContext = createContext<CharacterFavoritesStore | null>(null);
 
 export function AccountProvider({ children }: { children: React.ReactNode }) {
+  const [favorites] = useState(() => new CharacterFavoritesStore({
+    load: () => createCharacterFavoritesRepository(getSupabaseClient()!).load(),
+    save: (id, characterId) => createCharacterFavoritesRepository(getSupabaseClient()!).save(id, characterId),
+  }));
   const [store] = useState(() => new MovieProgressStore({
     load: (id) => createMovieProgressRepository(getSupabaseClient()!).load(id),
     save: (id, changes) => createMovieProgressRepository(getSupabaseClient()!).save(id, changes),
   }));
   useEffect(() => {
     let client;
-    try { client = getSupabaseClient(); } catch { store.setUser(null); return; }
-    if (!client) { store.setUser(null); return; }
+    try { client = getSupabaseClient(); } catch { store.setUser(null); favorites.setUser(null); return; }
+    if (!client) { store.setUser(null); favorites.setUser(null); return; }
     let timer: ReturnType<typeof setTimeout>;
     const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
       const previous = store.getSnapshot();
       store.setUser(session?.user ?? null);
+      favorites.setUser(session?.user.id ?? null);
       if (!previous.initialized || previous.user?.id !== session?.user.id || (!previous.ready && !previous.error)) {
         clearTimeout(timer);
         // Keep Supabase calls outside the auth callback's internal lock.
@@ -27,8 +35,14 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
       }
     });
     return () => { clearTimeout(timer); subscription.unsubscribe(); };
-  }, [store]);
-  return <AccountContext.Provider value={store}>{children}</AccountContext.Provider>;
+  }, [store, favorites]);
+  return <AccountContext.Provider value={store}><FavoritesContext.Provider value={favorites}>{children}</FavoritesContext.Provider></AccountContext.Provider>;
+}
+
+export function useFavoritesStore() {
+  const store = useContext(FavoritesContext);
+  if (!store) throw new Error("AccountProvider no está disponible.");
+  return store;
 }
 
 export function useAccount() {

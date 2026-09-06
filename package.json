@@ -7,7 +7,7 @@
     "build": "npm run validate:content && npm run audit:content && next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "tsx --test services/analytics/index.test.ts services/progress/*.test.ts",
+    "test": "tsx --test services/analytics/index.test.ts services/progress/*.test.ts services/favorites/*.test.ts",
     "test:e2e": "playwright test",
     "validate:content": "tsx scripts/validate-content.ts",
     "audit:content": "tsx scripts/audit-content.ts",

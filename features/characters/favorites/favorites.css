@@ -1,0 +1,37 @@
+/* Isolated controls: do not change card dimensions, typography or motion. */
+.character-directory-card > .character-card-link { position: absolute; inset: 0; z-index: 2; }
+.character-card-link:focus-visible { outline: 2px solid var(--card-accent); outline-offset: -4px; }
+.character-favorite {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 6px 10px;
+  color: #b8bdb3;
+  background: #111;
+  font: 9px/1.5 var(--font-mono);
+}
+.character-favorite .character-favorite-control,
+.character-favorite .character-favorite-retry {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--card-accent, var(--accent));
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.character-favorite small { font: inherit; }
+.character-favorite .character-favorite-control:disabled { cursor: default; opacity: .6; }
+.character-favorite :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.profile-hero > .character-favorite { top: auto; bottom: 24px; right: 6vw; }
+@media (pointer: coarse) {
+  .character-favorite .character-favorite-control,
+  .character-favorite .character-favorite-retry { min-height: 44px; }
+}
