@@ -137,6 +137,31 @@
         min-height: 48px;
     }
 
+    /* Legibilidad móvil: rótulos editoriales definidos a 7–9px en escritorio
+       resultan ilegibles en pantallas táctiles de alta densidad. Mínimo 12px. */
+    .mcu-catalog .catalog-tools label span,
+    .mcu-catalog .catalog-filters button,
+    .mcu-catalog .catalog-art small,
+    .mcu-catalog .catalog-art span,
+    .mcu-catalog .catalog-entry summary small,
+    .mcu-catalog .catalog-event span,
+    .mcu-catalog .catalog-connections > span,
+    .mcu-catalog .catalog-intro > span,
+    .mcu-catalog .catalog-more p,
+    .mcu-catalog .catalog-more button,
+    .mcu-catalog .catalog-source {
+        font-size: 12px;
+    }
+
+    /* Indicador de scroll horizontal: la fila de filtros se desborda y el
+       degradado de borde invita a deslizar sin ocultar el último chip. */
+    .mcu-catalog .catalog-filters {
+        -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+        mask-image: linear-gradient(90deg, #000 88%, transparent);
+        overscroll-behavior-inline: contain;
+        scrollbar-width: thin;
+    }
+
     .title-filter-types,
     .search-result-tools > div {
         max-width: 100%;
