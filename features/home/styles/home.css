@@ -636,8 +636,7 @@
 @media (max-width: 900px) {
   .doom-hero-copy { 
     width: 88%; 
-    padding-left:165px 6vw 4px; 
-    align-items:center ;
+    padding: 120px 0 100px 6vw; 
   }
   .doom-hero-canvas { 
     left: 0%; 
@@ -661,8 +660,8 @@
   letter-spacing: 2px; 
 }
 .truth-card strong { 
-  font: 14px;
-  MARGIN-LEFT: 6px;
+  font: 14px/1.2 var(--font-display);
+  margin-left: 6px;
   letter-spacing: .01em; 
   color: #b9d737; 
 }

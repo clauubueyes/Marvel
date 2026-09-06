@@ -74,7 +74,7 @@ export function CinematicIntro() {
       <div className="cinematic-intro-frames" aria-hidden="true">
         {frames.map((frame, index) => (
           <div className="cinematic-intro-frame" key={frame.src} style={{ "--frame": index, "--frame-position": frame.position } as React.CSSProperties}>
-            <Image src={frame.src} alt="" fill priority sizes="(max-width: 650px) 34vw, 17vw" />
+            <Image src={frame.src} alt="" fill priority={index === 0} loading={index === 0 ? "eager" : "lazy"} sizes="(max-width: 650px) 34vw, 17vw" />
           </div>
         ))}
       </div>
