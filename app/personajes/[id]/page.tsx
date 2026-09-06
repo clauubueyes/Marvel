@@ -15,7 +15,7 @@ import {
   CharacterPowers,
   CharacterReference,
   CharacterScreenMoment,
-  CharacterTimeline,
+  CharacterStory,
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
@@ -69,7 +69,7 @@ export default async function CharacterPage({ params }: PageProps) {
     <CharacterFacts facts={character.facts} />
     <CharacterFilmography appearances={character.appearances} />
     <CharacterPowers character={character} />
-    <CharacterTimeline character={character} />
+    <CharacterStory character={character} />
     {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
     <CharacterConnections entities={connectedEntities} />
     <CharacterReference character={character} routes={relatedRoutes} />

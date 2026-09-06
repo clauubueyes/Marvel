@@ -7,4 +7,4 @@ export { CharacterPagination } from "./CharacterPagination/CharacterPagination";
 export { CharacterPowers } from "./CharacterPowers/CharacterPowers";
 export { CharacterReference } from "./CharacterReference/CharacterReference";
 export { CharacterScreenMoment } from "./CharacterScreenMoment/CharacterScreenMoment";
-export { CharacterTimeline } from "./CharacterTimeline/CharacterTimeline";
+export { CharacterStory } from "./CharacterStory/CharacterStory";
