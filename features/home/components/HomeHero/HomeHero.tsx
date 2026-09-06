@@ -31,6 +31,11 @@ export function HomeHero() {
 
     if (!canvas || !reveal || !hero) return;
 
+    // En táctiles, sin hover o con movimiento reducido el CSS oculta el
+    // spotlight, la estela y la luz ambiental; no tiene sentido registrar
+    // listeners ni crear marcos de animación que no se van a pintar.
+    if (window.matchMedia("(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
+
     let animationFrame: number | null = null;
     let ambientFrame: number | null = null;
     let pointerX = 0;

@@ -18,7 +18,7 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
   useEffect(() => {
     if (!menuOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") setMenuOpen(false); };
-    const closeOnOutside = (event: MouseEvent) => {
+    const closeOnOutside = (event: globalThis.Event) => {
       if (headerRef.current && !headerRef.current.contains(event.target as Node)) setMenuOpen(false);
     };
     const previousOverflow = document.body.style.overflow;
@@ -33,10 +33,6 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
       document.removeEventListener("touchstart", closeOnOutside);
     };
   }, [menuOpen]);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   const active = (href: string) => href !== "/#doom" && pathname.startsWith(href);
 

@@ -27,9 +27,13 @@
     width: 44px;
     height: 44px;
   }
-}
-.global-navigation .menu:focus-visible,
-.global-navigation .global-links.open a:focus-visible {
-  outline: 3px solid var(--accent, #b9d737);
-  outline-offset: 3px;
+  .global-navigation .menu:focus-visible {
+    outline: 3px solid var(--accent, #b9d737);
+    outline-offset: 3px;
+  }
+  .global-navigation .nav.open a:focus-visible {
+    outline: 2px solid var(--accent, #b9d737);
+    outline-offset: -2px;
+    background: rgba(185, 215, 55, .14);
+  }
 }
