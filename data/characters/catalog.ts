@@ -198,7 +198,10 @@ export const characters: Character[] = [...characterEntries.map((character) => (
     ...appearance,
     titleId: createContentSlug(appearanceCatalogTitles[appearance.title] ?? appearance.title),
   })),
-})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters];
+})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters].map((character) => ({
+  ...character,
+  story: storyData[character.id] ?? [],
+}));
 
 export function getCharacter(id: string) {
   return characters.find((character) => character.id === id);
