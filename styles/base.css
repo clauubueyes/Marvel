@@ -55,7 +55,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible {
 }.skip-link:focus {
     transform: translateY(0);
 }
-main { overflow: hidden; background: var(--ink); }
+main { overflow: clip; background: var(--ink); }
 
 /* Cabecera clásica. Es la base de la navegación que aparece arriba de cada página. */
 .topbar { 

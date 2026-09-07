@@ -11,7 +11,6 @@
 @keyframes dossier-ring-pulse { 50% { opacity:.35; filter:drop-shadow(0 0 15px var(--accent)); } }
 @keyframes dossier-orbit { to { transform:rotate(360deg); } }
 @keyframes dossier-aura { 50% { transform:scale(1.08); opacity:.55; } }
-@keyframes dossier-point-pulse { 50% { box-shadow:0 0 0 9px color-mix(in srgb,var(--accent) 0%,transparent),0 0 24px var(--accent); } }
 .motion-ready .profile-title-arrival .eyebrow { animation:dossier-meta-in .7s cubic-bezier(.2,.8,.2,1) .15s both; }
 .motion-ready .profile-title-arrival h1 { animation:dossier-title-in 1.05s cubic-bezier(.16,.9,.25,1) .25s both; }
 .motion-ready .profile-title-arrival .profile-meta { animation:dossier-meta-in .75s cubic-bezier(.2,.8,.2,1) .62s both; }
@@ -36,9 +35,6 @@
 .ability-list > div { transition:opacity .75s ease var(--delay,0ms),transform .75s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),background .3s,padding .3s; }
 .ability-list > div:hover { padding-inline:14px; background:color-mix(in srgb,var(--accent) 8%,transparent); }
 .ability-list > div i { transition:transform .35s,opacity .35s; }.ability-list > div:hover i { opacity:1; transform:rotate(12deg) scale(1.2); }
-.character-story-event { transition:opacity .75s ease var(--delay,0ms),transform .75s cubic-bezier(.2,.8,.2,1) var(--delay,0ms); }
-.character-story-event:hover .story-event-point i { animation:dossier-point-pulse 1.3s ease-in-out infinite; }
-.story-event-copy { transition:transform .3s; }.character-story-event:hover .story-event-copy { transform:translateY(-5px); }
 .context-nodes > div > a { transform-style:preserve-3d; transition:opacity .75s ease var(--delay,0ms),transform .75s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),border-color .3s,box-shadow .3s; }
 .context-nodes > div > a:hover { z-index:1; border-color:var(--node-accent); box-shadow:0 22px 50px rgba(0,0,0,.28); }
 .context-nodes > div > a:hover > * { transform:translateZ(18px); }.context-nodes > div > a > * { transition:transform .3s; }
@@ -56,7 +52,6 @@
 .profile-intro .identity-portrait { translate:0 calc(var(--scroll-shift,0) * 25px); }
 .screen-moment .moment-copy { translate:0 calc(var(--scroll-shift,0) * -20px); }.screen-moment .moment-video { translate:0 calc(var(--scroll-shift,0) * 18px); }
 .profile-power .power-core { translate:0 calc(var(--scroll-shift,0) * 24px); }
-.character-story-rail { translate:calc(var(--scroll-progress,0) * -18px) 0; }
 .motion-ready .profile [data-scroll-section]:nth-of-type(odd) [data-reveal]:not([data-revealed]) { transform:translate3d(-55px,35px,0) rotateY(4deg); filter:blur(5px); }
 .motion-ready .profile [data-scroll-section]:nth-of-type(even) [data-reveal]:not([data-revealed]) { transform:translate3d(55px,35px,0) rotateY(-4deg); filter:blur(5px); }
 .profile [data-scroll-section] [data-reveal] { transition:opacity .85s ease var(--delay,0ms),transform 1s cubic-bezier(.16,.9,.25,1) var(--delay,0ms),filter .8s ease var(--delay,0ms); }
@@ -64,7 +59,7 @@
 .profile [data-scroll-section] h2 { transition:letter-spacing .8s cubic-bezier(.16,.9,.25,1); }
 .motion-ready .profile [data-scroll-section] [data-reveal]:not([data-revealed]) h2 { letter-spacing:.06em; }
 .profile [data-scroll-section]::before { background-position:center calc(50% + var(--scroll-shift,0) * 25px); }
-.profile [data-scroll-section] :is(.identity-title,.intro-copy,.identity-portrait,.moment-copy,.moment-video,.power-core,.character-story-rail,[class$="-heading"]) { transition-property:translate,opacity,transform,filter; transition-duration:.12s,.8s,.8s,.8s; transition-timing-function:linear,ease,cubic-bezier(.2,.8,.2,1),ease; }
+.profile [data-scroll-section] :is(.identity-title,.intro-copy,.identity-portrait,.moment-copy,.moment-video,.power-core,[class$="-heading"]) { transition-property:translate,opacity,transform,filter; transition-duration:.12s,.8s,.8s,.8s; transition-timing-function:linear,ease,cubic-bezier(.2,.8,.2,1),ease; }
 @supports (animation-timeline:view()) {
   .profile [data-scroll-section] { animation:chapter-color-shift linear both; animation-timeline:view(); animation-range:entry 0% cover 55%; }
   @keyframes chapter-color-shift { from { box-shadow:inset 0 3px color-mix(in srgb,var(--accent) 0%,transparent); } to { box-shadow:inset 0 3px color-mix(in srgb,var(--accent) 70%,transparent); } }
@@ -157,4 +152,33 @@
 @media (max-width:900px) { .motion-emblem { right:-10vw; top:34%; width:72vw; opacity:.55; }.motion-elements { opacity:.65; } }
 @media (max-width:560px) { .motion-emblem { right:-30vw; top:39%; width:100vw; opacity:.38; }.motion-elements { opacity:.4; }.motion-sweep { display:none; } }
 @media (prefers-reduced-motion:reduce) { .character-motion-field { opacity:.45; }.character-motion-field *,.profile-title h1 span { animation:none !important; translate:none !important; rotate:0deg !important; scale:1 !important; } }
+/* CINEMATOGRAFÍA NARRATIVA — La columna sticky y sus recortes son dirigidos
+   por GSAP/ScrollTrigger (ver `CharacterStory`). Aquí solo el estado base: la
+   pila de capas, el wipe de las portadas y la entrada del corredor. */
+[data-scroll-section].story-cinema > .story-images { position: sticky; }
+[data-scroll-section].story-cinema > .story-track { z-index: 2; }
+[data-scroll-section].story-cinema > .story-track > .story-card { will-change: transform, opacity, filter; }
+.story-image-clip { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.motion-ready .story-image-clip:not([data-index="0"]) { clip-path: inset(0% 0% 100% 0%); }
+
+/* Latido sutil de los recortes según su energía de acto. */
+.motion-ready .story-image-clip .story-image-aura { animation: story-aura-drift calc(var(--motion-cycle,16s) * 2.6) ease-in-out infinite alternate; }
+.motion-ready .story-image-grain { animation: story-grain 1.1s steps(4) infinite; }
+.motion-ready .story-image-clip[data-mood="crisis"] img { animation: story-crisis-shimmer calc(var(--motion-cycle,16s) * .9) ease-in-out infinite alternate; }
+@keyframes story-crisis-shimmer { from { filter: brightness(.5) saturate(1.32) contrast(1.2) hue-rotate(-8deg); } to { filter: brightness(.62) saturate(1.5) contrast(1.26) hue-rotate(-4deg); } }
+
+/* Entrada del corredor narrativo. */
+.motion-ready .story-corridor .section-label { animation: story-corridor-meta .7s cubic-bezier(.2,.8,.2,1) both; }
+.motion-ready .story-corridor h2 { animation: story-corridor-title 1.05s cubic-bezier(.16,.9,.25,1) .12s both; }
+.motion-ready .story-corridor > span { animation: story-corridor-meta .8s cubic-bezier(.2,.8,.2,1) .34s both; }
+@keyframes story-corridor-title { from { opacity:0; transform:translateY(48px) skewY(2deg); clip-path:inset(0 0 100% 0); } to { opacity:1; transform:none; clip-path:inset(0); } }
+@keyframes story-corridor-meta { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:none; } }
+
+@media (prefers-reduced-motion:reduce) {
+  [data-scroll-section].story-cinema > .story-images { position: sticky; }
+  .story-image-clip img { transform:none !important; animation:none !important; }
+  .story-image-aura { opacity:.3; }
+  .story-year-storyline b { transition:none; }
+  .motion-ready .story-corridor h2, .motion-ready .story-corridor > span, .motion-ready .story-corridor .section-label { animation:none; }
+}
 

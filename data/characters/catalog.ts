@@ -6,9 +6,10 @@ import { essentialCharacters } from "@/data/characters/essential";
 import { heroCharacters } from "@/data/characters/heroes";
 import { futureSagaCharacters } from "@/data/characters/futureSaga";
 import { getScreenPortrait } from "@/data/characters/screenPortraits";
+import { storyData } from "@/data/characters/storyData";
 import type { Character, CharacterAppearance } from "@/types/character";
 
-type CharacterEntry = Omit<Character, "appearances" | "category" | "status" | "affiliations" | "variants" | "sources" | "reviewedAt"> & {
+type CharacterEntry = Omit<Character, "appearances" | "category" | "status" | "affiliations" | "variants" | "sources" | "reviewedAt" | "story"> & {
   appearances: Omit<CharacterAppearance, "titleId">[];
 };
 
@@ -191,12 +192,16 @@ const appearanceCatalogTitles: Record<string, string> = {
 export const characters: Character[] = [...characterEntries.map((character) => ({
   ...character,
   image: getScreenPortrait(character.id),
+  story: storyData[character.id] ?? [],
   ...getCharacterEditorialData(character.id, character.sourceUrl),
   appearances: character.appearances.map((appearance) => ({
     ...appearance,
     titleId: createContentSlug(appearanceCatalogTitles[appearance.title] ?? appearance.title),
   })),
-})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters];
+})), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters].map((character) => ({
+  ...character,
+  story: storyData[character.id] ?? [],
+}));
 
 export function getCharacter(id: string) {
   return characters.find((character) => character.id === id);

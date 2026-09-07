@@ -6,6 +6,13 @@ export type CharacterAppearance = {
   event: string;
 };
 
+export type StoryChapter = {
+  year: string;
+  kicker: string;
+  title: string;
+  text: string;
+};
+
 export type Character = {
   id: string;
   name: string;
@@ -28,6 +35,7 @@ export type Character = {
   stats: { label: string; value: number }[];
   abilities: string[];
   timeline: { year: string; title: string; text: string }[];
+  story: StoryChapter[];
   facts: { value: string; label: string; text: string }[];
   appearances: CharacterAppearance[];
   screenMoment: { videoId: string; title: string; kicker: string; text: string };
