@@ -157,9 +157,15 @@
    pila de capas, el wipe de las portadas y la entrada del corredor. */
 [data-scroll-section].story-cinema > .story-images { position: sticky; }
 [data-scroll-section].story-cinema > .story-track { z-index: 2; }
-[data-scroll-section].story-cinema > .story-track > .story-card { will-change: transform, opacity, filter; }
 .story-image-clip { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .motion-ready .story-image-clip:not([data-index="0"]) { clip-path: inset(0% 0% 100% 0%); }
+
+@media (max-width:900px) {
+  .profile [data-scroll-section].story-cinema { animation: none; }
+  .profile [data-scroll-section].story-cinema::after { display: none; }
+  .story-cinema .story-card { will-change: auto; }
+  .motion-ready .story-cinema .story-image-clip { clip-path: none; }
+}
 
 /* Latido sutil de los recortes según su energía de acto. */
 .motion-ready .story-image-clip .story-image-aura { animation: story-aura-drift calc(var(--motion-cycle,16s) * 2.6) ease-in-out infinite alternate; }

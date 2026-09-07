@@ -30,7 +30,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
 
   useIsomorphicLayoutEffect(() => {
     const section = sectionRef.current;
-    if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!section) return;
 
     const cards = Array.from(section.querySelectorAll<HTMLElement>(".story-card"));
     const images = Array.from(section.querySelectorAll<HTMLElement>(".story-image"));
@@ -41,7 +41,9 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
 
     if (!cards.length) return;
 
-    const ctx = gsap.context(() => {
+    const media = gsap.matchMedia();
+    media.add({ mobile: "(max-width: 900px)", desktop: "(min-width: 901px)", reduced: "(prefers-reduced-motion: reduce)" }, (context) => {
+      const { mobile, reduced } = context.conditions!;
       const setAct = (index: number): void => {
         const act = Math.max(0, Math.min(cards.length - 1, index));
         cards.forEach((card, i) => card.setAttribute("data-active", i === act ? "true" : "false"));
@@ -64,6 +66,37 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
           onLeaveBack: () => setAct(index - 1),
         });
       });
+
+      // Mobile keeps the entire copy readable; only the background follows scroll.
+      // matchMedia reverts the desktop tweens when resizing or changing motion preferences.
+      if (mobile || reduced) {
+        gsap.set(imageReveals, { clipPath: "none" });
+        gsap.set(images, { opacity: (index: number) => index === 0 ? 1 : 0 });
+        images.forEach((image, index) => {
+          gsap.set(image, { zIndex: index });
+          if (index === 0 || !cards[index]) return;
+          gsap.fromTo(image, { opacity: 0 }, {
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: cards[index],
+              start: reduced ? "top 45%" : "top 85%",
+              end: "top 45%",
+              scrub: reduced ? true : 0.25,
+            },
+          });
+        });
+        if (mobile && !reduced) {
+          cards.forEach((card) => {
+            gsap.fromTo(card.querySelector("h3"), { y: 18 }, {
+              y: 0,
+              ease: "none",
+              scrollTrigger: { trigger: card, start: "top bottom", end: "top 55%", scrub: 0.25 },
+            });
+          });
+        }
+        return;
+      }
 
       cards.forEach((card, index) => {
         const clip = imageReveals[index];
@@ -147,7 +180,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
       }
     }, section);
 
-    return () => ctx.revert();
+    return () => media.revert();
   }, [actsKey]);
 
   return (

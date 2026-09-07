@@ -638,46 +638,31 @@
 
 @media (max-width: 900px) {
   .story-cinema { display: block; }
-  .story-images { height: 44vh; height: 44svh; width: 100%; grid-column: auto; }
-  .story-image-clip img { object-position: center 22%; }
-  .story-track { padding: 0 7vw; margin-top: -44svh; }
-  .story-card { min-height: 100svh; padding: calc(44svh + 32px) 0 64px; }
-  .story-card::before { left: -7vw; }
-  .story-year-storyline { right: 3%; bottom: 8%; }
-  .story-progress { left: 10px; }
-  .story-film-tag { display: none; }
+  .story-images { height: 100svh; width: 100%; grid-column: auto; background: #090a0d; }
+  .story-images::after { content: ""; position: absolute; z-index: 5; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(9,10,13,.12), rgba(9,10,13,.28) 35%, rgba(9,10,13,.8) 75%, #090a0d); }
+  .story-image { inset: 0; background: #090a0d; will-change: auto; opacity: 0; }
+  .story-image:has(.story-image-clip[data-index="0"]) { opacity: 1; }
+  .story-image-clip { will-change: auto; }
+  .story-image-clip img { object-fit: contain; transform: none; filter: none; }
+  .story-image-base, .story-image-aura, .story-image-grain, .story-image::after { display: none; }
+  .story-track { padding: 0 max(24px, 6vw); margin-top: -100svh; }
+  .story-card { min-height: 110svh; padding: 42svh 0 72px; justify-content: flex-start; }
+  .story-card::before { display: none; }
+  .story-card h3 { max-width: 100%; font-size: clamp(32px, 11cqi, 64px); line-height: 1.04; letter-spacing: -.025em; color: #fff; text-shadow: 0 2px 16px #090a0d; }
+  .story-card h3 > em { font-size: clamp(19px, 5cqi, 26px); }
+  .story-title-word { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .story-card-text { max-width: 580px; margin-top: 24px; padding: 16px; border-left: 2px solid var(--accent); background: rgba(9,10,13,.88); color: #eee9de; font-size: 15px; line-height: 1.8; }
+  .story-card-foot { margin-top: 24px; }
+  .story-chip { color: #c9c9c5; background: rgba(9,10,13,.88); }
+  .story-chip i { animation: none; }
+  .story-year-storyline, .story-progress, .story-film-tag { display: none; }
 }
 @media (max-width: 560px) {
-  .story-images { height: 38vh; height: 38svh; }
-  .story-track { margin-top: -38svh; }
-  .story-card { padding-top: calc(38svh + 28px); padding-bottom: 48px; }
-  .story-card h3 { max-width: 100%; }
-  .story-card-text { font-size: 13px; }
-  .story-meta span { font-size: 10px; letter-spacing: 2px; }
-  .story-meta em { display: none; }
-  .story-progress { gap: 22px; }
-  .story-year-storyline b { font-size: clamp(40px, 14vw, 64px); }
-}
-@media (max-width: 420px) {
-  .story-images { height: 30vh; height: 30svh; }
-  .story-track { margin-top: -30svh; padding: 0 12vw 0 11vw; }
-  .story-card { padding-top: calc(30svh + 22px); padding-bottom: 32px; }
-  .story-card h3 { font-size: clamp(28px, 11vw, 42px); line-height: .96; letter-spacing: -0.06em; }
-  .story-card h3 > em { font-size: clamp(16px, 5vw, 20px); }
-  .story-card-text { max-width: 100%; font-size: 12.5px; line-height: 1.7; }
   .story-meta { gap: 7px; margin-bottom: 18px; padding: 8px 10px 8px 12px; }
-  .story-meta span { font-size: 9px; letter-spacing: 1.5px; }
-  .story-meta b { padding: 4px 7px; font-size: 8px; }
+  .story-meta span { font-size: 10px; letter-spacing: 1.5px; }
+  .story-meta b { padding: 4px 7px; font-size: 10px; }
+  .story-meta em { display: none; }
   .story-chip { padding: 8px 10px; }
-  .story-progress { left: 6px; gap: 18px; }
-  .story-progress-btn b { font-size: 9px; }
-}
-@media (max-width: 380px) {
-  .story-year-storyline { display: none; }
-  .story-track { padding-inline: 10vw 8vw; }
-  .story-corridor { padding: 72px 6vw 52px; }
-  .story-corridor h2 { font-size: clamp(30px, 14vw, 44px); }
-  .story-corridor > span { margin-top: 18px; padding: 0 0 0 12px; }
 }
 
 /* Intro del corredor narrativo: puente entre el expediente y los capítulos. */
@@ -687,6 +672,7 @@
 .story-corridor > span { max-width: 380px; justify-self: end; padding: 17px 0 17px 20px; border-left: 2px solid var(--accent); color: #85878d; font-size: 9px; line-height: 1.8; letter-spacing: 1px; }
 @media (max-width: 700px) {
   .story-corridor { display: block; padding: 90px 8vw 70px; }
+  .story-corridor h2 { font-size: clamp(32px, 10vw, 60px); line-height: 1; }
   .story-corridor > span { display: block; margin-top: 25px; }
 }
 
