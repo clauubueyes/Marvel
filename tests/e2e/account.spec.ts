@@ -2,17 +2,30 @@ import { expect, test, type Page } from "@playwright/test";
 
 async function mockSupabase(page: Page) {
   const progress = new Map<string, Map<string, boolean>>();
+  const preferences = new Map<string, { avoid_spoilers?: boolean }>();
+  let failPreference = false;
   let failSave = false;
   await page.route("https://*.supabase.co/**", async (route) => {
     const request = route.request();
     const url = new URL(request.url());
     const json = (body: unknown, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body) });
-    if (url.pathname.endsWith("/signup")) return json({ user: { id: "alice", email: "alice@example.com", identities: [] }, session: null });
+    if (url.pathname.endsWith("/signup")) {
+      preferences.set("alice", request.postDataJSON().data);
+      return json({ user: { id: "alice", email: "alice@example.com", identities: [] }, session: null });
+    }
+    if (url.pathname.endsWith("/user")) {
+      const id = JSON.parse(Buffer.from(request.headers().authorization.split(".")[1], "base64url").toString()).sub;
+      if (request.method() === "PUT") {
+        if (failPreference) return json({ message: "test failure" }, 500);
+        preferences.set(id, request.postDataJSON().data);
+      }
+      return json({ id, email: `${id}@example.com`, aud: "authenticated", role: "authenticated", user_metadata: preferences.get(id) ?? {} });
+    }
     if (url.pathname.endsWith("/token")) {
       const email = request.postDataJSON().email;
       const id = email.startsWith("bob") ? "bob" : "alice";
       const payload = Buffer.from(JSON.stringify({ sub: id, exp: Math.floor(Date.now() / 1000) + 3600 })).toString("base64url");
-      return json({ access_token: `eyJhbGciOiJIUzI1NiJ9.${payload}.signature`, refresh_token: `refresh-${id}`, token_type: "bearer", expires_in: 3600, user: { id, email, aud: "authenticated", role: "authenticated" } });
+      return json({ access_token: `eyJhbGciOiJIUzI1NiJ9.${payload}.signature`, refresh_token: `refresh-${id}`, token_type: "bearer", expires_in: 3600, user: { id, email, aud: "authenticated", role: "authenticated", user_metadata: preferences.get(id) ?? {} } });
     }
     if (url.pathname.endsWith("/logout")) return json({});
     if (url.pathname.endsWith("/movie_progress")) {
@@ -30,7 +43,7 @@ async function mockSupabase(page: Page) {
     return json({});
   });
   await page.addInitScript(() => localStorage.setItem("nexus:analytics-consent", "rejected"));
-  return { failWrites: () => { failSave = true; }, progress };
+  return { failWrites: () => { failSave = true; }, failPreferenceWrites: () => { failPreference = true; }, progress, preferences };
 }
 
 async function login(page: Page, email = "alice@example.com") {
@@ -40,6 +53,41 @@ async function login(page: Page, email = "alice@example.com") {
   await page.getByRole("button", { name: "ENTRAR", exact: true }).click();
   await expect(page.getByRole("button", { name: "CERRAR SESIÓN", exact: true })).toBeVisible();
 }
+
+test("registration is compact and spoiler preference persists independently of watched works", async ({ page }) => {
+  const mock = await mockSupabase(page);
+  await page.goto("/cuenta");
+  await expect(page.locator("#spoilers")).toHaveCount(0);
+  await expect(page.getByRole("checkbox", { name: "Evitar spoilers", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "CREAR UNA CUENTA" }).click();
+  await expect(page.locator("#spoilers")).toHaveCount(0);
+  const preference = page.getByRole("checkbox", { name: "Evitar spoilers", exact: true });
+  await expect(preference).toBeChecked();
+  await preference.uncheck();
+  await page.getByLabel("EMAIL", { exact: true }).fill("alice@example.com");
+  await page.getByLabel("CONTRASEÑA", { exact: true }).fill("Test-password-123!");
+  await page.getByRole("button", { name: "REGISTRARME", exact: true }).click();
+  await expect(page.getByText("Revisa tu correo para confirmar", { exact: false })).toBeVisible();
+  expect(mock.preferences.get("alice")?.avoid_spoilers).toBe(false);
+  await expect(page.locator("#spoilers")).toHaveCount(0);
+  await login(page);
+  await expect(page.locator("#spoilers")).toBeVisible();
+  await expect(preference).not.toBeChecked();
+  await page.goto("/personajes/iron");
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(0);
+  await page.goto("/cuenta");
+  await preference.click();
+  await expect.poll(() => mock.preferences.get("alice")?.avoid_spoilers).toBe(true);
+  await page.reload();
+  await expect(preference).toBeChecked();
+  mock.failPreferenceWrites();
+  await preference.click();
+  await expect(page.getByRole("alert").filter({ hasText: "No se pudo guardar tu preferencia" })).toBeVisible();
+  await expect(preference).toBeChecked();
+  await page.goto("/personajes/iron");
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  expect(mock.progress.get("alice")?.size ?? 0).toBe(0);
+});
 
 test("guest, registration, session refresh, watch/unwatch, rollback and account isolation", async ({ page }) => {
   const mock = await mockSupabase(page);

@@ -11,5 +11,6 @@ export function useSpoilerProgress() {
   const account = useAccount();
   const progress = useMovieProgress({ storageKey: TITLE_PROGRESS_STORAGE_KEY, eventName: TITLE_PROGRESS_EVENT, validIds });
   // Do not reveal optimistic additions or data whose persistence is uncertain.
-  return { watched: progress.values, ready: progress.ready && !account.pending && !account.error };
+  const allowSpoilers = account.initialized && !!account.user && account.user.user_metadata?.avoid_spoilers === false;
+  return { watched: progress.values, allowSpoilers, ready: allowSpoilers || (progress.ready && !account.pending && !account.error) };
 }

@@ -23,7 +23,7 @@ export function AccountForm({ children }: { children?: React.ReactNode }) {
       if (!client) { setMessage("El acceso a cuentas todavía no está configurado. Puedes seguir navegando como invitado."); return; }
       const credentials = { email: String(fields.get("email")).trim(), password: String(fields.get("password")) };
       const { data, error } = register
-        ? await client.auth.signUp({ ...credentials, options: { emailRedirectTo: `${window.location.origin}/cuenta` } })
+        ? await client.auth.signUp({ ...credentials, options: { emailRedirectTo: `${window.location.origin}/cuenta`, data: { avoid_spoilers: fields.has("avoid_spoilers") } } })
         : await client.auth.signInWithPassword(credentials);
       if (error) { setMessage(authErrorMessage(error, register)); return; }
       form.reset();
@@ -56,11 +56,12 @@ export function AccountForm({ children }: { children?: React.ReactNode }) {
       <form className="account-form" onSubmit={submit}>
         <label><span>EMAIL</span><input name="email" type="email" autoComplete="email" placeholder="tu@email.com" required maxLength={254} disabled={busy} /></label>
         <label><span id="account-password-label">CONTRASEÑA</span><input name="password" type="password" autoComplete={register ? "new-password" : "current-password"} aria-labelledby="account-password-label" aria-describedby={register ? "account-password-hint" : undefined} minLength={register ? 8 : undefined} required disabled={busy} />{register && <small id="account-password-hint">Al menos 8 caracteres.</small>}</label>
+        {register && <div><label className="account-checkbox"><input name="avoid_spoilers" type="checkbox" defaultChecked disabled={busy} aria-describedby="register-spoilers-hint" /><span>Evitar spoilers</span></label><small id="register-spoilers-hint">Protege lo que todavía no has visto. Podrás personalizar tu progreso en tu cuenta. Si la desmarcas, verás el contenido con spoilers.</small></div>}
         <button className="account-button account-button-primary" disabled={busy} type="submit">{busy ? "CONECTANDO…" : register ? "REGISTRARME" : "ENTRAR"}<span aria-hidden="true">↗</span></button>
         <div className="account-switch"><span>{register ? "¿Ya formas parte de Nexus?" : "¿Tu primera vez aquí?"}</span><button className="account-text-button" disabled={busy} type="button" onClick={() => { setRegister(!register); setMessage(""); }}>{register ? "YA TENGO CUENTA" : "CREAR UNA CUENTA"}</button></div>
         <p className="account-footnote">Tu progreso de invitado se conserva en este navegador. Al entrar, usarás el de tu cuenta.</p>
       </form>}
     {message && <p className="account-message" role="status">{message}</p>}
-    {children}
+    {initialized && user && children}
   </section>;
 }

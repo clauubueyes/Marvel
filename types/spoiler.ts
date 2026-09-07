@@ -2,6 +2,7 @@
 export type SpoilerRequirement = { allOf: readonly string[] };
 
 export type SpoilerProgress = {
+  allowSpoilers?: boolean;
   ready: boolean;
   watched: ReadonlySet<string>;
 };

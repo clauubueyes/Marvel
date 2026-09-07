@@ -12,6 +12,21 @@ function deferred<T>() {
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 const user = { id: "alice" };
 
+test("preference updates preserve pending progress and are cleared on identity changes", async () => {
+  const result = deferred<void>();
+  const store = new MovieProgressStore({ load: async () => new Set(["iron-man"]), save: () => result.promise });
+  store.setUser(user); await store.load(); store.setMany(["thor"], true);
+  store.setUser({ ...user, user_metadata: { avoid_spoilers: false } });
+  assert.equal(store.getSnapshot().user?.user_metadata?.avoid_spoilers, false);
+  assert.equal(store.getSnapshot().pending, 1);
+  assert.deepEqual([...store.getSnapshot().watched], ["iron-man", "thor"]);
+  result.resolve(); await tick();
+  assert.equal(store.getSnapshot().pending, 0);
+  store.setUser({ id: "bob" });
+  assert.equal(store.getSnapshot().user?.user_metadata?.avoid_spoilers, undefined);
+  assert.equal(store.getSnapshot().watched.size, 0);
+});
+
 test("guest initialization and sign-out never retain private progress", async () => {
   const store = new MovieProgressStore({ load: async () => new Set(["iron-man"]), save: async () => {} });
   assert.equal(store.getSnapshot().initialized, false);

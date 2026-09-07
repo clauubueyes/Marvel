@@ -2,9 +2,18 @@
 
 La fuente de verdad sigue siendo `movie_progress`: se reutilizan `AccountProvider`,
 `MovieProgressStore` y su cola de cambios individuales/masivos. No hay un booleano
-global de spoilers, tablas nuevas, migraciones ni dependencias nuevas.
+que sustituya el progreso, tablas nuevas, migraciones ni dependencias nuevas.
 
-En `/cuenta#spoilers`, `SpoilerProgressSettings` permite buscar películas/series,
+El registro muestra únicamente una casilla «Evitar spoilers», marcada por defecto.
+La selección se guarda en `auth.users.user_metadata.avoid_spoilers` mediante las
+opciones de `signUp`, también si es necesaria la confirmación por correo. Solo el
+valor booleano `false` permite mostrar spoilers; las cuentas anteriores conservan
+la protección por defecto. Es una preferencia de presentación, no autorización.
+Después de iniciar sesión aparece el panel detallado y se puede cambiar esa
+preferencia mediante `auth.updateUser`, sin alterar las obras vistas. El evento
+Auth existente actualiza la preferencia sin recargar ni vaciar el progreso.
+
+En `/cuenta#spoilers`, con sesión iniciada, `SpoilerProgressSettings` permite buscar películas/series,
 filtrar las apariciones catalogadas de un personaje y marcar/desmarcar todos los
 resultados. Solo recibe nombres, tipos e IDs; no sinopsis, imágenes ni acontecimientos.
 Un personaje sirve para seleccionar obras concretas, no para asumir un progreso
@@ -19,11 +28,13 @@ Un requisito vacío bloquea; la ausencia de requisito conserva el contenido púb
 `canRevealSpoiler` toma esa decisión y `protectContent` devuelve el objeto original
 o una sustitución neutra completa, sin mezclar campos del contenido bloqueado.
 
-`useSpoilerProgress` adapta el progreso existente. Antes de recuperar la sesión,
+`useSpoilerProgress` adapta el progreso existente. Con la protección activa, antes de recuperar la sesión,
 durante la carga, durante guardados pendientes o ante un error, los requisitos no
 se satisfacen. Así una escritura optimista fallida no revela contenido irreversible.
 Los cambios confirmados, desmarcados y cambios de identidad actualizan React mediante
 las suscripciones existentes; no hay nuevas consultas ni sondeos.
+Si la cuenta permite spoilers explícitamente, el contenido se muestra al recuperar
+la sesión, sin exigir que el usuario marque obras como vistas.
 
 En invitados se reutiliza `nexus:titles:watched`, compartido con el directorio de
 títulos. Las rutas de invitado mantienen su almacenamiento separado existente;

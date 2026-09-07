@@ -5,6 +5,15 @@ import { storyData } from "@/data/characters/storyData";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { characters } from "@/repositories/characterRepository";
 
+test("explicit spoiler opt-out reveals without changing progress, only after initialization", () => {
+  const watched = new Set<string>();
+  const requirement = { allOf: ["vengadores-endgame"] };
+  assert.equal(canRevealSpoiler(requirement, { ready: true, watched, allowSpoilers: true }), true);
+  assert.equal(canRevealSpoiler(requirement, { ready: false, watched, allowSpoilers: true }), false);
+  assert.equal(canRevealSpoiler(requirement, { ready: true, watched }), false);
+  assert.equal(watched.size, 0);
+});
+
 test("Iron Man and Iron Man 2 unlock only the origin; later works never imply earlier ones", () => {
   const progress = { ready: true, watched: new Set(["iron-man", "iron-man-2"]) };
   assert.deepEqual(storyData.iron.map((chapter) => canRevealSpoiler(chapter.spoiler, progress)), [true, false, false, false]);

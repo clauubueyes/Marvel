@@ -1,4 +1,6 @@
 /* Styles scoped to /cuenta, using Nexus's existing fonts and palette. */
+.account-form .account-checkbox { display: flex; align-items: center; gap: 12px; }
+.account-form .account-checkbox input { flex: 0 0 18px; width: 18px; height: 18px; min-height: 0; padding: 0; accent-color: var(--accent); }
 .account-spoilers { margin-top: 32px; padding-top: 28px; border-top: 1px solid #35402e; scroll-margin-top: 100px; }
 .account-spoilers select { min-width: 0; width: 100%; min-height: 50px; padding: 12px 14px; border: 1px solid #435039; background: #090d07; color: var(--paper); font: inherit; }
 .account-spoilers .account-footnote { margin-top: 20px; }
