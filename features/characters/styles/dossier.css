@@ -651,14 +651,33 @@
   .story-images { height: 38vh; height: 38svh; }
   .story-track { margin-top: -38svh; }
   .story-card { padding-top: calc(38svh + 28px); padding-bottom: 48px; }
+  .story-card h3 { max-width: 100%; }
   .story-card-text { font-size: 13px; }
   .story-meta span { font-size: 10px; letter-spacing: 2px; }
   .story-meta em { display: none; }
   .story-progress { gap: 22px; }
   .story-year-storyline b { font-size: clamp(40px, 14vw, 64px); }
 }
+@media (max-width: 420px) {
+  .story-images { height: 30vh; height: 30svh; }
+  .story-track { margin-top: -30svh; padding: 0 12vw 0 11vw; }
+  .story-card { padding-top: calc(30svh + 22px); padding-bottom: 32px; }
+  .story-card h3 { font-size: clamp(28px, 11vw, 42px); line-height: .96; letter-spacing: -0.06em; }
+  .story-card h3 > em { font-size: clamp(16px, 5vw, 20px); }
+  .story-card-text { max-width: 100%; font-size: 12.5px; line-height: 1.7; }
+  .story-meta { gap: 7px; margin-bottom: 18px; padding: 8px 10px 8px 12px; }
+  .story-meta span { font-size: 9px; letter-spacing: 1.5px; }
+  .story-meta b { padding: 4px 7px; font-size: 8px; }
+  .story-chip { padding: 8px 10px; }
+  .story-progress { left: 6px; gap: 18px; }
+  .story-progress-btn b { font-size: 9px; }
+}
 @media (max-width: 380px) {
   .story-year-storyline { display: none; }
+  .story-track { padding-inline: 10vw 8vw; }
+  .story-corridor { padding: 72px 6vw 52px; }
+  .story-corridor h2 { font-size: clamp(30px, 14vw, 44px); }
+  .story-corridor > span { margin-top: 18px; padding: 0 0 0 12px; }
 }
 
 /* Intro del corredor narrativo: puente entre el expediente y los capítulos. */
