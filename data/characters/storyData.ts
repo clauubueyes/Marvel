@@ -8,10 +8,10 @@ export const storyData: Record<string, StoryChapter[]> = {
     { year: "2021", kicker: "EL OLVIDO", title: "Borrar para salvar el multiverso", text: "Reunir a sus versiones de otros universos cuesta más de lo que Peter imagina. Decide que toda su historia sea olvidada para cerrar la fractura; Spider-Man sigue ahí." },
   ],
   iron: [
-    { year: "2008", kicker: "LA JAULA", title: "Nacer en una cueva", text: "Secuestrado en Afganistán, Tony construye la Mark I con chatarra y a escondidas. La primera armadura no lo convierte en héroe: le enseña que la ironía del inventor es sentirse responsable de lo que crea." },
-    { year: "2012", kicker: "NUEVA YORK", title: "Salvar la ciudad", text: "Atraviesa un portal con un misil nuclear para salvar Manhattan. El genio que siempre había combatido solo aprende, sobre una ciudad en llamas, que necesita a un equipo." },
-    { year: "2016", kicker: "LOS SECRETOS", title: "El precio de la verdad", text: "Los Acuerdos de Sokovia primero; después, la confesión de que Bucky fue el asesino de sus padres. Tony descubre que su máquina más perfeccionada —la venganza— no tiene arreglo." },
-    { year: "2023", kicker: "EL SACRIFICIO", title: "Enfrentar al Titán Loco", text: "Viaja al pasado, recupera a quienes desaparecieron y, cuando todas las armas se agotan, usa las Gemas del Infinito. Tony Stark dice \"yo soy Iron Man\" y pone fin a la guerra con su propia vida." },
+    { spoiler: { allOf: ["iron-man"] }, year: "2008", kicker: "LA JAULA", title: "Nacer en una cueva", text: "Secuestrado en Afganistán, Tony construye la Mark I con chatarra y a escondidas. La primera armadura no lo convierte en héroe: le enseña que la ironía del inventor es sentirse responsable de lo que crea." },
+    { spoiler: { allOf: ["los-vengadores"] }, year: "2012", kicker: "NUEVA YORK", title: "Salvar la ciudad", text: "Atraviesa un portal con un misil nuclear para salvar Manhattan. El genio que siempre había combatido solo aprende, sobre una ciudad en llamas, que necesita a un equipo." },
+    { spoiler: { allOf: ["capitan-america-civil-war"] }, year: "2016", kicker: "LOS SECRETOS", title: "El precio de la verdad", text: "Los Acuerdos de Sokovia primero; después, la confesión de que Bucky fue el asesino de sus padres. Tony descubre que su máquina más perfeccionada —la venganza— no tiene arreglo." },
+    { spoiler: { allOf: ["vengadores-endgame"] }, year: "2023", kicker: "EL SACRIFICIO", title: "Enfrentar al Titán Loco", text: "Viaja al pasado, recupera a quienes desaparecieron y, cuando todas las armas se agotan, usa las Gemas del Infinito. Tony Stark dice \"yo soy Iron Man\" y pone fin a la guerra con su propia vida." },
   ],
   strange: [
     { year: "2016", kicker: "LAS MANOS", title: "Perder para aprender", text: "\"Los accidentes no pasan por accidente\": Strange pierde sus manos y su identidad, y en un templo en Katmandú descubre que lo que más deseaba —controlarlo todo— era su mayor obstáculo." },

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Character } from "@/types/character";
+import { SpoilerText } from "@/features/spoilers/SpoilerText";
 
 export function CharacterIdentity({ character }: { character: Character }) {
   return <section className="profile-intro profile-section" data-scroll-section data-section-index="01">
@@ -11,6 +12,6 @@ export function CharacterIdentity({ character }: { character: Character }) {
       <b className="portrait-index">{character.number}</b>
       <small>{character.alias} / {character.role}</small>
     </div>
-    <div className="intro-copy" data-reveal><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd>{character.status}</dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
+    <div className="intro-copy" data-reveal><p>{character.description}</p><dl><div><dt>IDENTIDAD</dt><dd>{character.alias}</dd></div><div><dt>ORIGEN</dt><dd>{character.origin}</dd></div><div><dt>UNIVERSO</dt><dd>{character.universe}</dd></div><div><dt>FUNCIÓN</dt><dd>{character.category}</dd></div><div><dt>ESTADO</dt><dd><SpoilerText text={character.status} requirement={character.spoilers?.status} /></dd></div><div><dt>AFILIACIONES</dt><dd>{character.affiliations.join(" · ")}</dd></div></dl><a className="image-credit" href={character.sourceUrl} target="_blank" rel="noreferrer">IMAGEN Y PERSONAJE © MARVEL · VER FUENTE ↗</a></div>
   </section>;
 }

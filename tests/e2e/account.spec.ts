@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 async function mockSupabase(page: Page) {
   const progress = new Map<string, Map<string, boolean>>();
   let failSave = false;
-  await page.route("https://nexus-test.supabase.co/**", async (route) => {
+  await page.route("https://*.supabase.co/**", async (route) => {
     const request = route.request();
     const url = new URL(request.url());
     const json = (body: unknown, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body) });
@@ -90,4 +90,70 @@ test("intro runs once per browser and contact preserves the current page", async
   await page.reload();
   await expect(page.getByRole("dialog", { name: "Introducción de NEXUS" })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "CONTACTO", exact: true })).toHaveAttribute("target", "_blank");
+});
+
+test("spoiler progress: bulk settings persist, Iron Man reveals only watched acts and logout locks them", async ({ page }) => {
+  const mock = await mockSupabase(page);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await login(page);
+  const settings = page.locator("#spoilers");
+  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Iron Man");
+  await settings.getByRole("button", { name: "MARCAR 3 RESULTADOS COMO VISTOS", exact: true }).click();
+  await expect.poll(() => [...(mock.progress.get("alice")?.values() ?? [])].filter(Boolean).length).toBe(3);
+  await settings.getByRole("checkbox", { name: "Iron Man 3 PELÍCULA", exact: true }).uncheck();
+  await expect.poll(() => mock.progress.get("alice")?.get("iron-man-3")).toBe(false);
+  await page.reload();
+  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Iron Man");
+  await expect(settings.getByRole("checkbox", { name: "Iron Man PELÍCULA", exact: true })).toBeChecked();
+  await expect(settings.getByRole("checkbox", { name: "Iron Man 2 PELÍCULA", exact: true })).toBeChecked();
+  const requestedImages: string[] = [];
+  page.on("request", (request) => { if (request.resourceType() === "image") requestedImages.push(decodeURIComponent(request.url())); });
+  await page.goto("/personajes/iron");
+  const story = page.getByRole("region", { name: "Historia de IRON MAN", exact: true });
+  await expect(story.locator(".story-card").first()).toContainText("Nacer en una cueva");
+  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(3);
+  await expect(story).not.toContainText(/Salvar la ciudad|El precio de la verdad|Enfrentar al Titán Loco|2012|2016|2023/);
+  await expect(story.locator("img")).toHaveCount(2); // Base and first act only.
+  await expect(page.locator(".storyline-rail")).not.toContainText(/2012|2016|2023/);
+  await expect(page.locator(".profile-facts")).not.toContainText(/3000|despedida|batalla definitiva/);
+  await expect(page.locator(".screen-moment img, .screen-moment iframe")).toHaveCount(0);
+  expect(requestedImages.filter((url) => /history\/iron\/acto-[234]|moments\/iron/.test(url))).toEqual([]);
+
+  await page.goto("/cuenta");
+  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Los Vengadores");
+  await settings.getByRole("checkbox", { name: "Los Vengadores PELÍCULA", exact: true }).check();
+  await expect.poll(() => mock.progress.get("alice")?.get("los-vengadores")).toBe(true);
+  await page.goto("/personajes/iron");
+  await expect(story.locator(".story-card").nth(1)).toContainText("Salvar la ciudad");
+  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(2);
+  await page.goto("/cuenta");
+  await page.getByRole("button", { name: "CERRAR SESIÓN", exact: true }).click();
+  await expect(page.getByRole("button", { name: "ENTRAR", exact: true })).toBeVisible();
+  await page.goto("/personajes/iron");
+  await expect(story.locator("img")).toHaveCount(0);
+  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+});
+
+test("spoiler rendering fails closed before hydration and updates guest progress without reloading", async ({ page, browser, baseURL }) => {
+  await mockSupabase(page);
+  const noScript = await browser.newContext({ javaScriptEnabled: false });
+  const serverPage = await noScript.newPage();
+  await serverPage.goto(`${baseURL}/personajes/iron`);
+  await expect(serverPage.locator(".story-cinema img")).toHaveCount(0);
+  await expect(serverPage.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await noScript.close();
+  await page.goto("/personajes/iron");
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await page.evaluate(() => {
+    localStorage.setItem("nexus:titles:watched", JSON.stringify(["iron-man", "iron-man-2"]));
+    window.dispatchEvent(new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }));
+  });
+  await expect(page.locator(".story-card").first()).toContainText("Nacer en una cueva");
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(3);
+  await page.evaluate(() => {
+    localStorage.removeItem("nexus:titles:watched");
+    window.dispatchEvent(new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }));
+  });
+  await expect(page.locator(".story-cinema img")).toHaveCount(0);
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
 });

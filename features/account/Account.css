@@ -1,4 +1,11 @@
 /* Styles scoped to /cuenta, using Nexus's existing fonts and palette. */
+.account-spoilers { margin-top: 32px; padding-top: 28px; border-top: 1px solid #35402e; scroll-margin-top: 100px; }
+.account-spoilers select { min-width: 0; width: 100%; min-height: 50px; padding: 12px 14px; border: 1px solid #435039; background: #090d07; color: var(--paper); font: inherit; }
+.account-spoilers .account-footnote { margin-top: 20px; }
+.account-spoiler-titles { max-height: 320px; overflow-y: auto; margin-top: 20px; }
+.account-spoiler-titles label { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #35402e; font-size: 12px; line-height: 1.6; }
+.account-spoiler-titles input { flex: 0 0 18px; width: 18px; height: 18px; accent-color: var(--accent); }
+.account-spoiler-titles small { display: block; color: #aeb7a5; font-size: 9px; }
 .account-page { min-height: 82vh; background: #090d07; color: var(--paper); }
 .account-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,520px); align-items: center; gap: 80px; width: min(1160px,88%); margin: 0 auto; padding: 156px 0 96px; }
 .account-heading .eyebrow { margin: 0 0 26px; color: #aeb7a5; }

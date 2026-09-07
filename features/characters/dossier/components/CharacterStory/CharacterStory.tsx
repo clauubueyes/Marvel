@@ -5,13 +5,16 @@ import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { StoryChapter } from "@/types/character";
+import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
+import { protectContent } from "@/services/progress/spoilerPolicy";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 type CharacterStoryProps = {
-  acts: { label: string; numeral: string; chapter: StoryChapter; image?: string }[];
+  acts: { label: string; numeral: string; chapter: StoryChapter; image?: string; locked?: boolean }[];
   portrait?: string;
   portraitPosition?: string;
   characterName: string;
@@ -24,7 +27,14 @@ const MOOD_BY_ACT: Record<string, string> = {
   IV: "resolution",
 };
 
-export function CharacterStory({ acts, portrait, portraitPosition, characterName }: CharacterStoryProps) {
+export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, characterName }: CharacterStoryProps) {
+  const progress = useSpoilerProgress();
+  const acts = sourceActs.map((act) => protectContent(act, act.chapter.spoiler, progress, {
+    numeral: act.numeral,
+    label: `ACTO ${act.numeral}`,
+    locked: true,
+    chapter: { year: "🔒", kicker: "SPOILERS", title: "Contenido bloqueado por spoilers", text: "Continúa viendo el UCM para desbloquear esta parte." },
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const actsKey = acts.map((a) => `${a.numeral}:${a.chapter.year}`).join(",");
 
@@ -35,7 +45,6 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
     const cards = Array.from(section.querySelectorAll<HTMLElement>(".story-card"));
     const images = Array.from(section.querySelectorAll<HTMLElement>(".story-image"));
     const imageReveals = Array.from(section.querySelectorAll<HTMLElement>(".story-image-clip"));
-    const imageImgs = Array.from(section.querySelectorAll<HTMLElement>(".story-image-clip img"));
     const progressDots = Array.from(section.querySelectorAll<HTMLElement>(".story-progress-btn"));
     const progressFill = section.querySelector<HTMLElement>(".story-progress-fill");
 
@@ -101,7 +110,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
       cards.forEach((card, index) => {
         const clip = imageReveals[index];
         const image = images[index];
-        const img = imageImgs[index];
+        const img = clip?.querySelector("img");
         const dir = index % 2 === 0 ? 1 : -1;
         const meta = card.querySelectorAll<HTMLElement>(".story-meta");
         const kicker = card.querySelectorAll<HTMLElement>(".story-card h3 > em");
@@ -194,12 +203,12 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
       <section ref={sectionRef} className="story-cinema" data-history data-scroll-section data-section-index="HISTORIA" aria-label={`Historia de ${characterName}`}>
         <div className="story-images" aria-hidden="true">
           <div className="story-image-base">
-            {acts[0]?.image || portrait ? <Image src={acts[0]?.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: acts[0]?.image ? "center" : portraitPosition }} /> : null}
+            {!acts[0]?.locked && (acts[0]?.image || portrait) ? <Image src={acts[0]?.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: acts[0]?.image ? "center" : portraitPosition }} /> : null}
           </div>
           {acts.map((act, index) => (
             <div className="story-image" key={`${act.numeral}-${act.chapter.year}`}>
               <div className="story-image-clip" data-index={index}>
-                {act.image || portrait ? <Image src={act.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: act.image ? "center" : portraitPosition }} /> : null}
+                {!act.locked && (act.image || portrait) ? <Image src={act.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: act.image ? "center" : portraitPosition }} /> : null}
                 <div className="story-image-aura" aria-hidden="true" />
                 <div className="story-image-grain" />
               </div>
@@ -225,7 +234,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
 
         <div className="story-track">
           {acts.map((act, index) => {
-            const mood = MOOD_BY_ACT[act.numeral] ?? "origin";
+            const mood = act.locked ? "locked" : MOOD_BY_ACT[act.numeral] ?? "origin";
             const numbers = `${String(index + 1).padStart(2, "0")} · ${String(acts.length).padStart(2, "0")}`;
             const titleWords = act.chapter.title.split(/\s+/);
             return (
@@ -252,10 +261,10 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
                 </h3>
                 <p className="story-card-text">{act.chapter.text}</p>
                 <div className="story-card-foot">
-                  <span className="story-chip">
+                  {act.locked ? <Link className="story-chip" href="/cuenta#spoilers">🔒 ACTUALIZAR MI PROGRESO</Link> : <span className="story-chip">
                     <i />
                     ACTO {act.numeral} · {mood.toUpperCase()}
-                  </span>
+                  </span>}
                 </div>
               </article>
             );

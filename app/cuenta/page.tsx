@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { AccountForm } from "@/features/account/AccountForm";
+import { SpoilerProgressSettings } from "@/features/account/SpoilerProgressSettings";
+import { mcuCatalog } from "@/data/mcuCatalog";
+import { characters } from "@/repositories/characterRepository";
 
 export const metadata: Metadata = { title: "Mi cuenta — NEXUS", robots: { index: false, follow: false } };
 
@@ -14,7 +17,10 @@ export default function AccountPage() {
         <p>Tu recorrido por el universo Marvel, siempre contigo.</p>
         <div className="account-heading-note"><span aria-hidden="true">↗</span><p>Marca lo que has visto.<br />Continúa desde cualquier dispositivo.</p></div>
       </header>
-      <AccountForm />
+      <AccountForm><SpoilerProgressSettings
+        titles={mcuCatalog.map(({ slug, title, type }) => ({ slug, title, type }))}
+        characters={characters.map(({ id, name, appearances }) => ({ id, name, titleIds: appearances.map(({ titleId }) => titleId) }))}
+      /></AccountForm>
     </div>
   </main>;
 }

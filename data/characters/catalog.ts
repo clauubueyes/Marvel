@@ -30,6 +30,11 @@ const characterEntries: CharacterEntry[] = [
   },
   {
     id: "iron", name: "IRON MAN", alias: "Tony Stark", number: "02",
+    spoilers: {
+      status: { allOf: ["vengadores-endgame"] },
+      facts: [{ allOf: ["iron-man"] }, { allOf: ["vengadores-endgame"] }, { allOf: ["vengadores-endgame"] }],
+      screenMoment: { allOf: ["iron-man-3"] },
+    },
     quote: "La armadura es solo el principio.", universe: "Tierra-616",
     color: "#ff3b19", color2: "#ffc400", power: "Ingenio sin límites", symbol: "◉", votes: 3954,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/9/c0/527bb7b37ff55.jpg", sourceUrl: "https://www.marvel.com/characters/iron-man-tony-stark/",

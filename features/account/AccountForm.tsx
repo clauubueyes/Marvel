@@ -6,7 +6,7 @@ import { getSupabaseClient } from "@/services/supabase/client";
 import { authErrorMessage } from "@/services/supabase/authErrorMessage";
 import { useAccount, useFavoritesStore } from "./AccountProvider";
 
-export function AccountForm() {
+export function AccountForm({ children }: { children?: React.ReactNode }) {
   const { user, initialized, pending, watched, ready, error, store } = useAccount();
   const favorites = useFavoritesStore();
   const { pending: favoritePending } = useSyncExternalStore(favorites.subscribe, favorites.getSnapshot, favorites.getServerSnapshot);
@@ -61,5 +61,6 @@ export function AccountForm() {
         <p className="account-footnote">Tu progreso de invitado se conserva en este navegador. Al entrar, usarás el de tu cuenta.</p>
       </form>}
     {message && <p className="account-message" role="status">{message}</p>}
+    {children}
   </section>;
 }

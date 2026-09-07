@@ -3,8 +3,19 @@
 import Image from "next/image";
 import type { Character } from "@/types/character";
 import { useYouTubeEmbed } from "@/hooks/useYouTubeEmbed";
+import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
+import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
+import { SpoilerNotice } from "@/features/spoilers/SpoilerNotice";
 
 export function CharacterScreenMoment({ character }: { character: Character }) {
+  const progress = useSpoilerProgress();
+  if (!canRevealSpoiler(character.spoilers?.screenMoment, progress)) {
+    return <section className="screen-moment profile-section" data-scroll-section data-section-index="02"><SpoilerNotice /></section>;
+  }
+  return <ScreenMoment character={character} />;
+}
+
+function ScreenMoment({ character }: { character: Character }) {
   const { embedUrl, play } = useYouTubeEmbed(character.screenMoment.videoId);
   const videoTitle = `Vídeo oficial: ${character.screenMoment.title}`;
 

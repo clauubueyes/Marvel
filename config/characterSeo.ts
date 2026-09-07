@@ -74,7 +74,7 @@ export function createCharacterStructuredData(character: Character) {
         additionalProperty: [
           { "@type": "PropertyValue", name: "Universo", value: character.universe },
           { "@type": "PropertyValue", name: "Categoría", value: character.category },
-          { "@type": "PropertyValue", name: "Estado", value: character.status },
+          ...(!character.spoilers?.status ? [{ "@type": "PropertyValue", name: "Estado", value: character.status }] : []),
           { "@type": "PropertyValue", name: "Poderes", value: character.abilities.join(", ") },
         ],
       },
