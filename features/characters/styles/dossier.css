@@ -574,8 +574,8 @@
    retrato sticky que se transforma con el scroll — escala, deriva y wipes de
    máscara entre actos — para que el cambio de capítulo se sienta continuo. */
 .story-cinema { position: relative; display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr); gap: clamp(2vw, 4vw, 5vw); background: radial-gradient(circle at 78% 50%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 40%), #090a0d; }
-.story-track { position: relative; z-index: 2; grid-column: 1; }
-.story-images { position: sticky; top: 0; height: 100vh; height: 100svh; z-index: 1; overflow: hidden; isolation: isolate; grid-column: 2; }
+.story-track { position: relative; z-index: 2; grid-column: 1; grid-row: 1; min-width: 0; padding-inline: clamp(24px, 5vw, 96px) 1vw; }
+.story-images { position: sticky; top: 0; height: 100vh; height: 100svh; z-index: 1; overflow: hidden; isolation: isolate; grid-column: 2; grid-row: 1; align-self: start; }
 
 .story-image-base { position: absolute; inset: 0; }
 .story-image-base img { object-fit: cover; filter: brightness(.42) saturate(.9); transform: scale(1.08); }
@@ -583,7 +583,7 @@
 /* Pila de actos: cada capítulo aporta un recorte que se abre/cierra según el
    scroll. El primero nace abierto; los demás aparecen desde una arista y la
    dirección del wipe alterna para dar variedad al recorrido. */
-.story-image { position: absolute; inset: 0; will-change: transform; }
+.story-image { position: absolute; inset: -40px 0; will-change: transform; }
 .story-image-clip { position: absolute; inset: 0; overflow: hidden; will-change: clip-path; backface-visibility: hidden; }
 .story-image-clip[data-index="0"] { clip-path: inset(0% 0% 0% 0%); }
 .story-image-clip img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; transform: scale(1.24); filter: brightness(.64) saturate(1.04) contrast(1.08); }
@@ -614,20 +614,23 @@
 
 /* Actos editoriales: cada tarjeta ocupa una pantalla y centra su contenido
    para que el texto quede alineado con el retrato sticky de la columna. */
-.story-card { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 16vh 0 14vh; position: relative; will-change: transform, opacity, filter; }
+.story-card { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(64px, 12svh, 128px) 0; position: relative; will-change: transform, opacity, filter; container-type: inline-size; }
 .story-card::before { content: ""; position: absolute; left: -0.5vw; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent) 22%, color-mix(in srgb, var(--accent) 55%, transparent) 78%, transparent); opacity: .16; }
 .story-card[data-active="true"]::before { opacity: .55; }
-.story-meta { position: relative; display: flex; align-items: center; gap: 16px; width: max-content; margin-bottom: 30px; padding: 11px 14px 11px 16px; background: #050608; border: 1px solid #2c2f27; clip-path: polygon(0 0, 100% 0, 100% 100%, 11px 100%, 0 calc(100% - 11px)); }
+.story-meta { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; width: fit-content; max-width: 100%; margin-bottom: 30px; padding: 11px 14px 11px 16px; background: #050608; border: 1px solid #2c2f27; clip-path: polygon(0 0, 100% 0, 100% 100%, 11px 100%, 0 calc(100% - 11px)); }
 .story-meta::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent) 0 7px, transparent 7px 13px); opacity: .55; pointer-events: none; }
 .story-meta span, .story-meta b, .story-meta em { position: relative; z-index: 1; }
 .story-meta span { color: var(--accent); font: 12px var(--font-mono); letter-spacing: 2.6px; }
 .story-meta b { padding: 5px 9px; color: #a8aa9f; border: 1px solid #3a3d35; font: 10px var(--font-mono); letter-spacing: 1.8px; }
 .story-meta em { margin-left: auto; color: #5f6157; font: 9px var(--font-mono); letter-spacing: 1.6px; font-style: normal; }
-.story-card h3 { max-width: 640px; font: clamp(46px, 5.4vw, 92px)/.9 var(--font-display); text-transform: uppercase; letter-spacing: -1px; }
+.story-card h3 { max-width: 640px; margin: 0; font: clamp(32px, 11cqi, 86px)/1 var(--font-display); text-transform: uppercase; letter-spacing: -1px; }
 .story-card h3 > em { display: block; margin-bottom: 14px; color: transparent; -webkit-text-stroke: 1.5px var(--accent); font-style: normal; font-size: clamp(18px, 1.7vw, 28px); letter-spacing: .05em; }
-.story-title { display: block; }
+.story-title { display: block; text-wrap: balance; }
+.story-title-word { display: inline-block; white-space: nowrap; }
 .story-title-letter { display: inline-block; transform-origin: 50% 100%; }
-.story-space { white-space: pre; }
+@media (min-width: 1181px) {
+  .story-track { padding-left: max(200px, 5vw); }
+}
 .story-card-text { max-width: 540px; margin-top: 28px; color: #9c9d94; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.8; }
 .story-card-foot { margin-top: 36px; }
 .story-chip { display: inline-flex; align-items: center; gap: 9px; padding: 9px 13px; border: 1px solid rgba(255,255,255,.14); color: #8a8c91; font: 8px var(--font-mono); letter-spacing: 2px; text-transform: uppercase; }
@@ -637,8 +640,8 @@
   .story-cinema { display: block; }
   .story-images { height: 44vh; height: 44svh; width: 100%; grid-column: auto; }
   .story-image-clip img { object-position: center 22%; }
-  .story-track { padding: 0 7vw; }
-  .story-card { min-height: auto; padding: 58vh 0 14vh; }
+  .story-track { padding: 0 7vw; margin-top: -44svh; }
+  .story-card { min-height: 100svh; padding: calc(44svh + 32px) 0 64px; }
   .story-card::before { left: -7vw; }
   .story-year-storyline { right: 3%; bottom: 8%; }
   .story-progress { left: 10px; }
@@ -646,8 +649,8 @@
 }
 @media (max-width: 560px) {
   .story-images { height: 38vh; height: 38svh; }
-  .story-card { padding-top: 50vh; padding-bottom: 10vh; }
-  .story-card h3 { font-size: clamp(38px, 11vw, 58px); }
+  .story-track { margin-top: -38svh; }
+  .story-card { padding-top: calc(38svh + 28px); padding-bottom: 48px; }
   .story-card-text { font-size: 13px; }
   .story-meta span { font-size: 10px; letter-spacing: 2px; }
   .story-meta em { display: none; }
@@ -655,7 +658,6 @@
   .story-year-storyline b { font-size: clamp(40px, 14vw, 64px); }
 }
 @media (max-width: 380px) {
-  .story-card h3 { font-size: clamp(32px, 10.5vw, 44px); }
   .story-year-storyline { display: none; }
 }
 

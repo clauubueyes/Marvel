@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, type CSSProperties } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { StoryChapter } from "@/types/character";
@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 type CharacterStoryProps = {
-  acts: { label: string; numeral: string; chapter: StoryChapter }[];
+  acts: { label: string; numeral: string; chapter: StoryChapter; image?: string }[];
   portrait?: string;
   portraitPosition?: string;
   characterName: string;
@@ -83,7 +83,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
           scrollTrigger: {
             trigger: card,
             start: index === 0 ? "top 100%" : "top 92%",
-            end: "top -24%",
+            end: "bottom top",
             scrub: 0.5,
           },
           defaults: { ease: "power2.out" },
@@ -99,12 +99,18 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
           .fromTo(kicker, { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.09 }, 0.085)
           .fromTo(letters, { opacity: 0, y: "74%", rotationX: -74 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.13, ease: "power3.out", stagger: 0.006 }, 0.11)
           .fromTo(body, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.11 }, 0.26)
-          .fromTo(foot, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.09 }, 0.3)
-          .to(meta, { opacity: 0, y: -26, duration: 0.1, ease: "power2.in" }, 0.5)
+          .fromTo(foot, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.09 }, 0.3);
+
+        if (index === cards.length - 1) {
+          // Mantiene el ritmo de entrada y deja el desenlace legible hasta salir.
+          tl.to({}, { duration: 0.38 }, 0.39);
+        } else {
+          tl.to(meta, { opacity: 0, y: -26, duration: 0.1, ease: "power2.in" }, 0.5)
           .to(kicker, { opacity: 0, x: -16, duration: 0.1, ease: "power2.in" }, 0.54)
           .to(letters, { opacity: 0, y: "-42%", rotationX: 16, filter: "blur(3px)", duration: 0.12, ease: "power2.in" }, 0.56)
           .to(body, { opacity: 0, y: -22, duration: 0.11, ease: "power2.in" }, 0.62)
           .to(foot, { opacity: 0, y: -12, duration: 0.1, ease: "power2.in" }, 0.67);
+        }
       });
 
       const cover = images[0];
@@ -155,12 +161,12 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
       <section ref={sectionRef} className="story-cinema" data-history data-scroll-section data-section-index="HISTORIA" aria-label={`Historia de ${characterName}`}>
         <div className="story-images" aria-hidden="true">
           <div className="story-image-base">
-            {portrait ? <Image src={portrait} alt="" fill sizes="(max-width: 900px) 100vw, 42vw" style={portraitPosition ? { objectPosition: portraitPosition } : undefined} /> : null}
+            {acts[0]?.image || portrait ? <Image src={acts[0]?.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: acts[0]?.image ? "center" : portraitPosition }} /> : null}
           </div>
           {acts.map((act, index) => (
             <div className="story-image" key={`${act.numeral}-${act.chapter.year}`}>
               <div className="story-image-clip" data-index={index}>
-                {portrait ? <Image src={portrait} alt="" fill sizes="(max-width: 900px) 100vw, 42vw" style={portraitPosition ? { objectPosition: portraitPosition } : undefined} /> : null}
+                {act.image || portrait ? <Image src={act.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: act.image ? "center" : portraitPosition }} /> : null}
                 <div className="story-image-aura" aria-hidden="true" />
                 <div className="story-image-grain" />
               </div>
@@ -188,7 +194,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
           {acts.map((act, index) => {
             const mood = MOOD_BY_ACT[act.numeral] ?? "origin";
             const numbers = `${String(index + 1).padStart(2, "0")} · ${String(acts.length).padStart(2, "0")}`;
-            const titleLetters = Array.from(act.chapter.title);
+            const titleWords = act.chapter.title.split(/\s+/);
             return (
               <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step aria-label={`${act.label} · ${act.chapter.title}`}>
                 <div className="story-meta">
@@ -199,13 +205,16 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
                 <h3>
                   <em>{act.chapter.kicker}</em>
                   <span className="story-title" aria-label={act.chapter.title}>
-                    {titleLetters.map((letter, letterIndex) =>
-                      letter === " " ? (
-                        <span className="story-space" key={letterIndex} aria-hidden="true">{" "}</span>
-                      ) : (
-                        <i className="story-title-letter" style={{ "--letter": letterIndex } as CSSProperties} key={letterIndex} aria-hidden="true">{letter}</i>
-                      ),
-                    )}
+                    {titleWords.map((word, wordIndex) => (
+                      <Fragment key={wordIndex}>
+                        {wordIndex > 0 ? " " : null}
+                        <span className="story-title-word" aria-hidden="true">
+                          {Array.from(word).map((letter, letterIndex) => (
+                            <i className="story-title-letter" key={letterIndex}>{letter}</i>
+                          ))}
+                        </span>
+                      </Fragment>
+                    ))}
                   </span>
                 </h3>
                 <p className="story-card-text">{act.chapter.text}</p>

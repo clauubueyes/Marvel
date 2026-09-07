@@ -155,7 +155,7 @@
 /* CINEMATOGRAFÍA NARRATIVA — La columna sticky y sus recortes son dirigidos
    por GSAP/ScrollTrigger (ver `CharacterStory`). Aquí solo el estado base: la
    pila de capas, el wipe de las portadas y la entrada del corredor. */
-[data-scroll-section].story-cinema > .story-images { position: sticky; top: 0; height: 100vh; height: 100svh; }
+[data-scroll-section].story-cinema > .story-images { position: sticky; }
 [data-scroll-section].story-cinema > .story-track { z-index: 2; }
 [data-scroll-section].story-cinema > .story-track > .story-card { will-change: transform, opacity, filter; }
 .story-image-clip { -webkit-backface-visibility: hidden; backface-visibility: hidden; }

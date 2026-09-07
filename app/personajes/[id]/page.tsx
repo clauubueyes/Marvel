@@ -19,6 +19,7 @@ import {
   StorylineRail,
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
+import { getCharacterStoryImages } from "@/repositories/characterStoryImageRepository";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
 import { getCharacterMotionProfile } from "@/utils/characterMotion";
 
@@ -48,6 +49,7 @@ export default async function CharacterPage({ params }: PageProps) {
   const structuredData = createCharacterStructuredData(character);
 
   const beats = character.story.slice(0, 4);
+  const storyImages = await getCharacterStoryImages(character.id, beats.length);
   const actLabels = ["I · EL ORIGEN", "II · EL PODER", "III · LA CRISIS", "IV · EL DESENLACE"];
   const actNumerals = ["I", "II", "III", "IV"];
 
@@ -78,7 +80,7 @@ export default async function CharacterPage({ params }: PageProps) {
       characterName={character.name}
       portrait={character.image}
       portraitPosition={character.imagePosition}
-      acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat }))}
+      acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat, image: storyImages[index] }))}
     />}
     {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
     <CharacterScreenMoment character={character} />
