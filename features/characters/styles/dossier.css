@@ -616,7 +616,7 @@
    para que el texto quede alineado con el retrato sticky de la columna. */
 .story-card { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 16vh 0 14vh; position: relative; will-change: transform, opacity, filter; }
 .story-card::before { content: ""; position: absolute; left: -0.5vw; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent) 22%, color-mix(in srgb, var(--accent) 55%, transparent) 78%, transparent); opacity: .16; }
-.story-card[data-index="0"]::before { opacity: .55; }
+.story-card[data-active="true"]::before { opacity: .55; }
 .story-meta { position: relative; display: flex; align-items: center; gap: 16px; width: max-content; margin-bottom: 30px; padding: 11px 14px 11px 16px; background: #050608; border: 1px solid #2c2f27; clip-path: polygon(0 0, 100% 0, 100% 100%, 11px 100%, 0 calc(100% - 11px)); }
 .story-meta::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent) 0 7px, transparent 7px 13px); opacity: .55; pointer-events: none; }
 .story-meta span, .story-meta b, .story-meta em { position: relative; z-index: 1; }

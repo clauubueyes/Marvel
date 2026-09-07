@@ -42,112 +42,69 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
     if (!cards.length) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(cards, { autoAlpha: 0 });
-      gsap.set(cards[0], { autoAlpha: 1 });
-
-      let current = 0;
-      const activate = (index: number): void => {
-        if (index < 0 || index >= cards.length || index === current) return;
-        const card = cards[index];
-        gsap.to(cards[current], { autoAlpha: 0, x: index % 2 === 0 ? -40 : 40, duration: 0.55, ease: "power2.inOut" });
-        current = index;
-        gsap.fromTo(
-          card,
-          { autoAlpha: 0, x: index % 2 === 0 ? 60 : -60, filter: "blur(4px)" },
-          { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.75, ease: "power3.out", overwrite: true },
-        );
-        gsap.fromTo(
-          card.querySelectorAll(".story-title-letter"),
-          { opacity: 0, y: "70%", rotationX: -70 },
-          { opacity: 1, y: 0, rotationX: 0, duration: 0.7, ease: "power3.out", stagger: 0.018 },
-        );
-        gsap.fromTo(
-          card.querySelectorAll(".story-meta"),
-          { opacity: 0, y: -18 },
-          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-        );
-        gsap.fromTo(
-          card.querySelectorAll(".story-card-text"),
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.6, delay: 0.12, ease: "power2.out" },
-        );
+      const setAct = (index: number): void => {
+        const act = Math.max(0, Math.min(cards.length - 1, index));
+        cards.forEach((card, i) => card.setAttribute("data-active", i === act ? "true" : "false"));
         progressDots.forEach((dot, dotIndex) => {
-          const state = dotIndex <= index ? "true" : "false";
+          const state = dotIndex <= act ? "true" : "false";
           if (dot.getAttribute("data-active") !== state) dot.setAttribute("data-active", state);
         });
         section.querySelectorAll<HTMLElement>(".story-year-storyline b").forEach((yearEl, yearIndex) => {
-          const state = yearIndex <= index ? "true" : "false";
+          const state = yearIndex <= act ? "true" : "false";
           if (yearEl.getAttribute("data-active") !== state) yearEl.setAttribute("data-active", state);
         });
       };
 
       cards.forEach((card, index) => {
-        if (index === 0) return;
         ScrollTrigger.create({
           trigger: card,
-          start: "top 62%",
-          end: "top 62%",
-          onEnter: () => activate(index),
-          onLeaveBack: () => activate(index - 1),
+          start: "top 40%",
+          end: "top 40%",
+          onEnter: () => setAct(index),
+          onLeaveBack: () => setAct(index - 1),
         });
       });
 
       cards.forEach((card, index) => {
-        const image = images[index];
         const clip = imageReveals[index];
+        const image = images[index];
         const img = imageImgs[index];
-        if (index === 0 || !image || !clip) return;
-
         const dir = index % 2 === 0 ? 1 : -1;
-        gsap.fromTo(
-          clip,
-          { clipPath: "inset(0% 0% 100% 0%)", zIndex: index },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            zIndex: index,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 86%",
-              end: "center 48%",
-              scrub: 0.5,
-            },
+        const meta = card.querySelectorAll<HTMLElement>(".story-meta");
+        const kicker = card.querySelectorAll<HTMLElement>(".story-card h3 > em");
+        const letters = card.querySelectorAll<HTMLElement>(".story-title-letter");
+        const body = card.querySelectorAll<HTMLElement>(".story-card-text");
+        const foot = card.querySelectorAll<HTMLElement>(".story-card-foot");
+
+        if (clip) gsap.set(clip, { zIndex: index });
+        gsap.set([...meta, ...kicker, ...letters, ...body, ...foot], { opacity: 0 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: index === 0 ? "top 100%" : "top 92%",
+            end: "top -24%",
+            scrub: 0.5,
           },
-        );
-        gsap.fromTo(
-          image,
-          { scale: 1.14, y: 0, rotate: dir * 3 },
-          {
-            scale: 1.02,
-            y: index % 2 === 0 ? -30 : 30,
-            rotate: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 86%",
-              end: "center 48%",
-              scrub: 0.6,
-            },
-          },
-        );
-        if (img) {
-          gsap.fromTo(
-            img,
-            { scale: 1.18, x: dir * 34, filter: "blur(6px)" },
-            {
-              scale: 1,
-              x: 0,
-              filter: "blur(0px)",
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 86%",
-                end: "center 48%",
-                scrub: 0.7,
-              },
-            },
-          );
+          defaults: { ease: "power2.out" },
+        });
+
+        if (index > 0 && clip && image && img) {
+          tl.fromTo(clip, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power1.inOut" }, 0)
+            .fromTo(image, { scale: 1.14, y: 0, rotate: dir * 3 }, { scale: 1.02, y: index % 2 === 0 ? -30 : 30, rotate: 0, duration: 0.14 }, 0)
+            .fromTo(img, { scale: 1.18, x: dir * 34, filter: "blur(6px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.16 }, 0.02);
         }
+
+        tl.fromTo(meta, { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.09 }, 0.05)
+          .fromTo(kicker, { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.09 }, 0.085)
+          .fromTo(letters, { opacity: 0, y: "74%", rotationX: -74 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.13, ease: "power3.out", stagger: 0.006 }, 0.11)
+          .fromTo(body, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.11 }, 0.26)
+          .fromTo(foot, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.09 }, 0.3)
+          .to(meta, { opacity: 0, y: -26, duration: 0.1, ease: "power2.in" }, 0.5)
+          .to(kicker, { opacity: 0, x: -16, duration: 0.1, ease: "power2.in" }, 0.54)
+          .to(letters, { opacity: 0, y: "-42%", rotationX: 16, filter: "blur(3px)", duration: 0.12, ease: "power2.in" }, 0.56)
+          .to(body, { opacity: 0, y: -22, duration: 0.11, ease: "power2.in" }, 0.62)
+          .to(foot, { opacity: 0, y: -12, duration: 0.1, ease: "power2.in" }, 0.67);
       });
 
       const cover = images[0];
@@ -233,7 +190,7 @@ export function CharacterStory({ acts, portrait, portraitPosition, characterName
             const numbers = `${String(index + 1).padStart(2, "0")} · ${String(acts.length).padStart(2, "0")}`;
             const titleLetters = Array.from(act.chapter.title);
             return (
-              <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-history-step aria-label={`${act.label} · ${act.chapter.title}`}>
+              <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step aria-label={`${act.label} · ${act.chapter.title}`}>
                 <div className="story-meta">
                   <span>{act.label}</span>
                   <b>{act.chapter.year}</b>
