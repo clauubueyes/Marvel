@@ -6,7 +6,6 @@ import { MotionEffects } from "@/components/common/MotionEffects";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createCharacterMetadata, createCharacterStructuredData } from "@/config/characterSeo";
 import {
-  CharacterChapter,
   CharacterConnections,
   CharacterFacts,
   CharacterFilmography,
@@ -16,6 +15,7 @@ import {
   CharacterPowers,
   CharacterReference,
   CharacterScreenMoment,
+  CharacterStory,
   StorylineRail,
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
@@ -72,13 +72,14 @@ export default async function CharacterPage({ params }: PageProps) {
     <CharacterHero character={character} motion={motion} />
     {/* Expediente rápido de quién es antes de entrar al relato. */}
     <CharacterIdentity character={character} />
-    {/* La historia es la columna vertebral: capítulos continuos sin interrupciones. */}
-    {beats.length > 0 && <section className="story-corridor profile-section" data-scroll-section data-section-index="HISTORIA">
-      <p className="section-label" data-reveal>LA HISTORIA</p>
-      <h2 data-reveal>CUATRO ACTOS<br /><em>UNA LÍNEA DE TIEMPO</em></h2>
-      <span data-reveal>LA VERDAD DE {character.name} SE CUENTA DE CORRIDO, CAPÍTULO A CAPÍTULO, SIN EXPEDIENTES DE POR MEDIO.</span>
-    </section>}
-    {beats.map((beat, index) => <CharacterChapter key={beat.year} chapter={beat} act={actLabels[index]} actNumeral={actNumerals[index]} position={index % 2 === 0 ? "left" : "right"} index={index} total={beats.length} portrait={character.image} portraitPosition={character.imagePosition} nextAct={beats[index + 1] ? actLabels[index + 1] : undefined} nextYear={beats[index + 1]?.year} />)}
+    {/* La historia es la columna vertebral: narrativa editorial con imagen sticky
+        y capítulos que se suceden, transformados por el scroll. */}
+    {beats.length > 0 && <CharacterStory
+      characterName={character.name}
+      portrait={character.image}
+      portraitPosition={character.imagePosition}
+      acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat }))}
+    />}
     {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
     <CharacterScreenMoment character={character} />
     <CharacterPowers character={character} />

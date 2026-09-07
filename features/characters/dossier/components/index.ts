@@ -1,5 +1,5 @@
 export { CharacterConnections } from "./CharacterConnections/CharacterConnections";
-export { CharacterChapter } from "./CharacterChapter/CharacterChapter";
+export { CharacterStory } from "./CharacterStory/CharacterStory";
 export { CharacterFacts } from "./CharacterFacts/CharacterFacts";
 export { CharacterFilmography } from "./CharacterFilmography/CharacterFilmography";
 export { CharacterHero } from "./CharacterHero/CharacterHero";
