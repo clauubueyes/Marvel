@@ -32,6 +32,7 @@ export function buildCharacter(seed: CharacterSeed, number: number): Character {
     number: String(number).padStart(2, "0"),
     votes: 0,
     appearances,
+    story: [],
     stats: seed.abilities.map((label, abilityIndex) => ({ label, value: 88 - abilityIndex * 5 })),
     timeline: appearances.slice(0, 3).map(({ year, title, event }) => ({ year, title, text: event })),
     facts: [

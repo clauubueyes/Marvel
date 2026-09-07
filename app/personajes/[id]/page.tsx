@@ -15,9 +15,11 @@ import {
   CharacterPowers,
   CharacterReference,
   CharacterScreenMoment,
-  CharacterTimeline,
+  CharacterStory,
+  StorylineRail,
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
+import { getCharacterStoryImages } from "@/repositories/characterStoryImageRepository";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
 import { getCharacterMotionProfile } from "@/utils/characterMotion";
 
@@ -46,6 +48,11 @@ export default async function CharacterPage({ params }: PageProps) {
   const motion = getCharacterMotionProfile(character);
   const structuredData = createCharacterStructuredData(character);
 
+  const beats = character.story.slice(0, 4);
+  const storyImages = await getCharacterStoryImages(character.id, beats.length);
+  const actLabels = ["I · EL ORIGEN", "II · EL PODER", "III · LA CRISIS", "IV · EL DESENLACE"];
+  const actNumerals = ["I", "II", "III", "IV"];
+
   /*
    * Variables visuales de la ficha:
    * - `--accent` y `--accent-2` aplican la paleta propia del personaje.
@@ -61,15 +68,25 @@ export default async function CharacterPage({ params }: PageProps) {
     <Breadcrumbs items={[{ label: "PERSONAJES", href: "/personajes" }, { label: character.name }]} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c") }} />
 
+    {beats.length > 0 && <StorylineRail beats={beats.map((beat, index) => ({ act: actLabels[index], year: beat.year }))} />}
+
     {/* Primer impacto visual: nombre, retrato principal y metadatos. */}
     <CharacterHero character={character} motion={motion} />
-    {/* Secciones editoriales claras y oscuras que desarrollan el personaje. */}
+    {/* Expediente rápido de quién es antes de entrar al relato. */}
     <CharacterIdentity character={character} />
+    {/* La historia es la columna vertebral: narrativa editorial con imagen sticky
+        y capítulos que se suceden, transformados por el scroll. */}
+    {beats.length > 0 && <CharacterStory
+      characterName={character.name}
+      portrait={character.image}
+      portraitPosition={character.imagePosition}
+      acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat, image: storyImages[index] }))}
+    />}
+    {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
     <CharacterScreenMoment character={character} />
+    <CharacterPowers character={character} />
     <CharacterFacts facts={character.facts} />
     <CharacterFilmography appearances={character.appearances} />
-    <CharacterPowers character={character} />
-    <CharacterTimeline character={character} />
     {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
     <CharacterConnections entities={connectedEntities} />
     <CharacterReference character={character} routes={relatedRoutes} />

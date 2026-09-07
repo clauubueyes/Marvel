@@ -72,7 +72,8 @@ export function IronManCluster() {
       roughness: 0.2,
       flatShading: true,
     });
-    const sourceGeometry = new THREE.IcosahedronGeometry(1.35, 1).toNonIndexed();
+    const sourceGeometry = new THREE.IcosahedronGeometry(1.35, 1);
+    if (sourceGeometry.index) sourceGeometry.toNonIndexed();
     const positions = sourceGeometry.getAttribute("position");
     const faces: ClusterFace[] = [];
 
@@ -99,7 +100,7 @@ export function IronManCluster() {
 
     const pointer = new THREE.Vector2();
     const targetPointer = new THREE.Vector2();
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
     let frame = 0;
 
     const resize = () => {
@@ -124,7 +125,8 @@ export function IronManCluster() {
     host.addEventListener("pointerleave", handlePointerLeave);
 
     const render = () => {
-      const elapsed = clock.getElapsedTime();
+      timer.update();
+      const elapsed = timer.getElapsed();
       pointer.lerp(targetPointer, 0.055);
       const interaction = Math.min(pointer.length(), 1);
       cluster.rotation.y = -0.35 + elapsed * (reduceMotion ? 0 : 0.12) + pointer.x * 0.2;
@@ -147,6 +149,7 @@ export function IronManCluster() {
       resizeObserver.disconnect();
       host.removeEventListener("pointermove", handlePointerMove);
       host.removeEventListener("pointerleave", handlePointerLeave);
+      timer.dispose();
       sourceGeometry.dispose();
       core.geometry.dispose();
       faceMaterial.dispose();
