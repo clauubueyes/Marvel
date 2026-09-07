@@ -1,5 +1,7 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,7 +17,7 @@ type StorylineRailProps = {
 
 export function StorylineRail({ beats: sourceBeats }: StorylineRailProps) {
   const progress = useSpoilerProgress();
-  const beats = sourceBeats.map((beat, index) => protectContent(beat, beat.spoiler, progress, { year: "🔒", act: `ACTO ${index + 1} · BLOQUEADO` }));
+  const beats = sourceBeats.map((beat, index) => protectContent(beat, beat.spoiler ?? UNREVIEWED_SPOILER, progress, { year: "🔒", act: `ACTO ${index + 1} · BLOQUEADO` }));
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 

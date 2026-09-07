@@ -1,3 +1,8 @@
+"use client";
+
+import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
+import { canRevealSpoiler, UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+import { SpoilerNotice } from "@/features/spoilers/SpoilerNotice";
 import Link from "next/link";
 import type { Character } from "@/types/character";
 import type { ViewingRoute } from "@/types/viewingRoute";
@@ -5,6 +10,8 @@ import type { ViewingRoute } from "@/types/viewingRoute";
 type CharacterReferenceProps = { character: Character; routes: ViewingRoute[] };
 
 export function CharacterReference({ character, routes }: CharacterReferenceProps) {
+  const progress = useSpoilerProgress();
+  if (!canRevealSpoiler(UNREVIEWED_SPOILER, progress)) return <section className="profile-section"><SpoilerNotice /></section>;
   return <section className="character-reference profile-section" data-scroll-section data-section-index="07">
     <header data-reveal><p className="section-label">07 / EXPEDIENTE EDITORIAL</p><h2>VARIANTES Y<br /><em>RECORRIDOS</em></h2></header>
     <div className="character-reference-grid">

@@ -1,5 +1,7 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import Image from "next/image";
 import type { Character } from "@/types/character";
 import { useYouTubeEmbed } from "@/hooks/useYouTubeEmbed";
@@ -9,7 +11,7 @@ import { SpoilerNotice } from "@/features/spoilers/SpoilerNotice";
 
 export function CharacterScreenMoment({ character }: { character: Character }) {
   const progress = useSpoilerProgress();
-  if (!canRevealSpoiler(character.spoilers?.screenMoment, progress)) {
+  if (!canRevealSpoiler(character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER, progress)) {
     return <section className="screen-moment profile-section" data-scroll-section data-section-index="02"><SpoilerNotice /></section>;
   }
   return <ScreenMoment character={character} />;

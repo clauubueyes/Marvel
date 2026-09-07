@@ -1,5 +1,7 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import Image from "next/image";
 import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
@@ -29,7 +31,7 @@ const MOOD_BY_ACT: Record<string, string> = {
 
 export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, characterName }: CharacterStoryProps) {
   const progress = useSpoilerProgress();
-  const acts = sourceActs.map((act) => protectContent(act, act.chapter.spoiler, progress, {
+  const acts = sourceActs.map((act) => protectContent(act, act.chapter.spoiler ?? UNREVIEWED_SPOILER, progress, {
     numeral: act.numeral,
     label: `ACTO ${act.numeral}`,
     locked: true,

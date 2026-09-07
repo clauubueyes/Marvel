@@ -54,6 +54,28 @@ async function login(page: Page, email = "alice@example.com") {
   await expect(page.getByRole("button", { name: "CERRAR SESIÓN", exact: true })).toBeVisible();
 }
 
+test("spoiler-free accounts protect Captain America and unreviewed character stories", async ({ page }) => {
+  const mock = await mockSupabase(page);
+  mock.preferences.set("alice", { avoid_spoilers: true });
+  await login(page);
+  for (const id of ["captain-america", "sam-wilson", "thor", "spider"]) {
+    await page.goto(`/personajes/${id}`);
+    await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+    await expect(page.locator(".story-cinema img, .screen-moment img, .screen-moment iframe")).toHaveCount(0);
+    await expect(page.locator(".storyline-rail")).not.toContainText(/1943|2014|2023/);
+  }
+  mock.progress.set("alice", new Map([["capitan-america-el-primer-vengador", true]]));
+  await page.goto("/personajes/captain-america");
+  await expect(page.locator(".story-card").first()).toContainText("El hombre que no paraba");
+  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(2);
+  await expect(page.locator(".story-cinema")).not.toContainText(/El final del baile|Devuelve las Gemas|agencia está tomada/);
+  await expect(page.locator(".intro-copy")).not.toContainText("INACTIVO");
+  mock.progress.get("alice")!.set("vengadores-endgame", true);
+  await page.reload();
+  await expect(page.locator(".story-card").last()).toContainText("El final del baile");
+  await expect(page.locator(".story-card").nth(2)).toContainText("Contenido bloqueado por spoilers");
+});
+
 test("registration is compact and spoiler preference persists independently of watched works", async ({ page }) => {
   const mock = await mockSupabase(page);
   await page.goto("/cuenta");

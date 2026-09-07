@@ -24,7 +24,10 @@ ambiguo de «personaje visto». Las series siguen la granularidad del catálogo 
 
 `SpoilerRequirement` declara `allOf`, una lista de slugs estables del catálogo.
 Todas las obras deben estar vistas. Ver Endgame no implica haber visto Iron Man.
-Un requisito vacío bloquea; la ausencia de requisito conserva el contenido público.
+Un requisito vacío bloquea. Los componentes narrativos de personajes utilizan
+`UNREVIEWED_SPOILER` cuando falta un requisito: pendiente de revisar nunca equivale
+a público. El evaluador general permite la ausencia de requisito únicamente para
+usos explícitos de contenido público.
 `canRevealSpoiler` toma esa decisión y `protectContent` devuelve el objeto original
 o una sustitución neutra completa, sin mezclar campos del contenido bloqueado.
 
@@ -41,7 +44,7 @@ títulos. Las rutas de invitado mantienen su almacenamiento separado existente;
 al iniciar sesión tanto rutas como títulos usan el progreso unificado de la cuenta.
 No se importa progreso de invitado a cuentas.
 
-## Caso inicial: Iron Man
+## Personajes revisados: Iron Man y Capitán América
 
 `data/characters/storyData.ts` asocia los cuatro actos, respectivamente, con
 `iron-man`, `los-vengadores`, `capitan-america-civil-war` y `vengadores-endgame`.
@@ -56,11 +59,23 @@ Iron Man 3 mediante los requisitos de `character.spoilers`. El estado protegido
 se omite del JSON-LD público. Los títulos de la filmografía siguen siendo enlaces
 de catálogo y no muestran sus descripciones de acontecimientos.
 
+Los dos primeros actos de Steve Rogers requieren `capitan-america-el-primer-vengador`;
+el tercero, `capitan-america-el-soldado-de-invierno`; y el cuarto, `vengadores-endgame`.
+Sus datos curiosos, estado y vídeo también tienen requisitos. `overview` protege
+la descripción introductoria, cita y capacidades de los personajes revisados.
+Las historias, imágenes de actos, datos curiosos, vídeos, estado, introducción,
+citas y capacidades sin requisitos quedan bloqueados en modo sin spoilers.
+Afiliaciones, variantes y conexiones de la ficha quedan igualmente bloqueadas
+hasta disponer de revisión editorial. Con spoilers permitidos se muestran.
+El JSON-LD público usa una descripción neutra y omite estado y capacidades.
+
 El catálogo y los recursos siguen siendo públicos. Esta es protección de
 renderizado contra exposición accidental: no un control de acceso al código fuente,
 los datos serializados de Next o las URL públicas de imágenes. El HTML visible
 inicial y la versión sin JavaScript conservan los bloqueos. El resto de Nexus
 requiere etiquetado editorial e integración antes de considerarse protegido.
+El bloqueo conservador de fichas sin revisar evita exponer sus relatos, pero no
+supone que ya tengan desbloqueo gradual: hace falta asignar sus obras explícitas.
 
 ## Ampliación y comprobaciones
 

@@ -1,5 +1,8 @@
 import type { SpoilerProgress, SpoilerRequirement } from "@/types/spoiler";
 
+/** Sensitive content without an editorial review must never default to public. */
+export const UNREVIEWED_SPOILER: SpoilerRequirement = { allOf: [] };
+
 export function canRevealSpoiler(requirement: SpoilerRequirement | undefined, progress: SpoilerProgress): boolean {
   if (!requirement) return true;
   if (progress.ready && progress.allowSpoilers) return true;

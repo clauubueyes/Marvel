@@ -18,6 +18,7 @@ export type StoryChapter = {
 
 export type Character = {
   spoilers?: {
+    overview?: SpoilerRequirement;
     status?: SpoilerRequirement;
     facts?: SpoilerRequirement[];
     screenMoment?: SpoilerRequirement;

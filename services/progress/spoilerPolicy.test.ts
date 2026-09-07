@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canRevealSpoiler, protectContent } from "./spoilerPolicy";
+import { canRevealSpoiler, protectContent, UNREVIEWED_SPOILER } from "./spoilerPolicy";
 import { storyData } from "@/data/characters/storyData";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { characters } from "@/repositories/characterRepository";
@@ -42,6 +42,7 @@ test("every declared spoiler requirement references real catalog IDs", () => {
   const requirements = characters.flatMap((character) => [
     ...character.story.map(({ spoiler }) => spoiler),
     character.spoilers?.status, character.spoilers?.screenMoment,
+    character.spoilers?.overview,
     ...(character.spoilers?.facts ?? []),
   ]).filter((requirement) => requirement !== undefined);
   for (const requirement of requirements) {
@@ -49,4 +50,16 @@ test("every declared spoiler requirement references real catalog IDs", () => {
     for (const id of requirement.allOf) assert.ok(valid.has(id), `Unknown spoiler requirement: ${id}`);
   }
   assert.ok(storyData.iron.every(({ spoiler }) => spoiler));
+});
+
+test("Captain America unlocks only the watched film and unreviewed character stories stay locked", () => {
+  const progress = { ready: true, watched: new Set(["capitan-america-el-primer-vengador"]) };
+  assert.deepEqual(storyData["captain-america"].map(({ spoiler }) => canRevealSpoiler(spoiler, progress)), [true, true, false, false]);
+  for (const character of characters) {
+    for (const chapter of character.story) {
+      assert.equal(canRevealSpoiler(chapter.spoiler ?? UNREVIEWED_SPOILER, { ready: true, watched: new Set() }), false, character.id);
+    }
+  }
+  assert.equal(canRevealSpoiler(UNREVIEWED_SPOILER, { ready: true, watched: new Set(mcuCatalog.map(({ slug }) => slug)) }), false);
+  assert.equal(canRevealSpoiler(UNREVIEWED_SPOILER, { ready: true, watched: new Set(), allowSpoilers: true }), true);
 });

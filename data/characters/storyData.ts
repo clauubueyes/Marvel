@@ -32,10 +32,10 @@ export const storyData: Record<string, StoryChapter[]> = {
     { year: "2022", kicker: "EL DARKHOLD", title: "La madre que lo borró todo", text: "Corrompida por el Darkhold, atraviesa mundos para encontrar a sus hijos y, al final, destruye el libro en todos los universos para que nadie más cargue con esa maldición." },
   ],
   "captain-america": [
-    { year: "1943", kicker: "EL PROYECTO", title: "El hombre que no paraba", text: "Steve miente para servir, sobrevive a la máquina y se vuelve el primer supersoldado. El suero no lo cambió: solo amplificó lo que ya era antes de tener bíceps." },
-    { year: "1945", kicker: "EL HIELO", title: "El último vuelo", text: "Prefiere estrellarse en el Ártico antes de dejar que HYDRA maneje el mundo. Steve Rogers se despide de su tiempo como los héroes de las películas: a tiempo de no volver." },
-    { year: "2014", kicker: "DESOBEDECER", title: "Más grande que la bandera", text: "Su lealtad obedece los códigos, pero no los principios. Cuando descubre que su agencia está tomada por el enemigo, Steve elige desobedecer a todo un sistema en nombre de la justicia." },
-    { year: "2023", kicker: "UNA VIDA PENDIENTE", title: "El final del baile", text: "Devuelve las Gemas al pasado y, en vez de volver a la guerra, se queda. El héroe que renunció a todo por el deber ahora renuncia al título para vivir la vida que le debían desde 1945." },
+    { spoiler: { allOf: ["capitan-america-el-primer-vengador"] }, year: "1943", kicker: "EL PROYECTO", title: "El hombre que no paraba", text: "Steve miente para servir, sobrevive a la máquina y se vuelve el primer supersoldado. El suero no lo cambió: solo amplificó lo que ya era antes de tener bíceps." },
+    { spoiler: { allOf: ["capitan-america-el-primer-vengador"] }, year: "1945", kicker: "EL HIELO", title: "El último vuelo", text: "Prefiere estrellarse en el Ártico antes de dejar que HYDRA maneje el mundo. Steve Rogers se despide de su tiempo como los héroes de las películas: a tiempo de no volver." },
+    { spoiler: { allOf: ["capitan-america-el-soldado-de-invierno"] }, year: "2014", kicker: "DESOBEDECER", title: "Más grande que la bandera", text: "Su lealtad obedece los códigos, pero no los principios. Cuando descubre que su agencia está tomada por el enemigo, Steve elige desobedecer a todo un sistema en nombre de la justicia." },
+    { spoiler: { allOf: ["vengadores-endgame"] }, year: "2023", kicker: "UNA VIDA PENDIENTE", title: "El final del baile", text: "Devuelve las Gemas al pasado y, en vez de volver a la guerra, se queda. El héroe que renunció a todo por el deber ahora renuncia al título para vivir la vida que le debían desde 1945." },
   ],
   thor: [
     { year: "2011", kicker: "EL DESTIERRO", title: "Aprender en Midgard", text: "La arrogancia le cuesta el título de heredero y lo arroja a la Tierra sin poderes. Thor abandona el martillo y, por primera vez, gana algo ajeno a la fuerza: la humildad." },

@@ -31,6 +31,7 @@ const characterEntries: CharacterEntry[] = [
   {
     id: "iron", name: "IRON MAN", alias: "Tony Stark", number: "02",
     spoilers: {
+      overview: { allOf: ["iron-man"] },
       status: { allOf: ["vengadores-endgame"] },
       facts: [{ allOf: ["iron-man"] }, { allOf: ["vengadores-endgame"] }, { allOf: ["vengadores-endgame"] }],
       screenMoment: { allOf: ["iron-man-3"] },
@@ -91,6 +92,12 @@ const characterEntries: CharacterEntry[] = [
   },
   {
     id: "captain-america", name: "CAPTAIN AMERICA", nameLines: ["CAPTAIN", "AMERICA"], alias: "Steve Rogers", number: "06",
+    spoilers: {
+      overview: { allOf: ["capitan-america-el-primer-vengador"] },
+      status: { allOf: ["vengadores-endgame"] },
+      facts: [{ allOf: ["capitan-america-el-primer-vengador"] }, { allOf: ["vengadores-endgame"] }, { allOf: ["capitan-america-el-primer-vengador"] }],
+      screenMoment: { allOf: ["capitan-america-el-soldado-de-invierno"] },
+    },
     quote: "Puedo hacer esto todo el día.", universe: "Tierra-616", color: "#1775d1", color2: "#e52b32", power: "Voluntad inquebrantable", symbol: "★", votes: 4688,
     image: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087.jpg", sourceUrl: "https://www.marvel.com/characters/captain-america-steve-rogers/", role: "El primer Vengador", origin: "Brooklyn · Nueva York",
     description: "Antes que supersoldado, Steve Rogers fue un hombre incapaz de mirar hacia otro lado. Su escudo representa una idea: hacer lo correcto incluso cuando nadie más está dispuesto.",

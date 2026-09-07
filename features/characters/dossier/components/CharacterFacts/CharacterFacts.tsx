@@ -1,5 +1,7 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import type { Character } from "@/types/character";
 import type { SpoilerRequirement } from "@/types/spoiler";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
@@ -7,7 +9,7 @@ import { protectContent } from "@/services/progress/spoilerPolicy";
 
 export function CharacterFacts({ facts: sourceFacts, requirements }: { facts: Character["facts"]; requirements?: SpoilerRequirement[] }) {
   const progress = useSpoilerProgress();
-  const facts = sourceFacts.map((fact, index) => protectContent(fact, requirements?.[index], progress, {
+  const facts = sourceFacts.map((fact, index) => protectContent(fact, requirements?.[index] ?? UNREVIEWED_SPOILER, progress, {
     value: "🔒", label: "Contenido bloqueado por spoilers", text: "Continúa viendo el UCM para desbloquear esta parte.",
   }));
   return <section className="profile-facts profile-section" data-scroll-section data-section-index="04">
