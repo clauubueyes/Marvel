@@ -9,7 +9,7 @@
     .characters-index-hero,
     .entity-index-hero,
     .route-profile-hero {
-        min-height: 0;
+        min-height: 520px;
         padding-top: 135px;
         padding-bottom: 70px;
     }
@@ -18,7 +18,7 @@
     .search-hero,
     .characters-index-hero,
     .entity-index-hero {
-        min-height: 620px;
+        min-height: 580px;
     }
 
     .route-profile-hero {
@@ -212,10 +212,10 @@
         padding: 12px 12px 4px;
     }
 
-    .titles-directory.is-grid .title-card-copy > small {
-        font-size: 8px;
-        letter-spacing: .45px;
-    }
+     .titles-directory.is-grid .title-card-copy > small {
+         font-size: 10px;
+         letter-spacing: .45px;
+     }
 
     .titles-directory.is-grid .title-card-copy h2 {
         margin: 6px 0 3px;
@@ -232,10 +232,10 @@
         gap: 3px 7px;
     }
 
-    .titles-directory.is-grid .title-directory-card aside b,
-    .titles-directory.is-grid .title-directory-card aside small {
-        font-size: 8px;
-    }
+     .titles-directory.is-grid .title-directory-card aside b,
+     .titles-directory.is-grid .title-directory-card aside small {
+         font-size: 10px;
+     }
 
     .titles-directory.is-grid .title-directory-card > i {
         right: 13px;
