@@ -81,19 +81,41 @@ ejecuta su propia suscripción. `buildSpoilerProgress` es la única función que
 decide `ready`/`allowSpoilers` a partir de la cuenta y del progreso confirmado,
 y está cubierta por tests unitarios.
 
-Los bloqueos dan **feedback progresivo personalizado** sin revelar qué obras
-faltan: `spoilerProgressHint` cuenta los títulos del requisito ya vistos
-(`allOf` parcial) y devuelve `{ watched, required }` o `null` cuando no hay
-requisito concreto o ya estaría desbloqueado. `SpoilerNotice` muestra «Has visto
-X de Y obras necesarias» cuando recibe un requisito; los actos bloqueados de
-`CharacterStory` y los datos curiosos de `CharacterFacts` lo incorporan en su
-texto (las fichas muestran `visto/total` como valor) y el progreso vacío sigue
-diciendo «Continúa viendo el UCM para desbloquear esta parte». El aviso
-permanece accesible con `role="status"` y `aria-live="polite"`.
+El dossier se adapta al progreso: historia y rail contienen solo actos disponibles;
+filmografía, conexiones, datos curiosos y variantes filtran los elementos pendientes.
+Capacidades y escena esencial se omiten hasta cumplir sus requisitos. No se dejan
+pantallas de candados en su lugar. Los recorridos editoriales disponibles conservan
+sus enlaces y siempre se ofrece una entrada al catálogo.
 
-`CharacterStory` sustituye los actos antes del JSX. No monta imágenes bloqueadas,
+Si queda historia pendiente, `CharacterStory` añade un único paso de continuación
+al mismo recorrido animado (también con progreso vacío). El texto permanece en la
+columna de los actos y `NextTrailer` ocupa la columna sticky de imágenes, con un
+recorte de entrada sincronizado con el scroll. No hay una tarjeta separada debajo.
+El reproductor solo es interactivo en su paso activo; volver a otro acto o cambiar el título
+desmonta el iframe. En móvil, vídeo y texto comparten el mismo paso con el vídeo
+arriba y los controles accesibles. `getNextWatch` elige el primer título
+pendiente del personaje marcado ESTRENADO en el catálogo, por fecha de estreno,
+incluyendo series, especiales y otras continuidades. `getCharacterWatchTitleIds`
+reúne sus apariciones y los requisitos de su historia, sin duplicados. La tarjeta
+muestra el título y su tráiler, sin explicar acontecimientos, cameos ni revelaciones.
+No usa fechas narrativas ni prioriza el orden de los actos (incluidos flashbacks).
+Por ejemplo, tras Iron Man recomienda Iron Man 2, y Rocket comienza por Guardianes
+Vol. 1 aunque su primer acto relate un origen revelado en Vol. 3. No supone
+que ver una entrega implica haber visto las anteriores. Si no queda candidato ofrece
+el catálogo, sin recomendar obras ajenas al personaje; si no tiene tráiler lo indica
+sin saltarse esa obra.
+
+El vídeo oficial del catálogo se carga únicamente al pulsar; la portada usa la
+miniatura promocional existente de `/trailers`, nunca una escena protegida del dossier.
+No se reproduce automáticamente al navegar. Al cambiar el título recomendado se
+desmonta el reproductor anterior. Durante carga, error o guardado no se recomienda
+desde progreso no confirmado. `SpoilerNotice`, reutilizado fuera de estas listas,
+invita a continuar el recorrido y conserva el contador parcial accesible sin listar
+los requisitos ocultos.
+
+`CharacterStory` filtra los actos antes del JSX. No monta imágenes bloqueadas,
 ni en la capa base ni mediante el retrato alternativo. Los títulos accesibles, años,
-etiquetas y navegación se sustituyen también. Las animaciones se reconstruyen al
+etiquetas y navegación pendientes se omiten también. Las animaciones se reconstruyen al
 cambiar la visibilidad y buscan la imagen dentro de su propio acto. Los vídeos se
 montan solo después del desbloqueo. El JSON-LD público usa una descripción neutra
 y omite el estado y las capacidades.
@@ -149,3 +171,10 @@ de cuenta. Conserva las pruebas de persistencia, rollback, Auth y aislamiento.
 completo y revocado. `account.spec.ts` cubre registro, preferencia, guardado, recarga,
 logout, SSR sin JavaScript y ausencia de peticiones de imágenes bloqueadas.
 Supabase se simula por HTTP; no se escriben cuentas reales durante estas pruebas.
+
+La adaptación del dossier se verifica con los 49 personajes en cuatro estados de
+progreso, pruebas de cuenta y una prueba de tráiler (montaje bajo demanda, cambio
+de recomendación, retirada del reproductor y vistas de 390/1440 px). La reproducción
+externa se simula: las pruebas no comprueban disponibilidad regional de YouTube.
+Las pruebas de `nextWatch` comprueban además orden de estreno, progreso no listo,
+preferencia, catálogo completado y existencia de las miniaturas promocionales.

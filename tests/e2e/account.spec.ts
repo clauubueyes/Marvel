@@ -85,20 +85,20 @@ test("spoiler-free accounts protect Captain America and unreviewed character sto
   await login(page);
   for (const id of ["captain-america", "sam-wilson", "thor", "spider"]) {
     await page.goto(`/personajes/${id}`);
-    await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
-    await expect(page.locator(".story-cinema img, .screen-moment img, .screen-moment iframe")).toHaveCount(0);
-    await expect(page.locator(".storyline-rail")).not.toContainText(/1943|2014|2023/);
+    await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
+    await expect(page.locator(".story-cinema img:not([data-trailer-poster]), .screen-moment img, .screen-moment iframe")).toHaveCount(0);
+    await expect(page.locator(".storyline-rail")).toHaveCount(0);
   }
   mock.progress.set("alice", new Map([["capitan-america-el-primer-vengador", true]]));
   await page.goto("/personajes/captain-america");
-  await expect(page.locator(".story-card").first()).toContainText("El hombre que no paraba");
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(2);
+  await expect(page.locator(".story-card:not([data-next-watch])").first()).toContainText("El hombre que no paraba");
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(2);
   await expect(page.locator(".story-cinema")).not.toContainText(/El final del baile|Devuelve las Gemas|agencia está tomada/);
   await expect(page.locator(".intro-copy")).not.toContainText("INACTIVO");
   mock.progress.get("alice")!.set("vengadores-endgame", true);
   await page.reload();
-  await expect(page.locator(".story-card").last()).toContainText("El final del baile");
-  await expect(page.locator(".story-card").nth(2)).toContainText("Contenido bloqueado por spoilers");
+  await expect(page.locator(".story-card:not([data-next-watch])").last()).toContainText("El final del baile");
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(3);
 });
 
 test("registration is compact and spoiler preference persists independently of watched works", async ({ page }) => {
@@ -121,7 +121,7 @@ test("registration is compact and spoiler preference persists independently of w
   await expect(page.locator("#spoilers")).toBeVisible();
   await expect(preference).not.toBeChecked();
   await page.goto("/personajes/iron");
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(0);
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(4);
   await page.goto("/cuenta");
   await preference.click();
   await expect.poll(() => mock.preferences.get("alice")?.avoid_spoilers).toBe(true);
@@ -132,7 +132,7 @@ test("registration is compact and spoiler preference persists independently of w
   await expect(page.getByRole("alert").filter({ hasText: "No se pudo guardar tu preferencia" })).toBeVisible();
   await expect(preference).toBeChecked();
   await page.goto("/personajes/iron");
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
   expect(mock.progress.get("alice")?.size ?? 0).toBe(0);
 });
 
@@ -206,10 +206,10 @@ test("spoiler progress: catalog changes persist, Iron Man reveals only watched a
   page.on("request", (request) => { if (request.resourceType() === "image") requestedImages.push(decodeURIComponent(request.url())); });
   await page.goto("/personajes/iron");
   const story = page.getByRole("region", { name: "Historia de IRON MAN", exact: true });
-  await expect(story.locator(".story-card").first()).toContainText("Nacer en una cueva");
-  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(3);
+  await expect(story.locator(".story-card:not([data-next-watch])").first()).toContainText("Nacer en una cueva");
+  await expect(story.locator(".story-card:not([data-next-watch])")).toHaveCount(1);
   await expect(story).not.toContainText(/Salvar la ciudad|El precio de la verdad|Enfrentar al Titán Loco|2012|2016|2023/);
-  await expect(story.locator("img")).toHaveCount(2); // Base and first act only.
+  await expect(story.locator("img:not([data-trailer-poster])")).toHaveCount(2); // Base and first act only.
   await expect(page.locator(".storyline-rail")).not.toContainText(/2012|2016|2023/);
   await expect(page.locator(".profile-facts")).not.toContainText(/3000|despedida|batalla definitiva/);
   await expect(page.locator(".screen-moment img, .screen-moment iframe")).toHaveCount(0);
@@ -220,14 +220,14 @@ test("spoiler progress: catalog changes persist, Iron Man reveals only watched a
   await titleToggle("Los Vengadores").click();
   await expect.poll(() => mock.progress.get("alice")?.get("los-vengadores")).toBe(true);
   await page.goto("/personajes/iron");
-  await expect(story.locator(".story-card").nth(1)).toContainText("Salvar la ciudad");
-  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(2);
+  await expect(story.locator(".story-card:not([data-next-watch])").nth(1)).toContainText("Salvar la ciudad");
+  await expect(story.locator(".story-card:not([data-next-watch])")).toHaveCount(2);
   await page.goto("/cuenta");
   await page.getByRole("button", { name: "CERRAR SESIÓN", exact: true }).click();
   await expect(page.getByRole("button", { name: "ENTRAR", exact: true })).toBeVisible();
   await page.goto("/personajes/iron");
-  await expect(story.locator("img")).toHaveCount(0);
-  await expect(story.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await expect(story.locator("img:not([data-trailer-poster])")).toHaveCount(0);
+  await expect(story.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
 });
 
 test("spoiler rendering fails closed before hydration and updates guest progress without reloading", async ({ page, browser, baseURL }) => {
@@ -235,21 +235,21 @@ test("spoiler rendering fails closed before hydration and updates guest progress
   const noScript = await browser.newContext({ javaScriptEnabled: false });
   const serverPage = await noScript.newPage();
   await serverPage.goto(`${baseURL}/personajes/iron`);
-  await expect(serverPage.locator(".story-cinema img")).toHaveCount(0);
-  await expect(serverPage.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await expect(serverPage.locator(".story-cinema img:not([data-trailer-poster])")).toHaveCount(0);
+  await expect(serverPage.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
   await noScript.close();
   await page.goto("/personajes/iron");
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
   await page.evaluate(() => {
     localStorage.setItem("nexus:titles:watched", JSON.stringify(["iron-man", "iron-man-2"]));
     window.dispatchEvent(new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }));
   });
-  await expect(page.locator(".story-card").first()).toContainText("Nacer en una cueva");
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(3);
+  await expect(page.locator(".story-card:not([data-next-watch])").first()).toContainText("Nacer en una cueva");
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(1);
   await page.evaluate(() => {
     localStorage.removeItem("nexus:titles:watched");
     window.dispatchEvent(new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }));
   });
-  await expect(page.locator(".story-cinema img")).toHaveCount(0);
-  await expect(page.locator(".story-card").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(4);
+  await expect(page.locator(".story-cinema img:not([data-trailer-poster])")).toHaveCount(0);
+  await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
 });

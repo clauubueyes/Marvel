@@ -7,12 +7,11 @@ import type { Character } from "@/types/character";
 import { useYouTubeEmbed } from "@/hooks/useYouTubeEmbed";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
 import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
-import { SpoilerNotice } from "@/features/spoilers/SpoilerNotice";
 
 export function CharacterScreenMoment({ character }: { character: Character }) {
   const progress = useSpoilerProgress();
   if (!canRevealSpoiler(character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER, progress)) {
-    return <section className="screen-moment profile-section" data-scroll-section data-section-index="02"><SpoilerNotice requirement={character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER} /></section>;
+    return null;
   }
   return <ScreenMoment character={character} />;
 }

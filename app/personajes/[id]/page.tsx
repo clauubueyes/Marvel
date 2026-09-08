@@ -22,6 +22,7 @@ import { characters, getCharacter } from "@/repositories/characterRepository";
 import { getCharacterStoryImages } from "@/repositories/characterStoryImageRepository";
 import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
 import { getCharacterMotionProfile } from "@/utils/characterMotion";
+import { getCharacterWatchTitleIds } from "@/services/progress/nextWatch";
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -78,6 +79,7 @@ export default async function CharacterPage({ params }: PageProps) {
         y capítulos que se suceden, transformados por el scroll. */}
     {beats.length > 0 && <CharacterStory
       characterName={character.name}
+      titleIds={getCharacterWatchTitleIds(character)}
       portrait={character.image}
       portraitPosition={character.imagePosition}
       acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat, image: storyImages[index] }))}

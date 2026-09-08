@@ -9,8 +9,8 @@ export function SpoilerNotice({ requirement }: { requirement?: SpoilerRequiremen
   const progress = useSpoilerProgress();
   const hint = spoilerProgressHint(requirement, progress);
   return <div className="spoiler-notice" role="status" aria-live="polite">
-    <p>🔒 Contenido bloqueado por spoilers</p>
-    <p>{hint ? `Has visto ${hint.watched} de ${hint.required} ${hint.required === 1 ? "obra" : "obras"} necesarias.` : "Continúa viendo el UCM para desbloquear esta parte."}</p>
-    <Link href="/cuenta#spoilers">ACTUALIZAR MI PROGRESO ↗</Link>
+    <p>Tu recorrido continúa</p>
+    <p>{hint ? `Ya has visto ${hint.watched} de ${hint.required} títulos de esta parte. La historia se ampliará con tu progreso.` : "Explora el catálogo y marca lo que has visto para seguir descubriendo el UCM."}</p>
+    <Link href="/titulos">CONTINUAR MI RECORRIDO ↗</Link>
   </div>;
 }

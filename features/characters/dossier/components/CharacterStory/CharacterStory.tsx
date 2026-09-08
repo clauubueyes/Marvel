@@ -3,23 +3,26 @@
 import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
 
 import Image from "next/image";
-import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { StoryChapter } from "@/types/character";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
-import { protectContent, spoilerProgressHint } from "@/services/progress/spoilerPolicy";
+import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
 import Link from "next/link";
+import { getNextWatch } from "@/services/progress/nextWatch";
+import { NextTrailer } from "@/features/spoilers/NextTrailer";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 type CharacterStoryProps = {
-  acts: { label: string; numeral: string; chapter: StoryChapter; image?: string; locked?: boolean }[];
+  acts: { label: string; numeral: string; chapter: StoryChapter; image?: string }[];
   portrait?: string;
   portraitPosition?: string;
   characterName: string;
+  titleIds: readonly string[];
 };
 
 const MOOD_BY_ACT: Record<string, string> = {
@@ -29,29 +32,25 @@ const MOOD_BY_ACT: Record<string, string> = {
   IV: "resolution",
 };
 
-export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, characterName }: CharacterStoryProps) {
+export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, characterName, titleIds }: CharacterStoryProps) {
   const progress = useSpoilerProgress();
-  const acts = sourceActs.map((act) => {
-    const requirement = act.chapter.spoiler ?? UNREVIEWED_SPOILER;
-    const hint = spoilerProgressHint(requirement, progress);
-    return protectContent(act, requirement, progress, {
-      numeral: act.numeral,
-      label: `ACTO ${act.numeral}`,
-      locked: true,
-      chapter: {
-        year: "🔒", kicker: "SPOILERS", title: "Contenido bloqueado por spoilers",
-        text: hint ? `Has visto ${hint.watched} de ${hint.required} ${hint.required === 1 ? "obra" : "obras"} necesarias.` : "Continúa viendo el UCM para desbloquear esta parte.",
-      },
-    });
-  });
+  const visibleActs = sourceActs.filter((act) => canRevealSpoiler(act.chapter.spoiler ?? UNREVIEWED_SPOILER, progress));
+  const hasMore = visibleActs.length < sourceActs.length;
+  const next = getNextWatch(progress, titleIds);
+  const acts: (CharacterStoryProps["acts"][number] & { preview?: boolean })[] = [...visibleActs];
+  if (hasMore) acts.push({ preview: true, numeral: "▶", label: "TU PRÓXIMA HISTORIA", chapter: {
+    year: "CONTINÚA", kicker: `SIGUE A ${characterName}`, title: next?.title ?? "Tu historia continúa",
+    text: !progress.ready ? "Preparando tu recorrido según lo que has visto." : next ? "Este es tu siguiente título pendiente. Descubre su tráiler y vuelve después de verlo para continuar la historia." : "No quedan títulos estrenados pendientes en el recorrido de este personaje. Su historia continuará aquí.",
+  } });
+  const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const actsKey = acts.map((a) => `${a.numeral}:${a.chapter.year}`).join(",");
+  const actsKey = acts.map((a) => `${a.numeral}:${a.chapter.year}`).join(",") + (next?.slug ?? "");
 
   useIsomorphicLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const cards = Array.from(section.querySelectorAll<HTMLElement>(".story-card"));
+    const cards = Array.from(section.querySelectorAll<HTMLElement>(".story-step"));
     const images = Array.from(section.querySelectorAll<HTMLElement>(".story-image"));
     const imageReveals = Array.from(section.querySelectorAll<HTMLElement>(".story-image-clip"));
     const progressDots = Array.from(section.querySelectorAll<HTMLElement>(".story-progress-btn"));
@@ -64,6 +63,7 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
       const { mobile, reduced } = context.conditions!;
       const setAct = (index: number): void => {
         const act = Math.max(0, Math.min(cards.length - 1, index));
+        setActiveIndex(act);
         cards.forEach((card, i) => card.setAttribute("data-active", i === act ? "true" : "false"));
         progressDots.forEach((dot, dotIndex) => {
           const state = dotIndex <= act ? "true" : "false";
@@ -74,6 +74,8 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
           if (yearEl.getAttribute("data-active") !== state) yearEl.setAttribute("data-active", state);
         });
       };
+
+      setAct(cards.findLastIndex(card => card.getBoundingClientRect().top <= innerHeight * .4));
 
       cards.forEach((card, index) => {
         ScrollTrigger.create({
@@ -122,12 +124,13 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
         const img = clip?.querySelector("img");
         const dir = index % 2 === 0 ? 1 : -1;
         const meta = card.querySelectorAll<HTMLElement>(".story-meta");
-        const kicker = card.querySelectorAll<HTMLElement>(".story-card h3 > em");
+        const kicker = card.querySelectorAll<HTMLElement>("h3 > em");
         const letters = card.querySelectorAll<HTMLElement>(".story-title-letter");
         const body = card.querySelectorAll<HTMLElement>(".story-card-text");
         const foot = card.querySelectorAll<HTMLElement>(".story-card-foot");
 
         if (clip) gsap.set(clip, { zIndex: index });
+        if (image) gsap.set(image, { zIndex: index });
         gsap.set([...meta, ...kicker, ...letters, ...body, ...foot], { opacity: 0 });
 
         const tl = gsap.timeline({
@@ -140,7 +143,10 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
           defaults: { ease: "power2.out" },
         });
 
-        if (index > 0 && clip && image && img) {
+        if (card.hasAttribute("data-next-watch") && clip && image) {
+          gsap.set(image, { scale: 1, y: 0, rotate: 0 });
+          if (index > 0) tl.fromTo(clip, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: .16 }, 0);
+        } else if (index > 0 && clip && image && img) {
           tl.fromTo(clip, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power1.inOut" }, 0)
             .fromTo(image, { scale: 1.14, y: 0, rotate: dir * 3 }, { scale: 1.02, y: index % 2 === 0 ? -30 : 30, rotate: 0, duration: 0.14 }, 0)
             .fromTo(img, { scale: 1.18, x: dir * 34, filter: "blur(6px)" }, { scale: 1, x: 0, filter: "blur(0px)", duration: 0.16 }, 0.02);
@@ -165,7 +171,7 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
       });
 
       const cover = images[0];
-      if (cover) {
+      if (cover && !cards[0].hasAttribute("data-next-watch")) {
         gsap.fromTo(
           cover,
           { scale: 1.06, y: -14 },
@@ -205,25 +211,25 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
     <>
       <section className="story-corridor profile-section" data-smooth-entry>
         <p className="section-label">LA HISTORIA</p>
-        <h2>CUATRO ACTOS<br /><em>UNA LÍNEA DE TIEMPO</em></h2>
-        <span>LA VERDAD DE {characterName} SE CUENTA DE CORRIDO, CAPÍTULO A CAPÍTULO, SIN EXPEDIENTES DE POR MEDIO.</span>
+        <h2>TU RECORRIDO<br /><em>HASTA AQUÍ</em></h2>
+        <span>LA HISTORIA DE {characterName}, CAPÍTULO A CAPÍTULO, SEGÚN LO QUE YA HAS VISTO.</span>
       </section>
 
-      <section ref={sectionRef} className="story-cinema" data-history data-scroll-section data-section-index="HISTORIA" aria-label={`Historia de ${characterName}`}>
-        <div className="story-images" aria-hidden="true">
-          <div className="story-image-base">
-            {!acts[0]?.locked && (acts[0]?.image || portrait) ? <Image src={acts[0]?.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: acts[0]?.image ? "center" : portraitPosition }} /> : null}
+      {acts.length > 0 && <section ref={sectionRef} className="story-cinema" data-history data-scroll-section data-section-index="HISTORIA" aria-label={`Historia de ${characterName}`}>
+        <div className="story-images">
+          <div className="story-image-base" aria-hidden="true">
+            {!acts[0]?.preview && (acts[0]?.image || portrait) ? <Image src={acts[0]?.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: acts[0]?.image ? "center" : portraitPosition }} /> : null}
           </div>
           {acts.map((act, index) => (
-            <div className="story-image" key={`${act.numeral}-${act.chapter.year}`}>
+            <div className={`story-image${act.preview ? " story-trailer-image" : ""}`} aria-hidden={act.preview ? activeIndex !== index : true} inert={act.preview && activeIndex !== index} key={`${act.numeral}-${act.chapter.year}`}>
               <div className="story-image-clip" data-index={index}>
-                {!act.locked && (act.image || portrait) ? <Image src={act.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: act.image ? "center" : portraitPosition }} /> : null}
+                {act.preview ? <div className="story-trailer-stage">{next?.trailerId ? <NextTrailer key={`${next.slug}:${activeIndex === index}`} slug={next.slug} title={next.title} videoId={next.trailerId} active={activeIndex === index} /> : <p>{next ? "Tráiler no disponible en el catálogo" : "La historia continuará"}</p>}</div> : (act.image || portrait) ? <Image src={act.image || portrait!} alt="" fill sizes="(max-width: 900px) 100vw, 47vw" style={{ objectPosition: act.image ? "center" : portraitPosition }} /> : null}
                 <div className="story-image-aura" aria-hidden="true" />
                 <div className="story-image-grain" />
               </div>
             </div>
           ))}
-          <span className="story-year-storyline">
+          <span className="story-year-storyline" aria-hidden="true">
             {acts.map((a) => (
               <b key={a.numeral}>{a.chapter.year}</b>
             ))}
@@ -238,16 +244,16 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
               </span>
             ))}
           </div>
-          <em className="story-film-tag">NEXUS ARCHIVE · CINE CÓSMICO</em>
+          <em className="story-film-tag" aria-hidden="true">NEXUS ARCHIVE · CINE CÓSMICO</em>
         </div>
 
         <div className="story-track">
           {acts.map((act, index) => {
-            const mood = act.locked ? "locked" : MOOD_BY_ACT[act.numeral] ?? "origin";
+            const mood = MOOD_BY_ACT[act.numeral] ?? "origin";
             const numbers = `${String(index + 1).padStart(2, "0")} · ${String(acts.length).padStart(2, "0")}`;
             const titleWords = act.chapter.title.split(/\s+/);
             return (
-              <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step aria-label={`${act.label} · ${act.chapter.title}`} aria-live="polite">
+              <article className={`story-step story-card${act.preview ? " story-next-card" : ""}`} data-next-watch={act.preview || undefined} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step={act.preview ? undefined : true} aria-label={`${act.label} · ${act.chapter.title}`} aria-live="polite">
                 <div className="story-meta">
                   <span>{act.label}</span>
                   <b>{act.chapter.year}</b>
@@ -270,7 +276,7 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
                 </h3>
                 <p className="story-card-text">{act.chapter.text}</p>
                 <div className="story-card-foot">
-                  {act.locked ? <Link className="story-chip" href="/cuenta#spoilers">🔒 ACTUALIZAR MI PROGRESO</Link> : <span className="story-chip">
+                  {act.preview ? <div className="next-watch-actions"><Link className="story-chip" href={next ? `/titulos/${next.slug}` : "/titulos"}>EXPLORAR TÍTULO ↗</Link><Link className="story-chip" href="/titulos">ACTUALIZAR LO QUE HE VISTO ↗</Link></div> : <span className="story-chip">
                     <i />
                     ACTO {act.numeral} · {mood.toUpperCase()}
                   </span>}
@@ -279,7 +285,7 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
             );
           })}
         </div>
-      </section>
+      </section>}
     </>
   );
 }
