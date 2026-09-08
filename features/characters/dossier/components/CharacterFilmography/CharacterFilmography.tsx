@@ -13,6 +13,6 @@ export function CharacterFilmography({ appearances }: { appearances: Character["
     <div className="film-heading" data-reveal><p className="section-label">05 / EN PANTALLA</p><h2>SU HISTORIA<br/><em>EN CINE</em></h2><p>Una selección de los capítulos que definieron su recorrido audiovisual.</p></div>
     <div className="film-reel" data-reveal>{appearances.map((appearance, index) => canRevealSpoiler({ allOf: [appearance.titleId] }, progress)
       ? <Link href={`/titulos/${appearance.titleId}`} key={appearance.title}><b>{String(index + 1).padStart(2, "0")}</b><div><span>{appearance.type}</span><h3>{appearance.title}</h3></div><strong>{appearance.year}</strong><i>↗</i></Link>
-      : <article className="film-locked" key={appearance.title}><SpoilerNotice /></article>)}</div>
+      : <article className="film-locked" key={appearance.title}><SpoilerNotice requirement={{ allOf: [appearance.titleId] }} /></article>)}</div>
   </section>;
 }

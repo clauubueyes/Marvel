@@ -8,7 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { StoryChapter } from "@/types/character";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
-import { protectContent } from "@/services/progress/spoilerPolicy";
+import { protectContent, spoilerProgressHint } from "@/services/progress/spoilerPolicy";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -31,12 +31,19 @@ const MOOD_BY_ACT: Record<string, string> = {
 
 export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, characterName }: CharacterStoryProps) {
   const progress = useSpoilerProgress();
-  const acts = sourceActs.map((act) => protectContent(act, act.chapter.spoiler ?? UNREVIEWED_SPOILER, progress, {
-    numeral: act.numeral,
-    label: `ACTO ${act.numeral}`,
-    locked: true,
-    chapter: { year: "🔒", kicker: "SPOILERS", title: "Contenido bloqueado por spoilers", text: "Continúa viendo el UCM para desbloquear esta parte." },
-  }));
+  const acts = sourceActs.map((act) => {
+    const requirement = act.chapter.spoiler ?? UNREVIEWED_SPOILER;
+    const hint = spoilerProgressHint(requirement, progress);
+    return protectContent(act, requirement, progress, {
+      numeral: act.numeral,
+      label: `ACTO ${act.numeral}`,
+      locked: true,
+      chapter: {
+        year: "🔒", kicker: "SPOILERS", title: "Contenido bloqueado por spoilers",
+        text: hint ? `Has visto ${hint.watched} de ${hint.required} ${hint.required === 1 ? "obra" : "obras"} necesarias.` : "Continúa viendo el UCM para desbloquear esta parte.",
+      },
+    });
+  });
   const sectionRef = useRef<HTMLElement>(null);
   const actsKey = acts.map((a) => `${a.numeral}:${a.chapter.year}`).join(",");
 

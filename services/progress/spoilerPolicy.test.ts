@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canRevealSpoiler, protectContent, UNREVIEWED_SPOILER } from "./spoilerPolicy";
+import { canRevealSpoiler, protectContent, spoilerProgressHint, UNREVIEWED_SPOILER } from "./spoilerPolicy";
 import { storyData } from "@/data/characters/storyData";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { characters } from "@/repositories/characterRepository";
@@ -37,6 +37,17 @@ test("locked data is replaced completely, including images, labels and nested in
   const replacement = { title: "locked" };
   assert.deepEqual(protectContent<object>(content, { allOf: ["iron-man"] }, { ready: false, watched: new Set() }, replacement), replacement);
   assert.equal(protectContent<object>(content, { allOf: ["iron-man"] }, { ready: true, watched: new Set(["iron-man"]) }, replacement), content);
+});
+
+test("progress hint reports watched works without revealing which are missing", () => {
+  const progress = { ready: true, watched: new Set(["iron-man"]) };
+  assert.deepEqual(spoilerProgressHint({ allOf: ["iron-man", "iron-man-2", "vengadores-endgame"] }, progress), { watched: 1, required: 3 });
+  assert.deepEqual(spoilerProgressHint({ allOf: ["iron-man"] }, progress), null);
+  assert.deepEqual(spoilerProgressHint({ allOf: ["iron-man", "iron-man-2", "vengadores-endgame"] }, { ready: true, watched: new Set(["iron-man", "iron-man-2", "vengadores-endgame"]) }), null);
+  assert.deepEqual(spoilerProgressHint(UNREVIEWED_SPOILER, progress), null);
+  assert.deepEqual(spoilerProgressHint(undefined, progress), null);
+  assert.deepEqual(spoilerProgressHint({ allOf: ["iron-man", "iron-man-2"] }, { ready: false, watched: new Set(["iron-man"]) }), { watched: 1, required: 2 });
+  assert.deepEqual(spoilerProgressHint({ allOf: ["iron-man"] }, { ready: true, watched: new Set(), allowSpoilers: true }), null);
 });
 
 test("every declared spoiler requirement references real catalog IDs", () => {

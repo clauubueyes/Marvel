@@ -12,6 +12,6 @@ export function ProgressSpoilerGate({ requirement, children, fallback }: {
   fallback?: ReactNode;
 }) {
   const progress = useSpoilerProgress();
-  if (!canRevealSpoiler(requirement, progress)) return fallback ?? <SpoilerNotice />;
+  if (!canRevealSpoiler(requirement, progress)) return fallback ?? <SpoilerNotice requirement={requirement} />;
   return <>{children}</>;
 }

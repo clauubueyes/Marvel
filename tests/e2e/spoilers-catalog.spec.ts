@@ -25,7 +25,12 @@ for (const character of characters) {
       const chapter = character.story[index];
       const unlocked = chapter.spoiler!.allOf.every((id) => partial.includes(id));
       await expect(cards.nth(index)).toContainText(unlocked ? chapter.title : "Contenido bloqueado por spoilers");
-      if (!unlocked) await expect(cards.nth(index)).not.toContainText(chapter.text);
+      if (!unlocked) {
+        await expect(cards.nth(index)).not.toContainText(chapter.text);
+        const required = chapter.spoiler!.allOf.length;
+        const watched = chapter.spoiler!.allOf.filter((id) => partial.includes(id)).length;
+        await expect(cards.nth(index)).toContainText(`Has visto ${watched} de ${required}`);
+      }
     }
 
     await setWatched(page, mcuCatalog.map(({ slug }) => slug));

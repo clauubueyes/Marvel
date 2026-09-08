@@ -12,7 +12,7 @@ import { SpoilerNotice } from "@/features/spoilers/SpoilerNotice";
 export function CharacterScreenMoment({ character }: { character: Character }) {
   const progress = useSpoilerProgress();
   if (!canRevealSpoiler(character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER, progress)) {
-    return <section className="screen-moment profile-section" data-scroll-section data-section-index="02"><SpoilerNotice /></section>;
+    return <section className="screen-moment profile-section" data-scroll-section data-section-index="02"><SpoilerNotice requirement={character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER} /></section>;
   }
   return <ScreenMoment character={character} />;
 }

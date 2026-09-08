@@ -8,7 +8,7 @@ import type { Character } from "@/types/character";
 
 export function CharacterPowers({ character }: { character: Character }) {
   const progress = useSpoilerProgress();
-  if (!canRevealSpoiler(character.spoilers?.powers ?? UNREVIEWED_SPOILER, progress)) return <section className="profile-section"><SpoilerNotice /></section>;
+  if (!canRevealSpoiler(character.spoilers?.powers ?? UNREVIEWED_SPOILER, progress)) return <section className="profile-section"><SpoilerNotice requirement={character.spoilers?.powers ?? UNREVIEWED_SPOILER} /></section>;
   return <section className="profile-power profile-section" data-scroll-section data-section-index="03">
     <div className="power-heading" data-reveal><p className="section-label">03 / CAPACIDADES</p><h2>MEDIR LO<br/><em>IMPOSIBLE</em></h2><span>LECTURA DE ENERGÍA / NEXUS</span></div>
     <div className="power-core" data-reveal aria-hidden="true"><div className="core-rings"><i /><i /><i /></div><Image src={character.image} alt="" fill sizes="(max-width: 560px) 88vw, 45vw" /><strong>{character.symbol}</strong><span>NIVEL<br/>OMEGA</span></div>
