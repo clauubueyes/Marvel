@@ -240,7 +240,7 @@ export function CharacterStory({ acts: sourceActs, portrait, portraitPosition, c
             const numbers = `${String(index + 1).padStart(2, "0")} · ${String(acts.length).padStart(2, "0")}`;
             const titleWords = act.chapter.title.split(/\s+/);
             return (
-              <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step aria-label={`${act.label} · ${act.chapter.title}`}>
+              <article className={`story-card`} key={act.numeral} data-mood={mood} data-index={index} data-active={index === 0 ? "true" : "false"} data-history-step aria-label={`${act.label} · ${act.chapter.title}`} aria-live="polite">
                 <div className="story-meta">
                   <span>{act.label}</span>
                   <b>{act.chapter.year}</b>

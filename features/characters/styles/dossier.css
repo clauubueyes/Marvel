@@ -541,6 +541,9 @@
 .film-reel h3 { margin: 7px 0 0; font: 25px var(--font-display); text-transform: uppercase; }
 .film-reel a > strong { font: 17px var(--font-display); }
 .film-reel a > i { font-style: normal; }
+.film-reel .film-locked { min-height: 112px; display: grid; align-items: center; border-bottom: 1px solid rgba(255,255,255,.18); padding: 20px 0; }
+.film-reel .film-locked p { margin: 2px 0; color: #74767b; font-size: 9px; }
+.film-reel .film-locked a { display: inline-block; margin-top: 8px; padding: 0; background: none; color: var(--accent); border: 0; font-size: 7px; letter-spacing: 1.5px; text-decoration: underline; }
 /* Poderes: visual central, nivel de amenaza y lista de habilidades. */
 .profile-power { min-height: 950px; position: relative; display: grid; grid-template-columns: .72fr .58fr 1fr; grid-template-rows: auto 1fr auto; gap: 4vw; color: #f4f0e7; overflow: hidden; background: radial-gradient(circle at 46% 52%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 24%),linear-gradient(135deg,#080a0d,#12141a); }
 .profile-power::before { content: "POWER"; position: absolute; left: -3vw; bottom: -5vw; color: rgba(255,255,255,.022); font: 20vw var(--font-display); }
