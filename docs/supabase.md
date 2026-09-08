@@ -25,6 +25,17 @@ El acceso a «Mi cuenta» está en la navegación principal, incluido el menú m
 
 El contacto usa `target="_blank"` y `rel="noopener noreferrer"`; la apertura del cliente de correo depende del navegador. La sección `/cuenta` tiene estilos propios en `features/account/Account.css`, tras la petición de mejorar su presentación: composición compacta de dos columnas en escritorio y una en móvil, panel de acceso y resumen del progreso existente. Conserva las fuentes y paleta de Nexus, sin alterar otras secciones ni nombres de personajes. El formulario ya no hereda estilos del planificador. El registro muestra confirmación pendiente cuando Auth no devuelve sesión, o cuenta creada cuando inicia sesión directamente; la interfaz no modifica la política de confirmación de Supabase.
 
+## Panel de cuenta
+
+`/cuenta` utiliza una cabecera compacta y un panel a todo el ancho disponible.
+`AccountForm` mantiene el acceso y cierre de sesión; `AccountSettings` presenta
+la identidad, el estado de sincronización y la recarga del progreso existente.
+`SpoilerProgressSettings` reúne el contador, el acceso al catálogo y la preferencia
+persistida. Todos los ajustes aparecen sin pestañas ni secciones de «próximamente».
+Los enlaces `#sincronizacion` y `#spoilers` apuntan a secciones siempre montadas.
+Hasta 700 px se apilan identidad y contenido; el correo puede partirse y el cierre
+de sesión permanece visible. La cuenta no introduce nuevos datos ni servicios.
+
 ## Tabla y SQL
 
 SQL completo: [`20260906000000_create_movie_progress.sql`](../supabase/migrations/20260906000000_create_movie_progress.sql).

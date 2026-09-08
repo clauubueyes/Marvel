@@ -54,6 +54,31 @@ async function login(page: Page, email = "alice@example.com") {
   await expect(page.getByRole("button", { name: "CERRAR SESIÓN", exact: true })).toBeVisible();
 }
 
+test("account dashboard fits mobile and desktop and reloads progress from another device", async ({ page }, testInfo) => {
+  const mock = await mockSupabase(page);
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/cuenta");
+  await expect(page.getByLabel("EMAIL", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await login(page, "alice.long.email.for.responsive.check@example.com");
+  await expect(page.getByText("Progreso actualizado", { exact: false })).toBeVisible();
+  for (const width of [320, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.getByRole("button", { name: "CERRAR SESIÓN", exact: true })).toBeVisible();
+    await expect(page.getByRole("checkbox", { name: "Evitar spoilers", exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const panel = await page.locator(".account-panel-settings").boundingBox();
+    const content = await page.locator(".account-settings-content").boundingBox();
+    expect(content!.width).toBeGreaterThan(width < 700 ? panel!.width - 40 : 250);
+    await page.screenshot({ path: testInfo.outputPath(`account-${width}.png`), fullPage: true });
+  }
+  mock.progress.set("alice", new Map([["iron-man", true]]));
+  await page.getByRole("button", { name: "RECARGAR PROGRESO", exact: true }).click();
+  await expect(page.locator(".account-spoiler-summary-count strong")).toHaveText("01");
+  await page.goto("/cuenta#spoilers");
+  await expect(page.getByRole("checkbox", { name: "Evitar spoilers", exact: true })).toBeVisible();
+});
+
 test("spoiler-free accounts protect Captain America and unreviewed character stories", async ({ page }) => {
   const mock = await mockSupabase(page);
   mock.preferences.set("alice", { avoid_spoilers: true });
@@ -162,20 +187,21 @@ test("intro runs once per browser and contact preserves the current page", async
   await expect(page.getByRole("link", { name: "CONTACTO", exact: true })).toHaveAttribute("target", "_blank");
 });
 
-test("spoiler progress: bulk settings persist, Iron Man reveals only watched acts and logout locks them", async ({ page }) => {
+test("spoiler progress: catalog changes persist, Iron Man reveals only watched acts and logout locks them", async ({ page }) => {
   const mock = await mockSupabase(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await login(page);
-  const settings = page.locator("#spoilers");
-  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Iron Man");
-  await settings.getByRole("button", { name: "MARCAR 3 RESULTADOS COMO VISTOS", exact: true }).click();
+  await page.getByRole("link", { name: "GESTIONAR TÍTULOS" }).click();
+  const titleToggle = (title: string) => page.locator(".title-directory-row").filter({ has: page.getByRole("heading", { name: title, exact: true }) }).locator(".title-watch-toggle");
+  await titleToggle("Iron Man").click();
+  await titleToggle("Iron Man 2").click();
+  await titleToggle("Iron Man 3").click();
   await expect.poll(() => [...(mock.progress.get("alice")?.values() ?? [])].filter(Boolean).length).toBe(3);
-  await settings.getByRole("checkbox", { name: "Iron Man 3 PELÍCULA", exact: true }).uncheck();
+  await titleToggle("Iron Man 3").click();
   await expect.poll(() => mock.progress.get("alice")?.get("iron-man-3")).toBe(false);
   await page.reload();
-  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Iron Man");
-  await expect(settings.getByRole("checkbox", { name: "Iron Man PELÍCULA", exact: true })).toBeChecked();
-  await expect(settings.getByRole("checkbox", { name: "Iron Man 2 PELÍCULA", exact: true })).toBeChecked();
+  await expect(titleToggle("Iron Man")).toHaveAttribute("aria-pressed", "true");
+  await expect(titleToggle("Iron Man 2")).toHaveAttribute("aria-pressed", "true");
   const requestedImages: string[] = [];
   page.on("request", (request) => { if (request.resourceType() === "image") requestedImages.push(decodeURIComponent(request.url())); });
   await page.goto("/personajes/iron");
@@ -190,8 +216,8 @@ test("spoiler progress: bulk settings persist, Iron Man reveals only watched act
   expect(requestedImages.filter((url) => /history\/iron\/acto-[234]|moments\/iron/.test(url))).toEqual([]);
 
   await page.goto("/cuenta");
-  await settings.getByLabel("BUSCAR PELÍCULA O SERIE").fill("Los Vengadores");
-  await settings.getByRole("checkbox", { name: "Los Vengadores PELÍCULA", exact: true }).check();
+  await page.getByRole("link", { name: "GESTIONAR TÍTULOS" }).click();
+  await titleToggle("Los Vengadores").click();
   await expect.poll(() => mock.progress.get("alice")?.get("los-vengadores")).toBe(true);
   await page.goto("/personajes/iron");
   await expect(story.locator(".story-card").nth(1)).toContainText("Salvar la ciudad");

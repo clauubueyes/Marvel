@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { AccountForm } from "@/features/account/AccountForm";
 import { SpoilerProgressSettings } from "@/features/account/SpoilerProgressSettings";
-import { mcuCatalog } from "@/data/mcuCatalog";
-import { characters } from "@/repositories/characterRepository";
-import { getCharacterProgressTitleIds } from "@/utils/characterSpoilers";
 
 export const metadata: Metadata = { title: "Mi cuenta — NEXUS", robots: { index: false, follow: false } };
 
@@ -13,15 +10,10 @@ export default function AccountPage() {
     <GlobalNavigation context="MI CUENTA" />
     <div className="account-layout">
       <header className="account-heading">
-        <p className="eyebrow"><span /> TU ESPACIO EN NEXUS</p>
         <h1>MI <em>CUENTA</em></h1>
-        <p>Tu recorrido por el universo Marvel, siempre contigo.</p>
-        <div className="account-heading-note"><span aria-hidden="true">↗</span><p>Marca lo que has visto.<br />Continúa desde cualquier dispositivo.</p></div>
+        <p>Tu cuenta, tu progreso y cómo quieres explorar Nexus.</p>
       </header>
-      <AccountForm><SpoilerProgressSettings
-        titles={mcuCatalog.map(({ slug, title, type }) => ({ slug, title, type }))}
-        characters={characters.map((character) => ({ id: character.id, name: character.name, titleIds: getCharacterProgressTitleIds(character) }))}
-      /></AccountForm>
+      <AccountForm><SpoilerProgressSettings /></AccountForm>
     </div>
   </main>;
 }

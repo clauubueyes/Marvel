@@ -14,10 +14,10 @@ no sustituye el progreso ni marca obras como vistas.
 
 Tras iniciar sesión aparece `/cuenta#spoilers`. La preferencia se actualiza con
 `auth.updateUser`; la suscripción Auth existente la aplica sin vaciar el progreso.
-El panel permite buscar títulos y marcar resultados individualmente o en bloque.
-El filtro por personaje incluye apariciones y todas las obras necesarias para
-desbloquear su historia, datos, vídeo y variantes (`getCharacterProgressTitleIds`).
-Un personaje es un filtro de obras concretas, no un booleano «personaje visto».
+El panel muestra el total visto y enlaza a `/titulos` para buscar y marcar obras
+individualmente o en bloque. Cuenta ofrece también `RECARGAR PROGRESO` para
+recuperar cambios de otros dispositivos. Los ajustes permanecen visibles sin
+pestañas, también al entrar directamente en `#spoilers`.
 
 Las series conservan la granularidad del catálogo: temporada o grupo de temporadas,
 sin inferir progreso por episodio. En invitados se usa `nexus:titles:watched`,
