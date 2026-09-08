@@ -7,6 +7,7 @@ import { heroCharacters } from "@/data/characters/heroes";
 import { futureSagaCharacters } from "@/data/characters/futureSaga";
 import { getScreenPortrait } from "@/data/characters/screenPortraits";
 import { storyData } from "@/data/characters/storyData";
+import { characterSpoilers } from "@/data/characters/spoilerData";
 import type { Character, CharacterAppearance } from "@/types/character";
 
 type CharacterEntry = Omit<Character, "appearances" | "category" | "status" | "affiliations" | "variants" | "sources" | "reviewedAt" | "story"> & {
@@ -39,7 +40,14 @@ const characterEntries: CharacterEntry[] = [
     abilities: ["Armadura modular", "Vuelo supersónico", "Energía repulsora", "IA táctica"],
     timeline: [{ year: "2008", title: "Mark I", text: "Una prisión se convierte en el taller de su primera armadura." }, { year: "2012", title: "La iniciativa", text: "Stark comprende que incluso un genio necesita un equipo." }, { year: "2023", title: "El sacrificio", text: "Usa las Gemas para detener a Thanos y entrega su vida por el universo." }],
     facts: [{ value: "2008", label: "EL INICIO", text: "Iron Man inauguró la historia cinematográfica conectada del MCU." }, { value: "3000", label: "TE QUIERO", text: "Una frase familiar que se convirtió en el corazón emocional de su despedida." }, { value: "85", label: "MARK", text: "La armadura usada durante la batalla definitiva contra Thanos." }],
-    appearances: [{ title: "Iron Man", year: "2008", type: "PELÍCULA", event: "Tony escapa del cautiverio construyendo la Mark I, abandona la fabricación de armas y revela al mundo que él es Iron Man." }, { title: "The Avengers", year: "2012", type: "PELÍCULA", event: "Aprende a combatir como parte de un equipo y atraviesa el portal de Nueva York con un misil nuclear para salvar la ciudad." }, { title: "Civil War", year: "2016", type: "PELÍCULA", event: "La culpa por Sokovia lo lleva a defender los Acuerdos. La verdad sobre la muerte de sus padres termina rompiendo su relación con Steve." }, { title: "Endgame", year: "2019", type: "PELÍCULA", event: "Resuelve el viaje temporal, recupera a quienes desaparecieron y usa las Gemas para eliminar a Thanos a costa de su propia vida." }],
+    appearances: [
+      { title: "Iron Man", year: "2008", type: "PELÍCULA", event: "Tony escapa del cautiverio construyendo la Mark I, abandona la fabricación de armas y revela al mundo que él es Iron Man." },
+      { title: "Iron Man 2", year: "2010", type: "PELÍCULA", event: "Tony afronta el deterioro de su reactor, la presión del Gobierno y la venganza de Ivan Vanko." },
+      { title: "The Avengers", year: "2012", type: "PELÍCULA", event: "Aprende a combatir como parte de un equipo y atraviesa el portal de Nueva York con un misil nuclear para salvar la ciudad." },
+      { title: "Iron Man 3", year: "2013", type: "PELÍCULA", event: "Tras la batalla de Nueva York, Tony debe reconstruirse sin depender de sus armaduras." },
+      { title: "Civil War", year: "2016", type: "PELÍCULA", event: "La culpa por Sokovia lo lleva a defender los Acuerdos. La verdad sobre la muerte de sus padres termina rompiendo su relación con Steve." },
+      { title: "Endgame", year: "2019", type: "PELÍCULA", event: "Resuelve el viaje temporal, recupera a quienes desaparecieron y usa las Gemas para eliminar a Thanos a costa de su propia vida." },
+    ],
     screenMoment: { videoId: "Ke1Y3P9D0Bc", title: "Enfrentarse a sus propios fantasmas", kicker: "IRON MAN 3 · TRÁILER OFICIAL", text: "Sin respuestas fáciles ni una armadura infalible, Tony debe descubrir qué queda del héroe cuando todo lo demás desaparece." },
   },
   {
@@ -201,6 +209,7 @@ export const characters: Character[] = [...characterEntries.map((character) => (
 })), ...expandedCharacters, ...additionalCharacters, ...essentialCharacters, ...heroCharacters, ...futureSagaCharacters].map((character) => ({
   ...character,
   story: storyData[character.id] ?? [],
+  spoilers: characterSpoilers[character.id],
 }));
 
 export function getCharacter(id: string) {

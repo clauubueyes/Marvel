@@ -541,6 +541,9 @@
 .film-reel h3 { margin: 7px 0 0; font: 25px var(--font-display); text-transform: uppercase; }
 .film-reel a > strong { font: 17px var(--font-display); }
 .film-reel a > i { font-style: normal; }
+.film-reel .film-locked { min-height: 112px; display: grid; align-items: center; border-bottom: 1px solid rgba(255,255,255,.18); padding: 20px 0; }
+.film-reel .film-locked p { margin: 2px 0; color: #74767b; font-size: 9px; }
+.film-reel .film-locked a { display: inline-block; margin-top: 8px; padding: 0; background: none; color: var(--accent); border: 0; font-size: 7px; letter-spacing: 1.5px; text-decoration: underline; }
 /* Poderes: visual central, nivel de amenaza y lista de habilidades. */
 .profile-power { min-height: 950px; position: relative; display: grid; grid-template-columns: .72fr .58fr 1fr; grid-template-rows: auto 1fr auto; gap: 4vw; color: #f4f0e7; overflow: hidden; background: radial-gradient(circle at 46% 52%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 24%),linear-gradient(135deg,#080a0d,#12141a); }
 .profile-power::before { content: "POWER"; position: absolute; left: -3vw; bottom: -5vw; color: rgba(255,255,255,.022); font: 20vw var(--font-display); }
@@ -666,14 +669,19 @@
 }
 
 /* Intro del corredor narrativo: puente entre el expediente y los capítulos. */
-.story-corridor { position: relative; padding: 11vh 11vw 9vh; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 6vw; background: #090a0d; }
-.story-corridor h2 { font-size: clamp(48px, 5.4vw, 86px); line-height: .86; letter-spacing: -1px; }
-.story-corridor h2 em { display: block; -webkit-text-stroke: 1.5px var(--accent); color: transparent; }
-.story-corridor > span { max-width: 380px; justify-self: end; padding: 17px 0 17px 20px; border-left: 2px solid var(--accent); color: #85878d; font-size: 9px; line-height: 1.8; letter-spacing: 1px; }
-@media (max-width: 700px) {
-  .story-corridor { display: block; padding: 90px 8vw 70px; }
-  .story-corridor h2 { font-size: clamp(32px, 10vw, 60px); line-height: 1; }
-  .story-corridor > span { display: block; margin-top: 25px; }
+.story-corridor { position: relative; padding: clamp(56px, 7vw, 104px) 8vw; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr); grid-template-areas: "label label" "title copy"; align-items: end; gap: 22px 6vw; background: #090a0d; border-bottom: 1px solid #ffffff16; }
+.profile .story-corridor::before, .profile .story-corridor::after { content: none; }
+.story-corridor .section-label { grid-area: label; margin: 0; }
+.story-corridor h2 { grid-area: title; margin: 0; font-size: clamp(44px, 5.4vw, 80px); line-height: 1.04; letter-spacing: -.02em; }
+.story-corridor h2 em { display: block; margin-top: .06em; -webkit-text-stroke: 1px var(--accent); color: transparent; }
+.story-corridor > span { grid-area: copy; max-width: 390px; justify-self: start; margin-bottom: 5px; padding: 4px 0 4px 22px; border-left: 2px solid var(--accent); color: #b1b3b6; font-size: 12px; line-height: 1.9; letter-spacing: .04em; }
+@media (min-width: 1181px) {
+  .story-corridor { padding-left: max(200px, 8vw); }
+}
+@media (max-width: 900px) {
+  .story-corridor { grid-template-columns: minmax(0, 1fr); grid-template-areas: "label" "title" "copy"; padding: 56px max(24px, 6vw); gap: 20px; }
+  .story-corridor h2 { font-size: clamp(38px, 10vw, 64px); }
+  .story-corridor > span { max-width: 460px; margin: 4px 0 0; padding-left: 16px; font-size: 11px; }
 }
 
 /* Rail lateral de los actos: recorre toda la ficha y marca el capítulo activo. */

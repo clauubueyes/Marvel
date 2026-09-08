@@ -1,6 +1,6 @@
 import type { MovieProgressRepository, ProgressChange } from "@/repositories/movieProgressRepository";
 
-export type ProgressUser = { id: string; email?: string };
+export type ProgressUser = { id: string; email?: string; user_metadata?: { avoid_spoilers?: unknown } };
 type Snapshot = {
   user: ProgressUser | null;
   initialized: boolean;
@@ -32,7 +32,10 @@ export class MovieProgressStore {
     this.listeners.forEach((listener) => listener());
   }
   setUser(user: ProgressUser | null) {
-    if (this.snapshot.initialized && this.snapshot.user?.id === user?.id) return;
+    if (this.snapshot.initialized && this.snapshot.user?.id === user?.id) {
+      if (this.snapshot.user?.user_metadata?.avoid_spoilers !== user?.user_metadata?.avoid_spoilers) this.publish({ user });
+      return;
+    }
     this.generation++;
     this.confirmed = new Set();
     this.queue = [];

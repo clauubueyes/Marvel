@@ -117,7 +117,7 @@
     color: var(--route-accent); 
     font-size: 10px; 
     letter-spacing: 1px; 
-}.route-spoiler { padding: 14px; border-left: 2px solid var(--route-accent); background: rgba(255,255,255,.04); }.route-spoiler b { margin-right: 10px; color: var(--route-accent); font-size: 7px; }.route-back { padding: 35px 6vw; border-top: 1px solid #3d4736; color: #aab2a1; background: #070906; font-size: 8px; }
+}.route-spoiler { padding: 14px; border-left: 2px solid var(--route-accent); background: rgba(255,255,255,.04); }.route-spoiler b { margin-right: 10px; color: var(--route-accent); font-size: 7px; }.route-spoiler.route-spoiler-locked { opacity: .7; }.route-spoiler.route-spoiler-locked a { display: inline-block; margin-left: 10px; color: var(--route-accent); font-size: 7px; letter-spacing: 1px; }.route-back { padding: 35px 6vw; border-top: 1px solid #3d4736; color: #aab2a1; background: #070906; font-size: 8px; }
 @media (max-width: 900px) { 
     .routes-directory { grid-template-columns: 1fr; }.viewing-route-header { grid-template-columns: 1fr; }.viewing-route-header aside { width: min(380px,100%); }.viewing-route-list li { grid-template-columns: 45px 190px 1fr; } }
 /*

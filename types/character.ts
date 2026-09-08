@@ -1,3 +1,5 @@
+import type { SpoilerRequirement } from "./spoiler";
+
 export type CharacterAppearance = {
   titleId: string;
   title: string;
@@ -7,13 +9,25 @@ export type CharacterAppearance = {
 };
 
 export type StoryChapter = {
+  spoiler?: SpoilerRequirement;
   year: string;
   kicker: string;
   title: string;
   text: string;
 };
 
+export type CharacterSpoilers = {
+  overview: SpoilerRequirement;
+  powers: SpoilerRequirement;
+  status: SpoilerRequirement;
+  affiliations: SpoilerRequirement;
+  facts: SpoilerRequirement[];
+  screenMoment: SpoilerRequirement;
+  variants: SpoilerRequirement[];
+};
+
 export type Character = {
+  spoilers?: Partial<CharacterSpoilers>;
   id: string;
   name: string;
   nameLines?: string[];
