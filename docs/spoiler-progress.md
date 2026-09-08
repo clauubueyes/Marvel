@@ -81,6 +81,16 @@ ejecuta su propia suscripción. `buildSpoilerProgress` es la única función que
 decide `ready`/`allowSpoilers` a partir de la cuenta y del progreso confirmado,
 y está cubierta por tests unitarios.
 
+Los bloqueos dan **feedback progresivo personalizado** sin revelar qué obras
+faltan: `spoilerProgressHint` cuenta los títulos del requisito ya vistos
+(`allOf` parcial) y devuelve `{ watched, required }` o `null` cuando no hay
+requisito concreto o ya estaría desbloqueado. `SpoilerNotice` muestra «Has visto
+X de Y obras necesarias» cuando recibe un requisito; los actos bloqueados de
+`CharacterStory` y los datos curiosos de `CharacterFacts` lo incorporan en su
+texto (las fichas muestran `visto/total` como valor) y el progreso vacío sigue
+diciendo «Continúa viendo el UCM para desbloquear esta parte». El aviso
+permanece accesible con `role="status"` y `aria-live="polite"`.
+
 `CharacterStory` sustituye los actos antes del JSX. No monta imágenes bloqueadas,
 ni en la capa base ni mediante el retrato alternativo. Los títulos accesibles, años,
 etiquetas y navegación se sustituyen también. Las animaciones se reconstruyen al
@@ -101,14 +111,15 @@ Más allá de los personajes, la protección por progreso también se aplica a:
   ha visto el título del paso. Con protección activa y sin haberlo visto, se muestra un
   aviso en lugar del texto spoilero.
 - **Dossier de títulos** (`/titulos`): protegido hasta haber visto el propio
-  título (`allOf: [slug]`). El resumen de «EL ACONTECIMIENTO» y las escenas
-  poscréditos se bloquean con `ProgressSpoilerGate`; la grilla de personajes
-  conectados (`TitleCast`) se oculta por completo para no delatar apariciones o
-  cameos; los resúmenes de las entidades conectadas (`TitleConnections`) se
-  bloquean individualmente con `SpoilerText`; y la columna «CONTINUAR CON» del
-  orden de visionado (`TitleWatchOrder`) se oculta, porque revela el futuro
-  narrativo (la columna «VER ANTES» es información de navegación y permanece
-  pública).
+  título con `titleDossierRequirement(slug)` (`allOf: [slug]`), el único requisito
+  centralizado que usan todas las puertas de la ficha. El resumen de
+  «EL ACONTECIMIENTO» y las escenas poscréditos se bloquean con
+  `ProgressSpoilerGate`; la grilla de personajes conectados (`TitleCast`) se
+  oculta por completo para no delatar apariciones o cameos; los resúmenes de
+  las entidades conectadas (`TitleConnections`) se bloquean individualmente con
+  `SpoilerText`; y la columna «CONTINUAR CON» del orden de visionado
+  (`TitleWatchOrder`) se oculta, porque revela el futuro narrativo (la columna
+  «VER ANTES» es información de navegación y permanece pública).
   `ProgressSpoilerGate` reutiliza `canRevealSpoiler` como wrapper client para contenido
   sensible de otras páginas sin necesidad de duplicar la lógica.
 
@@ -122,6 +133,14 @@ Si un contenido nuevo revela varias obras, incluir todos sus slugs en `allOf`.
 Rechaza historias o campos sin requisitos, listas vacías, IDs desconocidos y colecciones
 de requisitos desalineadas. El fallback de renderizado protege durante desarrollo;
 la validación impide publicar otra ficha sin etiquetar.
+
+`validateProgressRelations` se ejecuta en la misma tubería y cubre los requisitos
+derivados de fuera de los personajes: cada ruta debe desbloquearse con pasos
+válidos, únicos y con spoiler (`allOf` de sus títulos), cada conexión de entidad
+debe referenciar al menos un título (`allOf: entity.titleIds`) y cada título del
+catálogo debe tener su `titleDossierRequirement(slug)`. Si el contenido editado
+dejara una de estas puertas vacía, repetida o apuntando a un slug desconocido, el
+build falla antes de publicar.
 
 `npm test` cubre todo el catálogo: ausencia de progreso, desbloqueo completo, falta
 de cualquiera de las obras exigidas, requisitos incorrectos, flashbacks y selección
