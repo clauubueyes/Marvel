@@ -4,6 +4,7 @@ import { AccountForm } from "@/features/account/AccountForm";
 import { SpoilerProgressSettings } from "@/features/account/SpoilerProgressSettings";
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { characters } from "@/repositories/characterRepository";
+import { getCharacterProgressTitleIds } from "@/utils/characterSpoilers";
 
 export const metadata: Metadata = { title: "Mi cuenta — NEXUS", robots: { index: false, follow: false } };
 
@@ -19,7 +20,7 @@ export default function AccountPage() {
       </header>
       <AccountForm><SpoilerProgressSettings
         titles={mcuCatalog.map(({ slug, title, type }) => ({ slug, title, type }))}
-        characters={characters.map(({ id, name, appearances }) => ({ id, name, titleIds: appearances.map(({ titleId }) => titleId) }))}
+        characters={characters.map((character) => ({ id: character.id, name: character.name, titleIds: getCharacterProgressTitleIds(character) }))}
       /></AccountForm>
     </div>
   </main>;

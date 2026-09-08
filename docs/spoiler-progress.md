@@ -1,93 +1,105 @@
 # Protección de spoilers por progreso
 
-La fuente de verdad sigue siendo `movie_progress`: se reutilizan `AccountProvider`,
-`MovieProgressStore` y su cola de cambios individuales/masivos. No hay un booleano
-que sustituya el progreso, tablas nuevas, migraciones ni dependencias nuevas.
+## Cuenta y persistencia
 
-El registro muestra únicamente una casilla «Evitar spoilers», marcada por defecto.
-La selección se guarda en `auth.users.user_metadata.avoid_spoilers` mediante las
-opciones de `signUp`, también si es necesaria la confirmación por correo. Solo el
-valor booleano `false` permite mostrar spoilers; las cuentas anteriores conservan
-la protección por defecto. Es una preferencia de presentación, no autorización.
-Después de iniciar sesión aparece el panel detallado y se puede cambiar esa
-preferencia mediante `auth.updateUser`, sin alterar las obras vistas. El evento
-Auth existente actualiza la preferencia sin recargar ni vaciar el progreso.
+La fuente de verdad continúa en `movie_progress`, mediante `AccountProvider`,
+`MovieProgressStore` y su cola de cambios individuales/masivos. No hay nuevas
+tablas, migraciones ni dependencias.
 
-En `/cuenta#spoilers`, con sesión iniciada, `SpoilerProgressSettings` permite buscar películas/series,
-filtrar las apariciones catalogadas de un personaje y marcar/desmarcar todos los
-resultados. Solo recibe nombres, tipos e IDs; no sinopsis, imágenes ni acontecimientos.
-Un personaje sirve para seleccionar obras concretas, no para asumir un progreso
-ambiguo de «personaje visto». Las series siguen la granularidad del catálogo actual
-(temporada o grupo de temporadas), sin inventar progreso por episodio.
+El registro muestra únicamente «Evitar spoilers», marcado por defecto. Se guarda
+en `auth.users.user_metadata.avoid_spoilers` mediante `signUp`, también cuando se
+requiere confirmación por correo. Solo el booleano `false` permite spoilers;
+las cuentas anteriores y valores ausentes conservan la protección. Esta opción
+no sustituye el progreso ni marca obras como vistas.
 
-## Requisitos y renderizado
+Tras iniciar sesión aparece `/cuenta#spoilers`. La preferencia se actualiza con
+`auth.updateUser`; la suscripción Auth existente la aplica sin vaciar el progreso.
+El panel permite buscar títulos y marcar resultados individualmente o en bloque.
+El filtro por personaje incluye apariciones y todas las obras necesarias para
+desbloquear su historia, datos, vídeo y variantes (`getCharacterProgressTitleIds`).
+Un personaje es un filtro de obras concretas, no un booleano «personaje visto».
 
-`SpoilerRequirement` declara `allOf`, una lista de slugs estables del catálogo.
-Todas las obras deben estar vistas. Ver Endgame no implica haber visto Iron Man.
-Un requisito vacío bloquea. Los componentes narrativos de personajes utilizan
-`UNREVIEWED_SPOILER` cuando falta un requisito: pendiente de revisar nunca equivale
-a público. El evaluador general permite la ausencia de requisito únicamente para
-usos explícitos de contenido público.
-`canRevealSpoiler` toma esa decisión y `protectContent` devuelve el objeto original
-o una sustitución neutra completa, sin mezclar campos del contenido bloqueado.
+Las series conservan la granularidad del catálogo: temporada o grupo de temporadas,
+sin inferir progreso por episodio. En invitados se usa `nexus:titles:watched`,
+compartido con el directorio de títulos. Las rutas de invitado mantienen su
+almacenamiento separado; con sesión, títulos y rutas usan el mismo progreso de
+cuenta. No se importa automáticamente el progreso de invitado.
 
-`useSpoilerProgress` adapta el progreso existente. Con la protección activa, antes de recuperar la sesión,
-durante la carga, durante guardados pendientes o ante un error, los requisitos no
-se satisfacen. Así una escritura optimista fallida no revela contenido irreversible.
-Los cambios confirmados, desmarcados y cambios de identidad actualizan React mediante
-las suscripciones existentes; no hay nuevas consultas ni sondeos.
-Si la cuenta permite spoilers explícitamente, el contenido se muestra al recuperar
-la sesión, sin exigir que el usuario marque obras como vistas.
+## Cobertura de los personajes
 
-En invitados se reutiliza `nexus:titles:watched`, compartido con el directorio de
-títulos. Las rutas de invitado mantienen su almacenamiento separado existente;
-al iniciar sesión tanto rutas como títulos usan el progreso unificado de la cuenta.
-No se importa progreso de invitado a cuentas.
+Los **49 personajes y sus 196 actos** tienen requisitos editoriales explícitos:
 
-## Personajes revisados: Iron Man y Capitán América
+- `data/characters/storyData.ts`: cada capítulo declara `spoiler.allOf`. El requisito
+  abarca título, kicker, texto, año e imagen del acto, incluido el rail lateral.
+- `data/characters/spoilerData.ts`: requisitos de introducción/cita (`overview`),
+  capacidades (`powers`), estado, afiliaciones, vídeo, cada dato curioso y variante.
+  `catalog.ts` incorpora estos requisitos al catálogo común de personajes.
+- Las conexiones de una ficha requieren todos los títulos vinculados a la entidad;
+  el resumen de cada recorrido requiere los títulos de sus pasos. Cada elemento se
+  evalúa por separado. Las fuentes editoriales siguen disponibles.
 
-`data/characters/storyData.ts` asocia los cuatro actos, respectivamente, con
-`iron-man`, `los-vengadores`, `capitan-america-civil-war` y `vengadores-endgame`.
-El requisito de cada acto cubre texto, título, kicker, año e imagen del acto.
-`CharacterStory` sustituye el acto antes de construir el JSX; no monta imágenes
-bloqueadas, tampoco como capa base o retrato alternativo. `StorylineRail` aplica
-el mismo criterio a los años y etiquetas laterales. Las animaciones se reconstruyen
-cuando cambia la visibilidad y buscan la imagen dentro de su propio acto.
+Los requisitos usan slugs del catálogo. No se deducen de años, orden de estreno,
+posición del acto, palabras del texto ni de la última película vista. Ejemplos:
 
-La ficha también protege los datos curiosos, el estado actual y el vídeo de
-Iron Man 3 mediante los requisitos de `character.spoilers`. El estado protegido
-se omite del JSON-LD público. Los títulos de la filmografía siguen siendo enlaces
-de catálogo y no muestran sus descripciones de acontecimientos.
+- Iron Man + Iron Man 2 desbloquean el primer acto de Tony; Los Vengadores, Civil War
+  y Endgame desbloquean sus respectivos actos.
+- El primer vengador desbloquea los dos primeros actos de Steve; El soldado de
+  invierno el tercero y Endgame el cuarto.
+- El primer acto de Rocket narra un origen revelado en Guardianes Vol. 3. Ver
+  Guardianes Vol. 1 desbloquea su segundo acto, pero no ese origen.
+- El acto de T'Challa que mezcla Infinity War y su regreso en Endgame requiere ambas.
+- El recuerdo de Kate durante Nueva York requiere Ojo de Halcón, la obra que lo
+  muestra, aunque la batalla ocurriera antes.
 
-Los dos primeros actos de Steve Rogers requieren `capitan-america-el-primer-vengador`;
-el tercero, `capitan-america-el-soldado-de-invierno`; y el cuarto, `vengadores-endgame`.
-Sus datos curiosos, estado y vídeo también tienen requisitos. `overview` protege
-la descripción introductoria, cita y capacidades de los personajes revisados.
-Las historias, imágenes de actos, datos curiosos, vídeos, estado, introducción,
-citas y capacidades sin requisitos quedan bloqueados en modo sin spoilers.
-Afiliaciones, variantes y conexiones de la ficha quedan igualmente bloqueadas
-hasta disponer de revisión editorial. Con spoilers permitidos se muestran.
-El JSON-LD público usa una descripción neutra y omite estado y capacidades.
+Los bloques que mezclan revelaciones se desbloquean como una unidad cuando se han
+visto todas sus obras. El catálogo incluye historias anunciadas: sus actos requieren
+el título correspondiente, sin asumir que se ha visto por conocer otras entregas.
+Para historias de continuidades que el catálogo resume en un título del UCM (como
+el Duende Verde en No Way Home), se usa ese título; no se inventan IDs externos ni
+un catálogo paralelo.
 
-El catálogo y los recursos siguen siendo públicos. Esta es protección de
-renderizado contra exposición accidental: no un control de acceso al código fuente,
-los datos serializados de Next o las URL públicas de imágenes. El HTML visible
-inicial y la versión sin JavaScript conservan los bloqueos. El resto de Nexus
-requiere etiquetado editorial e integración antes de considerarse protegido.
-El bloqueo conservador de fichas sin revisar evita exponer sus relatos, pero no
-supone que ya tengan desbloqueo gradual: hace falta asignar sus obras explícitas.
+## Lógica y renderizado
 
-## Ampliación y comprobaciones
+`canRevealSpoiler` evalúa `SpoilerRequirement.allOf`. `protectContent` devuelve el
+contenido original o una sustitución neutra completa, sin mezclar campos sensibles.
+Los componentes narrativos usan `UNREVIEWED_SPOILER` si faltan requisitos: ese
+respaldo permanece bloqueado en modo sin spoilers. El evaluador general permite
+omitir requisitos únicamente para contenido explícitamente público.
 
-Para otra historia, añadir `spoiler: { allOf: ["slug-de-la-obra"] }` al capítulo;
-el componente y el rail ya lo interpretan sin versiones alternativas de la página.
-Para otras piezas, asociar el mismo tipo a sus datos y ejecutar `protectContent`
-antes del JSX o `canRevealSpoiler` antes de montar el componente sensible.
-Un acontecimiento que revele varias obras puede requerir todos sus slugs.
+`useSpoilerProgress` se suscribe al progreso existente. Con protección activa,
+la recuperación de sesión, cargas, guardados pendientes y errores mantienen los
+bloqueos. Una escritura optimista fallida no debe exponer una revelación. Al confirmar
+cambios o cambiar de identidad, React actualiza la ficha sin nuevas consultas por
+componente. Con spoilers permitidos, basta recuperar la sesión para mostrarla.
 
-`npm test` cubre requisitos múltiples, falta de progreso, slugs del catálogo,
-sustitución completa y el ejemplo Iron Man + Iron Man 2, además de las pruebas
-existentes de persistencia, aislamiento y rollback. `tests/e2e/account.spec.ts`
-comprueba selección masiva, recarga, desbloqueo, logout, cambios de invitado,
-renderizado sin JavaScript y ausencia de peticiones de imágenes bloqueadas.
-Supabase se simula por HTTP; estas pruebas no escriben en cuentas reales.
+`CharacterStory` sustituye los actos antes del JSX. No monta imágenes bloqueadas,
+ni en la capa base ni mediante el retrato alternativo. Los títulos accesibles, años,
+etiquetas y navegación se sustituyen también. Las animaciones se reconstruyen al
+cambiar la visibilidad y buscan la imagen dentro de su propio acto. Los vídeos se
+montan solo después del desbloqueo. El JSON-LD público usa una descripción neutra
+y omite el estado y las capacidades.
+
+Esta protección evita exposición accidental en el renderizado, incluido el HTML
+visible inicial y la navegación sin JavaScript. El catálogo, los datos serializados
+de Next y las URL públicas de recursos no son confidenciales. Los nombres y retratos
+de catálogo siguen siendo identificadores públicos. La cobertura descrita corresponde
+a las fichas de personajes; las demás páginas de Nexus necesitan su propia integración.
+
+## Ampliación y validación
+
+Al añadir un personaje, completar sus actos y `characterSpoilers`. Mantener alineado
+el orden de requisitos de datos curiosos y variantes con sus respectivas colecciones.
+Si un contenido nuevo revela varias obras, incluir todos sus slugs en `allOf`.
+
+`validateCharacterSpoilers` se ejecuta dentro de `npm run validate:content` y del build.
+Rechaza historias o campos sin requisitos, listas vacías, IDs desconocidos y colecciones
+de requisitos desalineadas. El fallback de renderizado protege durante desarrollo;
+la validación impide publicar otra ficha sin etiquetar.
+
+`npm test` cubre todo el catálogo: ausencia de progreso, desbloqueo completo, falta
+de cualquiera de las obras exigidas, requisitos incorrectos, flashbacks y selección
+de cuenta. Conserva las pruebas de persistencia, rollback, Auth y aislamiento.
+`tests/e2e/spoilers-catalog.spec.ts` recorre cada personaje con progreso vacío, parcial,
+completo y revocado. `account.spec.ts` cubre registro, preferencia, guardado, recarga,
+logout, SSR sin JavaScript y ausencia de peticiones de imágenes bloqueadas.
+Supabase se simula por HTTP; no se escriben cuentas reales durante estas pruebas.

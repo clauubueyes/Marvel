@@ -25,7 +25,7 @@ export function SpoilerProgressSettings({ titles, characters }: Props) {
     <header className="account-panel-heading">
       <p className="account-kicker">TU RECORRIDO</p>
       <h2 id="spoilers-heading">SPOILERS / PROGRESO</h2>
-      <p>Marca las obras que has visto completas. Cada fragmento protegido se desbloquea solo cuando has visto todas las obras que requiere. Ya disponible en la historia de Iron Man.</p>
+      <p>Marca las obras que has visto completas. Las historias de todos los personajes se adaptan a tu progreso: cada fragmento se desbloquea cuando has visto todas las obras que requiere.</p>
     </header>
     <SpoilerPreference key={user.id} />
     <p className="account-message" role="status">{!progress.ready ? "Recuperando progreso…" : pending ? "Guardando cambios…" : `${progress.values.size} títulos vistos.`} Se guarda en tu cuenta.</p>
@@ -34,7 +34,7 @@ export function SpoilerProgressSettings({ titles, characters }: Props) {
       <label><span>BUSCAR PELÍCULA O SERIE</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} /></label>
       <label><span>OBRAS DEL PERSONAJE</span><select value={character} onChange={(event) => setCharacter(event.target.value)}><option value="">Todos los personajes</option>{characters.map(({ id, name }) => <option key={id} value={id}>{name}</option>)}</select></label>
     </div>
-    <p className="account-footnote">El filtro de personaje muestra sus apariciones catalogadas. Una serie se marca cuando has terminado las temporadas indicadas.</p>
+    <p className="account-footnote">El filtro de personaje incluye las obras relacionadas con su historia y su ficha. Una serie se marca cuando has terminado las temporadas indicadas.</p>
     <div className="account-session-footer">
       <button type="button" className="account-text-button" disabled={!progress.ready || !visible.length} onClick={() => progress.setMany(visible.map(({ slug }) => slug), true)}>MARCAR {visible.length} RESULTADOS COMO VISTOS</button>
       <button type="button" className="account-text-button" disabled={!progress.ready || !visible.length} onClick={() => progress.setMany(visible.map(({ slug }) => slug), false)}>MARCAR RESULTADOS COMO PENDIENTES</button>

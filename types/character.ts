@@ -16,13 +16,18 @@ export type StoryChapter = {
   text: string;
 };
 
+export type CharacterSpoilers = {
+  overview: SpoilerRequirement;
+  powers: SpoilerRequirement;
+  status: SpoilerRequirement;
+  affiliations: SpoilerRequirement;
+  facts: SpoilerRequirement[];
+  screenMoment: SpoilerRequirement;
+  variants: SpoilerRequirement[];
+};
+
 export type Character = {
-  spoilers?: {
-    overview?: SpoilerRequirement;
-    status?: SpoilerRequirement;
-    facts?: SpoilerRequirement[];
-    screenMoment?: SpoilerRequirement;
-  };
+  spoilers?: Partial<CharacterSpoilers>;
   id: string;
   name: string;
   nameLines?: string[];
