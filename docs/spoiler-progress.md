@@ -100,8 +100,15 @@ Más allá de los personajes, la protección por progreso también se aplica a:
 - **Rutas de visionado** (`/rutas`): el «spoiler» de cada paso solo se revela cuando se
   ha visto el título del paso. Con protección activa y sin haberlo visto, se muestra un
   aviso en lugar del texto spoilero.
-- **Dossier de títulos** (`/titulos`): el resumen de «EL ACONTECIMIENTO» y las escenas
-  poscréditos se bloquean hasta que se ha visto el propio título (`allOf: [slug]`).
+- **Dossier de títulos** (`/titulos`): protegido hasta haber visto el propio
+  título (`allOf: [slug]`). El resumen de «EL ACONTECIMIENTO» y las escenas
+  poscréditos se bloquean con `ProgressSpoilerGate`; la grilla de personajes
+  conectados (`TitleCast`) se oculta por completo para no delatar apariciones o
+  cameos; los resúmenes de las entidades conectadas (`TitleConnections`) se
+  bloquean individualmente con `SpoilerText`; y la columna «CONTINUAR CON» del
+  orden de visionado (`TitleWatchOrder`) se oculta, porque revela el futuro
+  narrativo (la columna «VER ANTES» es información de navegación y permanece
+  pública).
   `ProgressSpoilerGate` reutiliza `canRevealSpoiler` como wrapper client para contenido
   sensible de otras páginas sin necesidad de duplicar la lógica.
 

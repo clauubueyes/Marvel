@@ -73,12 +73,12 @@ export default async function TitlePage({ params }: PageProps) {
     {/* Información editorial ampliada disponible para títulos documentados. */}
     {details && <>
       <TitleCredits title={title} details={details} />
-      <TitleWatchOrder before={beforeTitles} after={afterTitles} />
+      <TitleWatchOrder before={beforeTitles} after={afterTitles} requirement={{ allOf: [title.slug] }} />
       <TitlePostCredits scenes={details.postCredits} requirement={{ allOf: [title.slug] }} />
     </>}
     {/* Cierre de la ficha: reparto, conexiones, fuentes y paginación. */}
-    <TitleCast characters={title.characters} />
-    <TitleConnections entities={connectedEntities} />
+    <TitleCast characters={title.characters} requirement={{ allOf: [title.slug] }} />
+    <TitleConnections entities={connectedEntities} requirement={{ allOf: [title.slug] }} />
     {details && <TitleSources details={details} />}
     <TitlePagination previous={title.previous} next={title.next} />
   </main>;
