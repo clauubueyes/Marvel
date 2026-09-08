@@ -72,6 +72,15 @@ bloqueos. Una escritura optimista fallida no debe exponer una revelación. Al co
 cambios o cambiar de identidad, React actualiza la ficha sin nuevas consultas por
 componente. Con spoilers permitidos, basta recuperar la sesión para mostrarla.
 
+El progreso para spoilers se computa **una sola vez por árbol** en
+`SpoilerProgressProvider` (montado en el layout raíz, dentro de `AccountProvider`)
+y se reparte por contexto. Todos los consumidores — historia, rail, capacidades,
+datos curiosos, conexiones, escena, referencias, filmografía, texto inline y
+puertas de progreso — leen del mismo valor con `useSpoilerProgress`; ninguno
+ejecuta su propia suscripción. `buildSpoilerProgress` es la única función que
+decide `ready`/`allowSpoilers` a partir de la cuenta y del progreso confirmado,
+y está cubierta por tests unitarios.
+
 `CharacterStory` sustituye los actos antes del JSX. No monta imágenes bloqueadas,
 ni en la capa base ni mediante el retrato alternativo. Los títulos accesibles, años,
 etiquetas y navegación se sustituyen también. Las animaciones se reconstruyen al
