@@ -6,7 +6,9 @@
 .next-watch-trailer button b { font-size: 12px; letter-spacing: .12em; text-shadow: 0 2px 8px #000; }
 .next-watch-actions { display: flex; flex-wrap: wrap; gap: 16px; }
 .next-watch-trailer button:focus-visible { outline: 2px solid var(--accent, #ff4520); outline-offset: -5px; }
-.story-trailer-image { background: #090a0d; }
+/* The background must reveal with the video, not cover earlier acts outside the clip. */
+.story-trailer-image { background: transparent; }
+.story-trailer-image .story-image-clip { background: #090a0d; }
 .story-trailer-image .story-image-aura, .story-trailer-image .story-image-grain, .story-trailer-image::after { display: none; }
 .story-trailer-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 5%; }
 .story-trailer-stage > p { color: #b5b5ae; text-align: center; }

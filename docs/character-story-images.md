@@ -33,3 +33,8 @@ En móvil ocupa la zona superior del paso y el texto queda debajo. La capa del v
 no hereda zoom, filtros ni decoraciones de las imágenes narrativas; queda fuera del
 árbol accesible y sin interacción cuando su paso está inactivo. Al volver a un acto
 anterior se desmonta el reproductor para detener el audio.
+
+El fondo opaco del tráiler pertenece a `.story-image-clip`, no a la capa exterior:
+así se recorta junto al vídeo y no tapa las imágenes de actos anteriores. La prueba
+`story-images.spec.ts` comprueba visualmente Iron Man y Los Vengadores vistos con
+Iron Man 2 pendiente, comparando los píxeles del panel con y sin la capa inactiva.
