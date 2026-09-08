@@ -249,9 +249,9 @@
     }
 
     .titles-directory.is-grid .title-card-actions button {
-        min-height: 42px;
-        padding-inline: 6px;
-        font-size: 7px;
+        min-height: 44px;
+        padding-inline: 8px;
+        font-size: 9px;
     }
 
     /* Personajes: tarjetas verticales compactas para conservar dos columnas. */
