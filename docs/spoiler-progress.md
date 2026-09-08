@@ -82,8 +82,19 @@ y omite el estado y las capacidades.
 Esta protección evita exposición accidental en el renderizado, incluido el HTML
 visible inicial y la navegación sin JavaScript. El catálogo, los datos serializados
 de Next y las URL públicas de recursos no son confidenciales. Los nombres y retratos
-de catálogo siguen siendo identificadores públicos. La cobertura descrita corresponde
-a las fichas de personajes; las demás páginas de Nexus necesitan su propia integración.
+de catálogo siguen siendo identificadores públicos.
+
+Más allá de los personajes, la protección por progreso también se aplica a:
+
+- **Filmografía de personajes**: cada aparición solo se muestra cuando se ha visto su
+  título (`allOf: [titleId]`), para no delatar el arco del personaje.
+- **Rutas de visionado** (`/rutas`): el «spoiler» de cada paso solo se revela cuando se
+  ha visto el título del paso. Con protección activa y sin haberlo visto, se muestra un
+  aviso en lugar del texto spoilero.
+- **Dossier de títulos** (`/titulos`): el resumen de «EL ACONTECIMIENTO» y las escenas
+  poscréditos se bloquean hasta que se ha visto el propio título (`allOf: [slug]`).
+  `ProgressSpoilerGate` reutiliza `canRevealSpoiler` como wrapper client para contenido
+  sensible de otras páginas sin necesidad de duplicar la lógica.
 
 ## Ampliación y validación
 

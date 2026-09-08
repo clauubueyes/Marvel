@@ -74,7 +74,7 @@ export default async function TitlePage({ params }: PageProps) {
     {details && <>
       <TitleCredits title={title} details={details} />
       <TitleWatchOrder before={beforeTitles} after={afterTitles} />
-      <TitlePostCredits scenes={details.postCredits} />
+      <TitlePostCredits scenes={details.postCredits} requirement={{ allOf: [title.slug] }} />
     </>}
     {/* Cierre de la ficha: reparto, conexiones, fuentes y paginación. */}
     <TitleCast characters={title.characters} />
