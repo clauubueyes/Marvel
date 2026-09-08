@@ -1,5 +1,6 @@
 /* Account: compact access form and responsive settings dashboard. */
 .account-page {
+  --font-account-heading: Arial, Helvetica, sans-serif;
   min-height: 82vh;
   background: radial-gradient(circle at 85% 0, #b9d7370d, transparent 35%), #090d07;
   color: var(--paper);
@@ -10,7 +11,7 @@
   padding: 120px 0 72px;
 }
 .account-heading { margin-bottom: 28px; }
-.account-heading h1 { margin: 0; font: clamp(36px, 4vw, 52px)/1.1 var(--font-display); }
+.account-heading h1 { margin: 0; font: 800 clamp(32px, 4vw, 46px)/1.2 var(--font-account-heading); letter-spacing: .015em; }
 .account-heading h1 em { color: var(--accent); font-style: normal; }
 .account-heading > p { margin: 10px 0 0; color: #aeb7a5; font-size: 12px; line-height: 1.8; }
 .account-panel {
@@ -22,7 +23,7 @@
 }
 .account-panel:not(.account-panel-settings) { max-width: 560px; }
 .account-kicker { display: block; margin: 0 0 10px; color: #aeb7a5; font-size: 10px; letter-spacing: 1.5px; line-height: 1.6; }
-.account-panel-heading h2 { margin: 0 0 10px; font: 28px/1.15 var(--font-display); }
+.account-panel-heading h2 { margin: 0 0 10px; font: 700 clamp(20px, 2vw, 26px)/1.35 var(--font-account-heading); letter-spacing: .025em; text-wrap: balance; }
 .account-panel-heading > p:last-child { margin: 0; color: #aeb7a5; font-size: 12px; line-height: 1.8; }
 .account-settings-body { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 32px; }
 .account-settings-nav { min-width: 0; align-self: start; }
@@ -52,7 +53,7 @@
 .account-spoiler-summary-count p { margin: 8px 0 0; color: #aeb7a5; font-size: 11px; line-height: 1.7; }
 .account-spoiler-summary .account-button { width: auto; flex: 0 0 auto; }
 .account-spoiler-preference { padding: 20px; border: 1px solid #435039; background: #b9d73705; }
-.account-spoiler-preference h3 { margin: 0 0 18px; font: 22px/1.2 var(--font-display); }
+.account-spoiler-preference h3 { margin: 0 0 18px; font: 700 18px/1.4 var(--font-account-heading); letter-spacing: .025em; text-wrap: balance; }
 .account-form { display: grid; gap: 22px; margin-top: 28px; }
 .account-form label { display: grid; gap: 10px; }
 .account-form label > span { font-size: 11px; letter-spacing: 1px; color: #d0d6c8; }

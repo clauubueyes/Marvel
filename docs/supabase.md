@@ -33,6 +33,9 @@ la identidad, el estado de sincronización y la recarga del progreso existente.
 `SpoilerProgressSettings` reúne el contador, el acceso al catálogo y la preferencia
 persistida. Todos los ajustes aparecen sin pestañas ni secciones de «próximamente».
 Los enlaces `#sincronizacion` y `#spoilers` apuntan a secciones siempre montadas.
+Los títulos h1, h2 y h3 de cuenta usan una sans serif de ancho normal, con mayor
+interlineado y separación entre letras, para mantener legibles los encabezados
+pequeños. La tipografía condensada se conserva en los elementos decorativos.
 Hasta 700 px se apilan identidad y contenido; el correo puede partirse y el cierre
 de sesión permanece visible. La cuenta no introduce nuevos datos ni servicios.
 
