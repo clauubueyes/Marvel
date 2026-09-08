@@ -1,16 +1,24 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { SpoilerRequirement } from "@/types/spoiler";
+import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
+import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type StorylineRailProps = {
-  beats: { year: string; act: string }[];
+  beats: { year: string; act: string; spoiler?: SpoilerRequirement }[];
 };
 
-export function StorylineRail({ beats }: StorylineRailProps) {
+export function StorylineRail({ beats: sourceBeats }: StorylineRailProps) {
+  const progress = useSpoilerProgress();
+  const beats = sourceBeats.filter((beat) => canRevealSpoiler(beat.spoiler ?? UNREVIEWED_SPOILER, progress));
+  const beatsKey = beats.map((beat) => beat.act).join(",");
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +40,7 @@ export function StorylineRail({ beats }: StorylineRailProps) {
     );
 
     return () => triggers.forEach((trigger) => trigger.kill());
-  }, []);
+  }, [beatsKey]);
 
   if (!beats.length) return null;
 
@@ -47,7 +55,7 @@ export function StorylineRail({ beats }: StorylineRailProps) {
     {beats.map((beat, index) => <button
       type="button"
       key={`${beat.act}-${beat.year}`}
-      data-active={index === active ? "true" : "false"}
+      data-active={index === Math.min(active, beats.length - 1) ? "true" : "false"}
       onClick={() => goTo(index)}
     ><i /><b>{beat.year}</b><small>{beat.act}</small></button>)}
   </aside>;

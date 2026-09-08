@@ -66,7 +66,7 @@ export function createCharacterStructuredData(character: Character) {
         "@id": characterId,
         name: character.name,
         alternateName: character.alias,
-        description: character.description,
+        description: seo.description,
         url: seo.url,
         image: new URL(character.image, siteConfig.url).toString(),
         sameAs: [character.sourceUrl],
@@ -74,8 +74,6 @@ export function createCharacterStructuredData(character: Character) {
         additionalProperty: [
           { "@type": "PropertyValue", name: "Universo", value: character.universe },
           { "@type": "PropertyValue", name: "Categoría", value: character.category },
-          { "@type": "PropertyValue", name: "Estado", value: character.status },
-          { "@type": "PropertyValue", name: "Poderes", value: character.abilities.join(", ") },
         ],
       },
       {

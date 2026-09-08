@@ -1,3 +1,5 @@
+import { SpoilerText } from "@/features/spoilers/SpoilerText";
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
 import Image from "next/image";
 import { CharacterMotionField } from "@/features/characters/dossier/components/CharacterMotionField";
 import { IronManCluster } from "@/features/characters/dossier/components/IronManCluster";
@@ -26,7 +28,7 @@ export function CharacterHero({ character, motion }: CharacterHeroProps) {
       <div className="profile-body"><Image src={character.image} alt={character.name} fill preload sizes="(max-width: 900px) 290px, 32vw" style={{ objectPosition: character.imagePosition ?? "center top" }} /></div>
       <b>{character.symbol}</b>
     </div>
-    <blockquote className="profile-quote-arrival">“{character.quote}”</blockquote>
+    <blockquote className="profile-quote-arrival">“<SpoilerText text={character.quote} requirement={character.spoilers?.overview ?? UNREVIEWED_SPOILER} />”</blockquote>
     <div className="scroll-cue">DESPLAZA PARA EXPLORAR <span>↓</span></div>
   </section>;
 }

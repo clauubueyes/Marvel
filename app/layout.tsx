@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { LegalFooter } from "@/components/layout/LegalFooter";
 import { Analytics } from "@/features/analytics";
 import { AccountProvider } from "@/features/account/AccountProvider";
+import { SpoilerProgressProvider } from "@/features/spoilers/SpoilerProgressProvider";
 
 const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${display.variable} ${mono.variable}`}><AccountProvider><a className="skip-link" href="#main-content">SALTAR AL CONTENIDO</a><div id="main-content">{children}</div><LegalFooter /><Analytics /></AccountProvider></body>
+      <body className={`${display.variable} ${mono.variable}`}><AccountProvider><SpoilerProgressProvider><a className="skip-link" href="#main-content">SALTAR AL CONTENIDO</a><div id="main-content">{children}</div><LegalFooter /><Analytics /></SpoilerProgressProvider></AccountProvider></body>
     </html>
   );
 }
