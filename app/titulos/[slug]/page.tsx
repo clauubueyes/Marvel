@@ -20,6 +20,7 @@ import {
   TitleWatchOrder,
 } from "@/features/titles/dossier/components";
 import { getEntitiesForTitle, getTitle, getTitleDossier } from "@/repositories/contentRepository";
+import { titleDossierRequirement } from "@/services/progress/titleSpoilers";
 import { getTitleImage } from "@/utils/titleImages";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -69,16 +70,16 @@ export default async function TitlePage({ params }: PageProps) {
     {structuredData && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c") }} />}
     {/* Apertura visual y resumen del acontecimiento narrativo. */}
     <TitleHero title={title} details={details} imageUrl={getTitleImage(title.slug)} />
-    <TitleEventDossier title={title} details={details} />
+    <TitleEventDossier title={title} details={details} requirement={titleDossierRequirement(title.slug)} />
     {/* Información editorial ampliada disponible para títulos documentados. */}
     {details && <>
       <TitleCredits title={title} details={details} />
-      <TitleWatchOrder before={beforeTitles} after={afterTitles} />
-      <TitlePostCredits scenes={details.postCredits} />
+      <TitleWatchOrder before={beforeTitles} after={afterTitles} requirement={titleDossierRequirement(title.slug)} />
+      <TitlePostCredits scenes={details.postCredits} requirement={titleDossierRequirement(title.slug)} />
     </>}
     {/* Cierre de la ficha: reparto, conexiones, fuentes y paginación. */}
-    <TitleCast characters={title.characters} />
-    <TitleConnections entities={connectedEntities} />
+    <TitleCast characters={title.characters} requirement={titleDossierRequirement(title.slug)} />
+    <TitleConnections entities={connectedEntities} requirement={titleDossierRequirement(title.slug)} />
     {details && <TitleSources details={details} />}
     <TitlePagination previous={title.previous} next={title.next} />
   </main>;

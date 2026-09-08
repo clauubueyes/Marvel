@@ -25,3 +25,16 @@ solo anima la opacidad del fondo y un pequeño desplazamiento del título. Se el
 los desenfoques, giros por letra y capas ambientales del diseño móvil. Al cambiar
 el ancho o la preferencia de movimiento se revierten las animaciones anteriores.
 Con movimiento reducido, las imágenes cambian sin fundido y el texto queda estático.
+
+Cuando hay actos pendientes por spoilers, el siguiente paso integra el tráiler
+recomendado del personaje en esta misma secuencia. En escritorio reemplaza la
+imagen de la columna sticky, con el texto de continuación en la columna izquierda.
+En móvil ocupa la zona superior del paso y el texto queda debajo. La capa del vídeo
+no hereda zoom, filtros ni decoraciones de las imágenes narrativas; queda fuera del
+árbol accesible y sin interacción cuando su paso está inactivo. Al volver a un acto
+anterior se desmonta el reproductor para detener el audio.
+
+El fondo opaco del tráiler pertenece a `.story-image-clip`, no a la capa exterior:
+así se recorta junto al vídeo y no tapa las imágenes de actos anteriores. La prueba
+`story-images.spec.ts` comprueba visualmente Iron Man y Los Vengadores vistos con
+Iron Man 2 pendiente, comparando los píxeles del panel con y sin la capa inactiva.

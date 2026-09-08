@@ -1,10 +1,22 @@
 "use client";
 
+import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
+
 import Image from "next/image";
 import type { Character } from "@/types/character";
 import { useYouTubeEmbed } from "@/hooks/useYouTubeEmbed";
+import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
+import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
 
 export function CharacterScreenMoment({ character }: { character: Character }) {
+  const progress = useSpoilerProgress();
+  if (!canRevealSpoiler(character.spoilers?.screenMoment ?? UNREVIEWED_SPOILER, progress)) {
+    return null;
+  }
+  return <ScreenMoment character={character} />;
+}
+
+function ScreenMoment({ character }: { character: Character }) {
   const { embedUrl, play } = useYouTubeEmbed(character.screenMoment.videoId);
   const videoTitle = `Vídeo oficial: ${character.screenMoment.title}`;
 

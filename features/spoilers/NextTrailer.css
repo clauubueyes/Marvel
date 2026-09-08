@@ -1,0 +1,21 @@
+.next-watch-trailer { width: 100%; aspect-ratio: 16 / 9; background: #101114; border: 1px solid #ffffff24; }
+.next-watch-trailer iframe, .next-watch-trailer button { width: 100%; height: 100%; border: 0; }
+.next-watch-trailer button { position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px; background: transparent; color: #fff; font: inherit; cursor: pointer; }
+.next-watch-trailer button span { color: var(--accent, #ff4520); font-size: clamp(32px, 6vw, 64px); }
+.story-trailer-stage .next-watch-trailer img { object-fit: cover; transform: none; filter: none; opacity: .45; z-index: -1; }
+.next-watch-trailer button b { font-size: 12px; letter-spacing: .12em; text-shadow: 0 2px 8px #000; }
+.next-watch-actions { display: flex; flex-wrap: wrap; gap: 16px; }
+.next-watch-trailer button:focus-visible { outline: 2px solid var(--accent, #ff4520); outline-offset: -5px; }
+/* The background must reveal with the video, not cover earlier acts outside the clip. */
+.story-trailer-image { background: transparent; }
+.story-trailer-image .story-image-clip { background: #090a0d; }
+.story-trailer-image .story-image-aura, .story-trailer-image .story-image-grain, .story-trailer-image::after { display: none; }
+.story-trailer-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 5%; }
+.story-trailer-stage > p { color: #b5b5ae; text-align: center; }
+.story-images:has(.story-trailer-image:not([inert])) :is(.story-progress, .story-year-storyline) { visibility: hidden; }
+@media (max-width: 900px) {
+  .story-track { pointer-events: none; }
+  .story-card > * { pointer-events: auto; }
+  .story-trailer-stage { inset: 6svh 0 auto; padding: 5%; }
+  .story-images:has(.story-trailer-image:not([inert]))::after { display: none; }
+}
