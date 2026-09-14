@@ -4,7 +4,7 @@
  * de seguimiento/planificación. library.css añade después las vistas grid/list.
  */
 .titles-index,.title-profile { min-height: 100vh; color: #eef2e5; background: radial-gradient(circle at 82% 8%,rgba(185,215,55,.15),transparent 26%),#080b07; }
-.titles-index-hero { min-height: 620px; padding: 170px 6vw 80px; position: relative; display: grid; grid-template-columns: 1fr minmax(260px,34vw); align-content: center; gap: 20px 6vw; border-bottom: 1px solid #3e4935; overflow: hidden; }
+.titles-index-hero { min-height: 420px; padding: 130px 6vw 45px; position: relative; display: grid; grid-template-columns: 1fr minmax(260px,34vw); align-content: center; gap: 20px 6vw; border-bottom: 1px solid #3e4935; overflow: hidden; }
 .titles-index-hero::after { content: "MCU"; position: absolute; right: -2vw; bottom: -8vw; color: transparent; -webkit-text-stroke: 1px rgba(185,215,55,.12); font: 38vw/.8 var(--font-display); pointer-events: none; }
 .titles-index-hero .eyebrow { grid-column: 1 / -1; }.titles-index-hero h1 { position: relative; z-index: 1; font: clamp(82px,10vw,170px)/.78 var(--font-display); letter-spacing: -3px; }.titles-index-hero h1 em { color: #b9d737; font-style: normal; }
 .titles-index-hero > p:not(.eyebrow) { z-index: 1; max-width: 540px; align-self: end; color: #adb5a3; font-size: clamp(15px,1.4vw,20px); line-height: 1.65; }
@@ -46,11 +46,11 @@
   position: sticky;
   top: 0;
   z-index: 8;
-  padding: 26px 6vw;
+  padding: 14px 6vw;
   display: grid;
-  grid-template-columns: 2fr repeat(5, minmax(110px, 1fr)) auto auto auto;
-  align-items: end;
-  gap: 10px;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 8px 12px;
   border-bottom: 1px solid #3e4935;
   background: rgba(13, 17, 11, 0.97);
   backdrop-filter: blur(14px);
@@ -58,7 +58,7 @@
 
 .title-filters span { display: block; width: 100%; margin-bottom: 7px; color: #9aa391; font-size: 10px; letter-spacing: 1.2px; }
 .title-filters label select,
-.title-filters button { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #46513d; color: #d0d6ca; background: #11160e; font: 10px / 1.2 var(--font-mono); letter-spacing: 0.4px; }
+.title-filters button { width: 100%; padding: 0 11px; border: 1px solid #46513d; color: #d0d6ca; background: #11160e; font: 10px / 1.2 var(--font-mono); letter-spacing: 0.4px; }
 
 /* Botones rápidos para filtrar por formato. */
 .title-filter-types { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -85,7 +85,7 @@
 .title-planner { margin: 55px 6vw 0; }
 .title-planner .route-planner-intro h2 { max-width: 760px; color: var(--route-accent,#b9d737); font: clamp(42px,5vw,74px)/.86 var(--font-display); }
 
-.title-library-toolbar { padding: 28px 6vw; display: grid; grid-template-columns: minmax(280px,1fr) 190px minmax(260px,auto); align-items: stretch; gap: 12px; border-bottom: 1px solid #3e4935; background: #0d110b; }
+.title-library-toolbar { padding: 16px 6vw; display: grid; grid-template-columns: 1fr 150px auto; align-items: stretch; gap: 10px; border-bottom: 1px solid #3e4935; background: #0d110b; }
 .title-search { display: grid; gap: 8px; }
 .title-search span,.title-library-progress > span { color: #929c89; font-size: 8px; letter-spacing: 1.3px; }
 .title-search input { min-height: 55px; padding: 0 18px; border: 1px solid #46513d; outline: 0; color: #eef2e5; background: #11160e; font: 15px var(--font-mono); }
@@ -119,17 +119,21 @@
 
 /* Distribución de filtros para pantallas medianas. */
 @media (max-width: 1400px) {
-  .title-filters { grid-template-columns: repeat(4, 1fr); }
-  .title-filter-types { grid-column: 1 / -1; }
+  .title-filters { grid-template-columns: 1fr; gap: 8px; }
+  .title-filter-types { flex-wrap: nowrap; overflow-x: auto; }
 }
 
-/* En móvil los filtros dejan de ser fijos y ocupan dos columnas. */
+/* En móvil los filtros abandonan la columna fija y la vista lista se oculta. */
 @media (max-width: 700px) {
-  .title-filters { position: relative; grid-template-columns: 1fr 1fr; padding-inline: 5vw; }
-  .title-filter-types { grid-column: 1 / -1; }
+  .titles-directory.is-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .titles-directory.is-list .title-directory-card { grid-template-columns: 1fr; min-height: auto; padding: 0 0 70px; }
+  .titles-directory.is-list .title-card-art { width: 100%; height: auto; aspect-ratio: 16/9; }
+  .titles-directory.is-list .title-card-copy { padding: 14px 16px 8px; }
+  .titles-directory.is-list .title-directory-card aside { grid-column: auto; padding: 10px 16px 0; }
+  .titles-directory.is-list .title-card-actions { left: 14px; right: 14px; bottom: 12px; width: auto; }
   .title-directory-card aside small:first-of-type,
   .title-route-tags { display: none; }
-  .title-directory-row .title-directory-card,.title-directory-row.is-planning .title-directory-card { padding-right: 0; padding-bottom: 115px; }
+  .title-directory-row .title-directory-card,.title-directory-row.is-planning .title-directory-card { padding-right: 0; padding-bottom: 70px; }
   .title-card-actions { right: auto; left: 47px; top: auto; bottom: 18px; width: min(260px,calc(100% - 70px)); grid-template-columns: 1fr 1fr; transform: none; }
   .title-planner { margin-inline: 5vw; }
   .title-library-toolbar { grid-template-columns: 1fr; padding-inline: 5vw; }
