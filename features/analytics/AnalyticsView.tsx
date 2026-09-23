@@ -2,7 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { ANALYTICS_READY_EVENT } from "@/services/analytics/consent";
-import { trackCharacterView, trackPlannerOpened, trackPlannerPlanGenerated, trackRouteView, trackTitleView } from "@/services/analytics";
+import {
+  trackCharacterView,
+  trackPlannerOpened,
+  trackPlannerPlanGenerated,
+  trackRouteView,
+  trackTitleView,
+} from "@/services/analytics";
 
 type AnalyticsViewProps =
   | { kind: "character"; id: string; name: string }
@@ -20,7 +26,8 @@ export function AnalyticsView(props: AnalyticsViewProps) {
       if (props.kind === "title") trackTitleView(props.slug, props.name, props.titleType);
       if (props.kind === "route") trackRouteView(props.slug, props.name);
       if (props.kind === "planner") trackPlannerOpened();
-      if (props.kind === "planner_generated") trackPlannerPlanGenerated(props.titleCount, props.sessionCount);
+      if (props.kind === "planner_generated")
+        trackPlannerPlanGenerated(props.titleCount, props.sessionCount);
       if (window.__nexusAnalyticsReady) tracked.current = true;
     };
     send();

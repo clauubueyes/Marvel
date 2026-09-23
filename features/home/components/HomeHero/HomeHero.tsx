@@ -3,12 +3,30 @@
 import { useEffect, useRef } from "react";
 
 const SPOTLIGHT_SHAPE = [
-  [0, -96], [34, -91], [65, -82], [92, -69],
-  [115, -48], [126, -24], [136, 0], [128, 23],
-  [118, 46], [89, 70], [62, 86], [33, 93],
-  [0, 103], [-31, 95], [-63, 83], [-95, 71],
-  [-117, 49], [-129, 25], [-135, 0], [-125, -23],
-  [-112, -46], [-92, -68], [-65, -84], [-34, -94],
+  [0, -96],
+  [34, -91],
+  [65, -82],
+  [92, -69],
+  [115, -48],
+  [126, -24],
+  [136, 0],
+  [128, 23],
+  [118, 46],
+  [89, 70],
+  [62, 86],
+  [33, 93],
+  [0, 103],
+  [-31, 95],
+  [-63, 83],
+  [-95, 71],
+  [-117, 49],
+  [-129, 25],
+  [-135, 0],
+  [-125, -23],
+  [-112, -46],
+  [-92, -68],
+  [-65, -84],
+  [-34, -94],
 ] as const;
 
 function createSpotlightClip(x: number, y: number, scale = 1) {
@@ -34,7 +52,11 @@ export function HomeHero() {
     // En táctiles, sin hover o con movimiento reducido el CSS oculta el
     // spotlight, la estela y la luz ambiental; no tiene sentido registrar
     // listeners ni crear marcos de animación que no se van a pintar.
-    if (window.matchMedia("(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
+    if (
+      window.matchMedia("(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce)")
+        .matches
+    )
+      return;
 
     let animationFrame: number | null = null;
     let ambientFrame: number | null = null;
@@ -58,9 +80,18 @@ export function HomeHero() {
       element.style.setProperty("--spotlight-y", `${y}px`);
       element.style.setProperty("--spotlight-width", `${70 + Math.sin(strokePhase) * 7}px`);
       element.style.setProperty("--spotlight-height", `${60 + Math.cos(strokePhase * 1.17) * 7}px`);
-      element.style.setProperty("--spotlight-left-x", `${-42 + Math.sin(strokePhase * .83) * 7}px`);
-      element.style.setProperty("--spotlight-right-x", `${44 + Math.cos(strokePhase * 1.31) * 7}px`);
-      element.style.setProperty("--spotlight-lower-y", `${34 + Math.sin(strokePhase * 1.53) * 6}px`);
+      element.style.setProperty(
+        "--spotlight-left-x",
+        `${-42 + Math.sin(strokePhase * 0.83) * 7}px`,
+      );
+      element.style.setProperty(
+        "--spotlight-right-x",
+        `${44 + Math.cos(strokePhase * 1.31) * 7}px`,
+      );
+      element.style.setProperty(
+        "--spotlight-lower-y",
+        `${34 + Math.sin(strokePhase * 1.53) * 6}px`,
+      );
     };
 
     const createTrailMark = (x: number, y: number) => {
@@ -144,7 +175,7 @@ export function HomeHero() {
           pointerX - previousPointerX,
           pointerY - previousPointerY,
         );
-        strokePhase += Math.min(travelledDistance * .045, .65);
+        strokePhase += Math.min(travelledDistance * 0.045, 0.65);
       } else {
         hasPointerPosition = true;
       }
@@ -216,19 +247,9 @@ export function HomeHero() {
 
   return (
     <section ref={heroRef} className="doom-hero" id="inicio" data-pointer-active="false">
-      <div
-        ref={canvasRef}
-        className="doom-hero-canvas"
-        data-exploring="false"
-        aria-hidden="true"
-      >
+      <div ref={canvasRef} className="doom-hero-canvas" data-exploring="false" aria-hidden="true">
         <div className="doom-hero-layer doom-hero-masked" />
-        <div
-          ref={revealRef}
-          className="doom-hero-layer doom-hero-unmasked"
-          data-visible="false"
-        />
-        
+        <div ref={revealRef} className="doom-hero-layer doom-hero-unmasked" data-visible="false" />
       </div>
       <div className="doom-hero-grid" aria-hidden="true" />
       <div className="doom-hero-copy">
@@ -241,7 +262,8 @@ export function HomeHero() {
           <em>DOOMSDAY</em>
         </h1>
         <p className="doom-deck">
-          Todo lo que el MCU ya te ha contado para entender a Victor von Doom, el multiverso y la colisión que viene.
+          Todo lo que el MCU ya te ha contado para entender a Victor von Doom, el multiverso y la
+          colisión que viene.
         </p>
         <div className="hero-actions">
           <a className="primary" href="#doom">

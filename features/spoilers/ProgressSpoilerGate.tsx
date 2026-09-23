@@ -6,12 +6,17 @@ import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
 import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
 import { SpoilerNotice } from "./SpoilerNotice";
 
-export function ProgressSpoilerGate({ requirement, children, fallback }: {
+export function ProgressSpoilerGate({
+  requirement,
+  children,
+  fallback,
+}: {
   requirement: SpoilerRequirement;
   children: ReactNode;
   fallback?: ReactNode;
 }) {
   const progress = useSpoilerProgress();
-  if (!canRevealSpoiler(requirement, progress)) return fallback ?? <SpoilerNotice requirement={requirement} />;
+  if (!canRevealSpoiler(requirement, progress))
+    return fallback ?? <SpoilerNotice requirement={requirement} />;
   return <>{children}</>;
 }

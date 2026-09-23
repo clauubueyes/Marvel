@@ -13,7 +13,14 @@ export function useMCUCatalog() {
   const [visibleCount, setVisibleCount] = useState(HOME_CATALOG_PAGE_SIZE);
   const visibleEntries = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase("es");
-    return mcuCatalog.filter((entry) => (filter === "TODO" || entry.type === filter || entry.continuity === filter) && (!normalized || `${entry.title} ${entry.period} ${entry.event}`.toLocaleLowerCase("es").includes(normalized)));
+    return mcuCatalog.filter(
+      (entry) =>
+        (filter === "TODO" || entry.type === filter || entry.continuity === filter) &&
+        (!normalized ||
+          `${entry.title} ${entry.period} ${entry.event}`
+            .toLocaleLowerCase("es")
+            .includes(normalized)),
+    );
   }, [filter, query]);
 
   function changeFilter(next: MCUCatalogFilter) {
@@ -26,5 +33,13 @@ export function useMCUCatalog() {
     setVisibleCount(HOME_CATALOG_PAGE_SIZE);
   }
 
-  return { changeFilter, changeQuery, displayedEntries: visibleEntries.slice(0, visibleCount), filter, loadMore: () => setVisibleCount((count) => count + HOME_CATALOG_PAGE_SIZE), query, visibleEntries };
+  return {
+    changeFilter,
+    changeQuery,
+    displayedEntries: visibleEntries.slice(0, visibleCount),
+    filter,
+    loadMore: () => setVisibleCount((count) => count + HOME_CATALOG_PAGE_SIZE),
+    query,
+    visibleEntries,
+  };
 }
