@@ -3,7 +3,14 @@ import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { characters } from "@/repositories/characterRepository";
-import { CinematicIntro, DoomsdayGuide, HomeCharacterPreview, HomeFooter, HomeHero, MCUCatalog } from "@/features/home/components";
+import {
+  CinematicIntro,
+  DoomsdayGuide,
+  HomeCharacterPreview,
+  HomeFooter,
+  HomeHero,
+  MCUCatalog,
+} from "@/features/home/components";
 
 export const metadata = {
   ...createPageMetadata({
@@ -27,18 +34,31 @@ const websiteStructuredData = {
 
 export default function Home() {
   /* La paleta verde se comparte con todos los bloques editoriales de la portada. */
-  return <><link rel="canonical" href={`${siteConfig.url}/`} /><main className="mcu-home" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData).replaceAll("<", "\\u003c") }} />
-    {/* Overlay de entrada; desaparece antes de mostrar el contenido de Home. */}
-    <CinematicIntro />
-    {/* Infraestructura visual persistente: animaciones de scroll y navegación. */}
-    <MotionEffects />
-    <GlobalNavigation home context="RUTA MCU · 2026" />
-    {/* Orden visual de las grandes secciones de la portada. */}
-    <HomeHero />
-    <DoomsdayGuide />
-    <MCUCatalog />
-    <HomeCharacterPreview characters={characters} />
-    <HomeFooter />
-  </main></>;
+  return (
+    <>
+      <link rel="canonical" href={`${siteConfig.url}/`} />
+      <main
+        className="mcu-home"
+        style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+      >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteStructuredData).replaceAll("<", "\\u003c"),
+          }}
+        />
+        {/* Overlay de entrada; desaparece antes de mostrar el contenido de Home. */}
+        <CinematicIntro />
+        {/* Infraestructura visual persistente: animaciones de scroll y navegación. */}
+        <MotionEffects />
+        <GlobalNavigation home context="RUTA MCU · 2026" />
+        {/* Orden visual de las grandes secciones de la portada. */}
+        <HomeHero />
+        <DoomsdayGuide />
+        <MCUCatalog />
+        <HomeCharacterPreview characters={characters} />
+        <HomeFooter />
+      </main>
+    </>
+  );
 }

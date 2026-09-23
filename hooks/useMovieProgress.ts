@@ -7,8 +7,11 @@ import { playMovieProgressSound } from "@/services/audio";
 export function useMovieProgress(options: Parameters<typeof usePersistentStringSet>[0]) {
   const account = useAccount();
   const guest = usePersistentStringSet(options);
-  const values = !account.initialized ? new Set<string>() : account.user
-    ? new Set([...account.watched].filter((id) => options.validIds.has(id))) : guest.values;
+  const values = !account.initialized
+    ? new Set<string>()
+    : account.user
+      ? new Set([...account.watched].filter((id) => options.validIds.has(id)))
+      : guest.values;
   const setMany = (ids: string[], enabled: boolean) => {
     if (!account.initialized) return;
     const valid = ids.filter((id) => options.validIds.has(id));

@@ -15,5 +15,7 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exitCode = 1;
 } else {
-  console.log("Contenido válido: catálogo editorial completo, slugs únicos, relaciones enlazadas y requisitos de spoilers etiquetados.");
+  console.log(
+    "Contenido válido: catálogo editorial completo, slugs únicos, relaciones enlazadas y requisitos de spoilers etiquetados.",
+  );
 }

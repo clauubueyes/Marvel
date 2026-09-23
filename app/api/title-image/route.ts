@@ -9,7 +9,11 @@ export async function GET(request: NextRequest) {
   const image = await resolveTitleImage(title, media);
   if (!image) return new NextResponse(null, { status: 404 });
   const imageUrl = new URL(image);
-  if (!imageUrl.hostname.endsWith("wikimedia.org") && !imageUrl.hostname.endsWith("media-amazon.com")) return new NextResponse(null, { status: 404 });
+  if (
+    !imageUrl.hostname.endsWith("wikimedia.org") &&
+    !imageUrl.hostname.endsWith("media-amazon.com")
+  )
+    return new NextResponse(null, { status: 404 });
 
   try {
     const imageResponse = await fetch(imageUrl, {
@@ -18,8 +22,14 @@ export async function GET(request: NextRequest) {
       signal: AbortSignal.timeout(8000),
     });
     const contentType = imageResponse.headers.get("content-type") ?? "";
-    if (!imageResponse.ok || !contentType.startsWith("image/") || !imageResponse.body) return new NextResponse(null, { status: 404 });
-    return new NextResponse(imageResponse.body, { headers: { "Content-Type": contentType, "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000" } });
+    if (!imageResponse.ok || !contentType.startsWith("image/") || !imageResponse.body)
+      return new NextResponse(null, { status: 404 });
+    return new NextResponse(imageResponse.body, {
+      headers: {
+        "Content-Type": contentType,
+        "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000",
+      },
+    });
   } catch {
     return new NextResponse(null, { status: 504 });
   }

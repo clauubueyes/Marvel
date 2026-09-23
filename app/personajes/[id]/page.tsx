@@ -20,7 +20,10 @@ import {
 } from "@/features/characters/dossier/components";
 import { characters, getCharacter } from "@/repositories/characterRepository";
 import { getCharacterStoryImages } from "@/repositories/characterStoryImageRepository";
-import { getEntitiesForCharacter, getViewingRoutesForCharacter } from "@/repositories/contentRepository";
+import {
+  getEntitiesForCharacter,
+  getViewingRoutesForCharacter,
+} from "@/repositories/contentRepository";
 import { getCharacterMotionProfile } from "@/utils/characterMotion";
 import { getCharacterWatchTitleIds } from "@/services/progress/nextWatch";
 
@@ -34,9 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const character = getCharacter((await params).id);
   return character
     ? createCharacterMetadata(character)
-    : { title: "Personaje no encontrado — Guía Marvel", 
-    robots: { index: false, follow: false } 
-  };
+    : { title: "Personaje no encontrado — Guía Marvel", robots: { index: false, follow: false } };
 }
 
 export default async function CharacterPage({ params }: PageProps) {
@@ -62,70 +63,87 @@ export default async function CharacterPage({ params }: PageProps) {
    * - `--motion-*` sincroniza las animaciones definidas en motion.css.
    * - `data-motion` selecciona la firma tecnológica, mística, cósmica, etc.
    */
-  return <main 
-  className={`profile profile-${character.id}`} 
-  data-motion={motion.signature} 
-  style={{ 
-    "--accent": character.color, 
-    "--accent-2": character.color2, 
-    "--motion-cycle": `${motion.tempo * 18}s`, 
-    "--motion-counter-cycle": `${motion.tempo * 12}s`, 
-    "--motion-pulse-cycle": `${motion.tempo * 3.4}s`, 
-    "--motion-particle-cycle": `${motion.tempo * 5}s`, 
-    "--motion-sweep-cycle": `${motion.tempo * 7}s`, 
-    "--motion-drift": `${motion.drift}px` } as React.CSSProperties}>
-    <AnalyticsView 
-    kind="character" 
-    id={character.id} 
-    name={character.name} />
-    {/* Capa funcional y ambiental que permanece por encima del dossier. */}
-    <MotionEffects />
-    <div 
-      className="character-atmosphere" 
-      aria-hidden="true"><i /><i /><i /><i />
-    </div>
-    <GlobalNavigation 
-      context={`ARCHIVO / ${character.number}`} />
-    <Breadcrumbs 
-      items={[{ 
-        label: "PERSONAJES", 
-        href: "/personajes" 
-        }, 
-        {label: character.name}
-        ]} 
-    />
-    <script 
-      type="application/ld+json" 
-      dangerouslySetInnerHTML={{ 
-        __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c") }} 
-    />
-    {beats.length > 0 && 
-      <StorylineRail 
-        beats={beats.map((beat, index) => ({ act: actLabels[index], year: beat.year, spoiler: beat.spoiler }))} 
+  return (
+    <main
+      className={`profile profile-${character.id}`}
+      data-motion={motion.signature}
+      style={
+        {
+          "--accent": character.color,
+          "--accent-2": character.color2,
+          "--motion-cycle": `${motion.tempo * 18}s`,
+          "--motion-counter-cycle": `${motion.tempo * 12}s`,
+          "--motion-pulse-cycle": `${motion.tempo * 3.4}s`,
+          "--motion-particle-cycle": `${motion.tempo * 5}s`,
+          "--motion-sweep-cycle": `${motion.tempo * 7}s`,
+          "--motion-drift": `${motion.drift}px`,
+        } as React.CSSProperties
+      }
+    >
+      <AnalyticsView kind="character" id={character.id} name={character.name} />
+      {/* Capa funcional y ambiental que permanece por encima del dossier. */}
+      <MotionEffects />
+      <div className="character-atmosphere" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+      <GlobalNavigation context={`ARCHIVO / ${character.number}`} />
+      <Breadcrumbs
+        items={[
+          {
+            label: "PERSONAJES",
+            href: "/personajes",
+          },
+          { label: character.name },
+        ]}
       />
-    }
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
+        }}
+      />
+      {beats.length > 0 && (
+        <StorylineRail
+          beats={beats.map((beat, index) => ({
+            act: actLabels[index],
+            year: beat.year,
+            spoiler: beat.spoiler,
+          }))}
+        />
+      )}
 
-    {/* Primer impacto visual: nombre, retrato principal y metadatos. */}
-    <CharacterHero character={character} motion={motion} />
-    {/* Expediente rápido de quién es antes de entrar al relato. */}
-    <CharacterIdentity character={character} />
-    {/* La historia es la columna vertebral: narrativa editorial con imagen sticky
+      {/* Primer impacto visual: nombre, retrato principal y metadatos. */}
+      <CharacterHero character={character} motion={motion} />
+      {/* Expediente rápido de quién es antes de entrar al relato. */}
+      <CharacterIdentity character={character} />
+      {/* La historia es la columna vertebral: narrativa editorial con imagen sticky
         y capítulos que se suceden, transformados por el scroll. */}
-    {beats.length > 0 && <CharacterStory
-      characterName={character.name}
-      titleIds={getCharacterWatchTitleIds(character)}
-      portrait={character.image}
-      portraitPosition={character.imagePosition}
-      acts={beats.map((beat, index) => ({ label: actLabels[index], numeral: actNumerals[index], chapter: beat, image: storyImages[index] }))}
-    />}
-    {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
-    <CharacterScreenMoment character={character} />
-    <CharacterPowers character={character} />
-    <CharacterFacts facts={character.facts} requirements={character.spoilers?.facts} />
-    <CharacterFilmography appearances={character.appearances} />
-    {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
-    <CharacterConnections entities={connectedEntities} />
-    <CharacterReference character={character} routes={relatedRoutes} />
-    <CharacterPagination current={character} previous={previous} next={next} />
-  </main>;
+      {beats.length > 0 && (
+        <CharacterStory
+          characterName={character.name}
+          titleIds={getCharacterWatchTitleIds(character)}
+          portrait={character.image}
+          portraitPosition={character.imagePosition}
+          acts={beats.map((beat, index) => ({
+            label: actLabels[index],
+            numeral: actNumerals[index],
+            chapter: beat,
+            image: storyImages[index],
+          }))}
+        />
+      )}
+      {/* Tras el relato, el resto del expediente audiovisual y de capacidades. */}
+      <CharacterScreenMoment character={character} />
+      <CharacterPowers character={character} />
+      <CharacterFacts facts={character.facts} requirements={character.spoilers?.facts} />
+      <CharacterFilmography appearances={character.appearances} />
+      {/* Cierre relacional: conexiones, fuentes y navegación entre personajes. */}
+      <CharacterConnections entities={connectedEntities} />
+      <CharacterReference character={character} routes={relatedRoutes} />
+      <CharacterPagination current={character} previous={previous} next={next} />
+    </main>
+  );
 }

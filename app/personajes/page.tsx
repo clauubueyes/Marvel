@@ -7,34 +7,55 @@ import { CharacterDirectory } from "@/features/characters/directory";
 
 export const metadata = createPageMetadata({
   title: "Personajes Marvel y del MCU — Guía Marvel",
-  description: "Explora héroes, villanos, alias, poderes e historias del MCU en Guía Marvel, el archivo NEXUS del universo Marvel en español.",
+  description:
+    "Explora héroes, villanos, alias, poderes e historias del MCU en Guía Marvel, el archivo NEXUS del universo Marvel en español.",
   path: "/personajes",
-  keywords: ["personajes Marvel", "personajes MCU", "héroes Marvel", "villanos Marvel", "fichas de personajes Marvel"],
+  keywords: [
+    "personajes Marvel",
+    "personajes MCU",
+    "héroes Marvel",
+    "villanos Marvel",
+    "fichas de personajes Marvel",
+  ],
 });
 
 export default function CharactersPage() {
-  return <main className="characters-index" style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}>
-    <MotionEffects />
-    <GlobalNavigation 
-    context={`${String(characters.length).padStart(2, "0")} PERSONAJES`} 
-    />
-    <section className="characters-index-hero">
-      <div className="characters-hero-scan" aria-hidden="true"><i /><i /><i /></div>
-      <div className="characters-hero-title">
-        <p className="eyebrow">
-        <span /> PERSONAJES EN PANTALLA</p>
-        <h1>
-          <span>QUIÉN ES</span>
-          <br /><em>QUIÉN</em>
-        </h1>
-      </div>
-      <aside>
-        <strong>{String(characters.length).padStart(2, "0")}</strong>
-        <p>Expedientes centrados en decisiones, apariciones y conexiones dentro de la continuidad audiovisual.</p>
-        <Link href="/buscar">BUSCAR EN TODO NEXUS ↗</Link>
-      </aside>
-      <p className="characters-scroll-cue">EXPLORAR ARCHIVO <span>↓</span></p>
-    </section>
-    <CharacterDirectory characters={characters} />
-  </main>;
+  return (
+    <main
+      className="characters-index"
+      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+    >
+      <MotionEffects />
+      <GlobalNavigation context={`${String(characters.length).padStart(2, "0")} PERSONAJES`} />
+      <section className="characters-index-hero">
+        <div className="characters-hero-scan" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="characters-hero-title">
+          <p className="eyebrow">
+            <span /> PERSONAJES EN PANTALLA
+          </p>
+          <h1>
+            <span>QUIÉN ES</span>
+            <br />
+            <em>QUIÉN</em>
+          </h1>
+        </div>
+        <aside>
+          <strong>{String(characters.length).padStart(2, "0")}</strong>
+          <p>
+            Expedientes centrados en decisiones, apariciones y conexiones dentro de la continuidad
+            audiovisual.
+          </p>
+          <Link href="/buscar">BUSCAR EN TODO NEXUS ↗</Link>
+        </aside>
+        <p className="characters-scroll-cue">
+          EXPLORAR ARCHIVO <span>↓</span>
+        </p>
+      </section>
+      <CharacterDirectory characters={characters} />
+    </main>
+  );
 }

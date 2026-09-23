@@ -14,7 +14,9 @@ export const searchIndex: SearchResult[] = [
     description: character.description,
     href: `/personajes/${character.id}`,
     image: character.image,
-    searchText: normalizeSearchText(`${character.name} ${character.alias} ${character.role} ${character.category} ${character.status} ${character.origin} ${character.universe} ${character.abilities.join(" ")} ${character.affiliations.join(" ")} ${character.variants.map(({ name, universe }) => `${name} ${universe}`).join(" ")} ${character.appearances.map(({ title }) => title).join(" ")}`),
+    searchText: normalizeSearchText(
+      `${character.name} ${character.alias} ${character.role} ${character.category} ${character.status} ${character.origin} ${character.universe} ${character.abilities.join(" ")} ${character.affiliations.join(" ")} ${character.variants.map(({ name, universe }) => `${name} ${universe}`).join(" ")} ${character.appearances.map(({ title }) => title).join(" ")}`,
+    ),
   })),
   ...mcuCatalog.map((title): SearchResult => ({
     id: title.slug,
@@ -24,7 +26,9 @@ export const searchIndex: SearchResult[] = [
     description: getTitleDetails(title.slug)?.spoilerFreeSynopsis ?? title.event,
     href: `/titulos/${title.slug}`,
     image: `/api/title-image?title=${encodeURIComponent(title.title)}&type=${encodeURIComponent(title.type)}`,
-    searchText: normalizeSearchText(`${title.title} ${title.type} ${title.period} ${title.phase} ${title.continuity} ${getEditorialCoverage(title.slug)} ${getTitleDetails(title.slug)?.spoilerFreeSynopsis ?? title.event}`),
+    searchText: normalizeSearchText(
+      `${title.title} ${title.type} ${title.period} ${title.phase} ${title.continuity} ${getEditorialCoverage(title.slug)} ${getTitleDetails(title.slug)?.spoilerFreeSynopsis ?? title.event}`,
+    ),
   })),
   ...mcuEntities.map((entity): SearchResult => {
     const imageTitle = mcuCatalog.find(({ slug }) => entity.titleIds.includes(slug));
@@ -35,8 +39,12 @@ export const searchIndex: SearchResult[] = [
       subtitle: entity.kicker,
       description: entity.summary,
       href: getEntityHref(entity),
-      image: imageTitle ? `/api/title-image?title=${encodeURIComponent(imageTitle.title)}&type=${encodeURIComponent(imageTitle.type)}` : "/api/title-image?title=Marvel&type=PELÍCULA",
-      searchText: normalizeSearchText(`${entity.name} ${entity.kicker} ${entity.summary} ${entity.description} ${entity.status}`),
+      image: imageTitle
+        ? `/api/title-image?title=${encodeURIComponent(imageTitle.title)}&type=${encodeURIComponent(imageTitle.type)}`
+        : "/api/title-image?title=Marvel&type=PELÍCULA",
+      searchText: normalizeSearchText(
+        `${entity.name} ${entity.kicker} ${entity.summary} ${entity.description} ${entity.status}`,
+      ),
     };
   }),
 ];
@@ -75,7 +83,11 @@ export function searchContent(query: string, type: "TODO" | SearchResult["type"]
         else if (title.includes(term)) score += 40;
         else if (item.searchText.includes(term)) score += 20;
         else {
-          const closeWord = item.searchText.split(/\s+/).some((word) => word.length > 3 && editDistance(word, term) <= (term.length > 6 ? 2 : 1));
+          const closeWord = item.searchText
+            .split(/\s+/)
+            .some(
+              (word) => word.length > 3 && editDistance(word, term) <= (term.length > 6 ? 2 : 1),
+            );
           if (closeWord) score += 8;
           else return { item, score: 0 };
         }
@@ -83,7 +95,10 @@ export function searchContent(query: string, type: "TODO" | SearchResult["type"]
       return { item, score };
     })
     .filter(({ score }) => score > 0)
-    .sort((left, right) => right.score - left.score || left.item.title.localeCompare(right.item.title, "es"))
+    .sort(
+      (left, right) =>
+        right.score - left.score || left.item.title.localeCompare(right.item.title, "es"),
+    )
     .map(({ item }) => item);
 }
 

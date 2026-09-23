@@ -17,14 +17,18 @@ type StorylineRailProps = {
 
 export function StorylineRail({ beats: sourceBeats }: StorylineRailProps) {
   const progress = useSpoilerProgress();
-  const beats = sourceBeats.filter((beat) => canRevealSpoiler(beat.spoiler ?? UNREVIEWED_SPOILER, progress));
+  const beats = sourceBeats.filter((beat) =>
+    canRevealSpoiler(beat.spoiler ?? UNREVIEWED_SPOILER, progress),
+  );
   const beatsKey = beats.map((beat) => beat.act).join(",");
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const sections = Array.from(document.querySelectorAll<HTMLElement>(".profile [data-history-step]"));
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>(".profile [data-history-step]"),
+    );
     if (!sections.length) return;
 
     const triggers: ScrollTrigger[] = sections.map((section) =>
@@ -50,13 +54,21 @@ export function StorylineRail({ beats: sourceBeats }: StorylineRailProps) {
     target?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  return <aside className="storyline-rail" ref={rootRef} aria-label="Recorrido de la historia">
-    <span className="storyline-rail-track" />
-    {beats.map((beat, index) => <button
-      type="button"
-      key={`${beat.act}-${beat.year}`}
-      data-active={index === Math.min(active, beats.length - 1) ? "true" : "false"}
-      onClick={() => goTo(index)}
-    ><i /><b>{beat.year}</b><small>{beat.act}</small></button>)}
-  </aside>;
+  return (
+    <aside className="storyline-rail" ref={rootRef} aria-label="Recorrido de la historia">
+      <span className="storyline-rail-track" />
+      {beats.map((beat, index) => (
+        <button
+          type="button"
+          key={`${beat.act}-${beat.year}`}
+          data-active={index === Math.min(active, beats.length - 1) ? "true" : "false"}
+          onClick={() => goTo(index)}
+        >
+          <i />
+          <b>{beat.year}</b>
+          <small>{beat.act}</small>
+        </button>
+      ))}
+    </aside>
+  );
 }

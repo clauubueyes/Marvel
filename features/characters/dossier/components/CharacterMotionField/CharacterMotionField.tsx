@@ -30,7 +30,10 @@ export function CharacterMotionField({ profile, symbol }: Props) {
       targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
       targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
     };
-    const leave = () => { targetX = 0; targetY = 0; };
+    const leave = () => {
+      targetX = 0;
+      targetY = 0;
+    };
     hero.addEventListener("pointermove", move);
     hero.addEventListener("pointerleave", leave);
     render();
@@ -43,20 +46,34 @@ export function CharacterMotionField({ profile, symbol }: Props) {
     };
   }, []);
 
-  return <div ref={fieldRef} className="character-motion-field" aria-hidden="true">
-    <div className="motion-emblem"><span>{symbol}</span><i /><i /><i /></div>
-    <div className="motion-elements">
-      {Array.from({ length: 14 }, (_, index) => {
-        const value = (profile.seed + index * 37) % 101;
-        return <i key={index} style={{
-          "--i": index,
-          "--x": `${8 + ((value * 17) % 84)}%`,
-          "--y": `${6 + ((value * 29) % 88)}%`,
-          "--r": `${(value * 13) % 180}deg`,
-          "--s": `${0.55 + (value % 8) * 0.1}`,
-        } as React.CSSProperties} />;
-      })}
+  return (
+    <div ref={fieldRef} className="character-motion-field" aria-hidden="true">
+      <div className="motion-emblem">
+        <span>{symbol}</span>
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className="motion-elements">
+        {Array.from({ length: 14 }, (_, index) => {
+          const value = (profile.seed + index * 37) % 101;
+          return (
+            <i
+              key={index}
+              style={
+                {
+                  "--i": index,
+                  "--x": `${8 + ((value * 17) % 84)}%`,
+                  "--y": `${6 + ((value * 29) % 88)}%`,
+                  "--r": `${(value * 13) % 180}deg`,
+                  "--s": `${0.55 + (value % 8) * 0.1}`,
+                } as React.CSSProperties
+              }
+            />
+          );
+        })}
+      </div>
+      <div className="motion-sweep" />
     </div>
-    <div className="motion-sweep" />
-  </div>;
+  );
 }

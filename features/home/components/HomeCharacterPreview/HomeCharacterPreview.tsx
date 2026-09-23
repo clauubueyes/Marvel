@@ -10,22 +10,14 @@ const HOME_CHARACTER_LIMIT = 10;
  */
 function selectHomeCharacters(characters: Character[]) {
   const scoreId = (id: string) =>
-    [...id].reduce(
-      (score, character) =>
-        (Math.imul(score, 31) + character.charCodeAt(0)) | 0,
-      17,
-    );
+    [...id].reduce((score, character) => (Math.imul(score, 31) + character.charCodeAt(0)) | 0, 17);
 
   return [...characters]
     .sort((first, second) => scoreId(first.id) - scoreId(second.id))
     .slice(0, HOME_CHARACTER_LIMIT);
 }
 
-export function HomeCharacterPreview({
-  characters,
-}: {
-  characters: Character[];
-}) {
+export function HomeCharacterPreview({ characters }: { characters: Character[] }) {
   const featuredCharacters = selectHomeCharacters(characters);
 
   return (
@@ -47,8 +39,8 @@ export function HomeCharacterPreview({
         <div className="heading-aside">
           <b>{String(featuredCharacters.length).padStart(2, "0")}</b>
           <p>
-            Una selección de personajes del MCU: héroes, amenazas y figuras
-            clave de sus distintas etapas.
+            Una selección de personajes del MCU: héroes, amenazas y figuras clave de sus distintas
+            etapas.
           </p>
           <Link href="/personajes">VER TODOS LOS PERSONAJES ↗</Link>
         </div>

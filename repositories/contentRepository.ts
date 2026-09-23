@@ -40,7 +40,9 @@ export function getEntitiesForCharacter(characterId: string) {
 }
 
 export function getViewingRoutesForCharacter(characterId: string) {
-  const titleIds = new Set(getCharacter(characterId)?.appearances.map(({ titleId }) => titleId) ?? []);
+  const titleIds = new Set(
+    getCharacter(characterId)?.appearances.map(({ titleId }) => titleId) ?? [],
+  );
   return viewingRoutes.filter((route) => route.steps.some(({ titleId }) => titleIds.has(titleId)));
 }
 
@@ -58,16 +60,20 @@ export function validateContent() {
     if (characterIds.has(character.id)) errors.push(`ID de personaje duplicado: ${character.id}`);
     characterIds.add(character.id);
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(character.reviewedAt)) errors.push(`${character.name}: fecha de revisión no válida`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(character.reviewedAt))
+      errors.push(`${character.name}: fecha de revisión no válida`);
     if (!character.sources.length) errors.push(`${character.name}: faltan fuentes editoriales`);
     character.sources.forEach(({ url }) => {
       if (!url.startsWith("https://")) errors.push(`${character.name}: fuente no segura ${url}`);
     });
-    if (!character.affiliations.length) errors.push(`${character.name}: falta al menos una afiliación`);
+    if (!character.affiliations.length)
+      errors.push(`${character.name}: falta al menos una afiliación`);
 
     for (const appearance of character.appearances) {
       if (!titleSlugs.has(appearance.titleId)) {
-        errors.push(`${character.name}: la aparición "${appearance.title}" no enlaza con ningún título (${appearance.titleId})`);
+        errors.push(
+          `${character.name}: la aparición "${appearance.title}" no enlaza con ningún título (${appearance.titleId})`,
+        );
       }
     }
   }
@@ -77,7 +83,8 @@ export function validateContent() {
     if (routeSlugs.has(route.slug)) errors.push(`Slug de ruta duplicado: ${route.slug}`);
     routeSlugs.add(route.slug);
     for (const step of route.steps) {
-      if (!titleSlugs.has(step.titleId)) errors.push(`${route.name}: el título ${step.titleId} no existe`);
+      if (!titleSlugs.has(step.titleId))
+        errors.push(`${route.name}: el título ${step.titleId} no existe`);
     }
   }
 
@@ -90,29 +97,34 @@ export function validateContent() {
       if (!titleSlugs.has(titleId)) errors.push(`${entity.name}: el título ${titleId} no existe`);
     });
     entity.characterIds.forEach((characterId) => {
-      if (!characterIds.has(characterId)) errors.push(`${entity.name}: el personaje ${characterId} no existe`);
+      if (!characterIds.has(characterId))
+        errors.push(`${entity.name}: el personaje ${characterId} no existe`);
     });
   }
   for (const entity of mcuEntities) {
     entity.connections.forEach((connection) => {
-      if (!entityKeys.has(`${connection.kind}:${connection.slug}`)) errors.push(`${entity.name}: la conexión ${connection.kind}:${connection.slug} no existe`);
+      if (!entityKeys.has(`${connection.kind}:${connection.slug}`))
+        errors.push(`${entity.name}: la conexión ${connection.kind}:${connection.slug} no existe`);
     });
   }
   const detailedIds = new Set<string>();
   for (const titleId of getDetailedTitleIds()) {
     if (detailedIds.has(titleId)) errors.push(`Metadatos de título duplicados: ${titleId}`);
     detailedIds.add(titleId);
-    if (!titleSlugs.has(titleId)) errors.push(`Los metadatos apuntan a un título inexistente: ${titleId}`);
+    if (!titleSlugs.has(titleId))
+      errors.push(`Los metadatos apuntan a un título inexistente: ${titleId}`);
     const details = getTitleDetails(titleId);
     [...(details?.watchBefore ?? []), ...(details?.watchAfter ?? [])].forEach((relatedId) => {
-      if (!titleSlugs.has(relatedId)) errors.push(`${titleId}: la recomendación ${relatedId} no existe`);
+      if (!titleSlugs.has(relatedId))
+        errors.push(`${titleId}: la recomendación ${relatedId} no existe`);
     });
     details?.sources.forEach(({ url }) => {
       if (!url.startsWith("https://")) errors.push(`${titleId}: fuente no segura ${url}`);
     });
   }
   for (const title of mcuCatalog) {
-    if (!detailedIds.has(title.slug)) errors.push(`${title.title}: falta el expediente editorial (${title.slug})`);
+    if (!detailedIds.has(title.slug))
+      errors.push(`${title.title}: falta el expediente editorial (${title.slug})`);
   }
 
   return errors;

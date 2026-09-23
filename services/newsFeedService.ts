@@ -13,7 +13,7 @@ type RssItem = {
 };
 
 function textValue(value: RssItem["source"] | RssItem["guid"]) {
-  return typeof value === "string" ? value : value?.["#text"] ?? "";
+  return typeof value === "string" ? value : (value?.["#text"] ?? "");
 }
 
 function normalizeNewsItem(item: RssItem, index: number): NewsItem {
@@ -29,7 +29,10 @@ function normalizeNewsItem(item: RssItem, index: number): NewsItem {
 
 export async function getMarvelNews() {
   try {
-    const response = await fetch(FEED_URL, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(5000) });
+    const response = await fetch(FEED_URL, {
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000),
+    });
     if (!response.ok) throw new Error(`RSS respondió con ${response.status}`);
     const xml = await response.text();
     const parsed = new XMLParser({ ignoreAttributes: false }).parse(xml);

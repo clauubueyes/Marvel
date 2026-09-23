@@ -17,9 +17,12 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
 
   useEffect(() => {
     if (!menuOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") setMenuOpen(false); };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
     const closeOnOutside = (event: globalThis.Event) => {
-      if (headerRef.current && !headerRef.current.contains(event.target as Node)) setMenuOpen(false);
+      if (headerRef.current && !headerRef.current.contains(event.target as Node))
+        setMenuOpen(false);
     };
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -47,18 +50,79 @@ export function GlobalNavigation({ home = false, context }: GlobalNavigationProp
           onClick={closeMenu}
         />
       )}
-      <Link className="brand" href={home ? "#inicio" : "/"} aria-label="Nexus inicio" onClick={closeMenu}><span>N</span>NEXUS</Link>
-      <nav id="global-navigation-menu" className={menuOpen ? "nav global-links open" : "nav global-links"} aria-label="Navegación principal">
-        <Link href="/#doom" onClick={closeMenu}>RUTA DOOMSDAY</Link>
-        <Link href="/rutas" onClick={closeMenu} aria-current={active("/rutas") ? "page" : undefined}>RUTAS</Link>
-        <Link href="/eventos" onClick={closeMenu} aria-current={active("/eventos") || active("/universos") || active("/equipos") ? "page" : undefined}>CONEXIONES</Link>
-        <Link href="/titulos" onClick={closeMenu} aria-current={active("/titulos") ? "page" : undefined}>TÍTULOS</Link>
-        <Link href="/personajes" onClick={closeMenu} aria-current={active("/personajes") ? "page" : undefined}>PERSONAJES</Link>
-        <Link className="global-search-link" href="/buscar" onClick={closeMenu} aria-current={active("/buscar") ? "page" : undefined}>BUSCAR <span aria-hidden="true">⌕</span></Link>
-        <Link href="/cuenta" onClick={closeMenu} aria-current={active("/cuenta") ? "page" : undefined}>MI CUENTA</Link>
+      <Link
+        className="brand"
+        href={home ? "#inicio" : "/"}
+        aria-label="Nexus inicio"
+        onClick={closeMenu}
+      >
+        <span>N</span>NEXUS
+      </Link>
+      <nav
+        id="global-navigation-menu"
+        className={menuOpen ? "nav global-links open" : "nav global-links"}
+        aria-label="Navegación principal"
+      >
+        <Link href="/#doom" onClick={closeMenu}>
+          RUTA DOOMSDAY
+        </Link>
+        <Link
+          href="/rutas"
+          onClick={closeMenu}
+          aria-current={active("/rutas") ? "page" : undefined}
+        >
+          RUTAS
+        </Link>
+        <Link
+          href="/eventos"
+          onClick={closeMenu}
+          aria-current={
+            active("/eventos") || active("/universos") || active("/equipos") ? "page" : undefined
+          }
+        >
+          CONEXIONES
+        </Link>
+        <Link
+          href="/titulos"
+          onClick={closeMenu}
+          aria-current={active("/titulos") ? "page" : undefined}
+        >
+          TÍTULOS
+        </Link>
+        <Link
+          href="/personajes"
+          onClick={closeMenu}
+          aria-current={active("/personajes") ? "page" : undefined}
+        >
+          PERSONAJES
+        </Link>
+        <Link
+          className="global-search-link"
+          href="/buscar"
+          onClick={closeMenu}
+          aria-current={active("/buscar") ? "page" : undefined}
+        >
+          BUSCAR <span aria-hidden="true">⌕</span>
+        </Link>
+        <Link
+          href="/cuenta"
+          onClick={closeMenu}
+          aria-current={active("/cuenta") ? "page" : undefined}
+        >
+          MI CUENTA
+        </Link>
       </nav>
       <div className="global-navigation-context">{context ?? "ARCHIVO MCU"}</div>
-      <button className="menu" type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} aria-controls="global-navigation-menu">{menuOpen ? "×" : "☰"}</button>
+      <button
+        className="menu"
+        type="button"
+        onClick={() => setMenuOpen((open) => !open)}
+        aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+        aria-expanded={menuOpen}
+        aria-controls="global-navigation-menu"
+      >
+        {menuOpen ? "×" : "☰"}
+      </button>
     </header>
   );
 }

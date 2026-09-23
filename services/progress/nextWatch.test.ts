@@ -5,12 +5,17 @@ import { characters } from "@/repositories/characterRepository";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-const titlesFor = (id: string) => getCharacterWatchTitleIds(characters.find(character => character.id === id)!);
-const nextFor = (id: string, watched: string[] = []) => getNextWatch({ ready: true, watched: new Set(watched) }, titlesFor(id));
+const titlesFor = (id: string) =>
+  getCharacterWatchTitleIds(characters.find((character) => character.id === id)!);
+const nextFor = (id: string, watched: string[] = []) =>
+  getNextWatch({ ready: true, watched: new Set(watched) }, titlesFor(id));
 
 test("recommendations wait for confirmed progress and respect spoiler preference", () => {
   assert.equal(getNextWatch({ ready: false, watched: new Set() }, titlesFor("iron")), undefined);
-  assert.equal(getNextWatch({ ready: true, allowSpoilers: true, watched: new Set() }, titlesFor("iron")), undefined);
+  assert.equal(
+    getNextWatch({ ready: true, allowSpoilers: true, watched: new Set() }, titlesFor("iron")),
+    undefined,
+  );
 });
 
 test("each character recommends their own pending titles in release order", () => {
@@ -40,7 +45,11 @@ test("all recommended trailers have thumbnails and remain within the character's
     let next;
     while ((next = getNextWatch({ ready: true, watched }, ids))) {
       assert.ok(ids.includes(next.slug));
-      if (next.trailerId) assert.ok(existsSync(join(process.cwd(), "public", "trailers", `${next.slug}.webp`)), next.slug);
+      if (next.trailerId)
+        assert.ok(
+          existsSync(join(process.cwd(), "public", "trailers", `${next.slug}.webp`)),
+          next.slug,
+        );
       watched.add(next.slug);
     }
   }
