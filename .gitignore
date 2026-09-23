@@ -27,6 +27,11 @@
 *.tsbuildinfo
 next-env.d.ts
 
+# Personal tooling configs
+/opencode.json
+/opencode.backup.json
+/.continue/
+
 # Logs
 *.log
 npm-debug.log*
