@@ -11,7 +11,7 @@ directorios, flujos de datos, seguridad, pruebas y convenciones.
 ## 1. Visión general
 
 Experiencia editorial interactiva en español que recorre los personajes y
-acontecimientos esenciales del camino hacia *Avengers: Doomsday*.
+acontecimientos esenciales del camino hacia _Avengers: Doomsday_.
 
 - **Stack**: Next.js 16 (App Router, RSC) · React · TypeScript (`strict`) · Supabase
   (Auth + Postgres con RLS) · Google News RSS · Google Calendar/OAuth · GA4.
@@ -86,22 +86,22 @@ styles/                  CSS global/heredado (base, navigation, responsive, …)
 
 ## 4. Catálogo de rutas
 
-| Ruta | Tipo | Origen de datos | Notas |
-| --- | --- | --- | --- |
-| `/` | RSC estática | `repositories/characterRepository` + `features/home` | Portada: CinematicIntro, DoomsdayGuide, MCUCatalog, preview. |
-| `/personajes` | RSC estática | `characterRepository` | Directorio con filtros (`useCharacterFilters`). |
-| `/personajes/[id]` | SSG (`generateStaticParams`) | `contentRepository.getCharacterDossier` | Dossier: story, spoilers, stats, cronología. |
-| `/titulos` | RSC + searchParams | `mcuCatalog` + `data/titles` | Directorio con filtros/saga/continuidad/estado. |
-| `/titulos/[slug]` | SSG | `contentRepository.getTitleDossier` | Dossier con tráiler, post-credits, cast, fuentes. |
-| `/rutas` y `/rutas/[slug]` | RSC/SSG | `data/viewingRoutes` | Planes de visionado con pasos. |
-| `/eventos`, `/universos`, `/equipos` (+ `[slug]`) | RSC/SSG | `data/mcuEntities` + `entityRepository` | Páginas de entidades (eventos, universos, equipos). |
-| `/buscar` | RSC | `searchService` (cliente) | Búsqueda ponderada sobre índice en build. |
-| `/cuenta` | RSC | Supabase Auth | Login/registro, preferencia de spoilers, progreso. |
-| `/privacidad`, `/terminos` | Estáticas | — | Legales con consentimiento de cookies. |
-| `api/news` (GET) | Dinámica | `newsFeedService` | RSS Google News + fallback; cache `s-maxage=3600`. |
-| `api/title-image` (GET) | Dinámica proxy | `titleImageService` | Proxy de imágenes IMDb/Wikipedia con validación de host. |
-| `robots.ts`, `sitemap.ts` | Generadas | `siteConfig` + catálogos | SEO global. |
-| `opengraph-image.tsx` | Generadas por ruta | `createSocialImage` | Tarjetas sociales dinámicas. |
+| Ruta                                              | Tipo                         | Origen de datos                                      | Notas                                                        |
+| ------------------------------------------------- | ---------------------------- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| `/`                                               | RSC estática                 | `repositories/characterRepository` + `features/home` | Portada: CinematicIntro, DoomsdayGuide, MCUCatalog, preview. |
+| `/personajes`                                     | RSC estática                 | `characterRepository`                                | Directorio con filtros (`useCharacterFilters`).              |
+| `/personajes/[id]`                                | SSG (`generateStaticParams`) | `contentRepository.getCharacterDossier`              | Dossier: story, spoilers, stats, cronología.                 |
+| `/titulos`                                        | RSC + searchParams           | `mcuCatalog` + `data/titles`                         | Directorio con filtros/saga/continuidad/estado.              |
+| `/titulos/[slug]`                                 | SSG                          | `contentRepository.getTitleDossier`                  | Dossier con tráiler, post-credits, cast, fuentes.            |
+| `/rutas` y `/rutas/[slug]`                        | RSC/SSG                      | `data/viewingRoutes`                                 | Planes de visionado con pasos.                               |
+| `/eventos`, `/universos`, `/equipos` (+ `[slug]`) | RSC/SSG                      | `data/mcuEntities` + `entityRepository`              | Páginas de entidades (eventos, universos, equipos).          |
+| `/buscar`                                         | RSC                          | `searchService` (cliente)                            | Búsqueda ponderada sobre índice en build.                    |
+| `/cuenta`                                         | RSC                          | Supabase Auth                                        | Login/registro, preferencia de spoilers, progreso.           |
+| `/privacidad`, `/terminos`                        | Estáticas                    | —                                                    | Legales con consentimiento de cookies.                       |
+| `api/news` (GET)                                  | Dinámica                     | `newsFeedService`                                    | RSS Google News + fallback; cache `s-maxage=3600`.           |
+| `api/title-image` (GET)                           | Dinámica proxy               | `titleImageService`                                  | Proxy de imágenes IMDb/Wikipedia con validación de host.     |
+| `robots.ts`, `sitemap.ts`                         | Generadas                    | `siteConfig` + catálogos                             | SEO global.                                                  |
+| `opengraph-image.tsx`                             | Generadas por ruta           | `createSocialImage`                                  | Tarjetas sociales dinámicas.                                 |
 
 ## 5. Flujos de datos clave
 
@@ -168,15 +168,15 @@ Archivos: `services/searchService.ts`, `features/search/*`, `utils/text.ts`.
 
 ## 6. Seguridad y privacidad
 
-| Tema | Implementación |
-| --- | --- |
-| Claves públicas | Solo `NEXT_PUBLIC_*` en cliente; `assertPublicSupabaseKey` rechaza `sb_secret_*`/`service_role`/`authenticated`; `next.config.ts` rompe el build si hay clave privilegiada. |
-| RLS | Todas las tablas con `force row level security`; policies solo-propietario (`auth.uid()`); `revoke` explícitos; las funciones `SECURITY DEFINER` fijan `search_path=''`. |
-| Consentimiento cookies | Google Consent Mode v2: default `denied` con `wait_for_update:500`; `subscribeAnalyticsConsent` multi-tab; solo se habilita `analytics_storage`. |
-| PII | `safeText`/`safeSearchTerm` omiten emails/teléfonos en eventos GA4. |
-| Privacidad multimedia | YouTube `youtube-nocookie.com` con `origin`; proxy `api/title-image` valida hostname y content-type; User-Agent explícito. |
-| Spoilers | Fail-closed (sin `ready`/sin JS/error → contenido protegido nunca renderizado ni descargado). |
-| Errores | Todos los servicios de terceros degradan con try/catch sin tocar la UI; stores revierten en fallos de escritura. |
+| Tema                   | Implementación                                                                                                                                                              |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claves públicas        | Solo `NEXT_PUBLIC_*` en cliente; `assertPublicSupabaseKey` rechaza `sb_secret_*`/`service_role`/`authenticated`; `next.config.ts` rompe el build si hay clave privilegiada. |
+| RLS                    | Todas las tablas con `force row level security`; policies solo-propietario (`auth.uid()`); `revoke` explícitos; las funciones `SECURITY DEFINER` fijan `search_path=''`.    |
+| Consentimiento cookies | Google Consent Mode v2: default `denied` con `wait_for_update:500`; `subscribeAnalyticsConsent` multi-tab; solo se habilita `analytics_storage`.                            |
+| PII                    | `safeText`/`safeSearchTerm` omiten emails/teléfonos en eventos GA4.                                                                                                         |
+| Privacidad multimedia  | YouTube `youtube-nocookie.com` con `origin`; proxy `api/title-image` valida hostname y content-type; User-Agent explícito.                                                  |
+| Spoilers               | Fail-closed (sin `ready`/sin JS/error → contenido protegido nunca renderizado ni descargado).                                                                               |
+| Errores                | Todos los servicios de terceros degradan con try/catch sin tocar la UI; stores revierten en fallos de escritura.                                                            |
 
 ## 7. Estrategia de pruebas
 
