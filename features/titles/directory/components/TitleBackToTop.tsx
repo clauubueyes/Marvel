@@ -16,5 +16,14 @@ export function TitleBackToTop() {
   }, []);
 
   if (!visible) return null;
-  return <button type="button" className="title-back-to-top" aria-label="Volver arriba" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>↑</button>;
+  return (
+    <button
+      type="button"
+      className="title-back-to-top"
+      aria-label="Volver arriba"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    >
+      ↑
+    </button>
+  );
 }
