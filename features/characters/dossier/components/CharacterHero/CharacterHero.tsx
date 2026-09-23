@@ -2,7 +2,7 @@ import { SpoilerText } from "@/features/spoilers/SpoilerText";
 import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
 import Image from "next/image";
 import { CharacterMotionField } from "@/features/characters/dossier/components/CharacterMotionField";
-import { IronManCluster } from "@/features/characters/dossier/components/IronManCluster";
+import { IronManClusterBoundary } from "@/features/characters/dossier/components/IronManCluster/IronManClusterBoundary";
 import type { Character } from "@/types/character";
 import type { CharacterMotionProfile } from "@/utils/characterMotion";
 import { CharacterFavorite } from "@/features/characters/favorites/CharacterFavorite";
@@ -16,7 +16,7 @@ export function CharacterHero({ character, motion }: CharacterHeroProps) {
     <section className="profile-hero">
       <div className="profile-grid" aria-hidden="true" />
       <CharacterMotionField profile={motion} symbol={character.symbol} />
-      {character.id === "iron" && <IronManCluster />}
+      {character.id === "iron" && <IronManClusterBoundary />}
       <div className="profile-title profile-title-arrival">
         <p className="eyebrow">
           <span /> {character.role}
