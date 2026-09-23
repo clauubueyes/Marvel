@@ -1,6 +1,13 @@
-import type { MovieProgressRepository, ProgressChange } from "@/repositories/movieProgressRepository";
+import type {
+  MovieProgressRepository,
+  ProgressChange,
+} from "@/repositories/movieProgressRepository";
 
-export type ProgressUser = { id: string; email?: string; user_metadata?: { avoid_spoilers?: unknown } };
+export type ProgressUser = {
+  id: string;
+  email?: string;
+  user_metadata?: { avoid_spoilers?: unknown };
+};
 type Snapshot = {
   user: ProgressUser | null;
   initialized: boolean;
@@ -10,7 +17,14 @@ type Snapshot = {
   error: string | null;
 };
 
-const initial: Snapshot = { user: null, initialized: false, ready: false, watched: new Set(), pending: 0, error: null };
+const initial: Snapshot = {
+  user: null,
+  initialized: false,
+  ready: false,
+  watched: new Set(),
+  pending: 0,
+  error: null,
+};
 
 // One queue per identity. Replay outstanding intentions over the last confirmed
 // state so an older failure cannot undo a newer click, including bulk changes.
@@ -25,7 +39,9 @@ export class MovieProgressStore {
   getServerSnapshot = () => initial;
   subscribe = (callback: () => void) => {
     this.listeners.add(callback);
-    return () => { this.listeners.delete(callback); };
+    return () => {
+      this.listeners.delete(callback);
+    };
   };
   private publish(update: Partial<Snapshot>) {
     this.snapshot = { ...this.snapshot, ...update };
@@ -33,13 +49,21 @@ export class MovieProgressStore {
   }
   setUser(user: ProgressUser | null) {
     if (this.snapshot.initialized && this.snapshot.user?.id === user?.id) {
-      if (this.snapshot.user?.user_metadata?.avoid_spoilers !== user?.user_metadata?.avoid_spoilers) this.publish({ user });
+      if (this.snapshot.user?.user_metadata?.avoid_spoilers !== user?.user_metadata?.avoid_spoilers)
+        this.publish({ user });
       return;
     }
     this.generation++;
     this.confirmed = new Set();
     this.queue = [];
-    this.publish({ user, initialized: true, ready: !user, watched: new Set(), pending: 0, error: null });
+    this.publish({
+      user,
+      initialized: true,
+      ready: !user,
+      watched: new Set(),
+      pending: 0,
+      error: null,
+    });
   }
   async load() {
     const user = this.snapshot.user;
@@ -52,7 +76,8 @@ export class MovieProgressStore {
       this.confirmed = watched;
       this.publish({ watched: new Set(watched), ready: true });
     } catch {
-      if (generation === this.generation) this.publish({ error: "No se pudo cargar tu progreso. Reintenta para poder modificarlo." });
+      if (generation === this.generation)
+        this.publish({ error: "No se pudo cargar tu progreso. Reintenta para poder modificarlo." });
     }
   }
   setMany(ids: string[], watched: boolean) {
@@ -64,7 +89,9 @@ export class MovieProgressStore {
     if (this.queue.length === 1) void this.drain(this.generation, this.snapshot.user.id);
   }
   private apply(target: Set<string>, changes: ProgressChange[]) {
-    changes.forEach(({ movieId, watched }) => watched ? target.add(movieId) : target.delete(movieId));
+    changes.forEach(({ movieId, watched }) =>
+      watched ? target.add(movieId) : target.delete(movieId),
+    );
   }
   private replay() {
     const watched = new Set(this.confirmed);
@@ -80,7 +107,10 @@ export class MovieProgressStore {
         this.apply(this.confirmed, changes);
       } catch {
         if (generation !== this.generation) return;
-        this.publish({ error: "No se pudo guardar un cambio. Se ha revertido; puedes volver a marcarlo o recargar el progreso." });
+        this.publish({
+          error:
+            "No se pudo guardar un cambio. Se ha revertido; puedes volver a marcarlo o recargar el progreso.",
+        });
       }
       this.queue.shift();
       this.replay();

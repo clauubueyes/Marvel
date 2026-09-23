@@ -4,7 +4,10 @@ import path from "node:path";
 const extensions = ["webp", "avif", "jpg", "jpeg", "png"];
 
 /** Se consulta desde la página de servidor, nunca desde el navegador. */
-export async function getCharacterStoryImages(characterId: string, count: number): Promise<(string | undefined)[]> {
+export async function getCharacterStoryImages(
+  characterId: string,
+  count: number,
+): Promise<(string | undefined)[]> {
   if (!/^[a-z0-9-]+$/.test(characterId)) throw new Error("Invalid character ID");
   const publicPath = `/characters/history/${characterId}`;
   const absolutePath = path.join(process.cwd(), "public", publicPath);
@@ -18,10 +21,14 @@ export async function getCharacterStoryImages(characterId: string, count: number
   }
   return Promise.all(
     Array.from({ length: count }, async (_, index) => {
-      const filename = extensions.map((extension) => `acto-${index + 1}.${extension}`).find((name) => filenames.includes(name));
+      const filename = extensions
+        .map((extension) => `acto-${index + 1}.${extension}`)
+        .find((name) => filenames.includes(name));
       if (!filename) return undefined;
       const version = await getVersionStamp(path.join(absolutePath, filename));
-      return version === null ? `${publicPath}/${filename}` : `${publicPath}/${filename}?v=${version}`;
+      return version === null
+        ? `${publicPath}/${filename}`
+        : `${publicPath}/${filename}?v=${version}`;
     }),
   );
 }

@@ -1,4 +1,7 @@
-import type { CharacterFavoritesRepository, FavoritesData } from "@/repositories/characterFavoritesRepository";
+import type {
+  CharacterFavoritesRepository,
+  FavoritesData,
+} from "@/repositories/characterFavoritesRepository";
 
 type Snapshot = FavoritesData & {
   userId: string | null;
@@ -8,7 +11,16 @@ type Snapshot = FavoritesData & {
   pending: boolean;
   error: string | null;
 };
-const initial: Snapshot = { counts: {}, favorite: null, userId: null, initialized: false, ready: false, loading: false, pending: false, error: null };
+const initial: Snapshot = {
+  counts: {},
+  favorite: null,
+  userId: null,
+  initialized: false,
+  ready: false,
+  loading: false,
+  pending: false,
+  error: null,
+};
 
 export class CharacterFavoritesStore {
   private snapshot = initial;
@@ -20,7 +32,9 @@ export class CharacterFavoritesStore {
   getServerSnapshot = () => initial;
   subscribe = (listener: () => void) => {
     this.listeners.add(listener);
-    return () => { this.listeners.delete(listener); };
+    return () => {
+      this.listeners.delete(listener);
+    };
   };
   private publish(update: Partial<Snapshot>) {
     this.snapshot = { ...this.snapshot, ...update };
@@ -30,7 +44,15 @@ export class CharacterFavoritesStore {
     if (this.snapshot.initialized && this.snapshot.userId === userId) return;
     this.generation++;
     this.confirmed = { counts: this.confirmed.counts, favorite: null };
-    this.publish({ ...this.confirmed, userId, initialized: true, ready: false, loading: false, pending: false, error: null });
+    this.publish({
+      ...this.confirmed,
+      userId,
+      initialized: true,
+      ready: false,
+      loading: false,
+      pending: false,
+      error: null,
+    });
   }
   ensureLoaded = () => {
     if (!this.snapshot.ready && !this.snapshot.error) void this.load();
@@ -45,7 +67,11 @@ export class CharacterFavoritesStore {
       this.confirmed = { ...data, favorite: this.snapshot.userId ? data.favorite : null };
       this.publish({ ...this.confirmed, loading: false, ready: true });
     } catch {
-      if (generation === this.generation) this.publish({ loading: false, error: "No se pudieron cargar los favoritos. Reintenta para actualizarlos." });
+      if (generation === this.generation)
+        this.publish({
+          loading: false,
+          error: "No se pudieron cargar los favoritos. Reintenta para actualizarlos.",
+        });
     }
   };
   toggle = async (characterId: string) => {
@@ -62,7 +88,13 @@ export class CharacterFavoritesStore {
     } catch {
       if (generation !== this.generation) return;
       // A lost response may have committed: require reconciliation before another vote.
-      this.publish({ ...this.confirmed, pending: false, ready: false, error: "No se pudo confirmar el favorito. Se ha revertido la vista; reintenta para comprobar el guardado." });
+      this.publish({
+        ...this.confirmed,
+        pending: false,
+        ready: false,
+        error:
+          "No se pudo confirmar el favorito. Se ha revertido la vista; reintenta para comprobar el guardado.",
+      });
       return;
     }
     if (generation !== this.generation) return;
@@ -74,7 +106,12 @@ export class CharacterFavoritesStore {
       this.confirmed = data;
       this.publish({ ...data, pending: false });
     } catch {
-      if (generation === this.generation) this.publish({ pending: false, ready: false, error: "Favorito guardado. No se pudieron actualizar los contadores; reintenta." });
+      if (generation === this.generation)
+        this.publish({
+          pending: false,
+          ready: false,
+          error: "Favorito guardado. No se pudieron actualizar los contadores; reintenta.",
+        });
     }
   };
 }

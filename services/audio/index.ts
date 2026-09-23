@@ -7,15 +7,21 @@ let enabledFallback = true;
 
 export function isSoundEnabled(): boolean {
   if (typeof window === "undefined") return false;
-  try { return window.localStorage.getItem(SOUND_ENABLED_STORAGE_KEY) !== "false"; }
-  catch { return enabledFallback; }
+  try {
+    return window.localStorage.getItem(SOUND_ENABLED_STORAGE_KEY) !== "false";
+  } catch {
+    return enabledFallback;
+  }
 }
 
 export function setSoundEnabled(enabled: boolean): void {
   enabledFallback = enabled;
   if (typeof window === "undefined") return;
-  try { window.localStorage.setItem(SOUND_ENABLED_STORAGE_KEY, String(enabled)); }
-  catch { /* Keep the preference in memory when storage is unavailable. */ }
+  try {
+    window.localStorage.setItem(SOUND_ENABLED_STORAGE_KEY, String(enabled));
+  } catch {
+    /* Keep the preference in memory when storage is unavailable. */
+  }
 }
 
 // Call only from a user action, never from an effect or a store subscription.
@@ -48,8 +54,18 @@ export function playMovieProgressSound(watched: boolean): void {
       oscillator.stop(start + duration + 0.01);
     };
     if (audio.state === "running") play();
-    else void audio.resume().then(() => {
-      try { play(); } catch { /* Audio must never interrupt progress. */ }
-    }).catch(() => {});
-  } catch { /* Unsupported or blocked audio must not affect the interaction. */ }
+    else
+      void audio
+        .resume()
+        .then(() => {
+          try {
+            play();
+          } catch {
+            /* Audio must never interrupt progress. */
+          }
+        })
+        .catch(() => {});
+  } catch {
+    /* Unsupported or blocked audio must not affect the interaction. */
+  }
 }

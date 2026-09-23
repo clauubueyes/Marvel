@@ -28,7 +28,10 @@ function addDays(date: Date, amount: number) {
   return result;
 }
 
-export function createViewingPlan(titles: PlannerTitle[], preferences: PlannerPreferences): PlannedViewing[] {
+export function createViewingPlan(
+  titles: PlannerTitle[],
+  preferences: PlannerPreferences,
+): PlannedViewing[] {
   if (!titles.length || !preferences.weekDays.length || !preferences.startDate) return [];
 
   const firstDate = parseLocalDate(preferences.startDate);
@@ -50,7 +53,13 @@ export function createViewingPlan(titles: PlannerTitle[], preferences: PlannerPr
     const slotLength = (windowEnd.getTime() - windowStart.getTime()) / partsOnDay;
     const start = new Date(windowStart.getTime() + slotLength * part);
 
-    return { start, windowEnd, slotMinutes: Math.floor(slotLength / 60_000), part: part + 1, partsOnDay };
+    return {
+      start,
+      windowEnd,
+      slotMinutes: Math.floor(slotLength / 60_000),
+      part: part + 1,
+      partsOnDay,
+    };
   }
 
   const plan: PlannedViewing[] = [];
@@ -66,8 +75,21 @@ export function createViewingPlan(titles: PlannerTitle[], preferences: PlannerPr
         const episodesInSession = Math.max(1, Math.floor(currentSlot.slotMinutes / episodeMinutes));
         const lastEpisode = Math.min(episodeCount, firstEpisode + episodesInSession - 1);
         const durationMinutes = (lastEpisode - firstEpisode + 1) * episodeMinutes;
-        const episodeLabel = firstEpisode === lastEpisode ? `Episodio ${firstEpisode}` : `Episodios ${firstEpisode}–${lastEpisode}`;
-        plan.push({ ...title, title: `${title.title} · ${episodeLabel}`, start: currentSlot.start, end: new Date(currentSlot.start.getTime() + durationMinutes * 60_000), part: currentSlot.part, partsOnDay: currentSlot.partsOnDay, durationMinutes, episodeLabel, estimated: true });
+        const episodeLabel =
+          firstEpisode === lastEpisode
+            ? `Episodio ${firstEpisode}`
+            : `Episodios ${firstEpisode}–${lastEpisode}`;
+        plan.push({
+          ...title,
+          title: `${title.title} · ${episodeLabel}`,
+          start: currentSlot.start,
+          end: new Date(currentSlot.start.getTime() + durationMinutes * 60_000),
+          part: currentSlot.part,
+          partsOnDay: currentSlot.partsOnDay,
+          durationMinutes,
+          episodeLabel,
+          estimated: true,
+        });
         firstEpisode = lastEpisode + 1;
         sessionIndex += 1;
       }
@@ -77,7 +99,15 @@ export function createViewingPlan(titles: PlannerTitle[], preferences: PlannerPr
     const currentSlot = slot(sessionIndex);
     const exactMinutes = Number(title.runtime?.match(/(\d+)\s+MIN/i)?.[1]);
     const durationMinutes = exactMinutes || currentSlot.slotMinutes;
-    plan.push({ ...title, start: currentSlot.start, end: new Date(currentSlot.start.getTime() + durationMinutes * 60_000), part: currentSlot.part, partsOnDay: currentSlot.partsOnDay, durationMinutes, estimated: !exactMinutes });
+    plan.push({
+      ...title,
+      start: currentSlot.start,
+      end: new Date(currentSlot.start.getTime() + durationMinutes * 60_000),
+      part: currentSlot.part,
+      partsOnDay: currentSlot.partsOnDay,
+      durationMinutes,
+      estimated: !exactMinutes,
+    });
     sessionIndex += 1;
   }
   return plan;
@@ -85,40 +115,75 @@ export function createViewingPlan(titles: PlannerTitle[], preferences: PlannerPr
 
 function estimatedEpisodeMinutes(titleId: string, runtime: string) {
   if (/CORTOS/i.test(runtime) || titleId.includes("i-am-groot")) return 8;
-  if (["what-if-temporadas-1-3", "x-men-97", "tu-amigo-y-vecino-spider-man", "marvel-zombies", "eyes-of-wakanda"].includes(titleId)) return 30;
-  if (["wandavision", "she-hulk-abogada-hulka", "ms-marvel", "agatha-quien-si-no"].includes(titleId)) return 40;
-  if (titleId.startsWith("daredevil-") || titleId.startsWith("jessica-jones-") || titleId.startsWith("the-punisher-")) return 52;
+  if (
+    [
+      "what-if-temporadas-1-3",
+      "x-men-97",
+      "tu-amigo-y-vecino-spider-man",
+      "marvel-zombies",
+      "eyes-of-wakanda",
+    ].includes(titleId)
+  )
+    return 30;
+  if (
+    ["wandavision", "she-hulk-abogada-hulka", "ms-marvel", "agatha-quien-si-no"].includes(titleId)
+  )
+    return 40;
+  if (
+    titleId.startsWith("daredevil-") ||
+    titleId.startsWith("jessica-jones-") ||
+    titleId.startsWith("the-punisher-")
+  )
+    return 52;
   return 45;
 }
 
 function icsDate(date: Date) {
-  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  return date
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}/, "");
 }
 
 function escapeIcs(value: string) {
-  return value.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
 }
 
 export function createIcsCalendar(routeName: string, plan: PlannedViewing[]) {
   const stamp = icsDate(new Date());
-  const events = plan.map((item, index) => [
-    "BEGIN:VEVENT",
-    `UID:${escapeIcs(`${item.id}-${item.start.getTime()}-${index}@nexus`)}`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART:${icsDate(item.start)}`,
-    `DTEND:${icsDate(item.end)}`,
-    `SUMMARY:${escapeIcs(`NEXUS · ${item.title}`)}`,
-    `DESCRIPTION:${escapeIcs(`Ruta: ${routeName}\nAbre el expediente en NEXUS: ${item.url}`)}`,
-    `URL:${escapeIcs(item.url)}`,
-    "BEGIN:VALARM",
-    "TRIGGER:-PT30M",
-    "ACTION:DISPLAY",
-    `DESCRIPTION:${escapeIcs(`En 30 minutos: ${item.title}`)}`,
-    "END:VALARM",
-    "END:VEVENT",
-  ].join("\r\n"));
+  const events = plan.map((item, index) =>
+    [
+      "BEGIN:VEVENT",
+      `UID:${escapeIcs(`${item.id}-${item.start.getTime()}-${index}@nexus`)}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${icsDate(item.start)}`,
+      `DTEND:${icsDate(item.end)}`,
+      `SUMMARY:${escapeIcs(`NEXUS · ${item.title}`)}`,
+      `DESCRIPTION:${escapeIcs(`Ruta: ${routeName}\nAbre el expediente en NEXUS: ${item.url}`)}`,
+      `URL:${escapeIcs(item.url)}`,
+      "BEGIN:VALARM",
+      "TRIGGER:-PT30M",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${escapeIcs(`En 30 minutos: ${item.title}`)}`,
+      "END:VALARM",
+      "END:VEVENT",
+    ].join("\r\n"),
+  );
 
-  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//NEXUS//Plan de visionado//ES", "CALSCALE:GREGORIAN", `X-WR-CALNAME:${escapeIcs(`NEXUS · ${routeName}`)}`, ...events, "END:VCALENDAR", ""].join("\r\n");
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//NEXUS//Plan de visionado//ES",
+    "CALSCALE:GREGORIAN",
+    `X-WR-CALNAME:${escapeIcs(`NEXUS · ${routeName}`)}`,
+    ...events,
+    "END:VCALENDAR",
+    "",
+  ].join("\r\n");
 }
 
 export type { PlannedViewing, PlannerPreferences, PlannerTitle } from "@/types/planner";

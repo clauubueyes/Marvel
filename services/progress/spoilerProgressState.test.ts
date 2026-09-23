@@ -9,7 +9,10 @@ function account(overrides: Partial<SpoilerAccountState> = {}): SpoilerAccountSt
 }
 
 test("an uninitialized account has no confirmed progress and stays protected", () => {
-  const guest = buildSpoilerProgress(account({ initialized: false, user: null }), { ready: false, values: new Set() });
+  const guest = buildSpoilerProgress(account({ initialized: false, user: null }), {
+    ready: false,
+    values: new Set(),
+  });
   assert.equal(guest.allowSpoilers, false);
   assert.equal(guest.ready, false);
 });
@@ -25,7 +28,10 @@ test("a failed load keeps protection until it recovers", () => {
 });
 
 test("an explicit spoiler opt-out reveals as soon as the account is initialized", () => {
-  const progress = buildSpoilerProgress(account({ user: { user_metadata: { avoid_spoilers: false } } }), base);
+  const progress = buildSpoilerProgress(
+    account({ user: { user_metadata: { avoid_spoilers: false } } }),
+    base,
+  );
   assert.equal(progress.allowSpoilers, true);
   assert.equal(progress.ready, true);
   assert.equal(progress.watched.has("iron-man"), true);
@@ -33,7 +39,11 @@ test("an explicit spoiler opt-out reveals as soon as the account is initialized"
 
 test("the default and absent preferences keep protection on", () => {
   assert.equal(buildSpoilerProgress(account({ user: {} }), base).allowSpoilers, false);
-  assert.equal(buildSpoilerProgress(account({ user: { user_metadata: { avoid_spoilers: true } } }), base).allowSpoilers, false);
+  assert.equal(
+    buildSpoilerProgress(account({ user: { user_metadata: { avoid_spoilers: true } } }), base)
+      .allowSpoilers,
+    false,
+  );
 });
 
 test("without an opt-out, readiness also requires a confirmed base state", () => {

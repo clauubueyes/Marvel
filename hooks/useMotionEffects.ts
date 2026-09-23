@@ -8,19 +8,27 @@ export function useMotionEffects() {
     document.documentElement.classList.add("motion-ready");
 
     const revealObserver = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.setAttribute("data-revealed", "true")),
+      (entries) =>
+        entries.forEach(
+          (entry) => entry.isIntersecting && entry.target.setAttribute("data-revealed", "true"),
+        ),
       { threshold: 0.12 },
     );
     const observeReveals = (root: ParentNode) => {
-      if (root instanceof HTMLElement && root.matches("[data-reveal]")) revealObserver.observe(root);
-      root.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])").forEach((element) => revealObserver.observe(element));
+      if (root instanceof HTMLElement && root.matches("[data-reveal]"))
+        revealObserver.observe(root);
+      root
+        .querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])")
+        .forEach((element) => revealObserver.observe(element));
     };
     observeReveals(document);
 
     const revealMutationObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
-        if (node instanceof HTMLElement) observeReveals(node);
-      }));
+      mutations.forEach((mutation) =>
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof HTMLElement) observeReveals(node);
+        }),
+      );
     });
     revealMutationObserver.observe(document.body, { childList: true, subtree: true });
 
@@ -41,29 +49,42 @@ export function useMotionEffects() {
           card.style.setProperty("--light-x", `${(x + 0.5) * 100}%`);
           card.style.setProperty("--light-y", `${(y + 0.5) * 100}%`);
         };
-        const leave = () => { card.style.removeProperty("--tilt-x"); card.style.removeProperty("--tilt-y"); };
+        const leave = () => {
+          card.style.removeProperty("--tilt-x");
+          card.style.removeProperty("--tilt-y");
+        };
         card.addEventListener("pointermove", move);
         card.addEventListener("pointerleave", leave);
-        tiltCleanups.set(card, () => { card.removeEventListener("pointermove", move); card.removeEventListener("pointerleave", leave); });
+        tiltCleanups.set(card, () => {
+          card.removeEventListener("pointermove", move);
+          card.removeEventListener("pointerleave", leave);
+        });
       });
     };
     observeTilt(document);
 
     const tiltMutationObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
-        if (node instanceof HTMLElement) observeTilt(node);
-      }));
+      mutations.forEach((mutation) =>
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof HTMLElement) observeTilt(node);
+        }),
+      );
     });
     tiltMutationObserver.observe(document.body, { childList: true, subtree: true });
 
-    const scrollSections = Array.from(document.querySelectorAll<HTMLElement>("[data-scroll-section]"));
+    const scrollSections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-scroll-section]"),
+    );
     let scrollFrame = 0;
     const updateScrollProgress = () => {
       scrollFrame = 0;
       const viewportHeight = window.innerHeight;
       scrollSections.forEach((section) => {
         const bounds = section.getBoundingClientRect();
-        const progress = Math.max(0, Math.min(1, (viewportHeight - bounds.top) / (viewportHeight + bounds.height)));
+        const progress = Math.max(
+          0,
+          Math.min(1, (viewportHeight - bounds.top) / (viewportHeight + bounds.height)),
+        );
         section.style.setProperty("--scroll-progress", progress.toFixed(3));
         section.style.setProperty("--scroll-shift", `${((progress - 0.5) * 2).toFixed(3)}`);
       });
@@ -76,7 +97,9 @@ export function useMotionEffects() {
     window.addEventListener("resize", queueScrollUpdate);
 
     const visibilityFallback = window.setTimeout(() => {
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => element.setAttribute("data-revealed", "true"));
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal]")
+        .forEach((element) => element.setAttribute("data-revealed", "true"));
     }, 1800);
 
     return () => {
