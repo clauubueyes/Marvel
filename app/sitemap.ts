@@ -10,11 +10,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-08-31");
   return [
     { url: url("/"), lastModified, changeFrequency: "weekly", priority: 1 },
-    ...["/personajes", "/titulos", "/rutas", "/eventos", "/universos", "/equipos"].map((path) => ({ url: url(path), lastModified, changeFrequency: "weekly" as const, priority: .8 })),
-    ...["/privacidad", "/terminos"].map((path) => ({ url: url(path), lastModified, changeFrequency: "yearly" as const, priority: .3 })),
-    ...characters.map(({ id }) => ({ url: url(`/personajes/${id}`), lastModified, changeFrequency: "monthly" as const, priority: .8 })),
-    ...mcuCatalog.map(({ slug }) => ({ url: url(`/titulos/${slug}`), lastModified, changeFrequency: "monthly" as const, priority: .7 })),
-    ...viewingRoutes.map(({ slug }) => ({ url: url(`/rutas/${slug}`), lastModified, changeFrequency: "monthly" as const, priority: .7 })),
-    ...mcuEntities.map((entity) => ({ url: url(getEntityHref(entity)), lastModified, changeFrequency: "monthly" as const, priority: .7 })),
+    ...["/personajes", "/titulos", "/rutas", "/eventos", "/universos", "/equipos"].map((path) => ({
+      url: url(path),
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...["/privacidad", "/terminos"].map((path) => ({
+      url: url(path),
+      lastModified,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
+    ...characters.map(({ id }) => ({
+      url: url(`/personajes/${id}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...mcuCatalog.map(({ slug }) => ({
+      url: url(`/titulos/${slug}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...viewingRoutes.map(({ slug }) => ({
+      url: url(`/rutas/${slug}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...mcuEntities.map((entity) => ({
+      url: url(getEntityHref(entity)),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

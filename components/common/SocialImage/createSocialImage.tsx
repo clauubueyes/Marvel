@@ -57,24 +57,62 @@ export function createSocialImage({
       />
 
       {/* Kicker superior: equivale al eyebrow utilizado dentro de la web. */}
-      <div style={{ display: "flex", alignItems: "center", gap: 18, fontSize: 18, letterSpacing: 4, color: accent }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 18,
+          fontSize: 18,
+          letterSpacing: 4,
+          color: accent,
+        }}
+      >
         <span style={{ width: 45, height: 4, background: accent }} />
         {kicker}
       </div>
 
       {/* Contenido central. Los títulos largos reducen su tamaño automáticamente. */}
       <div style={{ display: "flex", flexDirection: "column", maxWidth: 980 }}>
-        <div style={{ fontSize: title.length > 32 ? 70 : 92, lineHeight: 0.92, fontWeight: 900, textTransform: "uppercase", letterSpacing: -3 }}>
+        <div
+          style={{
+            fontSize: title.length > 32 ? 70 : 92,
+            lineHeight: 0.92,
+            fontWeight: 900,
+            textTransform: "uppercase",
+            letterSpacing: -3,
+          }}
+        >
           {title}
         </div>
-        <div style={{ maxWidth: 800, marginTop: 28, color: "#aab3a1", fontSize: 22, lineHeight: 1.45 }}>
+        <div
+          style={{ maxWidth: 800, marginTop: 28, color: "#aab3a1", fontSize: 22, lineHeight: 1.45 }}
+        >
           {subtitle}
         </div>
       </div>
 
       {/* Firma NEXUS situada en la esquina inferior izquierda. */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 27, fontWeight: 900, letterSpacing: 3 }}>
-        <span style={{ width: 42, height: 48, display: "flex", alignItems: "center", justifyContent: "center", color: "white", background: accent }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          fontSize: 27,
+          fontWeight: 900,
+          letterSpacing: 3,
+        }}
+      >
+        <span
+          style={{
+            width: 42,
+            height: 48,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            background: accent,
+          }}
+        >
           N
         </span>
         NEXUS
