@@ -276,13 +276,13 @@ Hoja de ruta priorizada. Cada idea incluye el _porqué_ y la _aproximación téc
 
 ### P1 — Funcionalidad de producto
 
-| #   | Funcionalidad                              | Aproximación técnica                                                                                                                                                                                      |
-| --- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 4   | **Ranking comunitario real con agregados** | Reutilizar `character_favorites` como voto y añadir RPC `top_characters()` tipo `SECURITY DEFINER` (patrón `get_character_favorites`) para exponer solo agregados; sección en Home “TOP DE LA COMUNIDAD”. |
-| 5   | **Modo oscuro / tema editorial**           | Tokenizar colores en CSS custom props en `--accent` (ya existe el patrón con `--accent-2`), `prefers-color-scheme` + toggle persistido en cuenta y localStorage.                                          |
-| 6   | **PWA (instalable + offline)**             | `manifest.webmanifest`, Service Worker que precachee rutas estáticas y el feed fallback; Next soporta `next-pwa` o config manual. El contenido editorial es estático, ideal para offline.                 |
-| 7   | **Mapa de conexiones entre personajes**    | Hay `CharacterConnections` y datos de conexiones; dibujar un grafo interactivo (canvas/SVG, sin `three` si se puede) común a `docs/#` con los títulos que conectan.                                       |
-| 8   | **Feed de noticias por título/universo**   | El RSS ya trae 6 ítems; guardar categoría/imagen (`newsFeedService` normaliza pocos campos) y permitir filtrar el feed desde `/universos/[slug]`.                                                         |
+| #   | Funcionalidad                              | Aproximación técnica                                                                                                                                                                                               |
+| --- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 4   | **Ranking comunitario real con agregados** | Reutilizar `character_favorites` como voto y exponer solo agregados en la sección de Home "TOP DE LA COMUNIDAD". **Resuelto** reutilizando la RPC `get_character_favorites()` en vez de añadir `top_characters()`. |
+| 5   | **Modo oscuro / tema editorial**           | Tokenizar colores en CSS custom props en `--accent` (ya existe el patrón con `--accent-2`), `prefers-color-scheme` + toggle persistido en cuenta y localStorage.                                                   |
+| 6   | **PWA (instalable + offline)**             | `manifest.webmanifest`, Service Worker que precachee rutas estáticas y el feed fallback; Next soporta `next-pwa` o config manual. El contenido editorial es estático, ideal para offline.                          |
+| 7   | **Mapa de conexiones entre personajes**    | Hay `CharacterConnections` y datos de conexiones; dibujar un grafo interactivo (canvas/SVG, sin `three` si se puede) común a `docs/#` con los títulos que conectan.                                                |
+| 8   | **Feed de noticias por título/universo**   | El RSS ya trae 6 ítems; guardar categoría/imagen (`newsFeedService` normaliza pocos campos) y permitir filtrar el feed desde `/universos/[slug]`.                                                                  |
 
 ### P2 — Diferenciadores editoriales
 
@@ -313,5 +313,5 @@ retorno serían:
 1. **H1 (persistencia remota completa)** — habilita multi-dispositivo y Watchlist, dos
    funcionalidades pedidas por cualquier usuario de una guía de visionado.
 2. **H2 (CSS modular)** — el mayor ahorro de dolor futuro en un proyecto con tantas pantallas.
-3. **P1-4 (ranking comunitario real)** — cierra el ciclo "voto → agregado → ranking" con el
-   patrón de seguridad ya probado en `get_character_favorites`.
+3. **P1-4 (ranking comunitario real)** — cerrado: la sección "TOP DE LA COMUNIDAD" de Home
+   pinta el agregado de `get_character_favorites()`, que ya expone solo conteos.

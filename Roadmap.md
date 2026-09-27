@@ -80,12 +80,12 @@ Notas de la FASE 0 (estado real, no el plan original):
 Objetivo: bases de datos y sincronización de estado. **Esta fase habilita la fase 3**
 (watchlist, notificaciones).
 
-| #   | Rama                                      | Prioridad | Mejora / Detalle                                                                                                                                                                                                                                                         | Esfuerzo | Depende de                           |
-| --- | ----------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------ |
-| 8   | `feature/ProgresoTitulosMultiDispositivo` | 🔴        | Tabla `title_progress(user_id, title_id, watched_at)` con RLS idéntica a `movie_progress`; migración en `supabase/migrations/`; `TitleProgressStore` replicando el patrón de `MovieProgressStore`; volcado de `localStorage` → cuenta en el primer login. Auditoría: H1. | L        | ✅ Hecho (sin tabla ni store nuevos) |
-| 9   | `feature/AplicarPreferenciaSpoilers`      | 🔴        | Leer `avoid_spoilers` de `auth.users.user_metadata` en `buildSpoilerProgress` (fin-a-fin). Auditoría: P0-2.                                                                                                                                                              | S        | ✅ Ya estaba hecho                   |
-| 10  | `feature/RankingComunitarioReal`          | 🟡        | RPC `top_characters()` estilo `get_character_favorites` (`SECURITY DEFINER`, `search_path=''`, solo agregados); sección “TOP DE LA COMUNIDAD” en Home. Auditoría: P1-4.                                                                                                  | M        | —                                    |
-| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | —                                    |
+| #   | Rama                                      | Prioridad | Mejora / Detalle                                                                                                                                                                                                                                                         | Esfuerzo | Depende de                            |
+| --- | ----------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------- |
+| 8   | `feature/ProgresoTitulosMultiDispositivo` | 🔴        | Tabla `title_progress(user_id, title_id, watched_at)` con RLS idéntica a `movie_progress`; migración en `supabase/migrations/`; `TitleProgressStore` replicando el patrón de `MovieProgressStore`; volcado de `localStorage` → cuenta en el primer login. Auditoría: H1. | L        | ✅ Hecho (sin tabla ni store nuevos)  |
+| 9   | `feature/AplicarPreferenciaSpoilers`      | 🔴        | Leer `avoid_spoilers` de `auth.users.user_metadata` en `buildSpoilerProgress` (fin-a-fin). Auditoría: P0-2.                                                                                                                                                              | S        | ✅ Ya estaba hecho                    |
+| 10  | `feature/RankingComunitarioReal`          | 🟡        | RPC `top_characters()` estilo `get_character_favorites` (`SECURITY DEFINER`, `search_path=''`, solo agregados); sección “TOP DE LA COMUNIDAD” en Home. Auditoría: P1-4.                                                                                                  | M        | ✅ Hecho (reutiliza la RPC existente) |
+| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | —                                     |
 
 Notas de la FASE 1 (estado real, no el plan original):
 
@@ -104,6 +104,18 @@ Notas de la FASE 1 (estado real, no el plan original):
   `buildSpoilerProgress` lo lee. Cubierto por `spoilerProgressState.test.ts`,
   `movieProgressStore.test.ts` y el e2e `account.spec.ts` (registro, login, revelado,
   cambio de preferencia, recarga y fallo de guardado). No requiere código.
+- **#10**: no hizo falta una RPC `top_characters()`. `get_character_favorites()` ya
+  devuelve exactamente el agregado que necesita el ranking (conteos por personaje, nunca
+  `user_id`) y está concedida a `anon` y `authenticated`, así que la sección se puede
+  pintar también para visitantes sin cuenta. Añadir una segunda función SQL solo habría
+  ampliado la superficie RLS sin aportar datos nuevos. La nueva sección
+  `features/home/components/CommunityTop` ordena ese agregado con
+  `utils/communityTop.rankCommunityTop`, que descarta personajes sin votos, ignora ids
+  fuera del catálogo y desempata por nombre para que el orden sea determinista entre
+  renders y dispositivos. La proyección que recibe el componente es mínima
+  (id, nombre, alias, color e imagen), no el `Character` entero. Estados cubiertos:
+  ranking, sin votos, error con reintento y aislamiento del fallo respecto al resto de
+  Home.
 
 ---
 

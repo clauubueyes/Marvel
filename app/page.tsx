@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { characters } from "@/repositories/characterRepository";
 import {
   CinematicIntro,
+  CommunityTop,
   DoomsdayGuide,
   HomeCharacterPreview,
   HomeFooter,
@@ -34,6 +35,14 @@ const websiteStructuredData = {
 
 export default function Home() {
   /* La paleta verde se comparte con todos los bloques editoriales de la portada. */
+  /* El ranking solo necesita identidad, color e imagen: no se envía el personaje entero. */
+  const communityCandidates = characters.map(({ id, name, alias, color, image }) => ({
+    id,
+    name,
+    alias,
+    color,
+    image,
+  }));
   return (
     <>
       <link rel="canonical" href={`${siteConfig.url}/`} />
@@ -57,6 +66,7 @@ export default function Home() {
         <DoomsdayGuide />
         <MCUCatalog />
         <HomeCharacterPreview characters={characters} />
+        <CommunityTop candidates={communityCandidates} />
         <HomeFooter />
       </main>
     </>
