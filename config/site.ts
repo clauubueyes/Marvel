@@ -12,4 +12,8 @@ export const siteConfig = {
   url: siteUrl,
   locale: "es_ES",
   language: "es-ES",
+  email: "clauubyy@gmail.com",
+  category: "entertainment",
+  formatDetection: { address: false, email: false, telephone: false },
+  verification: { google: "kj3TIYD9OX2ZhgjzdHflfzFJUlUgj945t3WZzdMWAC4" },
 };

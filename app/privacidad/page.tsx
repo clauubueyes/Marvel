@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 import { CookieSettingsButton } from "@/components/layout/LegalFooter/CookieSettingsButton";
 
 export const metadata = createPageMetadata({
@@ -34,7 +35,7 @@ export default function PrivacyPage() {
           <p>
             Esta política describe el tratamiento de datos realizado por el planificador de
             visionado disponible en NEXUS. Para consultas relacionadas con privacidad puedes
-            escribir a <a href="mailto:clauubyy@gmail.com">clauubyy@gmail.com</a>.
+            escribir a <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
           </p>
         </section>
         <section>
