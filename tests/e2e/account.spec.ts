@@ -215,26 +215,31 @@ test("guest, registration, session refresh, watch/unwatch, rollback and account 
   await login(page);
   await page.goto("/titulos");
   await expect(first).toBeEnabled();
-  await expect(first).toHaveAttribute("aria-pressed", "false");
+  // El progreso marcado como invitado se importa a la cuenta al iniciar sesión.
+  await expect(first).toHaveAttribute("aria-pressed", "true");
+  await expect
+    .poll(() => [...(mock.progress.get("alice") ?? new Map())].filter(([, w]) => w))
+    .toHaveLength(1);
   await first.click();
   await expect(page.getByText("GUARDANDO PROGRESO…", { exact: true })).toHaveCount(0);
-  await expect.poll(() => mock.progress.get("alice")?.size).toBe(1);
-  await page.reload();
-  await expect(first).toHaveAttribute("aria-pressed", "true");
-  await first.click();
   await expect.poll(() => [...mock.progress.get("alice")!.values()][0]).toBe(false);
   await page.reload();
   await expect(first).toBeEnabled();
   await expect(first).toHaveAttribute("aria-pressed", "false");
+  await first.click();
+  await expect.poll(() => [...mock.progress.get("alice")!.values()][0]).toBe(true);
+  await page.reload();
+  await expect(first).toHaveAttribute("aria-pressed", "true");
   mock.failWrites();
   await first.click();
   await expect(page.getByRole("alert").filter({ hasText: "No se pudo guardar" })).toBeVisible();
-  await expect(first).toHaveAttribute("aria-pressed", "false");
+  await expect(first).toHaveAttribute("aria-pressed", "true");
   await page.goto("/cuenta");
   await page.getByRole("button", { name: "CERRAR SESIÓN", exact: true }).click();
   await expect(page.getByRole("button", { name: "ENTRAR", exact: true })).toBeVisible();
   await page.goto("/titulos");
-  await expect(first).toHaveAttribute("aria-pressed", "true"); // Guest state, not account state.
+  // La clave de invitado quedó vacía al importar, así que ya no hay estado de invitado.
+  await expect(first).toHaveAttribute("aria-pressed", "false");
   await login(page, "bob@example.com");
   await page.goto("/titulos");
   await expect(first).toBeEnabled();
@@ -353,4 +358,58 @@ test("spoiler rendering fails closed before hydration and updates guest progress
   });
   await expect(page.locator(".story-cinema img:not([data-trailer-poster])")).toHaveCount(0);
   await expect(page.locator(".story-card:not([data-next-watch])")).toHaveCount(0);
+});
+
+test("signing in imports guest progress into the account without losing synced titles", async ({
+  page,
+}) => {
+  const mock = await mockSupabase(page);
+  mock.progress.set("alice", new Map([["iron-man", true]]));
+  await page.goto("/cuenta");
+  await page.evaluate(() => {
+    localStorage.setItem("nexus:titles:watched", JSON.stringify(["iron-man", "thor"]));
+    localStorage.setItem(
+      "nexus:route:infinity-war",
+      JSON.stringify(["thor", "vengadores-endgame"]),
+    );
+    localStorage.setItem("nexus:analytics-consent", "rejected");
+  });
+  await login(page);
+  await expect
+    .poll(() =>
+      [...(mock.progress.get("alice") ?? new Map())]
+        .filter(([, w]) => w)
+        .map(([id]) => id)
+        .sort(),
+    )
+    .toEqual(["iron-man", "thor", "vengadores-endgame"]);
+  await expect
+    .poll(() =>
+      page.evaluate(() => ({
+        titles: localStorage.getItem("nexus:titles:watched"),
+        route: localStorage.getItem("nexus:route:infinity-war"),
+        consent: localStorage.getItem("nexus:analytics-consent"),
+      })),
+    )
+    .toEqual({ titles: null, route: null, consent: "rejected" });
+  await page.goto("/personajes/iron");
+  await expect(page.locator(".story-card:not([data-next-watch])").first()).toBeVisible();
+});
+
+test("a failed import keeps guest progress so the next sign-in retries it", async ({ page }) => {
+  const mock = await mockSupabase(page);
+  mock.progress.set("alice", new Map<string, boolean>());
+  await page.goto("/cuenta");
+  await page.evaluate(() => {
+    localStorage.setItem("nexus:titles:watched", JSON.stringify(["thor"]));
+  });
+  mock.failWrites();
+  await login(page);
+  await expect(
+    page.getByRole("alert").filter({ hasText: "No se pudo guardar un cambio" }),
+  ).toBeVisible();
+  expect([...(mock.progress.get("alice") ?? new Map())].filter(([, w]) => w)).toEqual([]);
+  expect(await page.evaluate(() => localStorage.getItem("nexus:titles:watched"))).toBe(
+    JSON.stringify(["thor"]),
+  );
 });

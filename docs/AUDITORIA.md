@@ -88,6 +88,22 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
   `movie_progress`, replicar el patrón `MovieProgressStore` -> `TitleProgressStore`, y verter
   valores locales a remoto en el primer login (migración de datos). Esto habilita multi-dispositivo.
 
+> **Resuelto** — `feature/ProgresoTitulosMultiDispositivo`. El diagnóstico de este ítem
+> estaba desactualizado en dos puntos: `movie_progress` **no** es "por personaje", sino que ya
+> guarda slugs de títulos en `movie_id` con la RLS correspondiente, así que ni la tabla
+> `title_progress` ni un `TitleProgressStore` eran necesarios y el progreso de cuenta ya era
+> multi-dispositivo. Lo que faltaba era el último paso: verter el progreso de invitado.
+>
+> - `features/account/importGuestProgress.ts` importa las claves `nexus:titles:watched` y
+>   `nexus:route:<slug>` al iniciar sesión, solo **añadiendo** títulos que la cuenta no tiene
+>   vistos para no perder lo sincronizado desde otro dispositivo.
+> - Los ids ausentes del catálogo se descartan; las claves de invitado se borran solo cuando
+>   la escritura se confirma (`MovieProgressStore.whenSettled`), de modo que un fallo deja el
+>   progreso local intacto y el siguiente login reintenta.
+> - El catálogo y el lector de almacenamiento se importan de forma diferida: esta vía no debe
+>   entrar en el bundle inicial que `AccountProvider` comparte con todas las páginas.
+> - Invierte la decisión que `docs/supabase.md` recogía como "nunca se importan a cuentas".
+
 #### H2. Refactorizar estilos: salir del `@import` global monolítico
 
 - **Dónde**: `app/globals.css` y `styles/*.css` (base, navigation, responsive, legal…).
@@ -252,11 +268,11 @@ Hoja de ruta priorizada. Cada idea incluye el _porqué_ y la _aproximación téc
 
 ### P0 — Camino de valor inmediato
 
-| #   | Funcionalidad                                    | Aproximación técnica                                                                                                                                                                                                                                         |
-| --- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | **Watchlist “Siguiente a ver” por cuenta**       | Combinar `movie_progress` + título visto + `getNextWatch` (`services/progress/nextWatch.ts`) y persistirlo en `title_progress` (ver H1). Sección “CONTINUAR” en Home y en `/cuenta`.                                                                         |
-| 2   | **Sincronizar progreso multi-dispositivo**       | Tabla `title_progress` remota + estrategia de 2 vías en el login (ver H1). Los favoritos ya lo hacen; falta títulos y preferencia `avoid_spoilers` (ya se guarda en `user_metadata`, solo falta aplicarla en `buildSpoilerProgress` — revisar si ya se lee). |
-| 3   | **Exportar progreso a Google Calendar completo** | Ya existe `services/googleCalendarService.ts`; exponerlo también desde `/rutas` y desde el dossier de cada título, no solo del planificador.                                                                                                                 |
+| #   | Funcionalidad                                    | Aproximación técnica                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| --- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Watchlist “Siguiente a ver” por cuenta**       | Combinar `movie_progress` + título visto + `getNextWatch` (`services/progress/nextWatch.ts`) y persistirlo en `title_progress` (ver H1). Sección “CONTINUAR” en Home y en `/cuenta`.                                                                                                                                                                                                                                                                                                                                         |
+| 2   | **Sincronizar progreso multi-dispositivo**       | ✅ **Resuelto** (P0-2, ver H1). La preferencia `avoid_spoilers` ya se guardaba en `user_metadata` **y** ya se aplicaba en `buildSpoilerProgress`; la redacción original pedía "revisar si ya se lee" y la respuesta es que sí. Cubierto por `spoilerProgressState.test.ts`, `movieProgressStore.test.ts` y el e2e de `account.spec.ts`. La parte de títulos (volcado del progreso de invitado) se resolvió en `feature/ProgresoTitulosMultiDispositivo` sin tabla nueva, porque `movie_progress` ya guarda slugs de títulos. |
+| 3   | **Exportar progreso a Google Calendar completo** | Ya existe `services/googleCalendarService.ts`; exponerlo también desde `/rutas` y desde el dossier de cada título, no solo del planificador.                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### P1 — Funcionalidad de producto
 

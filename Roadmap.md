@@ -80,12 +80,30 @@ Notas de la FASE 0 (estado real, no el plan original):
 Objetivo: bases de datos y sincronización de estado. **Esta fase habilita la fase 3**
 (watchlist, notificaciones).
 
-| #   | Rama                                      | Prioridad | Mejora / Detalle                                                                                                                                                                                                                                                         | Esfuerzo | Depende de |
-| --- | ----------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ---------- |
-| 8   | `feature/ProgresoTitulosMultiDispositivo` | 🔴        | Tabla `title_progress(user_id, title_id, watched_at)` con RLS idéntica a `movie_progress`; migración en `supabase/migrations/`; `TitleProgressStore` replicando el patrón de `MovieProgressStore`; volcado de `localStorage` → cuenta en el primer login. Auditoría: H1. | L        | —          |
-| 9   | `feature/AplicarPreferenciaSpoilers`      | 🔴        | Leer `avoid_spoilers` de `auth.users.user_metadata` en `buildSpoilerProgress` (fin-a-fin). Auditoría: P0-2.                                                                                                                                                              | S        | 8          |
-| 10  | `feature/RankingComunitarioReal`          | 🟡        | RPC `top_characters()` estilo `get_character_favorites` (`SECURITY DEFINER`, `search_path=''`, solo agregados); sección “TOP DE LA COMUNIDAD” en Home. Auditoría: P1-4.                                                                                                  | M        | —          |
-| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | —          |
+| #   | Rama                                      | Prioridad | Mejora / Detalle                                                                                                                                                                                                                                                         | Esfuerzo | Depende de                           |
+| --- | ----------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------ |
+| 8   | `feature/ProgresoTitulosMultiDispositivo` | 🔴        | Tabla `title_progress(user_id, title_id, watched_at)` con RLS idéntica a `movie_progress`; migración en `supabase/migrations/`; `TitleProgressStore` replicando el patrón de `MovieProgressStore`; volcado de `localStorage` → cuenta en el primer login. Auditoría: H1. | L        | ✅ Hecho (sin tabla ni store nuevos) |
+| 9   | `feature/AplicarPreferenciaSpoilers`      | 🔴        | Leer `avoid_spoilers` de `auth.users.user_metadata` en `buildSpoilerProgress` (fin-a-fin). Auditoría: P0-2.                                                                                                                                                              | S        | ✅ Ya estaba hecho                   |
+| 10  | `feature/RankingComunitarioReal`          | 🟡        | RPC `top_characters()` estilo `get_character_favorites` (`SECURITY DEFINER`, `search_path=''`, solo agregados); sección “TOP DE LA COMUNIDAD” en Home. Auditoría: P1-4.                                                                                                  | M        | —                                    |
+| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | —                                    |
+
+Notas de la FASE 1 (estado real, no el plan original):
+
+- **#8**: no hizo falta ni tabla `title_progress` ni `TitleProgressStore`.
+  `movie_progress` ya guarda slugs de títulos en `movie_id` con la misma RLS, así que el
+  progreso de una cuenta ya era multi-dispositivo; lo que faltaba era el volcado del
+  progreso de invitado. Se implementó en `features/account/importGuestProgress.ts`: solo
+  añade títulos que la cuenta no tiene vistos, descarta ids fuera del catálogo y borra
+  las claves de invitado únicamente cuando la escritura se confirma
+  (`MovieProgressStore.whenSettled`). El catálogo se importa de forma diferida para no
+  entrar en el bundle inicial. Invierte la decisión que `docs/supabase.md` documentaba
+  como "nunca se importan a cuentas".
+- **#9**: ya estaba implementado de punta a punta antes de abrir la fase.
+  `AccountForm`/`SpoilerPreference` escriben `avoid_spoilers` con `auth.updateUser`,
+  `AccountProvider` lo pasa a `setUser`, `MovieProgressStore` detecta el cambio y
+  `buildSpoilerProgress` lo lee. Cubierto por `spoilerProgressState.test.ts`,
+  `movieProgressStore.test.ts` y el e2e `account.spec.ts` (registro, login, revelado,
+  cambio de preferencia, recarga y fallo de guardado). No requiere código.
 
 ---
 

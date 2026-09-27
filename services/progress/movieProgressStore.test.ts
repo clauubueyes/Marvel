@@ -176,3 +176,40 @@ test("repeated sign-in/token events for the same identity keep pending state", a
   result.resolve();
   await tick();
 });
+
+test("whenSettled confirms queued writes and refuses to confirm a failed one", async () => {
+  const writes: ReturnType<typeof deferred<void>>[] = [];
+  const store = new MovieProgressStore({
+    load: async () => new Set(["iron-man"]),
+    save: async () => {
+      const result = deferred<void>();
+      writes.push(result);
+      return result.promise;
+    },
+  });
+  store.setUser(user);
+  await store.load();
+  assert.deepEqual(await store.whenSettled(), { ok: true, error: null });
+
+  store.setMany(["thor"], true);
+  store.setMany(["hulk"], true);
+  const settled = store.whenSettled();
+  writes[0].resolve();
+  await tick();
+  writes[1].reject(new Error("offline"));
+  assert.deepEqual(await settled, { ok: false, error: store.getSnapshot().error });
+  assert.ok(store.getSnapshot().error);
+});
+
+test("whenSettled never confirms writes from an identity that signed out", async () => {
+  const result = deferred<void>();
+  const store = new MovieProgressStore({ load: async () => new Set(), save: () => result.promise });
+  store.setUser(user);
+  await store.load();
+  store.setMany(["thor"], true);
+  const settled = store.whenSettled();
+  store.setUser(null);
+  assert.equal((await settled).ok, false);
+  result.resolve();
+  await tick();
+});
