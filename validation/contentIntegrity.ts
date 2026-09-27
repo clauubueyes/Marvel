@@ -4,6 +4,7 @@ import { mcuEntities } from "@/data/mcuEntities";
 import { getDetailedTitleIds, getTitleDetails } from "@/data/titles";
 import { viewingRoutes } from "@/data/viewingRoutes";
 import { parseIsoDate } from "@/utils/editorialDate";
+import type { ValidationIssue } from "./types";
 
 /**
  * Barrido de integridad del catálogo: slugs e identificadores únicos, fechas de
@@ -16,54 +17,59 @@ import { parseIsoDate } from "@/utils/editorialDate";
  * un título existente) porque cada validador se usa como guard independiente: cada
  * uno debe ser útil por sí solo, con datos inyectados y sin depender del otro.
  */
-export function validateContentIntegrity() {
-  const errors: string[] = [];
+export function validateContentIntegrity(): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const push = (subject: string, field: string, message: string) =>
+    issues.push({ scope: "integridad", severity: "ERROR", subject, field, message });
+
   const titleSlugs = new Set(mcuCatalog.map(({ slug }) => slug));
   const characterIds = new Set(characters.map(({ id }) => id));
 
-  const reportDuplicates = (label: string, values: readonly string[]) => {
+  const reportDuplicates = (field: string, values: readonly string[]) => {
     const seen = new Set<string>();
     for (const value of values) {
-      if (seen.has(value)) errors.push(`${label} duplicado: ${value}`);
+      if (seen.has(value)) push(value, field, `${field} duplicado: ${value}`);
       seen.add(value);
     }
   };
 
   const checkSource = (subject: string, url: string) => {
     if (!URL.canParse(url) || new URL(url).protocol !== "https:")
-      errors.push(`${subject}: fuente no segura ${url}`);
+      push(subject, "sources", `fuente no segura ${url}`);
   };
 
   reportDuplicates(
-    "Slug de título",
+    "slug",
     mcuCatalog.map(({ slug }) => slug),
   );
   reportDuplicates(
-    "ID de personaje",
+    "id",
     characters.map(({ id }) => id),
   );
   reportDuplicates(
-    "Slug de ruta",
+    "slug",
     viewingRoutes.map(({ slug }) => slug),
   );
   reportDuplicates(
-    "Entidad",
+    "entidad",
     mcuEntities.map(({ kind, slug }) => `${kind}:${slug}`),
   );
-  reportDuplicates("Metadatos de título", getDetailedTitleIds());
+  reportDuplicates("metadatos", getDetailedTitleIds());
 
   for (const character of characters) {
     if (!parseIsoDate(character.reviewedAt))
-      errors.push(`${character.name}: fecha de revisión no válida`);
-    if (!character.sources.length) errors.push(`${character.name}: faltan fuentes editoriales`);
+      push(character.name, "reviewedAt", "fecha de revisión no válida");
+    if (!character.sources.length) push(character.name, "sources", "faltan fuentes editoriales");
     character.sources.forEach(({ url }) => checkSource(character.name, url));
     if (!character.affiliations.length)
-      errors.push(`${character.name}: falta al menos una afiliación`);
+      push(character.name, "affiliations", "falta al menos una afiliación");
 
     for (const appearance of character.appearances) {
       if (!titleSlugs.has(appearance.titleId)) {
-        errors.push(
-          `${character.name}: la aparición "${appearance.title}" no enlaza con ningún título (${appearance.titleId})`,
+        push(
+          character.name,
+          "appearances",
+          `la aparición "${appearance.title}" no enlaza con ningún título (${appearance.titleId})`,
         );
       }
     }
@@ -72,7 +78,7 @@ export function validateContentIntegrity() {
   for (const route of viewingRoutes) {
     for (const step of route.steps) {
       if (!titleSlugs.has(step.titleId))
-        errors.push(`${route.name}: el título ${step.titleId} no existe`);
+        push(route.name, "steps", `el título ${step.titleId} no existe`);
     }
   }
 
@@ -80,35 +86,40 @@ export function validateContentIntegrity() {
 
   for (const entity of mcuEntities) {
     entity.titleIds.forEach((titleId) => {
-      if (!titleSlugs.has(titleId)) errors.push(`${entity.name}: el título ${titleId} no existe`);
+      if (!titleSlugs.has(titleId)) push(entity.name, "titleIds", `el título ${titleId} no existe`);
     });
     entity.characterIds.forEach((characterId) => {
       if (!characterIds.has(characterId))
-        errors.push(`${entity.name}: el personaje ${characterId} no existe`);
+        push(entity.name, "characterIds", `el personaje ${characterId} no existe`);
     });
     // Varias entidades pueden apuntar a la misma: se comprueba que exista, no que sea única.
     for (const connection of entity.connections) {
       if (!entityKeys.has(`${connection.kind}:${connection.slug}`))
-        errors.push(`${entity.name}: la conexión ${connection.kind}:${connection.slug} no existe`);
+        push(
+          entity.name,
+          "connections",
+          `la conexión ${connection.kind}:${connection.slug} no existe`,
+        );
     }
   }
 
-  for (const titleId of getDetailedTitleIds()) {
+  const detailedIds = new Set(getDetailedTitleIds());
+
+  for (const titleId of detailedIds) {
     if (!titleSlugs.has(titleId))
-      errors.push(`Los metadatos apuntan a un título inexistente: ${titleId}`);
+      push(titleId, "metadatos", "los metadatos apuntan a un título inexistente");
     const details = getTitleDetails(titleId);
     [...(details?.watchBefore ?? []), ...(details?.watchAfter ?? [])].forEach((relatedId) => {
       if (!titleSlugs.has(relatedId))
-        errors.push(`${titleId}: la recomendación ${relatedId} no existe`);
+        push(titleId, "watchBefore/watchAfter", `la recomendación ${relatedId} no existe`);
     });
     details?.sources.forEach(({ url }) => checkSource(titleId, url));
   }
 
-  const detailedIds = new Set(getDetailedTitleIds());
   for (const title of mcuCatalog) {
     if (!detailedIds.has(title.slug))
-      errors.push(`${title.title}: falta el expediente editorial (${title.slug})`);
+      push(title.title, "expediente", `falta el expediente editorial (${title.slug})`);
   }
 
-  return errors;
+  return issues;
 }
