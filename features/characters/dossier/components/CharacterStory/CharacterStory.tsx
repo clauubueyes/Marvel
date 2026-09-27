@@ -4,6 +4,12 @@ import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
 
 import Image from "next/image";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+// Import estático a propósito: la animación prepara el estado inicial con
+// `gsap.set(..., { opacity: 0 })` dentro de useLayoutEffect, es decir antes del
+// primer paint. El CSS no oculta el texto por defecto, así que cargar gsap de
+// forma asíncona pintaría la narrativa, la ocultaría y recién entonces la
+// animaría. No mover a `import()` sin añadir antes un estado "reveal" en CSS.
+// Auditaría H4.
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { StoryChapter } from "@/types/character";
