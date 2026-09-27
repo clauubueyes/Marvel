@@ -6,6 +6,7 @@ import { createMovieProgressRepository } from "@/repositories/movieProgressRepos
 import { MovieProgressStore } from "@/services/progress/movieProgressStore";
 import { CharacterFavoritesStore } from "@/services/favorites/characterFavoritesStore";
 import { createCharacterFavoritesRepository } from "@/repositories/characterFavoritesRepository";
+import { importGuestProgress } from "./importGuestProgress";
 
 const AccountContext = createContext<MovieProgressStore | null>(null);
 const FavoritesContext = createContext<CharacterFavoritesStore | null>(null);
@@ -56,7 +57,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
         clearTimeout(timer);
         // Keep Supabase calls outside the auth callback's internal lock.
         timer = setTimeout(() => {
-          void store.load();
+          void store.load().then(() => importGuestProgress(store));
         }, 0);
       }
     });
