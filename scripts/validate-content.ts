@@ -1,21 +1,20 @@
-import { validateContent } from "../repositories/contentRepository";
-import { characters } from "../repositories/characterRepository";
-import { mcuCatalog } from "../data/mcuCatalog";
-import { validateCharacterSpoilers } from "../validation/characterSpoilers";
-import { validateProgressRelations } from "../validation/progressRelations";
+import { runValidation } from "../validation";
 
-const errors = [
-  ...validateContent(),
-  ...validateCharacterSpoilers(characters, new Set(mcuCatalog.map(({ slug }) => slug))),
-  ...validateProgressRelations(),
-];
+const { issues, byScope, errors } = runValidation();
 
-if (errors.length) {
-  console.error("El contenido de NEXUS contiene relaciones no válidas:\n");
-  errors.forEach((error) => console.error(`- ${error}`));
-  process.exitCode = 1;
-} else {
+if (!issues.length) {
   console.log(
     "Contenido válido: catálogo editorial completo, slugs únicos, relaciones enlazadas y requisitos de spoilers etiquetados.",
   );
+} else {
+  console.error(`El contenido de NEXUS contiene ${errors} relaciones no válidas:\n`);
+  for (const group of byScope) {
+    if (!group.issues.length) continue;
+    console.error(`${group.label}:`);
+    for (const issue of group.issues) {
+      console.error(`- [${issue.severity}] ${issue.subject} · ${issue.field}: ${issue.message}`);
+    }
+    console.error("");
+  }
+  process.exitCode = 1;
 }

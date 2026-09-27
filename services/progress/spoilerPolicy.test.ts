@@ -171,6 +171,10 @@ test("the build rejects missing, empty, unknown and misaligned spoiler requireme
       valid,
     ).length,
   );
+  for (const issue of validateCharacterSpoilers([{ ...original, spoilers: undefined }], valid)) {
+    assert.equal(issue.scope, "spoilers");
+    assert.equal(issue.subject, original.id);
+  }
 });
 
 test("flashbacks and mixed acts use revealed works, not chronological years or appearances", () => {
