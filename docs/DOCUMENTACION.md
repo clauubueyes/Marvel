@@ -180,13 +180,16 @@ Archivos: `services/searchService.ts`, `features/search/*`, `utils/text.ts`.
 
 ## 7. Estrategia de pruebas
 
-**Tests unitarios / de contrato** — `npm test` (node:test vía tsx):
+**Tests unitarios / de contrato** — `npm test` (node:test vía tsx, 50 tests):
 
 - `services/analytics/index.test.ts`: cola gtag y Consent Mode idempotente.
 - `services/progress/*.test.ts`: `movieProgressStore`, `nextWatch`, `spoilerPolicy`,
   `spoilerProgressState`, `progressRelations`, `supabaseEnvironment` y **migraciones SQL
   contra PGlite** (roles anon/authenticated, RLS, constraints, cascadas).
 - `services/favorites/*.test.ts`: store de favoritos (rollback, aislamiento) y migración.
+- `utils/*.test.ts`: `createContentSlug` y el parser de fechas editoriales.
+- `validation/*.test.ts`: los validadores estructurales sobre el catálogo real y la
+  coherencia del informe unificado (`scope`, severidad, recuento y agrupación).
 
 **E2E — Playwright** — `npx playwright test` (workers:1, puerto 3100, `supabase.co`
 mockeado en memoria):
@@ -206,11 +209,19 @@ npm run build            # validate:content + audit:content + next build
 npm run lint             # eslint .
 npm test                 # tests unitarios (tsx --test)
 npm run test:e2e         # Playwright
-npm run validate:content # validación de datos
-npm run audit:content    # auditoría/coherencia del contenido
-npm run audit:links      # comprueba enlaces del contenido
+npm run validate:content # runner único de los 3 validadores estructurales
+npm run audit:content    # auditoría/coherencia editorial del contenido
+npm run audit:links      # comprueba enlaces del contenido (requiere red)
 npm run assets:localize  # descarga/optimiza imágenes estáticas
 ```
+
+`validate:content` es la puerta de integridad: `validation/index.ts` ejecuta los tres
+guards y `scripts/validate-content.ts` imprime las incidencias agrupadas por ámbito
+(`Integridad del catálogo`, `Requisitos de spoilers`, `Relaciones de progreso`) con
+`[ERROR] entrada · campo: mensaje`, y termina con código 1 si hay alguna. `audit:content`
+es un comando aparte y no se mezcla con el anterior: mide la calidad editorial de los
+expedientes y usa una `referenceDate` fija para que el resultado sea determinista.
+`audit:links` queda fuera de la build a propósito porque accede a la red.
 
 Variables de entorno (ver `.env.example`): `NEXT_PUBLIC_SUPABASE_URL`,
 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (nunca secret/service_role),
@@ -224,11 +235,35 @@ Variables de entorno (ver `.env.example`): `NEXT_PUBLIC_SUPABASE_URL`,
   el slug (`contentRepository.titlesBySlug`).
 - **Estado**: `repositories` para acceso a datos, stores `useSyncExternalStore` para estado
   compartido, `utils` puros sin efectos.
+- **Validación**: los guards de build viven en `validation/`, nunca en `repositories/`.
+  Cada uno se usa como guard independiente y debe ser útil por sí solo, así que el
+  solapamiento entre ellos es intencionado y está documentado en el propio módulo.
+  `validateProgressRelations` acepta catálogos inyectados y por eso tiene tests de reglas
+  aisladas; `validateContentIntegrity` recorre el catálogo real completo y se testea
+  como puerta (cero incidencias + forma de la salida). Los tres estructurales devuelven
+  `ValidationIssue` (`scope`, `severity`, `subject`, `field`, `message`) y se agregan con
+  `runValidation()`. `auditEditorialContent` es la excepción: conserva su propio tipo y su
+  `referenceDate` fija.
+- **Fechas editoriales**: `reviewedAt` se escribe en dos formatos según el fichero (ISO y
+  "1 de marzo de 2016"). Toda lectura pasa por `parseIsoDate`/`parseEditorialReviewedAt` en
+  `utils/editorialDate.ts`; no usar `new Date(cadena)` directamente, porque el formato
+  español no es portable entre runtimes.
+- **Configuración de marca**: `config/site.ts` es la única fuente de `email`, `category`,
+  `formatDetection` y `verification`. No reintroducir literales equivalentes en
+  `app/layout.tsx`, los pies ni las páginas legales.
+- **Tipos**: los contratos se importan directamente desde su módulo en `types/`; no hay
+  barrels intermedios. Ver `types/README.md`.
+- **Dependencias**: `gsap` se importa bajo demanda con `next/dynamic` en `StorylineRail`,
+  pero se mantiene estático en `CharacterStory` porque su animación oculta el contenido con
+  `gsap.set(..., { opacity: 0 })` y cargarlo diferido produce un parpadeo. `sharp` se
+  mantiene en `dependencies` porque Next 16 lo carga en runtime para optimizar imágenes en
+  producción, no solo durante la build.
 - **Spoilers**: cualquier contenido sensible debe declarar su `SpoilerRequirement`
   (`{ allOf: [...] }`) y pasar por `canRevealSpoiler`/`protectContent`. Nunca revelar por
   defecto contenido no revisado (`UNREVIEWED_SPOILER`).
-- **Validación**: cualquier nuevo dato en `data/**` debe pasar `npm run validate:content`
-  y `npm run audit:content` antes de un commit (la build los ejecuta).
+- **Validación de datos**: cualquier nuevo dato en `data/**` debe pasar
+  `npm run validate:content` y `npm run audit:content` antes de un commit (la build los
+  ejecuta).
 - **Imágenes**: se sirven desde `public/` como `.webp` (localizadas con
   `assets:localize`) y se referencian vía `getScreenPortrait`, `getTitleImage` o rutas de
   `public`; el `next.config.ts` limita los orígenes remotos permitidos.

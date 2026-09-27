@@ -109,6 +109,12 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
   `.prettierrc.yml` al repo (hoy no existe). Añadir `lint-staged` + `husky` para que se
   apliquen antes de cada commit.
 
+> **Resuelto** — `feature/FormatearCodigo`. `.prettierrc` y el hook `husky` (`npx
+lint-staged`) ya existían, así que el trabajo real fue normalizar el repo completo
+> (47 ficheros) y ampliar `lint-staged` a `.mjs`, `.cjs`, `.yml` y `.yaml`, que antes
+> se colaban sin formatear. `npx prettier --check .` en verde. Rama fusionada en
+> `90664ff`.
+
 #### H4. Vendor de librerías pesadas con carga perezosa
 
 - **Dónde**: `package.json` (`gsap`, `three`), `utils/characterMotion.ts`, `useMotionEffects.ts`.
@@ -117,6 +123,23 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
   (`useMotionEffects.ts`).
 - **Cómo**: si se usan de verdad (¿portales 3D futuros?), cargarlas con `next/dynamic`. Si no,
   eliminarlas de `dependencies`. Idem revisar `sharp` (¿se usa solo en scripts de build?).
+
+> **Resuelto** — `feature/OptimizarGsap`.
+>
+> - `three` no se usaba en el sitio: solo en un prototipo 3D de Iron Man que no es código
+>   de la app. `ironman-source/` salió del índice y quedó en `.gitignore` (`2f7a6c3`).
+> - `gsap` sí se usa y ahora se carga perezosamente en `StorylineRail` vía
+>   `next/dynamic` (`37d7172`). En `CharacterStory` se mantiene estático a propósito: su
+>   animación arranca con `gsap.set(..., { opacity: 0 })`, así que cargarlo bajo demanda
+>   produce un parpadeo visible antes de ocultarse el contenido. Motivo documentado en el
+>   propio componente (`f388dcf`).
+> - `sharp` se queda en `dependencies`: Next 16 lo necesita en runtime para optimizar
+>   imágenes en producción, no solo en build. Decisión documentada en
+>   `docs/DOCUMENTACION.md`.
+>
+> Pendiente de medición: la reducción de bundle inicial no es apreciable mientras
+> `CharacterStory` siga importando GSAP estático. Queda como medición pendiente, no como
+> trabajo pendiente.
 
 ### 3.2 Prioridad media
 
@@ -145,6 +168,13 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
 - **Cómo**: derivarla de `git log` en build o de `fs.stat` de las fuentes de datos
   (`data/**`), o dejar la fecha de cada `mcuEntities/characters` individualizada.
 
+> **Resuelto** — `feature/SitemapDinamico`. `app/sitemap.ts` ya no fija una fecha:
+> deriva `lastModified` del `reviewedAt` de cada entrada a través de
+> `utils/editorialDate.ts`, con un parser compartido que acepta tanto ISO como el formato
+> editorial en español. `validation/contentAudit.ts` reutiliza el mismo parser, así que
+> sitemap y auditoría no pueden divergir. Cubierto con `utils/editorialDate.test.ts`
+> (`164fc58`, `5704394`, `bdbac98`).
+
 #### M4. Revisar soporte de pantalla pequeña y contraste en legal/responsive
 
 - **Dónde**: `styles/legal.css`, `styles/responsive.css`, `styles/mobile.css`.
@@ -160,11 +190,22 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
 - **Dónde**: `app/layout.tsx` (metadata global), `config/seo.ts`.
 - **Cómo**: centralizar `email`, `creator`, `verification` y `category` en `siteConfig`.
 
+> **Resuelto** — `feature/CentralizarConfigSeo`. `config/site.ts` es ahora la única fuente
+> de `email`, `category`, `formatDetection` y `verification`; `app/layout.tsx` consume
+> `siteConfig` y los pies de página y legales usan `siteConfig.email`. El HTML generado de
+> la metadata y de los enlaces `mailto:` se verificó idéntico antes y después
+> (`7a892d1`, `59a5492`, `3627173`).
+
 #### L2. Tipos duplicados y `types/` con declaraciones casi vacías
 
 - **Dónde**: `types/news.ts` (1 línea), `types/search.ts` (2 líneas), `types/planner.ts`.
 - **Cómo**: consolidar en módulos por dominio y re-exportar; o mantenerlos si son _barrels_
   intencionales (documentarlo).
+
+> **Resuelto** — `feature/ConsolidarTipos`. Se eligió la segunda vía: los módulos casi
+> vacíos eran _barrels_ sin consumidores reales, así que se eliminaron y se documentó el
+> contrato de importación directa en `types/README.md` (`9c4af83`, `68242f9`). Ningún
+> fichero de `types/` queda sin usar.
 
 #### L3. Scripts de validación duplican lógica con `repositories/contentRepository.ts`
 
@@ -174,11 +215,34 @@ Ordenadas por prioridad. Cada ítem indica _qué_, _dónde_ y _cómo_.
 - **Cómo**: unificarlos en un único runner en `scripts/` que delegue a cada validador
   y presente el resumen completo (ya lo hace `audit:content`; consolidar la salida de `validate`).
 
+> **Resuelto** — `feature/UnificarValidadores`.
+>
+> - `validateContent()` salió de `repositories/contentRepository.ts` a
+>   `validation/contentIntegrity.ts`: no era acceso a datos sino un guard de build
+>   (`b09349b`).
+> - Los tres validadores estructurales devuelven ahora el mismo tipo, `ValidationIssue`
+>   (`scope`, `severity`, `subject`, `field`, `message`), en vez de `string[]` libre
+>   (`c25b54b`).
+> - `validation/index.ts` expone `runValidation()`, un único punto de entrada, y
+>   `scripts/validate-content.ts` imprime el resumen agrupado por ámbito y sale con
+>   código 1 (`871d3aa`).
+> - `auditEditorialContent` conserva su propio tipo y su comando: describe la calidad
+>   editorial de los expedientes y su `referenceDate` fija mantiene la auditoría
+>   determinista.
+> - El solapamiento entre `contentIntegrity` y `progressRelations` (ambas comprueban los
+>   pasos de una ruta) es intencionado y está documentado: cada validador se usa como
+>   guard independiente y debe ser útil por sí solo.
+> - Cobertura añadida en `validation/contentIntegrity.test.ts`; 50 tests en verde.
+
 #### L4. `opencode.json` de herramienta en el repo
 
 - **Dónde**: raíz.
 - **Problema**: configuración personal de la herramienta de desarrollo versionada por error.
 - **Cómo**: añadir `opencode.json` a `.gitignore` o mantener solo `opencode.backup.json` como ejemplo.
+
+> **Resuelto** — `opencode.json` salió del control de versiones y tanto él como
+> `opencode.backup.json` quedaron en `.gitignore` (`f7cce94`, `ea442a6`). El fichero ya no
+> está en el repo. Este ítem se cerró antes de empezar la FASE 0 del roadmap.
 
 ---
 
