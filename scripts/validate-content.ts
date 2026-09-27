@@ -1,11 +1,11 @@
-import { validateContent } from "../repositories/contentRepository";
+import { validateContentIntegrity } from "../validation/contentIntegrity";
 import { characters } from "../repositories/characterRepository";
 import { mcuCatalog } from "../data/mcuCatalog";
 import { validateCharacterSpoilers } from "../validation/characterSpoilers";
 import { validateProgressRelations } from "../validation/progressRelations";
 
 const errors = [
-  ...validateContent(),
+  ...validateContentIntegrity(),
   ...validateCharacterSpoilers(characters, new Set(mcuCatalog.map(({ slug }) => slug))),
   ...validateProgressRelations(),
 ];
