@@ -185,5 +185,3 @@ export function createIcsCalendar(routeName: string, plan: PlannedViewing[]) {
     "",
   ].join("\r\n");
 }
-
-export type { PlannedViewing, PlannerPreferences, PlannerTitle } from "@/types/planner";

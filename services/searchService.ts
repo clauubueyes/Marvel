@@ -101,5 +101,3 @@ export function searchContent(query: string, type: "TODO" | SearchResult["type"]
     )
     .map(({ item }) => item);
 }
-
-export type { SearchResult, SearchResultType } from "@/types/search";
