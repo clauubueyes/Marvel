@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   applicationName: siteConfig.name,
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  category: "entertainment",
-  formatDetection: { address: false, email: false, telephone: false },
+  category: siteConfig.category,
+  formatDetection: siteConfig.formatDetection,
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  verification: { google: "kj3TIYD9OX2ZhgjzdHflfzFJUlUgj945t3WZzdMWAC4" },
+  verification: siteConfig.verification,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
