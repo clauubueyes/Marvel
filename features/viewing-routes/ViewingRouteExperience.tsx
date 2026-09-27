@@ -10,15 +10,18 @@ import { useMovieProgress } from "@/hooks/useMovieProgress";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
 import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
 import { ProgressStatus } from "@/features/account/ProgressStatus";
+import { CalendarExportActions } from "@/features/titles/planner/components/CalendarExportActions";
 
 const titleMap = new Map(mcuCatalog.map((title) => [title.slug, title]));
 const progressEvent = "nexus-route-progress";
 
 export function ViewingRouteExperience({
   route,
+  runtimes = {},
   compact = false,
 }: {
   route: ViewingRoute;
+  runtimes?: Record<string, string>;
   compact?: boolean;
 }) {
   const [showSpoilers, setShowSpoilers] = useState(false);
@@ -93,6 +96,24 @@ export function ViewingRouteExperience({
         </button>{" "}
       </div>
       <ProgressStatus />
+      {/* Exporta exactamente los pasos que se estan viendo, no la ruta entera. */}
+      <CalendarExportActions
+        compact
+        calendarLabel="AÑADIR RUTA A GOOGLE"
+        titles={displayedSteps.flatMap((step) => {
+          const target = titleMap.get(step.titleId);
+          if (!target || step.priority === "DESTINO") return [];
+          return [
+            {
+              id: target.slug,
+              title: target.title,
+              url: `/titulos/${target.slug}`,
+              runtime: runtimes[target.slug],
+              type: target.type,
+            },
+          ];
+        })}
+      />
       <ol className="viewing-route-list">
         {displayedSteps.map((step) => {
           const title = titleMap.get(step.titleId);

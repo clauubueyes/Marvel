@@ -85,7 +85,7 @@ Objetivo: bases de datos y sincronización de estado. **Esta fase habilita la fa
 | 8   | `feature/ProgresoTitulosMultiDispositivo` | 🔴        | Tabla `title_progress(user_id, title_id, watched_at)` con RLS idéntica a `movie_progress`; migración en `supabase/migrations/`; `TitleProgressStore` replicando el patrón de `MovieProgressStore`; volcado de `localStorage` → cuenta en el primer login. Auditoría: H1. | L        | ✅ Hecho (sin tabla ni store nuevos)  |
 | 9   | `feature/AplicarPreferenciaSpoilers`      | 🔴        | Leer `avoid_spoilers` de `auth.users.user_metadata` en `buildSpoilerProgress` (fin-a-fin). Auditoría: P0-2.                                                                                                                                                              | S        | ✅ Ya estaba hecho                    |
 | 10  | `feature/RankingComunitarioReal`          | 🟡        | RPC `top_characters()` estilo `get_character_favorites` (`SECURITY DEFINER`, `search_path=''`, solo agregados); sección “TOP DE LA COMUNIDAD” en Home. Auditoría: P1-4.                                                                                                  | M        | ✅ Hecho (reutiliza la RPC existente) |
-| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | —                                     |
+| 11  | `feature/ExportarCalendario`              | 🟡        | Exponer `addPlanToGoogleCalendar` también desde dossiers de título y rutas, no solo del planificador. Auditoría: P0-3.                                                                                                                                                   | S        | ✅ Hecho                              |
 
 Notas de la FASE 1 (estado real, no el plan original):
 
@@ -116,6 +116,18 @@ Notas de la FASE 1 (estado real, no el plan original):
   (id, nombre, alias, color e imagen), no el `Character` entero. Estados cubiertos:
   ranking, sin votos, error con reintento y aislamiento del fallo respecto al resto de
   Home.
+- **#11**: la exportación ya no vive solo en el planificador. El nuevo hook
+  `features/titles/planner/hooks/useCalendarExport` reutiliza
+  `addPlanToGoogleCalendar()` y `createIcsCalendar()` tal cual, de modo que el calendario
+  NEXUS sigue siendo el mismo y los eventos se deduplican con el mismo `eventId`. Se
+  expone con `CalendarExportActions` en dos sitios: la ficha de un título (solo ese
+  título) y la ficha de una ruta (solo los pasos que se están viendo; `DESTINO` se
+  excluye porque no genera sesión). La regla de admisión al planificador se extrajo a
+  `utils/viewingPlanner.isPlannableTitle` para que las tres superficies apliquen el
+  mismo criterio. `TitleHero` sigue siendo un componente de servidor: la exportación
+  entra como isla cliente y los `runtime`, que solo existen en `data/titles`, se resuelven
+  en la página de ruta y llegan por props. Los botones usan la clase `export-actions`, no
+  `calendar-actions`, porque esta última ya está afinada para el planificador.
 
 ---
 

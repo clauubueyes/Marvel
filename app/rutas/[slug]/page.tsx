@@ -9,6 +9,7 @@ import { AnalyticsView } from "@/features/analytics";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { formatRouteDuration, getViewingRoute, viewingRoutes } from "@/data/viewingRoutes";
+import { getTitleDetails } from "@/data/titles";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -31,6 +32,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function RoutePage({ params }: PageProps) {
   const route = getViewingRoute((await params).slug);
   if (!route) notFound();
+  /* Los runtime solo existen en el servidor: `data/titles` es un bundle grande y
+     `ViewingRouteExperience` es un componente de cliente. */
+  const runtimes = Object.fromEntries(
+    route.steps.flatMap((step) => {
+      const runtime = getTitleDetails(step.titleId)?.runtime;
+      return runtime ? [[step.titleId, runtime]] : [];
+    }),
+  );
   return (
     <main
       className="route-profile"
@@ -73,7 +82,7 @@ export default async function RoutePage({ params }: PageProps) {
           <span>PROGRESO LOCAL</span>
         </div>
       </section>
-      <ViewingRouteExperience route={route} />
+      <ViewingRouteExperience route={route} runtimes={runtimes} />
       <nav className="route-back">
         <Link href="/rutas">← VER TODAS LAS RUTAS</Link>
       </nav>
