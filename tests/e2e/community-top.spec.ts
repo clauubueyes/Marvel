@@ -74,7 +74,8 @@ test("community top: a failed aggregate call offers a retry instead of breaking 
       : { body: { counts: { thor: 5 }, favorite: null } };
   });
   await page.goto("/");
-  const alert = page.getByRole("alert");
+  /* Acotado al ranking: Next.js monta un `role="alert"` propio para anunciar rutas. */
+  const alert = page.locator(".mcu-community-list").getByRole("alert");
   await expect(alert).toBeVisible();
   await skipIntro(page);
   await alert.getByRole("button", { name: /REINTENTAR/i }).click();
