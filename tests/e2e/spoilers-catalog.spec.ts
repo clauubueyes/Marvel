@@ -5,14 +5,22 @@ import { mcuCatalog } from "../../data/mcuCatalog";
 async function setWatched(page: Page, ids: string[]) {
   await page.evaluate((values) => {
     localStorage.setItem("nexus:titles:watched", JSON.stringify(values));
-    window.dispatchEvent(new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }));
+    window.dispatchEvent(
+      new CustomEvent("nexus-title-progress", { detail: "nexus:titles:watched" }),
+    );
   }, ids);
 }
 
-test("trailer continues the story in the image column and stops when leaving", async ({ page }, testInfo) => {
+test("trailer continues the story in the image column and stops when leaving", async ({
+  page,
+}, testInfo) => {
   await page.addInitScript(() => localStorage.setItem("nexus:analytics-consent", "rejected"));
-  await page.route("https://*.supabase.co/**", route => route.fulfill({ json: { counts: {}, favorite: null } }));
-  await page.route("https://www.youtube-nocookie.com/**", route => route.fulfill({ body: "<html><body>Trailer</body></html>", contentType: "text/html" }));
+  await page.route("https://*.supabase.co/**", (route) =>
+    route.fulfill({ json: { counts: {}, favorite: null } }),
+  );
+  await page.route("https://www.youtube-nocookie.com/**", (route) =>
+    route.fulfill({ body: "<html><body>Trailer</body></html>", contentType: "text/html" }),
+  );
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/personajes/iron");
   await setWatched(page, ["iron-man"]);
@@ -46,36 +54,54 @@ test("trailer continues the story in the image column and stops when leaving", a
 for (const character of characters) {
   test(`${character.id}: empty, partial, complete and revoked progress`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.route("https://*.supabase.co/**", (route) => route.fulfill({ json: { counts: {}, favorite: null } }));
+    await page.route("https://*.supabase.co/**", (route) =>
+      route.fulfill({ json: { counts: {}, favorite: null } }),
+    );
     await page.addInitScript(() => localStorage.setItem("nexus:analytics-consent", "rejected"));
     await page.goto(`/personajes/${character.id}`);
     const cards = page.locator(".story-card:not([data-next-watch])");
     await expect(cards).toHaveCount(0);
     await expect(page.locator("[data-next-watch]")).toHaveCount(1);
-    await expect(page.locator(".story-cinema img:not([data-trailer-poster]), .screen-moment img, .screen-moment iframe")).toHaveCount(0);
+    await expect(
+      page.locator(
+        ".story-cinema img:not([data-trailer-poster]), .screen-moment img, .screen-moment iframe",
+      ),
+    ).toHaveCount(0);
 
     const partial = character.story[0].spoiler!.allOf;
     await setWatched(page, [...partial]);
-    const visible = character.story.filter(chapter => chapter.spoiler!.allOf.every(id => partial.includes(id)));
+    const visible = character.story.filter((chapter) =>
+      chapter.spoiler!.allOf.every((id) => partial.includes(id)),
+    );
     await expect(cards).toHaveCount(visible.length);
     for (const chapter of character.story) {
-      if (visible.includes(chapter)) await expect(page.locator(".story-cinema")).toContainText(chapter.title);
+      if (visible.includes(chapter))
+        await expect(page.locator(".story-cinema")).toContainText(chapter.title);
       else await expect(page.locator(".story-track")).not.toContainText(chapter.text);
     }
 
-    await setWatched(page, mcuCatalog.map(({ slug }) => slug));
+    await setWatched(
+      page,
+      mcuCatalog.map(({ slug }) => slug),
+    );
     await expect(cards).toHaveCount(character.story.length);
     await expect(page.locator("[data-next-watch]")).toHaveCount(0);
     await expect(page.locator(".intro-copy")).toContainText(character.description);
     await expect(page.locator(".intro-copy")).toContainText(character.affiliations.join(" · "));
     await expect(page.locator(".ability-list")).toContainText(character.abilities[0]);
     await expect(page.locator(".screen-moment")).toContainText(character.screenMoment.title);
-    await expect(page.locator(".profile-section").filter({ hasText: "Contenido bloqueado por spoilers" })).toHaveCount(0);
+    await expect(
+      page.locator(".profile-section").filter({ hasText: "Contenido bloqueado por spoilers" }),
+    ).toHaveCount(0);
 
     await setWatched(page, []);
     await expect(cards).toHaveCount(0);
     await expect(page.locator("[data-next-watch]")).toHaveCount(1);
-    await expect(page.locator(".story-cinema img:not([data-trailer-poster]), .screen-moment img, .screen-moment iframe")).toHaveCount(0);
+    await expect(
+      page.locator(
+        ".story-cinema img:not([data-trailer-poster]), .screen-moment img, .screen-moment iframe",
+      ),
+    ).toHaveCount(0);
     await expect(page.locator(".intro-copy")).not.toContainText(character.description);
   });
 }

@@ -17,7 +17,9 @@ export function persistAnalyticsConsent(value: Exclude<AnalyticsConsent, null>) 
 }
 
 export function subscribeAnalyticsConsent(callback: () => void) {
-  const onStorage = (event: StorageEvent) => { if (event.key === ANALYTICS_CONSENT_STORAGE_KEY) callback(); };
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === ANALYTICS_CONSENT_STORAGE_KEY) callback();
+  };
   window.addEventListener("storage", onStorage);
   window.addEventListener(ANALYTICS_CONSENT_EVENT, callback);
   return () => {

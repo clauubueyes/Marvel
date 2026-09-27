@@ -1,6 +1,7 @@
 import type { Character } from "@/types/character";
 
-export type MotionSignature = "tech" | "mystic" | "cosmic" | "kinetic" | "stealth" | "gamma" | "regal" | "quantum";
+export type MotionSignature =
+  "tech" | "mystic" | "cosmic" | "kinetic" | "stealth" | "gamma" | "regal" | "quantum";
 
 export type CharacterMotionProfile = {
   signature: MotionSignature;
@@ -10,22 +11,60 @@ export type CharacterMotionProfile = {
 };
 
 const signatureByCharacter: Partial<Record<string, MotionSignature>> = {
-  iron: "tech", "war-machine": "tech", ultron: "tech", vision: "tech", rocket: "tech", nebula: "tech",
-  strange: "mystic", wanda: "mystic", "agatha-harkness": "mystic", "doctor-doom": "mystic", loki: "mystic", "moon-knight": "mystic",
-  thor: "cosmic", "captain-marvel": "cosmic", "star-lord": "cosmic", gamora: "cosmic", mantis: "cosmic", thanos: "cosmic", groot: "cosmic",
-  spider: "kinetic", hawkeye: "kinetic", "kate-bishop": "kinetic", "human-torch": "kinetic", "shang-chi": "kinetic", wasp: "kinetic", "ms-marvel": "kinetic",
-  "black-widow": "stealth", "yelena-belova": "stealth", "winter-soldier": "stealth", daredevil: "stealth", kingpin: "stealth",
-  hulk: "gamma", thing: "gamma", hela: "gamma",
-  panther: "regal", shuri: "regal", killmonger: "regal", "captain-america": "regal", "sam-wilson": "regal",
-  "mister-fantastic": "quantum", "invisible-woman": "quantum", "ant-man": "quantum",
+  iron: "tech",
+  "war-machine": "tech",
+  ultron: "tech",
+  vision: "tech",
+  rocket: "tech",
+  nebula: "tech",
+  strange: "mystic",
+  wanda: "mystic",
+  "agatha-harkness": "mystic",
+  "doctor-doom": "mystic",
+  loki: "mystic",
+  "moon-knight": "mystic",
+  thor: "cosmic",
+  "captain-marvel": "cosmic",
+  "star-lord": "cosmic",
+  gamora: "cosmic",
+  mantis: "cosmic",
+  thanos: "cosmic",
+  groot: "cosmic",
+  spider: "kinetic",
+  hawkeye: "kinetic",
+  "kate-bishop": "kinetic",
+  "human-torch": "kinetic",
+  "shang-chi": "kinetic",
+  wasp: "kinetic",
+  "ms-marvel": "kinetic",
+  "black-widow": "stealth",
+  "yelena-belova": "stealth",
+  "winter-soldier": "stealth",
+  daredevil: "stealth",
+  kingpin: "stealth",
+  hulk: "gamma",
+  thing: "gamma",
+  hela: "gamma",
+  panther: "regal",
+  shuri: "regal",
+  killmonger: "regal",
+  "captain-america": "regal",
+  "sam-wilson": "regal",
+  "mister-fantastic": "quantum",
+  "invisible-woman": "quantum",
+  "ant-man": "quantum",
 };
 
 function hash(value: string) {
-  return Array.from(value).reduce((total, character) => ((total << 5) - total + character.charCodeAt(0)) | 0, 0);
+  return Array.from(value).reduce(
+    (total, character) => ((total << 5) - total + character.charCodeAt(0)) | 0,
+    0,
+  );
 }
 
 function inferSignature(character: Character): MotionSignature {
-  const text = `${character.power} ${character.abilities.join(" ")} ${character.role}`.toLowerCase();
+  const text =
+    `${character.power} ${character.abilities.join(" ")} ${character.role}`.toLowerCase();
   if (/magia|hech|bruja|dios|arcano/.test(text)) return "mystic";
   if (/tecn|ingen|armadura|sintét|cibern|inteligencia artificial/.test(text)) return "tech";
   if (/cósm|galax|energía|vuelo/.test(text)) return "cosmic";

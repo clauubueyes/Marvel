@@ -43,14 +43,14 @@ de sesión permanece visible. La cuenta no introduce nuevos datos ni servicios.
 
 SQL completo: [`20260906000000_create_movie_progress.sql`](../supabase/migrations/20260906000000_create_movie_progress.sql).
 
-| Columna | Tipo y finalidad |
-| --- | --- |
-| `id` | UUID, clave primaria generada por PostgreSQL |
-| `user_id` | UUID, FK a `auth.users(id)` con borrado en cascada |
-| `movie_id` | Slug estable del catálogo; texto no vacío con formato validado |
-| `watched` | Booleano, visto o pendiente |
-| `created_at` | timestamptz, fecha de creación controlada por trigger |
-| `updated_at` | timestamptz, fecha del último cambio controlada por trigger |
+| Columna      | Tipo y finalidad                                               |
+| ------------ | -------------------------------------------------------------- |
+| `id`         | UUID, clave primaria generada por PostgreSQL                   |
+| `user_id`    | UUID, FK a `auth.users(id)` con borrado en cascada             |
+| `movie_id`   | Slug estable del catálogo; texto no vacío con formato validado |
+| `watched`    | Booleano, visto o pendiente                                    |
+| `created_at` | timestamptz, fecha de creación controlada por trigger          |
+| `updated_at` | timestamptz, fecha del último cambio controlada por trigger    |
 
 `UNIQUE(user_id, movie_id)` impide duplicados y permite upsert. Su índice también sirve para consultar por usuario. No hay tabla de perfiles ni copia de emails. La base valida formato del slug, no pertenencia al catálogo estático; la interfaz filtra los identificadores disponibles. Un cliente manipulado podría crear un slug desconocido únicamente en su propia cuenta.
 

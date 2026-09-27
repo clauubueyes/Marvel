@@ -4,7 +4,9 @@ export function localDateValue(date = new Date()) {
 }
 
 export function formatPlannerDate(date: Date) {
-  return new Intl.DateTimeFormat("es-ES", { weekday: "short", day: "2-digit", month: "short" }).format(date).toUpperCase();
+  return new Intl.DateTimeFormat("es-ES", { weekday: "short", day: "2-digit", month: "short" })
+    .format(date)
+    .toUpperCase();
 }
 
 export function formatPlannerTime(date: Date) {

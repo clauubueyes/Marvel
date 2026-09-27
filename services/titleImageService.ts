@@ -19,7 +19,8 @@ const aliases: Record<string, string> = {
   "Thor: Love and Thunder": "Thor Love and Thunder",
   "Ant-Man y la Avispa: Quantumanía": "Ant-Man and the Wasp Quantumania",
   "Capitán América: Brave New World": "Captain America Brave New World",
-  "Guardianes de la Galaxia: Especial Felices Fiestas": "The Guardians of the Galaxy Holiday Special",
+  "Guardianes de la Galaxia: Especial Felices Fiestas":
+    "The Guardians of the Galaxy Holiday Special",
   "Los Cuatro Fantásticos: Primeros pasos": "The Fantastic Four First Steps",
   "Tu amigo y vecino Spider-Man": "Your Friendly Neighborhood Spider-Man",
   "Agatha, ¿quién si no?": "Agatha All Along television series",
@@ -47,27 +48,55 @@ function cleanTitle(title: string) {
 }
 
 async function findThumbnail(title: string, media: string, language: "es" | "en") {
-  const kind = media === "PELÍCULA" ? "film" : media === "SERIE" ? "television series" : media === "PERSONAJE" ? "Marvel Cinematic Universe character" : "television special";
+  const kind =
+    media === "PELÍCULA"
+      ? "film"
+      : media === "SERIE"
+        ? "television series"
+        : media === "PERSONAJE"
+          ? "Marvel Cinematic Universe character"
+          : "television special";
   const query = encodeURIComponent(`${cleanTitle(title)} ${kind} Marvel`);
   const url = `https://${language}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=3&prop=pageimages&piprop=thumbnail&pilicense=any&pithumbsize=720&format=json`;
-  const response = await fetch(url, { cache: "force-cache", headers: { "User-Agent": "Marvel-Nexus/1.0 (image resolver)" } });
+  const response = await fetch(url, {
+    cache: "force-cache",
+    headers: { "User-Agent": "Marvel-Nexus/1.0 (image resolver)" },
+  });
   if (!response.ok) return null;
-  const data = await response.json() as WikiResponse;
-  return Object.values(data.query?.pages ?? {}).find(page => page.thumbnail?.source)?.thumbnail?.source ?? null;
+  const data = (await response.json()) as WikiResponse;
+  return (
+    Object.values(data.query?.pages ?? {}).find((page) => page.thumbnail?.source)?.thumbnail
+      ?.source ?? null
+  );
 }
 
 async function findImdbImage(title: string, media: string) {
-  const query = cleanTitle(title).toLowerCase().replace(/[^a-z0-9áéíóúüñ]+/gi, "_");
-  const response = await fetch(`https://v3.sg.media-imdb.com/suggestion/x/${encodeURIComponent(query)}.json`, { cache: "force-cache" });
+  const query = cleanTitle(title)
+    .toLowerCase()
+    .replace(/[^a-z0-9áéíóúüñ]+/gi, "_");
+  const response = await fetch(
+    `https://v3.sg.media-imdb.com/suggestion/x/${encodeURIComponent(query)}.json`,
+    { cache: "force-cache" },
+  );
   if (!response.ok) return null;
-  const data = await response.json() as ImdbResponse;
-  const expected = media === "PELÍCULA" ? ["movie"] : media === "SERIE" ? ["tvSeries", "tvMiniSeries"] : ["tvSpecial", "short"];
-  const candidates = data.d?.filter(item => item.i?.imageUrl) ?? [];
-  return (candidates.find(item => item.qid && expected.includes(item.qid)) ?? candidates[0])?.i?.imageUrl ?? null;
+  const data = (await response.json()) as ImdbResponse;
+  const expected =
+    media === "PELÍCULA"
+      ? ["movie"]
+      : media === "SERIE"
+        ? ["tvSeries", "tvMiniSeries"]
+        : ["tvSpecial", "short"];
+  const candidates = data.d?.filter((item) => item.i?.imageUrl) ?? [];
+  return (
+    (candidates.find((item) => item.qid && expected.includes(item.qid)) ?? candidates[0])?.i
+      ?.imageUrl ?? null
+  );
 }
 
 export async function resolveTitleImage(title: string, media: string) {
-  return (media === "PERSONAJE" ? null : await findImdbImage(title, media))
-    ?? await findThumbnail(title, media, "en")
-    ?? await findThumbnail(title, media, "es");
+  return (
+    (media === "PERSONAJE" ? null : await findImdbImage(title, media)) ??
+    (await findThumbnail(title, media, "en")) ??
+    (await findThumbnail(title, media, "es"))
+  );
 }

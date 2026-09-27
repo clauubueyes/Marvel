@@ -20,7 +20,14 @@ const brandKeywords = [
   "Marvel Cinematic Universe",
 ];
 
-export function createPageMetadata({ title, description, path, socialTitle = title, keywords = [], index = true }: PageMetadataOptions): Metadata {
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  socialTitle = title,
+  keywords = [],
+  index = true,
+}: PageMetadataOptions): Metadata {
   return {
     title,
     description,

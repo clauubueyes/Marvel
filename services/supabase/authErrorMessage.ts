@@ -21,7 +21,8 @@ export function authErrorMessage(error: AuthFailure, registering: boolean) {
     case "invalid_credentials":
       return "No se pudo iniciar sesión. Revisa tu email y contraseña.";
   }
-  if (error.status === 429) return "Se han realizado demasiados intentos. Espera antes de volver a intentarlo.";
+  if (error.status === 429)
+    return "Se han realizado demasiados intentos. Espera antes de volver a intentarlo.";
   return registering
     ? "No se pudo completar el registro. Revisa los datos o inténtalo más tarde. Si ya tienes cuenta, inicia sesión."
     : "No se pudo iniciar sesión. Revisa tu email, contraseña y confirmación de correo.";

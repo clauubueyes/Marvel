@@ -19,8 +19,12 @@ export type SpoilerAccountState = {
 
 type BaseProgressState = { ready: boolean; values: ReadonlySet<string> };
 
-export function buildSpoilerProgress(account: SpoilerAccountState, progress: BaseProgressState): SpoilerProgress {
-  const allowSpoilers = account.initialized && !!account.user && account.user.user_metadata?.avoid_spoilers === false;
+export function buildSpoilerProgress(
+  account: SpoilerAccountState,
+  progress: BaseProgressState,
+): SpoilerProgress {
+  const allowSpoilers =
+    account.initialized && !!account.user && account.user.user_metadata?.avoid_spoilers === false;
   const ready = allowSpoilers || (progress.ready && account.pending === 0 && !account.error);
   return { watched: progress.values, allowSpoilers, ready };
 }

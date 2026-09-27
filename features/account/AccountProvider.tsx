@@ -11,32 +11,65 @@ const AccountContext = createContext<MovieProgressStore | null>(null);
 const FavoritesContext = createContext<CharacterFavoritesStore | null>(null);
 
 export function AccountProvider({ children }: { children: React.ReactNode }) {
-  const [favorites] = useState(() => new CharacterFavoritesStore({
-    load: () => createCharacterFavoritesRepository(getSupabaseClient()!).load(),
-    save: (id, characterId) => createCharacterFavoritesRepository(getSupabaseClient()!).save(id, characterId),
-  }));
-  const [store] = useState(() => new MovieProgressStore({
-    load: (id) => createMovieProgressRepository(getSupabaseClient()!).load(id),
-    save: (id, changes) => createMovieProgressRepository(getSupabaseClient()!).save(id, changes),
-  }));
+  const [favorites] = useState(
+    () =>
+      new CharacterFavoritesStore({
+        load: () => createCharacterFavoritesRepository(getSupabaseClient()!).load(),
+        save: (id, characterId) =>
+          createCharacterFavoritesRepository(getSupabaseClient()!).save(id, characterId),
+      }),
+  );
+  const [store] = useState(
+    () =>
+      new MovieProgressStore({
+        load: (id) => createMovieProgressRepository(getSupabaseClient()!).load(id),
+        save: (id, changes) =>
+          createMovieProgressRepository(getSupabaseClient()!).save(id, changes),
+      }),
+  );
   useEffect(() => {
     let client;
-    try { client = getSupabaseClient(); } catch { store.setUser(null); favorites.setUser(null); return; }
-    if (!client) { store.setUser(null); favorites.setUser(null); return; }
+    try {
+      client = getSupabaseClient();
+    } catch {
+      store.setUser(null);
+      favorites.setUser(null);
+      return;
+    }
+    if (!client) {
+      store.setUser(null);
+      favorites.setUser(null);
+      return;
+    }
     let timer: ReturnType<typeof setTimeout>;
-    const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = client.auth.onAuthStateChange((_event, session) => {
       const previous = store.getSnapshot();
       store.setUser(session?.user ?? null);
       favorites.setUser(session?.user.id ?? null);
-      if (!previous.initialized || previous.user?.id !== session?.user.id || (!previous.ready && !previous.error)) {
+      if (
+        !previous.initialized ||
+        previous.user?.id !== session?.user.id ||
+        (!previous.ready && !previous.error)
+      ) {
         clearTimeout(timer);
         // Keep Supabase calls outside the auth callback's internal lock.
-        timer = setTimeout(() => { void store.load(); }, 0);
+        timer = setTimeout(() => {
+          void store.load();
+        }, 0);
       }
     });
-    return () => { clearTimeout(timer); subscription.unsubscribe(); };
+    return () => {
+      clearTimeout(timer);
+      subscription.unsubscribe();
+    };
   }, [store, favorites]);
-  return <AccountContext.Provider value={store}><FavoritesContext.Provider value={favorites}>{children}</FavoritesContext.Provider></AccountContext.Provider>;
+  return (
+    <AccountContext.Provider value={store}>
+      <FavoritesContext.Provider value={favorites}>{children}</FavoritesContext.Provider>
+    </AccountContext.Provider>
+  );
 }
 
 export function useFavoritesStore() {

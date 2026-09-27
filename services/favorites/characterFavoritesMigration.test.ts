@@ -16,16 +16,32 @@ test("favorites SQL: public aggregates, private votes, one vote per user, moves,
       grant usage on schema auth, public to authenticated, anon;
       grant execute on function auth.uid() to authenticated, anon;
       insert into auth.users values ('${alice}'), ('${bob}');`);
-    await db.exec(await readFile("supabase/migrations/20260906010000_create_character_favorites.sql", "utf8"));
+    await db.exec(
+      await readFile("supabase/migrations/20260906010000_create_character_favorites.sql", "utf8"),
+    );
     const identity = async (id: string | null) => {
       await db.exec(`reset role; set role ${id ? "authenticated" : "anon"}`);
       await db.query("select set_config('request.jwt.claim.sub', $1, false)", [id ?? ""]);
     };
-    const snapshot = async () => (await db.query<{ data: { counts: Record<string, number>; favorite: string | null } }>("select public.get_character_favorites() as data")).rows[0].data;
-    const vote = (userId: string, characterId: string) => db.query("insert into public.character_favorites values ($1, $2) on conflict (user_id) do update set character_id = excluded.character_id", [userId, characterId]);
+    const snapshot = async () =>
+      (
+        await db.query<{ data: { counts: Record<string, number>; favorite: string | null } }>(
+          "select public.get_character_favorites() as data",
+        )
+      ).rows[0].data;
+    const vote = (userId: string, characterId: string) =>
+      db.query(
+        "insert into public.character_favorites values ($1, $2) on conflict (user_id) do update set character_id = excluded.character_id",
+        [userId, characterId],
+      );
     await identity(null);
     assert.deepEqual(await snapshot(), { counts: {}, favorite: null });
-    for (const sql of ["select * from public.character_favorites", `insert into public.character_favorites values ('${alice}', 'spider')`, "update public.character_favorites set character_id = 'iron'", "delete from public.character_favorites"]) {
+    for (const sql of [
+      "select * from public.character_favorites",
+      `insert into public.character_favorites values ('${alice}', 'spider')`,
+      "update public.character_favorites set character_id = 'iron'",
+      "delete from public.character_favorites",
+    ]) {
       await assert.rejects(db.exec(sql), /permission denied/);
     }
     await identity(alice);
@@ -33,13 +49,29 @@ test("favorites SQL: public aggregates, private votes, one vote per user, moves,
     await assert.rejects(vote(alice, "invented-character"), /check constraint/);
     await vote(alice, "spider");
     assert.deepEqual(await snapshot(), { counts: { spider: 1 }, favorite: "spider" });
-    await assert.rejects(db.query("insert into public.character_favorites values ($1, 'iron')", [alice]), /unique constraint/);
+    await assert.rejects(
+      db.query("insert into public.character_favorites values ($1, 'iron')", [alice]),
+      /unique constraint/,
+    );
     await assert.rejects(vote(bob, "iron"), /row-level security/);
-    await assert.rejects(db.query("update public.character_favorites set user_id = $1", [bob]), /row-level security/);
+    await assert.rejects(
+      db.query("update public.character_favorites set user_id = $1", [bob]),
+      /row-level security/,
+    );
     await identity(bob);
     assert.equal((await db.query("select * from public.character_favorites")).rows.length, 0);
-    assert.equal((await db.query("update public.character_favorites set character_id = 'iron' returning user_id")).rows.length, 0);
-    assert.equal((await db.query("delete from public.character_favorites returning user_id")).rows.length, 0);
+    assert.equal(
+      (
+        await db.query(
+          "update public.character_favorites set character_id = 'iron' returning user_id",
+        )
+      ).rows.length,
+      0,
+    );
+    assert.equal(
+      (await db.query("delete from public.character_favorites returning user_id")).rows.length,
+      0,
+    );
     await assert.rejects(vote(alice, "iron"), /row-level security/);
     await vote(bob, "spider");
     assert.deepEqual(await snapshot(), { counts: { spider: 2 }, favorite: "spider" });
@@ -55,5 +87,7 @@ test("favorites SQL: public aggregates, private votes, one vote per user, moves,
     await db.exec("reset role");
     await db.query("delete from auth.users where id = $1", [bob]);
     assert.deepEqual(await snapshot(), { counts: {}, favorite: null });
-  } finally { await db.close(); }
+  } finally {
+    await db.close();
+  }
 });

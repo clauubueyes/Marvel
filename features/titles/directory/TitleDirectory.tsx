@@ -14,7 +14,13 @@ import { ProgressStatus } from "@/features/account/ProgressStatus";
 
 const TOAST_DISMISS_MS = 5000;
 
-export function TitleDirectory({ titles, initialFilters }: { titles: TitleDirectoryEntry[]; initialFilters?: TitleDirectoryInitialFilters }) {
+export function TitleDirectory({
+  titles,
+  initialFilters,
+}: {
+  titles: TitleDirectoryEntry[];
+  initialFilters?: TitleDirectoryInitialFilters;
+}) {
   const directory = useTitleDirectory(titles, initialFilters);
   const [undoInfo, setUndoInfo] = useState<{ slug: string; title: string } | null>(null);
   const undoTimer = useRef<number | undefined>(undefined);
@@ -50,21 +56,61 @@ export function TitleDirectory({ titles, initialFilters }: { titles: TitleDirect
     setUndoInfo(null);
   }
 
-  return <>
-    <ProgressStatus />
-    <TitleLibraryToolbar directory={directory} />
-    <TitleFilters directory={directory} />
-    <TitleBulkActions directory={directory} />
+  return (
+    <>
+      <ProgressStatus />
+      <TitleLibraryToolbar directory={directory} />
+      <TitleFilters directory={directory} />
+      <TitleBulkActions directory={directory} />
 
-    {directory.planning && <>
-      <TitleViewingPlanner titles={directory.plannerTitles} onClose={() => directory.setPlanning(false)} />
-      <div className="title-plan-selection-actions"><span>SELECCIÓN ACTUAL · {directory.selectedTitles.size}</span><button type="button" onClick={() => directory.setSelectedTitles(new Set(directory.visiblePending.map(({ slug }) => slug)))}>SUSTITUIR POR RESULTADOS PENDIENTES</button><button type="button" onClick={() => directory.setSelectedTitles(new Set())} disabled={!directory.selectedTitles.size}>VACIAR SELECCIÓN</button></div>
-    </>}
+      {directory.planning && (
+        <>
+          <TitleViewingPlanner
+            titles={directory.plannerTitles}
+            onClose={() => directory.setPlanning(false)}
+          />
+          <div className="title-plan-selection-actions">
+            <span>SELECCIÓN ACTUAL · {directory.selectedTitles.size}</span>
+            <button
+              type="button"
+              onClick={() =>
+                directory.setSelectedTitles(
+                  new Set(directory.visiblePending.map(({ slug }) => slug)),
+                )
+              }
+            >
+              SUSTITUIR POR RESULTADOS PENDIENTES
+            </button>
+            <button
+              type="button"
+              onClick={() => directory.setSelectedTitles(new Set())}
+              disabled={!directory.selectedTitles.size}
+            >
+              VACIAR SELECCIÓN
+            </button>
+          </div>
+        </>
+      )}
 
-    <TitleDirectoryGrid key={filterKey} titles={directory.visibleTitles} directory={directory} onToggleWatched={handleToggleWatched} />
+      <TitleDirectoryGrid
+        key={filterKey}
+        titles={directory.visibleTitles}
+        directory={directory}
+        onToggleWatched={handleToggleWatched}
+      />
 
-    {undoInfo && <div className="title-toast" role="status"><span>✓ MARCADO COMO VISTO — <b>{undoInfo.title}</b></span><button type="button" onClick={handleUndo}>DESHACER</button></div>}
+      {undoInfo && (
+        <div className="title-toast" role="status">
+          <span>
+            ✓ MARCADO COMO VISTO — <b>{undoInfo.title}</b>
+          </span>
+          <button type="button" onClick={handleUndo}>
+            DESHACER
+          </button>
+        </div>
+      )}
 
-    <TitleBackToTop />
-  </>;
+      <TitleBackToTop />
+    </>
+  );
 }

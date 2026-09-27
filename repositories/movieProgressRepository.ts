@@ -9,16 +9,23 @@ export interface MovieProgressRepository {
 export function createMovieProgressRepository(client: SupabaseClient): MovieProgressRepository {
   return {
     async load(userId) {
-      const { data, error } = await client.from("movie_progress")
-        .select("movie_id").eq("user_id", userId).eq("watched", true).abortSignal(AbortSignal.timeout(15000));
+      const { data, error } = await client
+        .from("movie_progress")
+        .select("movie_id")
+        .eq("user_id", userId)
+        .eq("watched", true)
+        .abortSignal(AbortSignal.timeout(15000));
       if (error) throw error;
       return new Set(data.map((row) => row.movie_id as string));
     },
     async save(userId, changes) {
-      const { error } = await client.from("movie_progress").upsert(
-        changes.map(({ movieId, watched }) => ({ user_id: userId, movie_id: movieId, watched })),
-        { onConflict: "user_id,movie_id" },
-      ).abortSignal(AbortSignal.timeout(15000));
+      const { error } = await client
+        .from("movie_progress")
+        .upsert(
+          changes.map(({ movieId, watched }) => ({ user_id: userId, movie_id: movieId, watched })),
+          { onConflict: "user_id,movie_id" },
+        )
+        .abortSignal(AbortSignal.timeout(15000));
       if (error) throw error;
     },
   };

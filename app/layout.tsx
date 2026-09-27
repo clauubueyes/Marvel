@@ -17,22 +17,50 @@ export const metadata: Metadata = {
   applicationName: siteConfig.name,
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  category: "entertainment",
-  formatDetection: { address: false, email: false, telephone: false },
-  openGraph: { type: "website", locale: siteConfig.locale, siteName: siteConfig.name, title: siteConfig.title, description: siteConfig.description, url: "/" },
-  twitter: { card: "summary_large_image", title: siteConfig.title, description: siteConfig.description },
+  category: siteConfig.category,
+  formatDetection: siteConfig.formatDetection,
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
-  verification: { google: "kj3TIYD9OX2ZhgjzdHflfzFJUlUgj945t3WZzdMWAC4" },
+  verification: siteConfig.verification,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${display.variable} ${mono.variable}`}><AccountProvider><SpoilerProgressProvider><a className="skip-link" href="#main-content">SALTAR AL CONTENIDO</a><div id="main-content">{children}</div><LegalFooter /><Analytics /></SpoilerProgressProvider></AccountProvider></body>
+      <body className={`${display.variable} ${mono.variable}`}>
+        <AccountProvider>
+          <SpoilerProgressProvider>
+            <a className="skip-link" href="#main-content">
+              SALTAR AL CONTENIDO
+            </a>
+            <div id="main-content">{children}</div>
+            <LegalFooter />
+            <Analytics />
+          </SpoilerProgressProvider>
+        </AccountProvider>
+      </body>
     </html>
   );
 }

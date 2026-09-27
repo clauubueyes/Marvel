@@ -33,7 +33,10 @@ type AnalyticsEventMap = {
 export type AnalyticsEventName = keyof AnalyticsEventMap;
 
 function safeText(value: string, maxLength = 100) {
-  return value.replace(/[\r\n\t]+/g, " ").trim().slice(0, maxLength);
+  return value
+    .replace(/[\r\n\t]+/g, " ")
+    .trim()
+    .slice(0, maxLength);
 }
 
 function safeSearchTerm(value: string) {
@@ -86,25 +89,69 @@ export function configureAnalytics() {
   window.dispatchEvent(new Event(ANALYTICS_READY_EVENT));
 }
 
-export function trackEvent<Name extends AnalyticsEventName>(name: Name, parameters: AnalyticsEventMap[Name]) {
-  if (typeof window === "undefined" || !window.__nexusAnalyticsReady || readAnalyticsConsent() !== "accepted") return;
-  try { window.gtag?.("event", name, parameters); } catch { /* Analytics nunca debe afectar a la interfaz. */ }
+export function trackEvent<Name extends AnalyticsEventName>(
+  name: Name,
+  parameters: AnalyticsEventMap[Name],
+) {
+  if (
+    typeof window === "undefined" ||
+    !window.__nexusAnalyticsReady ||
+    readAnalyticsConsent() !== "accepted"
+  )
+    return;
+  try {
+    window.gtag?.("event", name, parameters);
+  } catch {
+    /* Analytics nunca debe afectar a la interfaz. */
+  }
 }
 
 export function trackPageView(pathname: string, title = document.title) {
-  if (typeof window === "undefined" || !window.__nexusAnalyticsReady || readAnalyticsConsent() !== "accepted") return;
+  if (
+    typeof window === "undefined" ||
+    !window.__nexusAnalyticsReady ||
+    readAnalyticsConsent() !== "accepted"
+  )
+    return;
   const safePath = pathname.startsWith("/") ? pathname.split(/[?#]/, 1)[0] : "/";
   try {
-    window.gtag?.("event", "page_view", { page_location: `${window.location.origin}${safePath}`, page_path: safePath, page_title: safeText(title, 150) });
-  } catch { /* Analytics nunca debe afectar a la interfaz. */ }
+    window.gtag?.("event", "page_view", {
+      page_location: `${window.location.origin}${safePath}`,
+      page_path: safePath,
+      page_title: safeText(title, 150),
+    });
+  } catch {
+    /* Analytics nunca debe afectar a la interfaz. */
+  }
 }
 
-export const trackSearch = (searchTerm: string, resultCount: number) => trackEvent("search", { search_term: safeSearchTerm(searchTerm), result_count: resultCount });
-export const trackCharacterView = (characterId: string, characterName: string) => trackEvent("character_view", { character_id: safeText(characterId), character_name: safeText(characterName) });
-export const trackTitleView = (titleSlug: string, titleName: string, titleType: string) => trackEvent("title_view", { title_slug: safeText(titleSlug), title_name: safeText(titleName), title_type: safeText(titleType) });
-export const trackRouteView = (routeSlug: string, routeName: string) => trackEvent("route_view", { route_slug: safeText(routeSlug), route_name: safeText(routeName) });
+export const trackSearch = (searchTerm: string, resultCount: number) =>
+  trackEvent("search", { search_term: safeSearchTerm(searchTerm), result_count: resultCount });
+export const trackCharacterView = (characterId: string, characterName: string) =>
+  trackEvent("character_view", {
+    character_id: safeText(characterId),
+    character_name: safeText(characterName),
+  });
+export const trackTitleView = (titleSlug: string, titleName: string, titleType: string) =>
+  trackEvent("title_view", {
+    title_slug: safeText(titleSlug),
+    title_name: safeText(titleName),
+    title_type: safeText(titleType),
+  });
+export const trackRouteView = (routeSlug: string, routeName: string) =>
+  trackEvent("route_view", { route_slug: safeText(routeSlug), route_name: safeText(routeName) });
 export const trackPlannerOpened = () => trackEvent("planner_open", {});
-export const trackPlannerPlanGenerated = (titleCount: number, sessionCount: number) => trackEvent("planner_plan_generated", { title_count: titleCount, session_count: sessionCount });
-export const trackPlannerIcsExport = (titleCount: number, sessionCount: number) => trackEvent("planner_ics_export", { title_count: titleCount, session_count: sessionCount });
-export const trackTitleMarkedWatched = (titleSlug: string, titleName: string) => trackEvent("title_mark_watched", { title_slug: safeText(titleSlug), title_name: safeText(titleName) });
-export const trackCatalogFilter = (filterName: string, filterValue: string) => trackEvent("catalog_filter", { filter_name: safeText(filterName), filter_value: safeText(filterValue) });
+export const trackPlannerPlanGenerated = (titleCount: number, sessionCount: number) =>
+  trackEvent("planner_plan_generated", { title_count: titleCount, session_count: sessionCount });
+export const trackPlannerIcsExport = (titleCount: number, sessionCount: number) =>
+  trackEvent("planner_ics_export", { title_count: titleCount, session_count: sessionCount });
+export const trackTitleMarkedWatched = (titleSlug: string, titleName: string) =>
+  trackEvent("title_mark_watched", {
+    title_slug: safeText(titleSlug),
+    title_name: safeText(titleName),
+  });
+export const trackCatalogFilter = (filterName: string, filterValue: string) =>
+  trackEvent("catalog_filter", {
+    filter_name: safeText(filterName),
+    filter_value: safeText(filterValue),
+  });

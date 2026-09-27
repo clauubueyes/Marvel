@@ -2,7 +2,16 @@ import type { Character } from "@/types/character";
 
 export type MCUType = "PELÍCULA" | "SERIE" | "ESPECIAL" | "ONE-SHOT";
 export type MCUContinuity = "SAGA PRINCIPAL" | "MARVEL TELEVISION" | "MULTIVERSO";
-export type MCUEntry = { slug: string; order: number; title: string; period: string; type: MCUType; continuity: MCUContinuity; phase: string; event: string };
+export type MCUEntry = {
+  slug: string;
+  order: number;
+  title: string;
+  period: string;
+  type: MCUType;
+  continuity: MCUContinuity;
+  phase: string;
+  event: string;
+};
 export type TitleReleaseStatus = "ESTRENADO" | "PRÓXIMO ESTRENO" | "ANUNCIADO";
 export type EditorialCoverage = "EXPEDIENTE COMPLETO" | "FICHA BÁSICA" | "TÍTULO ANUNCIADO";
 

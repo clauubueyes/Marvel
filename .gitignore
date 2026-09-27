@@ -27,6 +27,14 @@
 *.tsbuildinfo
 next-env.d.ts
 
+# Personal tooling configs
+/opencode.json
+/opencode.backup.json
+/.continue/
+
+# Standalone Three.js reference app (own toolchain, not part of the Next build)
+/ironman-source/
+
 # Logs
 *.log
 npm-debug.log*

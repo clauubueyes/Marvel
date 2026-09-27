@@ -20,7 +20,11 @@ const SpoilerContext = createContext<SpoilerProgress | null>(null);
  */
 export function SpoilerProgressProvider({ children }: { children: ReactNode }) {
   const account = useAccount();
-  const progress = useMovieProgress({ storageKey: TITLE_PROGRESS_STORAGE_KEY, eventName: TITLE_PROGRESS_EVENT, validIds });
+  const progress = useMovieProgress({
+    storageKey: TITLE_PROGRESS_STORAGE_KEY,
+    eventName: TITLE_PROGRESS_EVENT,
+    validIds,
+  });
   const value = buildSpoilerProgress(account, { ready: progress.ready, values: progress.values });
   return <SpoilerContext.Provider value={value}>{children}</SpoilerContext.Provider>;
 }

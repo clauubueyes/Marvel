@@ -11,14 +11,25 @@ export function useCharacterFilters(characters: Character[]) {
   const [status, setStatus] = useState<CharacterStatusFilter>("TODOS");
   const [universe, setUniverse] = useState("TODOS");
   const [affiliation, setAffiliation] = useState("TODAS");
-  const universes = useMemo(() => [...new Set(characters.map(({ universe }) => universe))].sort(), [characters]);
-  const affiliations = useMemo(() => [...new Set(characters.flatMap(({ affiliations }) => affiliations))].sort(), [characters]);
-  const visibleCharacters = useMemo(() => characters.filter((character) =>
-    (category === "TODOS" || character.category === category) &&
-    (status === "TODOS" || character.status === status) &&
-    (universe === "TODOS" || character.universe === universe) &&
-    (affiliation === "TODAS" || character.affiliations.includes(affiliation)),
-  ), [affiliation, category, characters, status, universe]);
+  const universes = useMemo(
+    () => [...new Set(characters.map(({ universe }) => universe))].sort(),
+    [characters],
+  );
+  const affiliations = useMemo(
+    () => [...new Set(characters.flatMap(({ affiliations }) => affiliations))].sort(),
+    [characters],
+  );
+  const visibleCharacters = useMemo(
+    () =>
+      characters.filter(
+        (character) =>
+          (category === "TODOS" || character.category === category) &&
+          (status === "TODOS" || character.status === status) &&
+          (universe === "TODOS" || character.universe === universe) &&
+          (affiliation === "TODAS" || character.affiliations.includes(affiliation)),
+      ),
+    [affiliation, category, characters, status, universe],
+  );
 
   function reset() {
     setCategory("TODOS");
@@ -27,5 +38,18 @@ export function useCharacterFilters(characters: Character[]) {
     setAffiliation("TODAS");
   }
 
-  return { affiliation, affiliations, category, reset, setAffiliation, setCategory, setStatus, setUniverse, status, universe, universes, visibleCharacters };
+  return {
+    affiliation,
+    affiliations,
+    category,
+    reset,
+    setAffiliation,
+    setCategory,
+    setStatus,
+    setUniverse,
+    status,
+    universe,
+    universes,
+    visibleCharacters,
+  };
 }

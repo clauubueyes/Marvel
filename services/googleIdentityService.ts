@@ -28,8 +28,12 @@ export function requestGoogleCalendarToken(clientId: string) {
     const tokenClient = oauth.initTokenClient({
       client_id: clientId,
       scope: "https://www.googleapis.com/auth/calendar.app.created",
-      callback: (response) => response.access_token ? resolve(response.access_token) : reject(new Error("Google no concedió acceso al calendario.")),
-      error_callback: () => reject(new Error("La ventana de autorización se cerró o fue bloqueada.")),
+      callback: (response) =>
+        response.access_token
+          ? resolve(response.access_token)
+          : reject(new Error("Google no concedió acceso al calendario.")),
+      error_callback: () =>
+        reject(new Error("La ventana de autorización se cerró o fue bloqueada.")),
     });
     tokenClient.requestAccessToken({ prompt: "consent" });
   });

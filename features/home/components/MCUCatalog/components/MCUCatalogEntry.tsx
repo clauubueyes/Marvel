@@ -9,21 +9,13 @@ import { getTitleDetails } from "@/data/titles";
 import type { MCUEntry } from "@/types/title";
 import { getTitleImage } from "@/utils/titleImages";
 
-const catalogTitlesBySlug = new Map(
-  mcuCatalog.map((item) => [item.slug, item.title]),
-);
+const catalogTitlesBySlug = new Map(mcuCatalog.map((item) => [item.slug, item.title]));
 
 function closeCatalogCard(event: MouseEvent<HTMLButtonElement>) {
   event.currentTarget.closest("details")?.removeAttribute("open");
 }
 
-function CatalogConnections({
-  label,
-  slugs,
-}: {
-  label: string;
-  slugs: string[];
-}) {
+function CatalogConnections({ label, slugs }: { label: string; slugs: string[] }) {
   if (!slugs.length) return null;
 
   return (
@@ -33,8 +25,7 @@ function CatalogConnections({
         {slugs.slice(0, 3).map((slug) => (
           <li key={slug}>
             <Link href={`/titulos/${slug}`}>
-              {catalogTitlesBySlug.get(slug) ?? slug.replaceAll("-", " ")}{" "}
-              <b>↗</b>
+              {catalogTitlesBySlug.get(slug) ?? slug.replaceAll("-", " ")} <b>↗</b>
             </Link>
           </li>
         ))}
@@ -49,9 +40,7 @@ export function MCUCatalogEntry({ entry }: { entry: MCUEntry }) {
   return (
     <details className="catalog-entry watch-entry" data-reveal>
       <summary>
-        <span className="watch-order">
-          {String(entry.order).padStart(2, "0")}
-        </span>
+        <span className="watch-order">{String(entry.order).padStart(2, "0")}</span>
         <div
           className={`catalog-art catalog-art-${entry.continuity.toLowerCase().replaceAll(" ", "-")} has-image`}
           aria-hidden="true"
@@ -74,9 +63,7 @@ export function MCUCatalogEntry({ entry }: { entry: MCUEntry }) {
               .join("")}
           </b>
           <small>{entry.phase}</small>
-          <span>
-            MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}
-          </span>
+          <span>MARVEL STUDIOS · ARCHIVO {String(entry.order).padStart(2, "0")}</span>
         </div>
         <div className="watch-main">
           <small>
@@ -135,17 +122,10 @@ export function MCUCatalogEntry({ entry }: { entry: MCUEntry }) {
         </div>
         <div className="catalog-event-links">
           <span>CONEXIONES MCU</span>
-          {details &&
-          (details.watchBefore.length || details.watchAfter.length) ? (
+          {details && (details.watchBefore.length || details.watchAfter.length) ? (
             <>
-              <CatalogConnections
-                label="VER ANTES"
-                slugs={details.watchBefore}
-              />
-              <CatalogConnections
-                label="CONTINUAR CON"
-                slugs={details.watchAfter}
-              />
+              <CatalogConnections label="VER ANTES" slugs={details.watchBefore} />
+              <CatalogConnections label="CONTINUAR CON" slugs={details.watchAfter} />
             </>
           ) : (
             <p className="catalog-connections-empty">

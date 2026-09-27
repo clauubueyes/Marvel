@@ -18,16 +18,38 @@ function createFaceGeometry(a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3
   const outerB = b.clone().addScaledVector(direction, FACE_EXTRUSION);
   const outerC = c.clone().addScaledVector(direction, FACE_EXTRUSION);
   const vertices = [
-    a, c, b, outerA, outerB, outerC,
-    a, b, outerA, b, outerB, outerA,
-    b, c, outerB, c, outerC, outerB,
-    c, a, outerC, a, outerA, outerC,
+    a,
+    c,
+    b,
+    outerA,
+    outerB,
+    outerC,
+    a,
+    b,
+    outerA,
+    b,
+    outerB,
+    outerA,
+    b,
+    c,
+    outerB,
+    c,
+    outerC,
+    outerB,
+    c,
+    a,
+    outerC,
+    a,
+    outerA,
+    outerC,
   ];
-  const positions = new Float32Array(vertices.flatMap((vertex) => [
-    vertex.x - centroid.x,
-    vertex.y - centroid.y,
-    vertex.z - centroid.z,
-  ]));
+  const positions = new Float32Array(
+    vertices.flatMap((vertex) => [
+      vertex.x - centroid.x,
+      vertex.y - centroid.y,
+      vertex.z - centroid.z,
+    ]),
+  );
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   geometry.computeVertexNormals();

@@ -3,6 +3,10 @@ export function assertPublicSupabaseKey(key: string) {
   try {
     const payload = JSON.parse(atob(key.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
     if (payload.role === "anon") return;
-  } catch { /* Reject malformed keys without including their contents in errors. */ }
-  throw new Error("Supabase requiere una clave publishable o anon válida; las claves privadas no están permitidas.");
+  } catch {
+    /* Reject malformed keys without including their contents in errors. */
+  }
+  throw new Error(
+    "Supabase requiere una clave publishable o anon válida; las claves privadas no están permitidas.",
+  );
 }

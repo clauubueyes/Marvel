@@ -8,6 +8,8 @@ export function claimCinematicIntro(storage: Pick<Storage, "getItem" | "setItem"
   try {
     if (storage.getItem(INTRO_SEEN_KEY) === "1") return false;
     storage.setItem(INTRO_SEEN_KEY, "1");
-  } catch { /* Still once per application lifetime when storage is unavailable. */ }
+  } catch {
+    /* Still once per application lifetime when storage is unavailable. */
+  }
   return true;
 }

@@ -81,7 +81,12 @@ export function createCharacterStructuredData(character: Character) {
         "@id": breadcrumbId,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Guía Marvel", item: `${siteConfig.url}/` },
-          { "@type": "ListItem", position: 2, name: "Personajes del MCU", item: new URL("/personajes", siteConfig.url).toString() },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Personajes del MCU",
+            item: new URL("/personajes", siteConfig.url).toString(),
+          },
           { "@type": "ListItem", position: 3, name: seo.displayName, item: seo.url },
         ],
       },

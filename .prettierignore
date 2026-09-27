@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+.vercel
+.env*
+supabase/.temp
+test-results
+public/characters/history
+package-lock.json
+ironman-source
+*.tsbuildinfo
