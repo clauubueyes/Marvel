@@ -1,6 +1,7 @@
 import { mcuCatalog } from "@/data/mcuCatalog";
 import { getDetailedTitleIds, getTitleDetails } from "@/data/titles";
 import { hasReviewedChronology } from "@/data/titles/editorialReview";
+import { parseEditorialDate, parseIsoDate } from "@/utils/editorialDate";
 
 export type AuditSeverity = "ERROR" | "AVISO" | "INFO";
 export type AuditIssue = {
@@ -10,20 +11,6 @@ export type AuditIssue = {
   message: string;
 };
 
-const months: Record<string, number> = {
-  ENE: 0,
-  FEB: 1,
-  MAR: 2,
-  ABR: 3,
-  MAY: 4,
-  JUN: 5,
-  JUL: 6,
-  AGO: 7,
-  SEP: 8,
-  OCT: 9,
-  NOV: 10,
-  DIC: 11,
-};
 const allowedCertifications = new Set([
   "G",
   "PG",
@@ -39,16 +26,8 @@ const allowedCertifications = new Set([
 ]);
 const runtimePattern = /^(\d+ (MIN|EPISODIOS|CORTOS|WEBISODIOS)|POR CONFIRMAR|ESPECIAL)$/;
 
-function parseEditorialDate(value: string) {
-  const match = /^(\d{1,2}) ([A-Z]{3}) (\d{4})$/.exec(value);
-  if (!match || months[match[2]] === undefined) return undefined;
-  return new Date(Date.UTC(Number(match[3]), months[match[2]], Number(match[1])));
-}
-
 function isValidISODate(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const date = new Date(`${value}T00:00:00Z`);
-  return !Number.isNaN(date.valueOf()) && date.toISOString().startsWith(value);
+  return parseIsoDate(value) !== undefined;
 }
 
 export function auditEditorialContent(referenceDate = new Date("2026-08-30T00:00:00Z")) {
