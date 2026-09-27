@@ -3,13 +3,10 @@
 import { UNREVIEWED_SPOILER } from "@/services/progress/spoilerPolicy";
 
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { ScrollTrigger as ScrollTriggerInstance } from "gsap/ScrollTrigger";
 import type { SpoilerRequirement } from "@/types/spoiler";
 import { useSpoilerProgress } from "@/hooks/useSpoilerProgress";
 import { canRevealSpoiler } from "@/services/progress/spoilerPolicy";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type StorylineRailProps = {
   beats: { year: string; act: string; spoiler?: SpoilerRequirement }[];
@@ -31,19 +28,36 @@ export function StorylineRail({ beats: sourceBeats }: StorylineRailProps) {
     );
     if (!sections.length) return;
 
-    const triggers: ScrollTrigger[] = sections.map((section) =>
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 55%",
-        end: "top 55%",
-        onEnter: () => {
-          const current = sections.indexOf(section);
-          if (current >= 0) setActive(current);
-        },
-      }),
-    );
+    // gsap se carga bajo demanda: el rail solo enhancece la navegación, no oculta
+    // contenido, así que un chunk asíncrono no puede provocar un flash de layout.
+    let triggers: ScrollTriggerInstance[] = [];
+    let cancelled = false;
 
-    return () => triggers.forEach((trigger) => trigger.kill());
+    void (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      triggers = sections.map((section) =>
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 55%",
+          end: "top 55%",
+          onEnter: () => {
+            const current = sections.indexOf(section);
+            if (current >= 0) setActive(current);
+          },
+        }),
+      );
+    })();
+
+    return () => {
+      cancelled = true;
+      triggers.forEach((trigger) => trigger.kill());
+    };
   }, [beatsKey]);
 
   if (!beats.length) return null;
