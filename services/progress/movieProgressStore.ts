@@ -88,6 +88,32 @@ export class MovieProgressStore {
     this.replay();
     if (this.queue.length === 1) void this.drain(this.generation, this.snapshot.user.id);
   }
+  /**
+   * Resuelve cuando la cola de escrituras queda vacía, para que quien encole
+   * cambios pueda confirmar que se guardaron antes de dar el trabajo por bueno
+   * (por ejemplo, vaciando el progreso de invitado que acaba de importar).
+   * `ok` es false si alguna escritura falló o si la identidad cambió mientras esperaba.
+   */
+  whenSettled(): Promise<{ ok: boolean; error: string | null }> {
+    const settle = () => ({ ok: !this.snapshot.error, error: this.snapshot.error });
+    if (!this.queue.length) return Promise.resolve(settle());
+    const generation = this.generation;
+    return new Promise((resolve) => {
+      const listener = () => {
+        // Un cambio de identidad invalida la espera: no se puede afirmar nada sobre
+        // las escrituras de la identidad anterior.
+        if (generation !== this.generation) {
+          this.listeners.delete(listener);
+          resolve({ ok: false, error: this.snapshot.error });
+          return;
+        }
+        if (this.queue.length) return;
+        this.listeners.delete(listener);
+        resolve(settle());
+      };
+      this.listeners.add(listener);
+    });
+  }
   private apply(target: Set<string>, changes: ProgressChange[]) {
     changes.forEach(({ movieId, watched }) =>
       watched ? target.add(movieId) : target.delete(movieId),
