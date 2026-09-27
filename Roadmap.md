@@ -22,9 +22,8 @@ su prioridad, el esfuerzo estimado y las dependencias.
    npm run lint
    # + e2e cuando la rama toque comportamiento (npm run test:e2e)
    ```
-3. **Condición previa (paso 0)**: finalizar el trabajo actual de
-   `feature/documentandoCodigo` (9 archivos sin commitear) antes de abrir la primera
-   rama del roadmap.
+3. **Condición previa (paso 0)**: ✅ superada. El trabajo de
+   `feature/documentandoCodigo` quedó cerrado antes de abrir la primera rama del roadmap.
 4. Los cambios de una fase NO dependen de la siguiente; cada fase se puede empezar una
    vez terminadas sus dependencias internas.
 
@@ -51,15 +50,28 @@ su prioridad, el esfuerzo estimado y las dependencias.
 Objetivo: dejar el repo formateado, sin deuda de configuración y con diffs limpios para
 todo lo que venga después. Sin dependencias entre sí; se pueden ejecutar en paralelo.
 
-| #   | Rama                            | Prioridad | Mejora / Detalle                                                                                                                                                                            | Esfuerzo |
-| --- | ------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | `feature/FormatearCodigo`       | 🟢        | Añadir `.prettierrc` (printWidth 100, tabWidth 2) + `husky`/`lint-staged`. Formatear el repo completo (hoy hay JSX denso en una línea, p. ej. `app/personajes/page.tsx:21`). Auditoría: H3. | S        |
-| 2   | `feature/LimpiezaRepo`          | 🟢        | `opencode.json` → `.gitignore` (configuración personal versionada por error). Revisar `tsconfig.tsbuildinfo` y restos de `.temp`. Auditoría: L4.                                            | S        |
-| 3   | `feature/OptimizarDependencias` | 🟡        | Auditar `three`, `gsap`, `sharp`: si se usan, cargar con `next/dynamic`; si no, quitarlas de `dependencies`. Auditoría: H4.                                                                 | M        |
-| 4   | `feature/SitemapDinamico`       | 🟢        | `lastModified` de `app/sitemap.ts:10` derivado de `fs.stat`/`git` en vez de fecha fija. Auditoría: M3.                                                                                      | S        |
-| 5   | `feature/CentralizarConfigSeo`  | 🟢        | Mover `email`, `creator`, `verification`, `category`, `formatDetection` de `app/layout.tsx` a `siteConfig`. Auditoría: L1.                                                                  | S        |
-| 6   | `feature/ConsolidarTipos`       | 🟢        | Unificar `types/news.ts`, `types/search.ts`, `types/planner.ts` (declaraciones casi vacías) en módulos por dominio. Auditoría: L2.                                                          | S        |
-| 7   | `feature/UnificarValidadores`   | 🟢        | Consolidar `validateContent` + `validateCharacterSpoilers` + `validateProgressRelations` en un único runner con salida única. Auditoría: L3.                                                | S        |
+| #   | Rama                           | Prioridad | Mejora / Detalle                                                                                                                                                                            | Esfuerzo | Estado                                     |
+| --- | ------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------ |
+| 1   | `feature/FormatearCodigo`      | 🟢        | Añadir `.prettierrc` (printWidth 100, tabWidth 2) + `husky`/`lint-staged`. Formatear el repo completo (hoy hay JSX denso en una línea, p. ej. `app/personajes/page.tsx:21`). Auditoría: H3. | S        | ✅ Hecho en `90664ff`                      |
+| 2   | `feature/LimpiezaRepo`         | 🟢        | `opencode.json` → `.gitignore` (configuración personal versionada por error). Revisar `tsconfig.tsbuildinfo` y restos de `.temp`. Auditoría: L4.                                            | S        | ✅ Hecho en `31d6aa7`                      |
+| 3   | `feature/OptimizarGsap`        | 🟡        | Auditar `three`, `gsap`, `sharp`: si se usan, cargar con `next/dynamic`; si no, quitarlas de `dependencies`. Auditoría: H4.                                                                 | M        | ✅ Hecho (rama renombrada)                 |
+| 4   | `feature/SitemapDinamico`      | 🟢        | `lastModified` de `app/sitemap.ts:10` derivado de `fs.stat`/`git` en vez de fecha fija. Auditoría: M3.                                                                                      | S        | ✅ Hecho                                   |
+| 5   | `feature/CentralizarConfigSeo` | 🟢        | Mover `email`, `creator`, `verification`, `category`, `formatDetection` de `app/layout.tsx` a `siteConfig`. Auditoría: L1.                                                                  | S        | ✅ Hecho                                   |
+| 6   | `feature/ConsolidarTipos`      | 🟢        | Unificar `types/news.ts`, `types/search.ts`, `types/planner.ts` (declaraciones casi vacías) en módulos por dominio. Auditoría: L2.                                                          | S        | ✅ Hecho (vía barrels + `types/README.md`) |
+| 7   | `feature/UnificarValidadores`  | 🟢        | Consolidar `validateContent` + `validateCharacterSpoilers` + `validateProgressRelations` en un único runner con salida única. Auditoría: L3.                                                | S        | ✅ Hecho en `403f68c`                      |
+
+Notas de la FASE 0 (estado real, no el plan original):
+
+- **#1**: `.prettierrc` y el hook `husky` ya existían. El trabajo real fue normalizar los
+  47 ficheros del repo y ampliar `lint-staged` a `.mjs`, `.cjs`, `.yml` y `.yaml`.
+- **#2**: además de la config de `opencode` (ya resuelta antes de empezar), se retiró el
+  submódulo `ironman-source` del índice, se añadió a `.gitignore` y a las exclusiones de
+  ESLint, y se corrigieron 7 errores `react/no-unescaped-entities` preexistentes.
+- **#3**: la rama se llamó `feature/OptimizarGsap`. `three` no se usaba y su prototipo 3D
+  quedó fuera del repo; `gsap` se carga perezosamente en `StorylineRail` pero se mantiene
+  estático en `CharacterStory` para evitar un parpadeo previo; `sharp` se queda en
+  `dependencies` porque Next 16 lo necesita en runtime. No se apreció reducción del bundle
+  inicial mientras `CharacterStory` importe GSAP estático: queda como medición pendiente.
 
 ---
 
@@ -182,6 +194,9 @@ Reglas de secuencia:
 
 - ✅ Compatibilidad TS: `npm run lint` sin errores.
 - ✅ Contenido: `npm run validate:content` y `npm run audit:content` en verde.
+  `validate:content` es el runner único de los tres validadores estructurales
+  (`validation/index.ts`): agrupa las incidencias por ámbito y sale con código 1.
+  `audit:content` sigue siendo el comando aparte de la auditoría editorial.
 - ✅ Tests: `npm test` en verde; e2e si la rama toca comportamiento (`npm run test:e2e`).
 - ✅ Seguridad: cualquier dato nuevo en Supabase lleva migración SQL con RLS forzada +
   test PGlite (patrón de `movieProgressMigration.test.ts`).
