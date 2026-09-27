@@ -23,5 +23,3 @@ export const fallbackNews: NewsItem[] = [
     publishedAt: new Date(Date.now() - 172_800_000).toISOString(),
   },
 ];
-
-export type { NewsItem } from "@/types/news";
