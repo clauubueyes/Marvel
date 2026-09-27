@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
 import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 
 export const metadata = createPageMetadata({
   title: "Condiciones de uso — Planificador de visionado",
@@ -89,7 +90,7 @@ export default function TermsPage() {
           <p>
             Las condiciones pueden actualizarse cuando cambien las funciones o requisitos
             aplicables. Para consultas puedes escribir a{" "}
-            <a href="mailto:clauubyy@gmail.com">clauubyy@gmail.com</a>.
+            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
           </p>
         </section>
         <nav>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteConfig } from "@/config/site";
 import { CookieSettingsButton } from "./CookieSettingsButton";
 
 export function LegalFooter() {
@@ -16,7 +17,7 @@ export function LegalFooter() {
         <Link href="/privacidad">PRIVACIDAD</Link>
         <CookieSettingsButton />
         <Link href="/terminos">CONDICIONES DE USO</Link>
-        <a href="mailto:clauubyy@gmail.com" target="_blank" rel="noopener noreferrer">
+        <a href={`mailto:${siteConfig.email}`} target="_blank" rel="noopener noreferrer">
           CONTACTO
         </a>
       </nav>
