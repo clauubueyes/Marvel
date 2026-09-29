@@ -16,6 +16,12 @@ export type EditorialShellProps = {
   accent?: string;
   accent2?: string;
   /**
+   * `MotionEffects` es opt-out porque `/cuenta` y las páginas legales nunca lo
+   * montaron. Quitarlo por defecto cambiaría su aspecto, así que la decisión queda
+   * explícita en cada página en vez de heredada del refactor.
+   */
+  motion?: boolean;
+  /**
    * Antes de la navegación: overlays a pantalla completa (`CinematicIntro`) y datos
    * estructurados.Va dentro de `<main>` para que el overlay pueda fijarse a la ventana.
    */
@@ -40,6 +46,7 @@ export function EditorialShell({
   home = false,
   accent = DEFAULT_ACCENT,
   accent2 = DEFAULT_ACCENT_2,
+  motion = true,
   beforeNavigation,
   afterNavigation,
 }: EditorialShellProps) {
@@ -50,7 +57,7 @@ export function EditorialShell({
     >
       {beforeNavigation}
       {/* Infraestructura visual persistente: animaciones de scroll y navegación. */}
-      <MotionEffects />
+      {motion && <MotionEffects />}
       <GlobalNavigation home={home} context={context} />
       {afterNavigation}
       {children}

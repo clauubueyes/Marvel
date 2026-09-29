@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { CookieSettingsButton } from "@/components/layout/LegalFooter/CookieSettingsButton";
@@ -13,11 +13,7 @@ export const metadata = createPageMetadata({
 
 export default function PrivacyPage() {
   return (
-    <main
-      className="legal-page privacy-page"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
-    >
-      <GlobalNavigation context="PRIVACIDAD" />
+    <EditorialShell className="legal-page privacy-page" context="PRIVACIDAD" motion={false}>
       <header className="legal-page-header">
         <p className="eyebrow">
           <span /> INFORMACIÓN LEGAL
@@ -133,6 +129,6 @@ export default function PrivacyPage() {
           <Link href="/terminos">CONDICIONES DE USO →</Link>
         </nav>
       </article>
-    </main>
+    </EditorialShell>
   );
 }
