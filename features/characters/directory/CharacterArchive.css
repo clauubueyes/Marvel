@@ -3,6 +3,13 @@
  * Define el hero del índice, el panel de filtros y la distribución base de las
  * tarjetas. Los puntos focales de las imágenes viven en CharacterDirectory.css.
  */
+/* Wrapper del índice: compartía regla con .search-page en Search.css y migra
+   aquí para que la feature de personajes sea dueña de su propio fondo. */
+.characters-index {
+  min-height: 100vh;
+  color: #eef2e5;
+  background: radial-gradient(circle at 82% 7%, rgba(185, 215, 55, 0.14), transparent 25%), #080b07;
+}
 /* Hero del archivo: gran rótulo MCU y contador/resumen lateral. */
 .characters-index-hero {
   min-height: 650px;

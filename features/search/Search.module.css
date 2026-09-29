@@ -1,15 +1,20 @@
 /*
  * BUSCADOR GLOBAL — `/buscar`
- * Contiene el hero con campo de búsqueda, los filtros de tipo y la rejilla de
- * resultados para personajes, títulos, equipos, eventos, universos y rutas.
+ * Migrado a CSS Module desde Search.css + los trozos de search de
+ * mobile.css y responsive.css. El orden de las media queries reproduce la
+ * cascada global original: search vivia en la posicion 8 de globals.css y
+ * mobile.css (la ultima capa) debia prevalecer sobre responsive.css, por eso
+ * los bloques moviles van despues de los de tablet.
  */
-/* Hero y caja de búsqueda principal. */
-.search-page,
-.characters-index {
+
+/* Wrapper de pagina: la ausencia de otras referencias permite mantenerlo global. */
+:global(.search-page) {
   min-height: 100vh;
   color: #eef2e5;
   background: radial-gradient(circle at 82% 7%, rgba(185, 215, 55, 0.14), transparent 25%), #080b07;
 }
+
+/* Hero y caja de búsqueda principal. */
 .search-hero {
   min-height: 650px;
   padding: 160px 6vw 80px;
@@ -108,7 +113,7 @@
   background: transparent;
   font-size: 8px;
 }
-.search-result-tools button.active {
+.search-result-tools button:global(.active) {
   color: #10140d;
   border-color: #b9d737;
   background: #b9d737;
@@ -196,7 +201,7 @@
   color: #587019;
   font-size: 7px;
 }
-.search-result-personaje article > span {
+:global(.search-result-personaje) article > span {
   color: white;
   background: #6d3fa1;
 }
@@ -219,4 +224,95 @@
   color: #e6ebdd;
   background: transparent;
   font-size: 8px;
+}
+
+/* Tablet horizontal (responsive.css): una columna para el hero. */
+@media (max-width: 1000px) {
+  .search-hero {
+    grid-template-columns: 1fr;
+    align-content: center;
+  }
+  .search-command {
+    max-width: 680px;
+  }
+  .search-result-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Tablet vertical / movil (responsive.css): herramientas en columna. */
+@media (max-width: 560px) {
+  .search-hero {
+    min-height: 720px;
+    padding: 135px 6vw 65px;
+  }
+  .search-hero h1 {
+    font-size: 18vw;
+  }
+  .search-command {
+    padding: 20px;
+  }
+  .search-results {
+    padding-inline: 5vw;
+  }
+  .search-result-tools {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px 0;
+  }
+  .search-result-tools > div {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .search-result-tools button {
+    flex: 1 0 auto;
+  }
+  .search-result-grid {
+    grid-template-columns: 1fr;
+  }
+  .search-result-card {
+    min-height: 430px;
+  }
+}
+
+/* Movil (mobile.css, antigua ultima capa global): prevalece sobre lo anterior. */
+@media (max-width: 700px) {
+  .search-hero {
+    min-height: 520px;
+    padding-top: 135px;
+    padding-bottom: 70px;
+  }
+  .search-hero {
+    min-height: 580px;
+  }
+  .search-hero h1 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .search-result-card h2 {
+    overflow-wrap: anywhere;
+  }
+  .search-result-card p {
+    overflow-wrap: anywhere;
+  }
+  .search-result-tools button {
+    min-height: 44px;
+  }
+  .search-result-tools > div {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .search-result-card {
+    min-width: 0;
+  }
+  .search-result-card img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .search-hero h1 {
+    font-size: 18vw;
+  }
 }

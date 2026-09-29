@@ -21,7 +21,6 @@
 /* Navegación superior global. */
 @import "../styles/navigation.css";
 /* Página de búsqueda y tarjetas de resultados. */
-@import "../features/search/Search.css";
 /* Cabecera, filtros y rejilla del archivo de personajes. */
 @import "../features/characters/directory/CharacterArchive.css";
 /* Entradas animadas y hover del archivo de personajes. */
