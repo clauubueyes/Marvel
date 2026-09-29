@@ -1,7 +1,10 @@
 "use client";
 
 import { useTheme } from "./ThemeProvider";
-import type { ThemePreference as ThemePreferenceValue } from "@/services/theme/themePreference";
+import {
+  THEME_LIGHT_AVAILABLE,
+  type ThemePreference as ThemePreferenceValue,
+} from "@/services/theme/themePreference";
 
 const OPTIONS: ReadonlyArray<{ value: ThemePreferenceValue; label: string; hint: string }> = [
   { value: "dark", label: "OSCURO", hint: "El tema de diseño de NEXUS." },
@@ -10,7 +13,24 @@ const OPTIONS: ReadonlyArray<{ value: ThemePreferenceValue; label: string; hint:
 ];
 
 export function ThemePreference() {
-  const { preference, setPreference } = useTheme();
+  const { preference, resolved, setPreference } = useTheme();
+
+  if (!THEME_LIGHT_AVAILABLE) {
+    return (
+      <fieldset className="theme-control">
+        <legend>APARIENCIA</legend>
+        <p className="theme-control-hint">NEXUS se ve oscuro por diseño.</p>
+        <div className="theme-control-status" aria-live="polite">
+          <span className={`theme-control-dot theme-control-dot--${resolved}`} aria-hidden="true" />
+          <span>{resolved === "dark" ? "OSCURO" : "CLARO"}</span>
+        </div>
+        <small>
+          El tema claro estará disponible cuando se complete la paleta clara (fase 2, ligada a la
+          tokenización de colores).
+        </small>
+      </fieldset>
+    );
+  }
 
   return (
     <fieldset className="theme-control">

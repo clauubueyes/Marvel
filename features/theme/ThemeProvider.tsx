@@ -14,6 +14,7 @@ import {
   normalizeThemePreference,
   resolveTheme,
   THEME_EVENT,
+  THEME_LIGHT_AVAILABLE,
   THEME_STORAGE_KEY,
   type ResolvedTheme,
   type ThemePreference,
@@ -28,11 +29,24 @@ export type ThemeState = {
 const ThemeContext = createContext<ThemeState | null>(null);
 
 function readPreference(): ThemePreference {
+  let raw: string | null = null;
   try {
-    return normalizeThemePreference(window.localStorage.getItem(THEME_STORAGE_KEY));
+    raw = window.localStorage.getItem(THEME_STORAGE_KEY);
   } catch {
     return DEFAULT_THEME_PREFERENCE;
   }
+  // Mientras la paleta clara no exista, solo se acepta "dark": una preferencia
+  // "light"/"system" guardada (p.ej. por alguien que probó el control antes de
+  // desactivarlo) se ignora y se borra para que no regrese al activar la fase 2.
+  if (!THEME_LIGHT_AVAILABLE && raw !== "dark") {
+    try {
+      window.localStorage.removeItem(THEME_STORAGE_KEY);
+    } catch {
+      // Sin almacenamiento disponible el tema oscuro se mantiene igualmente.
+    }
+    return DEFAULT_THEME_PREFERENCE;
+  }
+  return normalizeThemePreference(raw);
 }
 
 function writePreference(preference: ThemePreference): void {
