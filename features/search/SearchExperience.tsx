@@ -11,7 +11,7 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
   const search = useSearchExperience(initialQuery);
   return (
     <>
-      <section className={styles.searchHero}>
+      <section className={styles["search-hero"]}>
         <div>
           <p className="eyebrow">
             <span /> BASE DE DATOS NEXUS
@@ -25,7 +25,7 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
             Busca personajes, identidades, poderes, películas, series, acontecimientos o universos.
           </p>
         </div>
-        <label className={styles.searchCommand}>
+        <label className={styles["search-command"]}>
           <span>¿QUÉ QUIERES SABER?</span>
           <div>
             <input
@@ -40,8 +40,8 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
           <small>{searchIndex.length} EXPEDIENTES INDEXADOS</small>
         </label>
       </section>
-      <section className={styles.searchResults} aria-live="polite">
-        <div className={styles.searchResultTools}>
+      <section className={styles["search-results"]} aria-live="polite">
+        <div className={styles["search-result-tools"]}>
           <div role="group" aria-label="Filtrar resultados">
             {filters.map((item) => (
               <button
@@ -65,13 +65,13 @@ export function SearchExperience({ initialQuery = "" }: { initialQuery?: string 
           </p>
         </div>
         {search.results.length ? (
-          <div className={styles.searchResultGrid}>
+          <div className={styles["search-result-grid"]}>
             {search.results.map((result) => (
               <SearchResultCard result={result} key={`${result.type}-${result.id}`} />
             ))}
           </div>
         ) : (
-          <div className={styles.searchEmpty}>
+          <div className={styles["search-empty"]}>
             <strong>NO HAY COINCIDENCIAS</strong>
             <p>Prueba con otro nombre, alias, poder o acontecimiento del MCU.</p>
             <button type="button" onClick={() => search.updateQuery("")}>

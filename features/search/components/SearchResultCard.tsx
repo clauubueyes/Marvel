@@ -7,10 +7,15 @@ export function SearchResultCard({ result }: { result: SearchResult }) {
   return (
     <Link
       href={result.href}
-      className={`${styles.searchResultCard} search-result-${result.type.toLocaleLowerCase("es")}`}
+      className={`${styles["search-result-card"]} search-result-${result.type.toLocaleLowerCase("es")}`}
     >
       <div>
-        <Image src={result.image} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" />
+        <Image
+          src={result.image}
+          alt=""
+          fill
+          sizes="(max-width: 560px) 90vw, (max-width: 1000px) 44vw, 29vw"
+        />
       </div>
       <article>
         <span>{result.type}</span>

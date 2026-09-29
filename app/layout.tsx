@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" data-theme="dark">
+    <html lang="es" data-theme="dark" data-scroll-behavior="smooth">
       <head>
         {/*
           El tema se fija antes del primer pintado a proposito. Si se aplicara desde
