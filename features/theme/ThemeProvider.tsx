@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -83,11 +84,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setPreference = useCallback((next: ThemePreference) => {
     writePreference(next);
-    applyTheme(
-      resolveTheme(next, window.matchMedia("(prefers-color-scheme: dark)").matches),
-      document.documentElement,
-    );
   }, []);
+
+  useEffect(() => {
+    // El script del <head> ya fijó el tema antes del primer pintado; este efecto
+    // solo lo mantiene al día cuando cambia la preferencia o la del sistema.
+    applyTheme(resolved, document.documentElement);
+  }, [resolved]);
 
   return (
     <ThemeContext.Provider value={{ preference, resolved, setPreference }}>
