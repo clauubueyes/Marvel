@@ -4,10 +4,6 @@
  * el foco accesible y los patrones reutilizados por todas las páginas.
  */
 :root {
-  --ink: #08090b;
-  --paper: #f2eee4;
-  --line: #ffffff2e;
-
   /*
      * TOKENS DE BREAKPOINT — única fuente de verdad sobre anchos de viewport.
      * Las media queries nativas requieren literales (var() no se resuelve ahí),
@@ -25,6 +21,45 @@
   --bp-xs: 560px; /* Columna única en heroes */
   --bp-2xs: 380px; /* Pantallas muy pequeñas */
 }
+
+/*
+ * TOKENS DE TEMA
+ * `--surface` y `--text` son la base sobre la que se apoya el resto de la paleta.
+ * El diseño de NEXUS es oscuro de origen, así que `:root` y `[data-theme="dark"]`
+ * comparten valores: el tema oscuro es el estado natural, no una variante.
+ *
+ * La paleta clara solo cubre esta capa base (fondo, texto, líneas, superficies
+ * neutras). Las 600+ literals de color que hay repartidas por las hojas de cada
+ * feature todavía están afinadas a mano para fondo oscuro, así que las secciones
+ * con dirección de arte propia (fichas de personaje, portada, rutas) se vean
+ * como esté hasta que se tokenicen. Está anotado en el Roadmap como fase 2.
+ */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #08090b;
+  --surface-raised: #11160e;
+  --text: #ffffff;
+  --text-muted: #aeb7a5;
+  --line: #ffffff2e;
+  --line-strong: #ffffff4d;
+  /* Alias heredados: --ink es la superficie y --paper el color de texto principal. */
+  --ink: var(--surface);
+  --paper: #f2eee4;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --surface: #f2eee4;
+  --surface-raised: #ffffff;
+  --text: #0b0d08;
+  --text-muted: #4c5346;
+  --line: #0b0d0826;
+  --line-strong: #0b0d084d;
+  /* En claro los papeles se invierten: el texto pasa a ser oscuro. */
+  --ink: var(--surface);
+  --paper: #0b0d08;
+}
 * {
   box-sizing: border-box;
 }
@@ -33,8 +68,8 @@ html {
 }
 body {
   margin: 0;
-  background: var(--ink);
-  color: #fff;
+  background: var(--surface);
+  color: var(--text);
   font-family: var(--font-mono), monospace;
 }
 button,

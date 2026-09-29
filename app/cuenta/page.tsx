@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EditorialShell } from "@/components/layout/EditorialShell";
 import { AccountForm } from "@/features/account/AccountForm";
 import { SpoilerProgressSettings } from "@/features/account/SpoilerProgressSettings";
+import { ThemePreference } from "@/features/theme/ThemePreference";
 
 export const metadata: Metadata = {
   title: "Mi cuenta — NEXUS",
@@ -21,6 +22,7 @@ export default function AccountPage() {
         <AccountForm>
           <SpoilerProgressSettings />
         </AccountForm>
+        <ThemePreference />
       </div>
     </EditorialShell>
   );

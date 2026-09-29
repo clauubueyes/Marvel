@@ -411,3 +411,79 @@
     padding: 16px;
   }
 }
+/* Tema: selector de apariencia persistido en este navegador. */
+.theme-control {
+  margin: 28px 0 0;
+  padding: 20px;
+  border: 1px solid #435039;
+  background: #b9d73705;
+}
+.theme-control legend {
+  padding: 0;
+  font: 700 18px/1.4 var(--font-account-heading);
+  letter-spacing: 0.025em;
+}
+.theme-control-hint {
+  margin: 6px 0 0;
+  color: #aeb7a5;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.theme-control-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid #435039;
+  background: #0c100a;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.theme-control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #11160e;
+  border: 1px solid #56613c;
+}
+.theme-control-dot--dark {
+  background: #08090b;
+  box-shadow: inset 0 0 0 1px #ffffff4d;
+}
+.theme-control-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.theme-control-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px !important;
+  cursor: pointer;
+}
+.theme-control-option input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #56613c;
+  border-radius: 50%;
+  background: #0c100a;
+  transition: border-color 0.15s ease;
+}
+.theme-control-option input:checked {
+  border: 5px solid var(--accent);
+}
+.theme-control-option > span {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.theme-control small {
+  display: block;
+  margin-top: 14px;
+  color: #aeb7a5;
+  font-size: 11px;
+  line-height: 1.7;
+}
