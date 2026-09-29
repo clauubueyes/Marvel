@@ -922,6 +922,108 @@
   letter-spacing: 0.2px;
 }
 
+.mcu-community {
+  padding: 90px 6vw;
+}
+.mcu-community .section-heading {
+  margin-bottom: 40px;
+}
+.mcu-community-list {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.mcu-community-list ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mcu-community-list li {
+  display: grid;
+  grid-template-columns: 56px 72px 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mcu-community-position {
+  font: 26px var(--font-display);
+  color: var(--rank-accent, #b9d737);
+  text-align: right;
+}
+.mcu-community-portrait {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 56px;
+  overflow: hidden;
+  background: #111;
+}
+.mcu-community-portrait img {
+  object-fit: cover;
+  filter: grayscale(0.4);
+  transition: 0.4s;
+}
+.mcu-community-list li:hover .mcu-community-portrait img {
+  filter: none;
+}
+.mcu-community-identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.mcu-community-identity b {
+  font: 20px var(--font-display);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mcu-community-identity small {
+  color: #999;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mcu-community-fans {
+  font: 12px var(--font-body);
+  color: var(--rank-accent, #b9d737);
+  white-space: nowrap;
+}
+.mcu-community-list a {
+  font-size: 9px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.mcu-community-empty {
+  margin: 0;
+  padding: 40px 0;
+  color: #aaa;
+  font-size: 13px;
+  text-align: center;
+}
+.mcu-community-empty button {
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .mcu-community-list li {
+    grid-template-columns: 40px 56px 1fr auto;
+    gap: 12px;
+  }
+  .mcu-community-position {
+    font-size: 20px;
+  }
+  .mcu-community-portrait {
+    width: 56px;
+    height: 44px;
+  }
+  .mcu-community-list a {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .doom-hero-copy {
     width: 88%;

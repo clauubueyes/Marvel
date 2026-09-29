@@ -4,6 +4,7 @@ import type { NewsItem } from "@/types/news";
 
 const FEED_URL = "https://news.google.com/rss/search?q=Marvel&hl=es&gl=ES&ceid=ES:es";
 
+
 type RssItem = {
   guid?: string | { "#text"?: string };
   title?: string;

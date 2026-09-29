@@ -28,6 +28,15 @@ function addDays(date: Date, amount: number) {
   return result;
 }
 
+/**
+ * Regla de admision al planificador. Vive aqui para que el planificador, la ficha
+ * de un titulo y la de una ruta apliquen exactamente el mismo criterio.
+ */
+export function isPlannableTitle(title: Pick<PlannerTitle, "runtime" | "type">) {
+  if (title.type === "ONE_SHOT" || /CORTOS/i.test(title.runtime ?? "")) return false;
+  return true;
+}
+
 export function createViewingPlan(
   titles: PlannerTitle[],
   preferences: PlannerPreferences,

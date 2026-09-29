@@ -13,6 +13,7 @@ export default defineConfig({
     env: {
       NEXT_PUBLIC_SUPABASE_URL: "https://nexus-test.supabase.co",
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_browser_test_only",
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: "google-client-id-test.apps.googleusercontent.com",
     },
   },
 });

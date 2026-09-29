@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getEditorialCoverage } from "@/data/titles";
 import type { TitleDetails, TitleDossier } from "@/types/title";
+import { TitleCalendarExport } from "./TitleCalendarExport";
 
 type TitleHeroProps = { title: TitleDossier; details?: TitleDetails; imageUrl: string };
 
@@ -22,6 +23,8 @@ export function TitleHero({ title, details, imageUrl }: TitleHeroProps) {
           <span>{title.continuity}</span>
           <span>ORDEN {String(title.order).padStart(2, "0")}</span>
         </div>
+        {/* Atajo de planificacion: el usuario ya sabe que quiere este titulo. */}
+        <TitleCalendarExport title={title} details={details} />
       </div>
       <span className="title-profile-number">{String(title.order).padStart(2, "0")}</span>
     </section>
