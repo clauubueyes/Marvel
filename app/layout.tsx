@@ -6,6 +6,7 @@ import { LegalFooter } from "@/components/layout/LegalFooter";
 import { Analytics } from "@/features/analytics";
 import { AccountProvider } from "@/features/account/AccountProvider";
 import { SpoilerProgressProvider } from "@/features/spoilers/SpoilerProgressProvider";
+import { ThemeProvider } from "@/features/theme/ThemeProvider";
 import { THEME_BOOTSTRAP_SCRIPT } from "@/services/theme/themePreference";
 
 const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-display" });
@@ -60,16 +61,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
       </head>
       <body className={`${display.variable} ${mono.variable}`}>
-        <AccountProvider>
-          <SpoilerProgressProvider>
-            <a className="skip-link" href="#main-content">
-              SALTAR AL CONTENIDO
-            </a>
-            <div id="main-content">{children}</div>
-            <LegalFooter />
-            <Analytics />
-          </SpoilerProgressProvider>
-        </AccountProvider>
+        <ThemeProvider>
+          <AccountProvider>
+            <SpoilerProgressProvider>
+              <a className="skip-link" href="#main-content">
+                SALTAR AL CONTENIDO
+              </a>
+              <div id="main-content">{children}</div>
+              <LegalFooter />
+              <Analytics />
+            </SpoilerProgressProvider>
+          </AccountProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
