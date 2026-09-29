@@ -28,6 +28,11 @@ export type EditorialShellProps = {
   beforeNavigation?: React.ReactNode;
   /** Entre la navegación y el cuerpo: migas de pan, pestañas de sección. */
   afterNavigation?: React.ReactNode;
+  /**
+   * Custom properties propias de la sección. Se aplican encima de la paleta, así que
+   * `--accent` y `--accent-2` se pueden dejar sin repetir aquí.
+   */
+  style?: React.CSSProperties;
 };
 
 /**
@@ -38,6 +43,9 @@ export type EditorialShellProps = {
  * secciones se desincronizasen sin que nadie lo notara. Aquí queda en un único sitio y
  * las páginas solo aportan lo que de verdad les es propio: su clase, su paleta y su
  * contenido.
+ *
+ * El resto de atributos se pasan a `<main>`: la ficha de personaje, por ejemplo, necesita
+ * `data-motion` para elegir su firma de animación.
  */
 export function EditorialShell({
   children,
@@ -49,11 +57,20 @@ export function EditorialShell({
   motion = true,
   beforeNavigation,
   afterNavigation,
-}: EditorialShellProps) {
+  style,
+  ...rest
+}: EditorialShellProps & Record<string, unknown>) {
   return (
     <main
+      {...rest}
       className={className}
-      style={{ "--accent": accent, "--accent-2": accent2 } as React.CSSProperties}
+      style={
+        {
+          "--accent": accent,
+          "--accent-2": accent2,
+          ...style,
+        } as React.CSSProperties
+      }
     >
       {beforeNavigation}
       {/* Infraestructura visual persistente: animaciones de scroll y navegación. */}
