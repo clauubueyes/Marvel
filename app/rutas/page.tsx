@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
-import { MotionEffects } from "@/components/common/MotionEffects";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { formatRouteDuration, viewingRoutes } from "@/data/viewingRoutes";
 
@@ -13,12 +12,10 @@ export const metadata = createPageMetadata({
 
 export default function RoutesPage() {
   return (
-    <main
+    <EditorialShell
       className="routes-index"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+      context={`${String(viewingRoutes.length).padStart(2, "0")} RUTAS`}
     >
-      <MotionEffects />
-      <GlobalNavigation context={`${String(viewingRoutes.length).padStart(2, "0")} RUTAS`} />
       <section className="routes-index-hero">
         <p className="eyebrow">
           <span /> RECORRIDOS EDITORIALES
@@ -59,6 +56,6 @@ export default function RoutesPage() {
           </Link>
         ))}
       </section>
-    </main>
+    </EditorialShell>
   );
 }

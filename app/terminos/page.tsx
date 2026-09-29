@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 
@@ -11,11 +11,7 @@ export const metadata = createPageMetadata({
 
 export default function TermsPage() {
   return (
-    <main
-      className="legal-page"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
-    >
-      <GlobalNavigation context="CONDICIONES" />
+    <EditorialShell className="legal-page" context="CONDICIONES" motion={false}>
       <header className="legal-page-header">
         <p className="eyebrow">
           <span /> INFORMACIÓN LEGAL
@@ -98,6 +94,6 @@ export default function TermsPage() {
           <Link href="/privacidad">POLÍTICA DE PRIVACIDAD →</Link>
         </nav>
       </article>
-    </main>
+    </EditorialShell>
   );
 }

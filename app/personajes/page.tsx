@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
-import { MotionEffects } from "@/components/common/MotionEffects";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { characters } from "@/repositories/characterRepository";
 import { CharacterDirectory } from "@/features/characters/directory";
@@ -21,12 +20,10 @@ export const metadata = createPageMetadata({
 
 export default function CharactersPage() {
   return (
-    <main
+    <EditorialShell
       className="characters-index"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+      context={`${String(characters.length).padStart(2, "0")} PERSONAJES`}
     >
-      <MotionEffects />
-      <GlobalNavigation context={`${String(characters.length).padStart(2, "0")} PERSONAJES`} />
       <section className="characters-index-hero">
         <div className="characters-hero-scan" aria-hidden="true">
           <i />
@@ -56,6 +53,6 @@ export default function CharactersPage() {
         </p>
       </section>
       <CharacterDirectory characters={characters} />
-    </main>
+    </EditorialShell>
   );
 }

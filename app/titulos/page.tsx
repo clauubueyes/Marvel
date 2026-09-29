@@ -1,5 +1,4 @@
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
-import { MotionEffects } from "@/components/common/MotionEffects";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { TitleDirectory, type TitleDirectoryEntry } from "@/features/titles/directory";
 import type {
@@ -38,13 +37,7 @@ export default async function TitlesPage({ searchParams }: PageProps) {
   }));
 
   return (
-    <main
-      className="titles-index"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
-    >
-      <MotionEffects />
-      <GlobalNavigation context="ARCHIVO / TÍTULOS" />
-
+    <EditorialShell className="titles-index" context="ARCHIVO / TÍTULOS">
       <section className="titles-index-hero">
         <p className="eyebrow">
           <span /> UNIVERSO AUDIOVISUAL MARVEL
@@ -79,6 +72,6 @@ export default async function TitlesPage({ searchParams }: PageProps) {
           viewMode: get("vista") as TitleViewMode | undefined,
         }}
       />
-    </main>
+    </EditorialShell>
   );
 }

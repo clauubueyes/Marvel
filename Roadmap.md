@@ -135,12 +135,26 @@ Notas de la FASE 1 (estado real, no el plan original):
 
 Objetivo: mantenibilidad de la interfaz y el arranque. Habilita `ModoOscuro` (depende de #13).
 
-| #   | Rama                               | Prioridad | Mejora / Detalle                                                                                                                                                   | Esfuerzo | Depende de |
-| --- | ---------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ---------- |
-| 12  | `feature/ShellEditorialCompartido` | 🟡        | Layout `app/(marketing)/layout.tsx` o componente `EditorialShell` que centralice `MotionEffects` + `GlobalNavigation` + `skip-link` + custom props. Auditoría: M1. | M        | —          |
-| 13  | `feature/RefactorizarCSS`          | 🔴        | Migrar de `@import` global (`app/globals.css`, `styles/*`) a CSS Modules por feature, dejando en `globals.css` solo tokens/reset. Auditoría: H2.                   | L        | —          |
-| 14  | `feature/AccesibilidadContraste`   | 🟡        | Contraste AA en `eyebrow`/fondos editoriales, estados de foco, labels; test automático Lighthouse/pa11y en el flujo e2e. Auditoría: M4.                            | M        | —          |
-| 15  | `feature/BusquedaEnServidor`       | 🟡        | `app/api/search/route.ts` cacheable que reutilice `searchService`; el cliente solo dibuja. Auditoría: M2.                                                          | M        | —          |
+| #   | Rama                               | Prioridad | Mejora / Detalle                                                                                                                                                   | Esfuerzo | Depende de                             |
+| --- | ---------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | -------------------------------------- |
+| 12  | `feature/ShellEditorialCompartido` | 🟡        | Layout `app/(marketing)/layout.tsx` o componente `EditorialShell` que centralice `MotionEffects` + `GlobalNavigation` + `skip-link` + custom props. Auditoría: M1. | M        | ✅ Hecho (componente `EditorialShell`) |
+| 13  | `feature/RefactorizarCSS`          | 🔴        | Migrar de `@import` global (`app/globals.css`, `styles/*`) a CSS Modules por feature, dejando en `globals.css` solo tokens/reset. Auditoría: H2.                   | L        | —                                      |
+| 14  | `feature/AccesibilidadContraste`   | 🟡        | Contraste AA en `eyebrow`/fondos editoriales, estados de foco, labels; test automático Lighthouse/pa11y en el flujo e2e. Auditoría: M4.                            | M        | —                                      |
+| 15  | `feature/BusquedaEnServidor`       | 🟡        | `app/api/search/route.ts` cacheable que reutilice `searchService`; el cliente solo dibuja. Auditoría: M2.                                                          | M        | —                                      |
+
+Notas de la FASE 2 (estado real, no el plan original):
+
+- #12 se resolvió como componente, no como layout de route group: `components/layout/EditorialShell`.
+  Un layout habría obliged a atravesar cada `<main>` y, en Next, además habría atrapado las
+  páginas de error; el componente además permite slots (`beforeNavigation`, `afterNavigation`)
+  para conservar el orden del DOM de fichas, Home y entidades.
+- El `skip-link` **no** se movió al shell: ya vive en `app/layout.tsx`, que es el único sitio
+  donde puede cubrirse todo, incluida la 404, porque `not-found.tsx` se renderiza dentro del
+  layout raíz. Duplicarlo habría creado dos skip-links.
+- `MotionEffects` es opt-out con `motion={false}`: `/cuenta`, `/privacidad`, `/terminos` y la
+  404 nunca lo montaron y se preserva ese comportamiento.
+- Migradas las 3 páginas simples, los 3 índices, las 3 fichas, Home, la 404 y los 2 componentes
+  de entidades. No queda ningún `<main>` manual en el repositorio.
 
 ---
 
