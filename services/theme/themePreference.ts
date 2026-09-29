@@ -18,6 +18,15 @@ export type ResolvedTheme = "light" | "dark";
  */
 export const DEFAULT_THEME_PREFERENCE: ThemePreference = "dark";
 
+/**
+ * La paleta clara todavía no existe: hay 600+ literals de color afinados a mano
+ * para fondo oscuro repartidos por las hojas de cada feature (pendiente de #13).
+ * Mientras esta bandera sea `false`, el claro no se aplica ni se ofrece: se ignora
+ * y se borra cualquier preferencia guardada para que nadie aterrice en un modo
+ * roto. Cuando la paleta clara esté tokenizada, basta con pasarla a `true`.
+ */
+export const THEME_LIGHT_AVAILABLE = false;
+
 const PREFERENCES: readonly ThemePreference[] = ["system", "light", "dark"];
 
 function isPreference(value: unknown): value is ThemePreference {
@@ -54,7 +63,13 @@ export function resolveTheme(
  * ejecuta antes de que exista el bundle.
  */
 export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{
+var available=${String(THEME_LIGHT_AVAILABLE)};
 var p=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
+if(!available){
+document.documentElement.dataset.theme="dark";
+if(p!=="dark"){localStorage.removeItem(${JSON.stringify(THEME_STORAGE_KEY)});}
+return;
+}
 if(p!=="light"&&p!=="dark"&&p!=="system"){p="dark";}
 var d=p==="system"
 ?window.matchMedia("(prefers-color-scheme: dark)").matches
