@@ -174,6 +174,19 @@ Objetivo: funcionalidades de valor directo para el usuario. Mayormente paraleliz
 | 23  | `feature/NotificacionesEstrenos` | 🟡        | Alertas de `data/titles/upcoming.ts` vía maglink de Supabase Auth o Web Push, con suscripción en cuenta. Auditoría: P2-11. | L        | 8          |
 | 24  | `feature/FunnelAnaliticas`       | 🟢        | Funil Home→personaje→título→ruta con `trackEvent` (reutilizar `trackRouteView`, `trackPlanner*`). Auditoría: P2-12.        | S        | —          |
 
+Notas de la FASE 3 (estado real, no el plan original):
+
+- #17 se redefinió al descubrir que NEXUS ya es oscuro por diseño: un toggle de "modo oscuro"
+  sería un no-op. Se construyó la **infraestructura de tema** completa (script anti-FOUC en el
+  `<head>`, `data-theme` en `<html>`, `ThemeProvider` con `prefers-color-scheme` en vivo y
+  control en `/cuenta` con persistencia en localStorage y disponibles también sin sesión) y la
+  capa base de tokens (`--surface`, `--text`, `--line`). El **tema claro de las hojas de
+  feature queda como fase 2**: hay 600+ literals de color afinados a mano para fondo oscuro y
+  pendientes de tokenizar, cosa que depende de #13. La dependencia se mantiene marcada.
+- Para que no hubiera sorpresas: la preferencia por defecto es `dark`, **no** `system`. Si fuese
+  `system`, un usuario con el sistema en claro vería la web sin la paleta clara, todavía
+  inexistente. Solo se puede elegir claro explícitamente.
+
 ---
 
 ## 6. FASE 4 — Social y comunidad
