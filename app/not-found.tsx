@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 
 export const metadata: Metadata = {
   title: "Expediente no encontrado — NEXUS",
@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="not-found-page" style={{ "--accent": "#b9d737" } as React.CSSProperties}>
-      <GlobalNavigation context="ERROR / 404" />
+    <EditorialShell className="not-found-page" context="ERROR / 404" motion={false}>
       <section>
         <span>404</span>
         <p className="eyebrow">
@@ -32,6 +31,6 @@ export default function NotFound() {
           <Link href="/buscar">BUSCAR OTRO EXPEDIENTE ↗</Link>
         </div>
       </section>
-    </main>
+    </EditorialShell>
   );
 }

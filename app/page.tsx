@@ -1,5 +1,4 @@
-import { MotionEffects } from "@/components/common/MotionEffects";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { characters } from "@/repositories/characterRepository";
@@ -46,21 +45,23 @@ export default function Home() {
   return (
     <>
       <link rel="canonical" href={`${siteConfig.url}/`} />
-      <main
+      <EditorialShell
         className="mcu-home"
-        style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+        home
+        context="RUTA MCU · 2026"
+        beforeNavigation={
+          <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(websiteStructuredData).replaceAll("<", "\\u003c"),
+              }}
+            />
+            {/* Overlay de entrada; desaparece antes de mostrar el contenido de Home. */}
+            <CinematicIntro />
+          </>
+        }
       >
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteStructuredData).replaceAll("<", "\\u003c"),
-          }}
-        />
-        {/* Overlay de entrada; desaparece antes de mostrar el contenido de Home. */}
-        <CinematicIntro />
-        {/* Infraestructura visual persistente: animaciones de scroll y navegación. */}
-        <MotionEffects />
-        <GlobalNavigation home context="RUTA MCU · 2026" />
         {/* Orden visual de las grandes secciones de la portada. */}
         <HomeHero />
         <DoomsdayGuide />
@@ -68,7 +69,7 @@ export default function Home() {
         <HomeCharacterPreview characters={characters} />
         <CommunityTop candidates={communityCandidates} />
         <HomeFooter />
-      </main>
+      </EditorialShell>
     </>
   );
 }
