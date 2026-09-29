@@ -6,6 +6,7 @@ import { LegalFooter } from "@/components/layout/LegalFooter";
 import { Analytics } from "@/features/analytics";
 import { AccountProvider } from "@/features/account/AccountProvider";
 import { SpoilerProgressProvider } from "@/features/spoilers/SpoilerProgressProvider";
+import { THEME_BOOTSTRAP_SCRIPT } from "@/services/theme/themePreference";
 
 const display = Anton({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
@@ -48,7 +49,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es" data-theme="dark">
+      <head>
+        {/*
+          El tema se fija antes del primer pintado a proposito. Si se aplicara desde
+          React, la pagina se pintaria con el tema por defecto y saltaria al elegido
+          un instante despues, y ese parpadeo es justo lo que hace que el modo
+          oscuro parezca roto.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
+      </head>
       <body className={`${display.variable} ${mono.variable}`}>
         <AccountProvider>
           <SpoilerProgressProvider>
