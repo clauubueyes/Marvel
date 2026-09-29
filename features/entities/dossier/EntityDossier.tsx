@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { MotionEffects } from "@/components/common/MotionEffects";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { siteConfig } from "@/config/site";
 import { getEntityHref } from "@/data/mcuEntities";
 import { getEntityDossier } from "@/repositories/entityRepository";
@@ -35,26 +34,24 @@ export function EntityDossier({ entity }: { entity: MCUEntity }) {
 
   /* `--entity-accent` adapta círculos, títulos y enlaces al color de la entidad. */
   return (
-    <main
+    <EditorialShell
       className="entity-profile"
-      style={
-        {
-          "--accent": entity.color,
-          "--entity-accent": entity.color,
-          "--accent-2": "#4f6b28",
-        } as React.CSSProperties
+      context={`${entity.kind} / EXPEDIENTE`}
+      accent={entity.color}
+      style={{ "--entity-accent": entity.color } as React.CSSProperties}
+      afterNavigation={
+        <>
+          <Breadcrumbs items={[roots[entity.kind], { label: entity.name }]} />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
+            }}
+          />
+        </>
       }
     >
       {/* Cabecera persistente y accesos rápidos a los tres tipos de entidad. */}
-      <MotionEffects />
-      <GlobalNavigation context={`${entity.kind} / EXPEDIENTE`} />
-      <Breadcrumbs items={[roots[entity.kind], { label: entity.name }]} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
-        }}
-      />
       <nav className="entity-section-tabs" aria-label="Explorar conexiones">
         <Link href="/eventos">EVENTOS</Link>
         <Link href="/universos">UNIVERSOS</Link>
@@ -66,6 +63,6 @@ export function EntityDossier({ entity }: { entity: MCUEntity }) {
       <EntityTitles titles={dossier.titles} />
       <EntityConnections connections={dossier.connections} />
       <EntityCharacters characters={dossier.relatedCharacters} />
-    </main>
+    </EditorialShell>
   );
 }

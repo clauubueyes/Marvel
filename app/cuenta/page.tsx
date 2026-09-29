@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { AccountForm } from "@/features/account/AccountForm";
 import { SpoilerProgressSettings } from "@/features/account/SpoilerProgressSettings";
 
@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 
 export default function AccountPage() {
   return (
-    <main
-      className="account-page"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
-    >
-      <GlobalNavigation context="MI CUENTA" />
+    <EditorialShell className="account-page" context="MI CUENTA" motion={false}>
       <div className="account-layout">
         <header className="account-heading">
           <h1>
@@ -26,6 +22,6 @@ export default function AccountPage() {
           <SpoilerProgressSettings />
         </AccountForm>
       </div>
-    </main>
+    </EditorialShell>
   );
 }

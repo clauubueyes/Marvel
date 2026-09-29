@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { AnalyticsView } from "@/features/analytics";
-import { MotionEffects } from "@/components/common/MotionEffects";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createCharacterMetadata, createCharacterStructuredData } from "@/config/characterSeo";
 import {
   CharacterConnections,
@@ -64,13 +63,14 @@ export default async function CharacterPage({ params }: PageProps) {
    * - `data-motion` selecciona la firma tecnológica, mística, cósmica, etc.
    */
   return (
-    <main
+    <EditorialShell
       className={`profile profile-${character.id}`}
       data-motion={motion.signature}
+      context={`ARCHIVO / ${character.number}`}
+      accent={character.color}
+      accent2={character.color2}
       style={
         {
-          "--accent": character.color,
-          "--accent-2": character.color2,
           "--motion-cycle": `${motion.tempo * 18}s`,
           "--motion-counter-cycle": `${motion.tempo * 12}s`,
           "--motion-pulse-cycle": `${motion.tempo * 3.4}s`,
@@ -79,32 +79,38 @@ export default async function CharacterPage({ params }: PageProps) {
           "--motion-drift": `${motion.drift}px`,
         } as React.CSSProperties
       }
+      beforeNavigation={
+        <>
+          <AnalyticsView kind="character" id={character.id} name={character.name} />
+          {/* Capa funcional y ambiental que permanece por encima del dossier. */}
+          <div className="character-atmosphere" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </div>
+        </>
+      }
+      afterNavigation={
+        <>
+          <Breadcrumbs
+            items={[
+              {
+                label: "PERSONAJES",
+                href: "/personajes",
+              },
+              { label: character.name },
+            ]}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
+            }}
+          />
+        </>
+      }
     >
-      <AnalyticsView kind="character" id={character.id} name={character.name} />
-      {/* Capa funcional y ambiental que permanece por encima del dossier. */}
-      <MotionEffects />
-      <div className="character-atmosphere" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
-      <GlobalNavigation context={`ARCHIVO / ${character.number}`} />
-      <Breadcrumbs
-        items={[
-          {
-            label: "PERSONAJES",
-            href: "/personajes",
-          },
-          { label: character.name },
-        ]}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
-        }}
-      />
       {beats.length > 0 && (
         <StorylineRail
           beats={beats.map((beat, index) => ({
@@ -144,6 +150,6 @@ export default async function CharacterPage({ params }: PageProps) {
       <CharacterConnections entities={connectedEntities} />
       <CharacterReference character={character} routes={relatedRoutes} />
       <CharacterPagination current={character} previous={previous} next={next} />
-    </main>
+    </EditorialShell>
   );
 }

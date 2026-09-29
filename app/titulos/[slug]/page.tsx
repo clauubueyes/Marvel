@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { AnalyticsView } from "@/features/analytics";
-import { MotionEffects } from "@/components/common/MotionEffects";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { createPageMetadata } from "@/config/seo";
 import { siteConfig } from "@/config/site";
 import { mcuCatalog } from "@/data/mcuCatalog";
@@ -77,23 +76,26 @@ export default async function TitlePage({ params }: PageProps) {
 
   /* `title-profile` activa la dirección de arte verde/negra del dossier de títulos. */
   return (
-    <main
+    <EditorialShell
       className="title-profile"
-      style={{ "--accent": "#b9d737", "--accent-2": "#4f6b28" } as React.CSSProperties}
+      context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`}
+      beforeNavigation={
+        <AnalyticsView kind="title" slug={title.slug} name={title.title} titleType={title.type} />
+      }
+      afterNavigation={
+        <>
+          <Breadcrumbs items={[{ label: "TÍTULOS", href: "/titulos" }, { label: title.title }]} />
+          {structuredData && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
+              }}
+            />
+          )}
+        </>
+      }
     >
-      <AnalyticsView kind="title" slug={title.slug} name={title.title} titleType={title.type} />
-      {/* Navegación y efectos compartidos por todas las fichas. */}
-      <MotionEffects />
-      <GlobalNavigation context={`ARCHIVO / ${String(title.order).padStart(2, "0")}`} />
-      <Breadcrumbs items={[{ label: "TÍTULOS", href: "/titulos" }, { label: title.title }]} />
-      {structuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
-          }}
-        />
-      )}
       {/* Apertura visual y resumen del acontecimiento narrativo. */}
       <TitleHero title={title} details={details} imageUrl={getTitleImage(title.slug)} />
       <TitleEventDossier
@@ -124,6 +126,6 @@ export default async function TitlePage({ params }: PageProps) {
       />
       {details && <TitleSources details={details} />}
       <TitlePagination previous={title.previous} next={title.next} />
-    </main>
+    </EditorialShell>
   );
 }

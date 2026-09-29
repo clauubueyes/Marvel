@@ -166,6 +166,11 @@ lint-staged`) ya existían, así que el trabajo real fue normalizar el repo comp
   y custom props `--accent`/`--accent-2` se repiten página a página.
 - **Cómo**: crear un layout compartido `app/(marketing)/layout.tsx` (o un componente
   `EditorialShell`) que centralice `MotionEffects` + `GlobalNavigation` + `skip-link`.
+- **Resuelto**: se optó por el componente `components/layout/EditorialShell`, no por un layout
+  de route group, para poder conservar el orden del DOM con los slots `beforeNavigation` y
+  `afterNavigation` y para no atrapar las páginas de error. El `skip-link` se mantiene en
+  `app/layout.tsx` para no duplicarlo. Ya no queda ningún `<main>` ni ningún montaje manual de
+  `MotionEffects`/`GlobalNavigation` en el repositorio.
 
 #### M2. Índice de búsqueda en cliente ↔ contenido que crece
 

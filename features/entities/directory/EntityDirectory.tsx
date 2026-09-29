@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
-import { MotionEffects } from "@/components/common/MotionEffects";
+import { EditorialShell } from "@/components/layout/EditorialShell";
 import { getEntityHref } from "@/data/mcuEntities";
 import type { MCUEntity } from "@/types/entity";
 
@@ -18,22 +17,18 @@ export function EntityDirectory({
   description: string;
 }) {
   return (
-    <main
+    <EditorialShell
       className="entity-index"
-      style={
-        {
-          "--accent": entities[0]?.color ?? "#b9d737",
-          "--accent-2": "#4f6b28",
-        } as React.CSSProperties
+      context={`${String(entities.length).padStart(2, "0")} EXPEDIENTES`}
+      accent={entities[0]?.color ?? "#b9d737"}
+      afterNavigation={
+        <nav className="entity-section-tabs" aria-label="Explorar conexiones">
+          <Link href="/eventos">EVENTOS</Link>
+          <Link href="/universos">UNIVERSOS</Link>
+          <Link href="/equipos">EQUIPOS</Link>
+        </nav>
       }
     >
-      <MotionEffects />
-      <GlobalNavigation context={`${String(entities.length).padStart(2, "0")} EXPEDIENTES`} />
-      <nav className="entity-section-tabs" aria-label="Explorar conexiones">
-        <Link href="/eventos">EVENTOS</Link>
-        <Link href="/universos">UNIVERSOS</Link>
-        <Link href="/equipos">EQUIPOS</Link>
-      </nav>
       <section className="entity-index-hero">
         <p className="eyebrow">
           <span /> {eyebrow}
@@ -77,6 +72,6 @@ export function EntityDirectory({
           </Link>
         ))}
       </section>
-    </main>
+    </EditorialShell>
   );
 }
